@@ -1,0 +1,22 @@
+.button {
+    cursor: pointer;
+    padding: 0.5rem 4rem;
+    min-width: 43%;
+
+    background: #ffdc2d;
+    border-radius: 0.625rem;
+    border-style: none;
+
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.688rem;
+    color: #444444;
+    &:active {
+        padding: 0.55rem 4rem 0.45rem;
+    }
+    &:hover {
+        background-color: #f7cd00;
+    }
+}

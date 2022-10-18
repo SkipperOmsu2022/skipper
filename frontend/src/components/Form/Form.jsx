@@ -1,6 +1,8 @@
 import { Formik, Form, useField } from "formik";
 import * as Yup from 'yup';
 
+import "./form.scss"
+
 const MyTextInput = ({...props}) => {
     const [field, meta] = useField(props);
     return (
@@ -11,10 +13,38 @@ const MyTextInput = ({...props}) => {
         </div>
     )
 };
-const CustomForm = ({inputs}) => {
-    function view(inputs) {
+const CustomForm = ({inputs, submit}) => {
+
+    function elements() {
         const elements = inputs.map((item, i) => {
             const {id, name, type, placeholder} = item;
+
+            switch(name) {
+                case 'email':
+                    initial['email'] = '';
+                    schema['email'] = Yup.string()
+                        .required('Обязательное поле')
+                        .email('Неправильный email адрес');
+                    break;
+                case 'password':
+                    initial['password'] = '';
+                    schema['password'] = Yup.string()
+                        .required('Обязательное поле')
+                        .min(10, 'Не менее 10 символов')
+                    break;
+                case 'name':
+                    initial['name'] = '';
+                    schema['name'] = Yup.string()
+                        .required('Обязательное поле')
+                    break;
+                case 'surname':
+                    initial['surname'] = '';
+                    schema['surname'] = Yup.string()
+                        .required('Обязательное поле')
+                    break;
+                default:
+                    break;
+            }
 
             return (
                 <MyTextInput
@@ -33,30 +63,18 @@ const CustomForm = ({inputs}) => {
         )
     }
 
+    const initial = {};
+    const schema = {};
+
+    const view = elements(inputs);
 
     return (
         <Formik
-            initialValues = {{
-                email: '',
-                password: '',
-                name: '',
-                surname: ''
-            }}
-            validationSchema = {Yup.object({
-                email: Yup.string()
-                        .required('Обязательное поле')
-                        .email('Неправильный email адрес'),
-                password: Yup.string()
-                        .required('Обязательное поле')
-                        .min(10, 'Не менее 10 символов'),
-                name: Yup.string()
-                        .required('Обязательное поле'),
-                surname: Yup.string()
-                        .required('Обязательное поле'),
-            })}
-            onSubmit = {values => console.log(JSON.stringify(values, null, 2))}
+            initialValues = {initial}
+            validationSchema = {Yup.object(schema)}
+            onSubmit = {values => submit(values)}
         >
-            {view(inputs)}
+            {view}
         </Formik>
     )
 }

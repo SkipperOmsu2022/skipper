@@ -1,7 +1,8 @@
 import "./loginPage.scss"
+import "../../Button/button.scss"
 import { NavLink, Outlet} from 'react-router-dom';
 
-const LoginPage = () => {
+const LoginPage = (props) => {
     
 
     return (
@@ -12,8 +13,8 @@ const LoginPage = () => {
             <div className="authentication">
                 <div className="authentication__content form">
                     <div className="form__header">
-                        <NavLink to="/signin"  className={({ isActive }) => isActive ? "tab left active" : "tab left"}>ВХОД</NavLink>
-                        <NavLink to="/signup" className={({ isActive }) => isActive ? "tab right active" : "tab right"}>РЕГИСТРАЦИЯ</NavLink>
+                        <NavLink end to="/"  className={({ isActive }) => isActive ? "tab left active" : "tab left"}>ВХОД</NavLink>
+                        <NavLink end to="/signup" className={({ isActive }) => isActive ? "tab right active" : "tab right"}>РЕГИСТРАЦИЯ</NavLink>
                     </div>
                     <div className="form__content">
                         <Outlet/>
