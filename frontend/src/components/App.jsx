@@ -1,9 +1,13 @@
 import {BrowserRouter as Router, Route, Routes, Navigate} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
+import { AuthProvider } from './Auth/AuthProvider';
+
 import LoginPage from "./pages/LoginPage/LoginPage";
-import MainPage from "./pages/MainPage/MainPage";
 import Signin from "./Login/Signin";
 import Signup from "./Login/Signup";
-import { useState, useEffect } from 'react';
+
+import MainPage from "./pages/MainPage/MainPage";
 
 const App = () => {
     const [logged, setLogged] = useState(false);
@@ -17,16 +21,17 @@ const App = () => {
     });
 
     return (
-        
-        <Router>
-            <Routes>
-                <Route path="/" element={logged ? <Navigate to="/home"/> : <LoginPage/>}>
-                    <Route path="" element={<Signin/>} />
-                    <Route path="signup" element={<Signup/>}/>
-                </Route> 
-                <Route path="/home" element={!logged ? <Navigate to="/"/> : <MainPage/>}/>
-            </Routes>
-        </Router>
+        <AuthProvider>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<LoginPage/>}>
+                        <Route path="" element={<Signin/>} />
+                        <Route path="signup" element={<Signup/>}/>
+                    </Route> 
+                    <Route path="/home" element={<MainPage/>}/>
+                </Routes>
+            </Router>
+        </AuthProvider>
     )
 }
 

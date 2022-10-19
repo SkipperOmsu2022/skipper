@@ -1,19 +1,20 @@
 import Form from "../Form/Form";
 import { Link } from 'react-router-dom';
-import { signUp } from "../../services/Service";
+import useAuthContext from '../../hooks/authContext'
 
 
 const Signup = () => {
+    const { signup } = useAuthContext()
 
     return (
         <>
             <Form
                 inputs={[
-                    {id:"surname", name:"surname", placeholder:"Фамилия", type:"text"},
-                    {id:"name", name:"name", placeholder:"Имя", type:"text"},
+                    {id:"lastName", name:"lastName", placeholder:"Фамилия", type:"text"},
+                    {id:"firstName", name:"firstName", placeholder:"Имя", type:"text"},
                     {id:"email", name:"email", placeholder:"Email", type:"text"},
                     {id:"password", name:"password", placeholder:"Пароль", type:"password"}]}
-                submit={signUp}
+                submit={signup}
             />
             <button form="contact-form"
                     type="submit"

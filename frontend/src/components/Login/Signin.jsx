@@ -1,8 +1,9 @@
 import Form from "../Form/Form";
 import { Link } from 'react-router-dom';
-import { signIn } from "../../services/Service";
+import useAuthContext from '../../hooks/authContext'
 
 const Signin = () => {
+    const { signin } = useAuthContext()
 
     return (
         <>
@@ -10,7 +11,7 @@ const Signin = () => {
                 inputs={[
                     {id:"email", name:"email", placeholder:"Email", type:"text"},
                     {id:"password", name:"password", placeholder:"Пароль", type:"password"}]}
-                submit={signIn}
+                submit={signin}
             />
             <a  href="" className="forgot-password">Забыли пароль?</a>
             <button form="contact-form"

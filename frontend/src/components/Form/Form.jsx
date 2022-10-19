@@ -32,14 +32,14 @@ const CustomForm = ({inputs, submit}) => {
                         .required('Обязательное поле')
                         .min(10, 'Не менее 10 символов')
                     break;
-                case 'name':
-                    initial['name'] = '';
-                    schema['name'] = Yup.string()
+                case 'firstName':
+                    initial['firstName'] = '';
+                    schema['firstName'] = Yup.string()
                         .required('Обязательное поле')
                     break;
-                case 'surname':
-                    initial['surname'] = '';
-                    schema['surname'] = Yup.string()
+                case 'lastName':
+                    initial['lastName'] = '';
+                    schema['lastName'] = Yup.string()
                         .required('Обязательное поле')
                     break;
                 default:

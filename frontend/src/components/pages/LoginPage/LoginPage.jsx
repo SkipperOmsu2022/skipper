@@ -1,9 +1,14 @@
 import "./loginPage.scss"
 import "../../Button/button.scss"
-import { NavLink, Outlet} from 'react-router-dom';
+import { NavLink, Outlet, Navigate} from 'react-router-dom';
+import useAuthContext from '../../../hooks/authContext'
 
 const LoginPage = (props) => {
-    
+    const { auth } = useAuthContext()
+
+    if (auth) {
+        return <Navigate to="/home" replace={true} />
+    }
 
     return (
         <section className="wrapper">
