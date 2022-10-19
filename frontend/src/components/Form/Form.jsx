@@ -7,9 +7,9 @@ const MyTextInput = ({...props}) => {
     const [field, meta] = useField(props);
     return (
         <div className="group">
-            <input {...props} {...field} className="group__input"/>
-                {meta.touched && meta.error ? 
-            (<div className="group__error">{meta.error}</div>) : null}
+            <input {...props} {...field} className={`group__input${meta.touched && meta.error ? " error" : ""}`}/>
+                {meta.touched && meta.error ?
+            (<div className="group_error">{meta.error}</div>) : null}
         </div>
     )
 };
@@ -30,7 +30,7 @@ const CustomForm = ({inputs, submit}) => {
                     initial['password'] = '';
                     schema['password'] = Yup.string()
                         .required('Обязательное поле')
-                        .min(10, 'Не менее 10 символов')
+                        .min(8, 'Пароль должен быть не менее 8 символов')
                     break;
                 case 'firstName':
                     initial['firstName'] = '';

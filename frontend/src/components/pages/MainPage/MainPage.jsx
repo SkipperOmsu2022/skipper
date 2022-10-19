@@ -1,4 +1,4 @@
-import "../../Button/button.scss"
+import "../../../shared/Button/button.scss"
 import useAuthContext from '../../../hooks/authContext'
 import { Navigate } from 'react-router-dom';
 

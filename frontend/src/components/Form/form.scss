@@ -20,11 +20,19 @@
             line-height: 1.436rem;
             text-align: left;
         }
-        &__error {
+        &_error {
             font-family: 'Montserrat';
             font-weight: 400;
-            padding: 0.5rem 0.5rem 0rem;
             font-size: 0.85rem;
+            padding: 0.5rem 0rem 0rem;
+            color: #C30000;
+        }
+        .error:not(:focus) {
+            border-color: #C30000;
+            color: #C30000;
+            &::placeholder {
+                color: #C30000;
+            }
         }
     }
 }

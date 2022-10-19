@@ -1,5 +1,5 @@
 import "./loginPage.scss"
-import "../../Button/button.scss"
+import "../../../shared/Button/button.scss"
 import { NavLink, Outlet, Navigate} from 'react-router-dom';
 import useAuthContext from '../../../hooks/authContext'
 
