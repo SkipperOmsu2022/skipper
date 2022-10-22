@@ -1,7 +1,15 @@
 package ru.tinkoff.edu.backend.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +30,7 @@ import javax.validation.Valid;
  */
 @RestController
 @Validated
+@Tag(name="User Controller", description="Контроллер отвечает за регистрацию и авторизацию пользователей.")
 @RequestMapping(value = "/api/user")
 public class UserController {
     private final UserService userService;
@@ -31,11 +40,22 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(summary = "Регистрация пользователя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Успешная регистрация",
+                    content = {@Content(mediaType = "application/json" )},
+                    headers = {@Header(name = "Location", description = "/api/user/{id}",
+                            schema = @Schema(example = "/api/user/5")),
+                    }),
+            @ApiResponse(responseCode = "400", description = "Пользователь уже существует!",
+                    content = {@Content(mediaType = "text/plain")}
+            ) })
     @PostMapping("/registration")
     public ResponseEntity<?> registration(@Valid @RequestBody UserRegDTO user) {
         if(userService.readByEmail(user.getEmail()) != null) {
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(new MediaType("text/plain"))
                     .header("Content-Type", "text/plain; charset=UTF-8")
                     .body("User already exist!");
         }
@@ -48,7 +68,17 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping("/login")
+    @Operation(summary = "Авторизация пользователя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешная авторизация",
+                    content = {@Content(mediaType = "application/json" )},
+                    headers = {@Header(name = "Location", description = "/api/user/{id}",
+                            schema = @Schema(example = "/api/user/5")),
+                    }),
+            @ApiResponse(responseCode = "400", description = "Пользователь не найден!",
+                    content = {@Content(mediaType = "text/plain")}
+            ) })
+    @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody UserLoginDTO user) {
         String id = userService.readByEmail(user.getEmail()).getId().toString();
         return ResponseEntity
