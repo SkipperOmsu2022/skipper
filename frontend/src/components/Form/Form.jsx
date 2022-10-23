@@ -5,6 +5,7 @@ import "./form.scss"
 
 const MyTextInput = ({...props}) => {
     const [field, meta] = useField(props);
+    
     return (
         <div className="group">
             <input {...props} {...field} className={`group__input${meta.touched && meta.error ? " error" : ""}`}/>
@@ -18,7 +19,6 @@ const CustomForm = ({inputs, submit}) => {
     function elements() {
         const elements = inputs.map((item, i) => {
             const {id, name, type, placeholder} = item;
-
             switch(name) {
                 case 'email':
                     initial['email'] = '';
@@ -45,7 +45,7 @@ const CustomForm = ({inputs, submit}) => {
                 default:
                     break;
             }
-
+            
             return (
                 <MyTextInput
                     key={i}

@@ -10,16 +10,6 @@ import Signup from "./Login/Signup";
 import MainPage from "./pages/MainPage/MainPage";
 
 const App = () => {
-    const [logged, setLogged] = useState(false);
-
-    useEffect(() => {
-        if (localStorage.getItem('logged')) {
-            setLogged(true);
-        } else {
-            setLogged(false);
-        }
-    });
-
     return (
         <AuthProvider>
             <Router>
