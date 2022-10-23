@@ -8,19 +8,18 @@ export const useRequest = () => {
     const request = useCallback(async (url, data) => {
         setLoading(true);
 
-        axios.post(url, data, {headers: { "Content-Type": "application/json", "Content-Lenght": "<calculated hen request is sent>",
-                                           "User-Agent": "PostmanRuntime/7.29.2", "Accept": "*/*", "Accept-Encoding": "gzip, deflate, br",
-                                        "Connection": "keep-alive" }})
+        return axios.post(url, data, {headers: { "Content-Type": "application/json", "Accept": "*/*"}})
             .then(res => {
                 setLoading(false);
                 console.log('Нормас');
-                console.log(res);
+                return res;
             })
             .catch(e => {
                 setLoading(false);
                 setError(e.message)
                 console.log('Ошибка');
                 console.log(e);
+                return e;
             });
     }, []);
 

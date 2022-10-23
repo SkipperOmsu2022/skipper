@@ -6,11 +6,7 @@ import useService from "../../services/service";
 import Spinner from "../../shared/spinner/Spinner";
 
 const Signup = () => {
-    const {loading, error, testRequest} = useService();
-
-    const signup = (values) => {
-        console.log(JSON.stringify(values, null, 2))
-    }
+    const {loading, error, signup} = useService();
 
     return (
         <>
@@ -20,7 +16,7 @@ const Signup = () => {
                     {id:"firstName", name:"firstName", placeholder:"Имя", type:"text"},
                     {id:"email", name:"email", placeholder:"Email", type:"text"},
                     {id:"password", name:"password", placeholder:"Пароль", type:"password"}]}
-                submit={testRequest}
+                submit={signup}
             />
             <button form="contact-form"
                     type="submit"
