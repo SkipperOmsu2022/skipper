@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.backend.handlers;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,7 +17,7 @@ public class ErrorHandlingControllerAdvice {
     public ResponseEntity<?> onConstraintValidationException(ConstraintViolationException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .header("Content-Type", "text/plain; charset=UTF-8")
+                .contentType(MediaType.TEXT_PLAIN)
                 .body("Not valid value in request!");
     }
 
@@ -25,7 +26,7 @@ public class ErrorHandlingControllerAdvice {
     public ResponseEntity<?> onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .header("Content-Type", "text/plain; charset=UTF-8")
+                .contentType(MediaType.TEXT_PLAIN)
                 .body("Not valid value in request!");
     }
 }

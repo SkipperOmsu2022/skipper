@@ -55,8 +55,7 @@ public class UserController {
         if(userService.readByEmail(user.getEmail()) != null) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .contentType(new MediaType("text/plain"))
-                    .header("Content-Type", "text/plain; charset=UTF-8")
+                    .contentType(MediaType.TEXT_PLAIN)
                     .body("User already exist!");
         }
 
