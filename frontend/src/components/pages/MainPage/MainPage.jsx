@@ -1,14 +1,11 @@
 import "../../../shared/button/button.scss"
-import useAuthContext from '../../../hooks/useAuthContext'
+import useService from "../../../services/service";
+import useAuthContext from "../../../hooks/useAuthContext";
 import { Navigate } from 'react-router-dom';
 
 const MainPage = () => {
-    const { auth, setAuth } = useAuthContext()
-
-    const logout = () => {
-        localStorage.removeItem('logged');
-        setAuth(false)
-    }
+    const { logout } = useService()
+    const { auth } = useAuthContext();
 
     if (!auth) {
         return <Navigate to="/" replace={true} />

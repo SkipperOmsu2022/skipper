@@ -13,6 +13,7 @@ const useService = () => {
 
     const signin = async (data) => {
         const res = await request(`${_apiBase}/api/user/login`, data);
+        console.log(res);
         if (res.status === 200) {
             localStorage.removeItem('logged');
             localStorage.setItem('logged', res.headers.location);
@@ -20,7 +21,12 @@ const useService = () => {
         }
     }
 
-    return {loading, request, error, clearError, setLoading, signup, signin}
+    const logout = () => {
+        localStorage.removeItem('logged');
+        setAuth(false);
+    }
+
+    return {loading, request, error, clearError, setLoading, signup, signin, logout}
 }
 
 export default useService;
