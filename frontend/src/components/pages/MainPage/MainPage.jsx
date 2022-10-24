@@ -1,5 +1,5 @@
 import "../../../shared/button/button.scss"
-import useService from "../../../services/service";
+import useService from "../../../services/loginService";
 import useAuthContext from "../../../hooks/useAuthContext";
 import { Navigate } from 'react-router-dom';
 

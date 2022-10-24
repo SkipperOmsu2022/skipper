@@ -93,6 +93,16 @@
         font-size: 1rem;
         line-height: 1.438rem;
     }
+    &__response {
+        font-family: 'Montserrat';
+        font-weight: 400;
+        font-size: 0.9rem;
+        padding: 0.65rem 0rem 0rem;
+        color: #3EC300;
+        &.error {
+            color: #C30000;
+        }
+    }
     &__apply-button {
         margin: 1.875rem auto 0;
     }

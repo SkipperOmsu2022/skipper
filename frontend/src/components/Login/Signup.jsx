@@ -1,13 +1,14 @@
 import Form from "../Form/Form";
 import { Link } from 'react-router-dom';
 import useAuthContext from '../../hooks/useAuthContext'
-import useService from "../../services/service";
+import useService from "../../services/loginService";
+import Button from "../../shared/button/Button";
 
 import Spinner from "../../shared/spinner/Spinner";
 
 const Signup = () => {
-    const {loading, error, signup} = useService();
-
+    const {loading, signup, response, error, clearResponse} = useService();
+    console.log(error);
     return (
         <>
             <Form
@@ -17,14 +18,16 @@ const Signup = () => {
                     {id:"email", name:"email", placeholder:"Email", type:"text"},
                     {id:"password", name:"password", placeholder:"Пароль", type:"password"}]}
                 submit={signup}
+                id="contact-form"
+                clearResponse={clearResponse}
             />
-            <button form="contact-form"
+            <div className={`form__response${error ? ' error' : ''}`}>{response}</div>
+            <Button text="ЗАРЕГИСТРИРОВАТЬСЯ"
+                    loading={loading}
+                    form="contact-form"
                     type="submit"
                     className="form__apply-button button"
-                    style={loading ? {'display': 'none'} : null}>
-                    РЕГИСТРАЦИЯ
-            </button>
-            {loading ? <Spinner/> : null}
+            />
             <Link  to="/" className="registration">Уже есть аккаунт? Вход</Link>
         </>
     )

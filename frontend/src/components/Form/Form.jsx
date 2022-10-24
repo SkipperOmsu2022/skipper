@@ -14,7 +14,8 @@ const MyTextInput = ({...props}) => {
         </div>
     )
 };
-const CustomForm = ({inputs, submit}) => {
+
+const CustomForm = ({inputs, submit, id, clearResponse}) => {
 
     function elements() {
         const elements = inputs.map((item, i) => {
@@ -52,12 +53,13 @@ const CustomForm = ({inputs, submit}) => {
                     id={id} 
                     name={name}
                     type={type}
-                    placeholder={placeholder}/>
+                    placeholder={placeholder}
+                    onKeyUp={() => clearResponse(null)}/>
             )
         })
     
         return (
-            <Form className="form-group" id="contact-form">
+            <Form className="form-group" id={id}>
                 {elements}
             </Form>
         )
@@ -66,8 +68,7 @@ const CustomForm = ({inputs, submit}) => {
     const initial = {};
     const schema = {};
 
-    const view = elements(inputs);
-
+    const view = elements();
     return (
         <Formik
             initialValues = {initial}

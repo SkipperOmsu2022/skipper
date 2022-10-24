@@ -3,25 +3,23 @@ import axios from "axios";
 
 export const useRequest = () => {
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [response, setResponse] = useState(null);
+    const [error, setError] = useState(false);
 
     const request = useCallback(async (url, data) => {
         setLoading(true);
-
+        console.log(data)
         return axios.post(url, data, {headers: { "Content-Type": "application/json", "Accept": "*/*"}})
             .then(res => {
                 setLoading(false);
-                console.log('Нормас');
                 return res;
             })
             .catch(e => {
                 setLoading(false);
-                setError(e.response.data)
+                setError(true);
                 return e.response;
             });
     }, []);
 
-    const clearError = useCallback(() => setError(null), [])
-
-    return {loading, request, error, clearError, setLoading}
+    return {request, loading, setLoading, response, setResponse, error, setError}
 }
