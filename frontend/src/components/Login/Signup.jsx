@@ -1,10 +1,8 @@
 import Form from "../Form/Form";
 import { Link } from 'react-router-dom';
-import useAuthContext from '../../hooks/useAuthContext'
+
 import useService from "../../services/loginService";
 import Button from "../../shared/button/Button";
-
-import Spinner from "../../shared/spinner/Spinner";
 
 const Signup = () => {
     const {loading, signup, response, error, clearResponse} = useService();
