@@ -16,10 +16,8 @@ export const useRequest = () => {
             })
             .catch(e => {
                 setLoading(false);
-                setError(e.message)
-                console.log('Ошибка');
-                console.log(e);
-                return e;
+                setError(e.response.data)
+                return e.response;
             });
     }, []);
 
