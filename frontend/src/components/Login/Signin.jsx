@@ -2,7 +2,7 @@ import Form from "../Form/Form";
 import { Link } from 'react-router-dom';
 
 import useService from "../../services/loginService";
-import Button from "../../shared/button/Button";
+import Button from "../../shared/submitButton/Button";
 
 const Signin = () => {
     const {loading, signin, response, error, clearResponse} = useService();
@@ -19,11 +19,11 @@ const Signin = () => {
             />
             <div className={`form__response${error ? ' error' : ''}`}>{response}</div>
             <a  href="адрес" className="forgot-password">Забыли пароль?</a>
-            <Button text="ВОЙТИ"
+            <Button className="form__apply-button"
+                    text="ВОЙТИ"
                     loading={loading}
                     form="contact-form"
                     type="submit"
-                    className="form__apply-button button"
             />
             <Link  to="/signup" className="registration">Ещё нет аккаунта? Регистрация</Link>
         </>

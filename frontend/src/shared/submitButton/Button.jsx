@@ -1,11 +1,11 @@
 import Spinner from "../spinner/Spinner";
 
-const Button = ({text, loading, ...props}) => {
+const Button = ({className, text, loading, ...props}) => {
     return (
         <>
             {loading ? <Spinner/> : 
-            <button {...props}>
-                    {text}
+            <button {...props} className={`button ${className}`}>
+                {text}
             </button>}
         </>
     )

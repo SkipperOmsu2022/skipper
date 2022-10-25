@@ -5,7 +5,7 @@ const useService = () => {
     const {request, loading, response, setResponse, error, setError} = useRequest();
     const { setAuth } = useAuthContext();
 
-    const _apiBase = 'http://127.0.0.1:8080';
+    const _apiBase = 'http://sdfgdf';
 
     const clearResponse = () => {
         setResponse(null);
