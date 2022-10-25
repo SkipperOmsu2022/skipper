@@ -6,7 +6,7 @@ import Button from "../../shared/submitButton/Button";
 
 const Signin = () => {
     const {loading, signin, response, error, clearResponse} = useService();
-    console.log(loading);
+    
     return (
         <>
             <Form

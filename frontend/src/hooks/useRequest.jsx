@@ -6,9 +6,15 @@ export const useRequest = () => {
     const [response, setResponse] = useState(null);
     const [error, setError] = useState(false);
 
+    const clearResponse = () => {
+        setResponse(null);
+        setError(false);
+    }
+
     const request = useCallback(async (url, data) => {
+        clearResponse();
         setLoading(true);
-        console.log(data)
+        
         return axios.post(url, data, {headers: { "Content-Type": "application/json", "Accept": "*/*"}})
             .then(res => {
                 setLoading(false);
@@ -21,5 +27,5 @@ export const useRequest = () => {
             });
     }, []);
 
-    return {request, loading, setLoading, response, setResponse, error, setError}
+    return {request, loading, setLoading, response, setResponse, error, clearResponse}
 }

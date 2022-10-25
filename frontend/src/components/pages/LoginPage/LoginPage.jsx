@@ -2,7 +2,6 @@ import { NavLink, Outlet, Navigate} from 'react-router-dom';
 import useAuthContext from '../../../hooks/useAuthContext'
 
 import "./loginPage.scss"
-import "../../../shared/button/button.scss"
 
 const LoginPage = (props) => {
     const { auth } = useAuthContext()
