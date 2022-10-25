@@ -36,13 +36,11 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-        <!-- -->
-        <!--
+        <!--Framework авторизации и аутентификации-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        -->
 
         <!--Для работы с БД ORM-->
         <dependency>

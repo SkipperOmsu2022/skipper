@@ -3,6 +3,7 @@ package ru.tinkoff.edu.backend.handlers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,7 +19,7 @@ public class ErrorHandlingControllerAdvice {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.TEXT_PLAIN)
-                .body("Not valid value in request!");
+                .body(e.getLocalizedMessage() + "!");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -27,6 +28,15 @@ public class ErrorHandlingControllerAdvice {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.TEXT_PLAIN)
-                .body("Not valid value in request!");
+                .body(e.getLocalizedMessage() + "!");
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<?> onHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(e.getLocalizedMessage() + "!");
     }
 }

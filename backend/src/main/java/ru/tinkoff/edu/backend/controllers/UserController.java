@@ -11,14 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.edu.backend.DTO.UserLoginDTO;
 import ru.tinkoff.edu.backend.DTO.UserRegDTO;
+import ru.tinkoff.edu.backend.entities.User;
 import ru.tinkoff.edu.backend.services.UserService;
 
 import javax.validation.Valid;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Данный контроллер отвечает за:
@@ -30,14 +32,16 @@ import javax.validation.Valid;
  */
 @RestController
 @Validated
-@Tag(name="User Controller", description="Контроллер отвечает за регистрацию и авторизацию пользователей.")
+@Tag(name="User Controller", description="Контроллер отвечает за регистрацию и аутентификацию пользователей.")
 @RequestMapping(value = "/api/user")
+@CrossOrigin
 public class UserController {
     private final UserService userService;
-    //private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Operation(summary = "Регистрация пользователя")
@@ -49,6 +53,7 @@ public class UserController {
                     }),
             @ApiResponse(responseCode = "400", description = "Пользователь уже существует!",
                     content = {@Content(mediaType = "text/plain")}
+
             ) })
     @PostMapping("/registration")
     public ResponseEntity<?> registration(@Valid @RequestBody UserRegDTO user) {
@@ -59,7 +64,7 @@ public class UserController {
                     .body("User already exist!");
         }
 
-        //user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         String id = userService.create(user).getId().toString();
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -67,22 +72,46 @@ public class UserController {
                 .build();
     }
 
-    @Operation(summary = "Авторизация пользователя")
+    @Operation(summary = "Аутентификация пользователя")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Успешная авторизация",
+            @ApiResponse(responseCode = "200", description = "Успешная аутентификация",
                     content = {@Content(mediaType = "application/json" )},
                     headers = {@Header(name = "Location", description = "/api/user/{id}",
                             schema = @Schema(example = "/api/user/5")),
                     }),
-            @ApiResponse(responseCode = "400", description = "Пользователь не найден!",
+            @ApiResponse(responseCode = "404", description = "Пользователь не найден!",
                     content = {@Content(mediaType = "text/plain")}
-            ) })
+                    ),
+            @ApiResponse(responseCode = "400", description = "Неверный пароль!",
+                    content = {@Content(mediaType = "text/plain")}
+            )
+    })
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody UserLoginDTO user) {
-        String id = userService.readByEmail(user.getEmail()).getId().toString();
+        User userFromDB = userService.readByEmail(user.getEmail());
+        if(userFromDB == null) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("User not found!");
+        }
+        if(!passwordEncoder.matches(user.getPassword(), userFromDB.getPassword())) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body("Incorrect password!");
+        }
+
+        String id = userFromDB.getId().toString();
         return ResponseEntity
                 .ok()
                 .header("Location", "/api/user/" + id)
                 .build();
     }
+
+    /*@GetMapping("")
+    @PreAuthorize("hasRole('MENTEE')")
+    public ResponseEntity<?> get() {
+        return ResponseEntity.ok().build();
+    }*/
 }
