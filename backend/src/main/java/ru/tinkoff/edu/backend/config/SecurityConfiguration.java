@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
@@ -12,7 +11,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.web.cors.CorsConfiguration;
 import ru.tinkoff.edu.backend.enums.UserRole;
+
+import java.util.Arrays;
+import java.util.Collections;
+
 
 /**
  * Java-конфигурации IoC контейнера, отвечающая за безопасность.
@@ -43,7 +47,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                     .httpBasic();
         http.csrf().disable();
-        http.cors();
+
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        corsConfiguration.setExposedHeaders(Arrays
+                .asList("Authorization", "Location", "Cache-Control", "Content-Type"));
+        corsConfiguration.addAllowedOriginPattern("*");
+        corsConfiguration.setAllowedMethods(Arrays
+                .asList("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
+
+        http.cors().configurationSource(request -> corsConfiguration);
     }
 
     @Bean
