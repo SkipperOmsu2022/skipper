@@ -23,7 +23,7 @@ const LoginPage = (props) => {
                     </div>
                     <div className="form__content">
                         <Outlet/>
-                        <div className="form__footer">Входя в систему и регистрируясь, вы соглашаетесь с <a href="" className="policy">политикой безопасности</a> и <a href="" className="rules">правилами поведения</a> Skipper</div>
+                        <div className="form__footer">Входя в систему и регистрируясь, вы соглашаетесь с <a href="адрес" className="policy">политикой безопасности</a> и <a href="адрес" className="rules">правилами поведения</a> Skipper</div>
                     </div>
                 </div>
             </div>
