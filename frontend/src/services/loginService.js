@@ -26,7 +26,7 @@ const useService = () => {
             localStorage.removeItem('logged');
             localStorage.setItem('logged', res.headers.location);
             setAuth(true);
-        } else if (res?.status === 400) {
+        } else if (res?.status === 400 || res?.status === 404) {
             setResponse("Неверный логин или пароль");
         } else {
             setResponse("Что-то пошло не так");
