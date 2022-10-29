@@ -8,7 +8,7 @@ const MainPage = () => {
     const { auth } = useAuthContext();
 
     if (!auth) {
-        return <Navigate to="/" replace={true} />
+        return <Navigate to="authorization/signin" replace={true} />
     }
 
     return (

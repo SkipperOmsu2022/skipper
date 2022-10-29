@@ -18,8 +18,8 @@ const LoginPage = (props) => {
             <div className="authentication">
                 <div className="authentication__content form">
                     <div className="form__header">
-                        <NavLink end to="/"  className={({ isActive }) => isActive ? "tab left active" : "tab left"}>ВХОД</NavLink>
-                        <NavLink end to="/signup" className={({ isActive }) => isActive ? "tab right active" : "tab right"}>РЕГИСТРАЦИЯ</NavLink>
+                        <NavLink end to="./signin"  className={({ isActive }) => isActive ? "tab left active" : "tab left"}>ВХОД</NavLink>
+                        <NavLink end to="./signup" className={({ isActive }) => isActive ? "tab right active" : "tab right"}>РЕГИСТРАЦИЯ</NavLink>
                     </div>
                     <div className="form__content">
                         <Outlet/>

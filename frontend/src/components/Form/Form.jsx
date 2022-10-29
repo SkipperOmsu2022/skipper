@@ -54,7 +54,7 @@ const CustomForm = ({inputs, submit, id, clearResponse}) => {
                     name={name}
                     type={type}
                     placeholder={placeholder}
-                    onKeyUp={() => clearResponse(null)}/>
+                    onKeyDown={() => clearResponse(null)}/>
             )
         })
     

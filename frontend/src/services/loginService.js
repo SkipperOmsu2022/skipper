@@ -1,9 +1,11 @@
 import {useRequest} from "../hooks/useRequest"
 import useAuthContext from '../hooks/useAuthContext'
+import { useNavigate } from "react-router-dom";
 
 const useService = () => {
     const {request, loading, response, setResponse, error, clearResponse} = useRequest();
     const { setAuth } = useAuthContext();
+    const navigate = useNavigate();
 
     const _apiBase = 'http://127.0.0.1:8080';
 
@@ -12,6 +14,7 @@ const useService = () => {
         
         if (res?.status === 201) {
             setResponse("Регистрация прошла успешно");
+            navigate("../signin")
         } else if (res?.status === 400) {
             setResponse("Такой пользователь уже существует");
         } else {

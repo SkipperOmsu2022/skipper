@@ -11,8 +11,8 @@ const Signup = () => {
         <>
             <Form
                 inputs={[
-                    {id:"lastName", name:"lastName", placeholder:"Фамилия", type:"text"},
                     {id:"firstName", name:"firstName", placeholder:"Имя", type:"text"},
+                    {id:"lastName", name:"lastName", placeholder:"Фамилия", type:"text"},
                     {id:"email", name:"email", placeholder:"Email", type:"text"},
                     {id:"password", name:"password", placeholder:"Пароль", type:"password"}]}
                 submit={signup}
