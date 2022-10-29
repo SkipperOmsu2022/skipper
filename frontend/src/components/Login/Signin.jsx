@@ -25,7 +25,7 @@ const Signin = () => {
                     form="contact-form"
                     type="submit"
             />
-            <Link  to="/signup" className="registration">Ещё нет аккаунта? Регистрация</Link>
+            <Link  to="../signup" className="registration">Ещё нет аккаунта? Регистрация</Link>
         </>
     )
 }

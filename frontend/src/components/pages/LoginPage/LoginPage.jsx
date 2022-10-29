@@ -3,11 +3,11 @@ import useAuthContext from '../../../hooks/useAuthContext'
 
 import "./loginPage.scss"
 
-const LoginPage = (props) => {
+const AuthorizationPage = (props) => {
     const { auth } = useAuthContext()
 
     if (auth) {
-        return <Navigate to="/home" replace={true} />
+        return <Navigate to="/" replace={true} />
     }
 
     return (
@@ -31,4 +31,4 @@ const LoginPage = (props) => {
     )
 }
 
-export default LoginPage;
+export default AuthorizationPage;

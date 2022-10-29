@@ -14,7 +14,7 @@ const useService = () => {
         
         if (res?.status === 201) {
             setResponse("Регистрация прошла успешно");
-            navigate("../signin")
+            navigate("../signin");
         } else if (res?.status === 400) {
             setResponse("Такой пользователь уже существует");
         } else {
