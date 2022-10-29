@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,14 +31,14 @@ import javax.validation.Valid;
  */
 @RestController
 @Validated
-@Tag(name="User Controller", description="Контроллер отвечает за регистрацию и аутентификацию пользователей.")
-@RequestMapping(value = "/api/user")
+@Tag(name="Auth Controller", description="Контроллер отвечает за регистрацию и аутентификацию пользователей.")
+@RequestMapping(value = "/api/auth")
 @CrossOrigin
-public class UserController {
+public class AuthController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     @Autowired
-    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+    public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -57,6 +56,7 @@ public class UserController {
             ) })
     @PostMapping("/registration")
     public ResponseEntity<?> registration(@Valid @RequestBody UserRegDTO user) {
+        user.setEmail(user.getEmail().toLowerCase());
         if(userService.readByEmail(user.getEmail()) != null) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -88,6 +88,7 @@ public class UserController {
     })
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody UserLoginDTO user) {
+        user.setEmail(user.getEmail().toLowerCase());
         User userFromDB = userService.readByEmail(user.getEmail());
         if(userFromDB == null) {
             return ResponseEntity
@@ -108,10 +109,4 @@ public class UserController {
                 .header("Location", "/api/user/" + id)
                 .build();
     }
-
-    /*@GetMapping("")
-    @PreAuthorize("hasRole('MENTEE')")
-    public ResponseEntity<?> get() {
-        return ResponseEntity.ok().build();
-    }*/
 }
