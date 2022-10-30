@@ -15,7 +15,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import ru.tinkoff.edu.backend.enums.UserRole;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 
 /**
@@ -42,7 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers(AUTH_WHITELIST).permitAll()
-                    .antMatchers(HttpMethod.POST, "/api/user/login", "/api/user/registration").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/registration").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .httpBasic();
