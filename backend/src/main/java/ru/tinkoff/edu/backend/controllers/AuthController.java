@@ -26,7 +26,6 @@ import javax.validation.Valid;
  * <ul>
  *      <li> Регестрацию пользователя</li>
  *      <li> Авторизацию пользователя</li>
- *      <li> Изменение данных пользователя</li>
  * </ul>
  */
 @RestController

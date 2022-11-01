@@ -6,13 +6,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.cors.CorsConfiguration;
-import ru.tinkoff.edu.backend.enums.UserRole;
 
 import java.util.Arrays;
 
@@ -56,23 +52,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .asList("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
 
         http.cors().configurationSource(request -> corsConfiguration);
-    }
-
-    @Bean
-    @Override
-    protected UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(
-                User.builder()
-                        .username("admin")
-                        .password(passwordEncoder().encode("admin"))
-                        .roles(UserRole.ADMIN.name())
-                        .build(),
-                User.builder()
-                        .username("mentee")
-                        .password(passwordEncoder().encode("mentee"))
-                        .roles(UserRole.MENTEE.name())
-                        .build()
-        );
     }
 
     /**

@@ -5,7 +5,7 @@ package ru.tinkoff.edu.backend.enums;
  */
 public enum UserRole {
     ADMIN("Администратор"),
-    MENTEE("Менти"),
+    MENTEE("Ученик"),
     MENTOR("Ментор");
 
     private final String status;
