@@ -37,7 +37,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers(AUTH_WHITELIST).permitAll()
-                    .antMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/registration").permitAll()
+                    .antMatchers("/","/api/auth/login", "/api/auth/registration",
+                            "/authorization/signin", "/authorization/signup", "/static/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .httpBasic();
