@@ -10,7 +10,7 @@ const useService = () => {
     const _apiBase = 'http://127.0.0.1:8080';
 
     const signup = async (data) => {
-        const res = await request(`${_apiBase}/api/user/registration`, data);
+        const res = await request(`${_apiBase}/api/auth/registration`, data);
         
         if (res?.status === 201) {
             setResponse("Регистрация прошла успешно");
@@ -23,7 +23,7 @@ const useService = () => {
     }
 
     const signin = async (data) => {
-        const res = await request(`${_apiBase}/api/user/login`, data);
+        const res = await request(`${_apiBase}/api/auth/login`, data);
         
         if (res?.status === 200) {
             localStorage.removeItem('logged');
