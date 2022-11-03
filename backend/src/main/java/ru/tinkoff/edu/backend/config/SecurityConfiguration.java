@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration {
     private static final String[] AUTH_WHITELIST = {
             "/api-ui",
             "/v2/api-docs",
@@ -31,9 +31,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/v3/api-docs/**",
             "/swagger-ui/**"
     };
+    // разрешить все запросы на /api**, но разрешить все остальные запросы
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                     .antMatchers(AUTH_WHITELIST).permitAll()
@@ -53,6 +54,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .asList("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
 
         http.cors().configurationSource(request -> corsConfiguration);
+
+        return http.build();
     }
 
     /**
