@@ -15,7 +15,13 @@ export const useRequest = () => {
         clearResponse();
         setLoading(true);
         
-        return axios.post(url, data, {headers: { "Content-Type": "application/json", "Accept": "*/*"}})
+        let form_data = new FormData();
+
+        for ( var key in data ) {
+            form_data.append(key, data[key]);
+        }
+
+        return axios.post(url, data, {headers: { "Content-Type": 'multipart/form-data', "Accept": "*/*"}})
             .then(res => {
                 setLoading(false);
                 return res;
