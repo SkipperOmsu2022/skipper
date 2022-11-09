@@ -6,10 +6,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.tinkoff.edu.backend.DTO.UserContactsDTO;
+import ru.tinkoff.edu.backend.DTO.UserEditDTO;
 import ru.tinkoff.edu.backend.DTO.UserMainInfoDTO;
-import ru.tinkoff.edu.backend.entities.User;
-import ru.tinkoff.edu.backend.enums.UserGender;
-import ru.tinkoff.edu.backend.services.UserService;
+import ru.tinkoff.edu.backend.services.ProfileService;
+
+import javax.validation.Valid;
 
 /**
  * Данный контроллер отвечает за:
@@ -23,32 +25,85 @@ import ru.tinkoff.edu.backend.services.UserService;
 @RequestMapping(value = "/api/user")
 @CrossOrigin
 public class ProfileController {
-    private final UserService userService;
+    private final ProfileService profileService;
 
-    public ProfileController(UserService userService) {
-        this.userService = userService;
+    public ProfileController(ProfileService profileService) {
+        this.profileService = profileService;
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<?> mainInfo(@PathVariable Long id) {
-        User userFromDB = userService.readById(id);
-        if(userFromDB == null) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.TEXT_PLAIN)
-                    .body("User not found!");
-        }
-
-        UserMainInfoDTO user = new UserMainInfoDTO();
-        user.setFirstName(userFromDB.getFirstName());
-        user.setLastName(userFromDB.getLastName());
-        user.setGender(UserGender.MALE);
+    public ResponseEntity<?> getMainInfo(@PathVariable Long id) {
+        UserMainInfoDTO user = profileService.getMainInfo(id);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header("Location", "/api/user/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(user);
+    }
+
+    @PostMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<?> editMainInfo(@PathVariable Long id, @Valid @RequestBody UserMainInfoDTO user) {
+        profileService.copyInUserFrom(id, user);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Location", "/api/user/" + id)
+                .build();
+    }
+
+    @GetMapping("/account/{id}")
+    @ResponseBody
+    public ResponseEntity<?> getAccountDetails(@PathVariable Long id) {
+        UserEditDTO user = profileService.getAccountDetails(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Location", "/api/user/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(user);
+    }
+
+    @PostMapping("/account/{id}")
+    @ResponseBody
+    public ResponseEntity<?> editAccountDetails(@PathVariable Long id, @Valid @RequestBody UserEditDTO user) {
+        try {
+            profileService.copyInUserFrom(id, user);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(e.getMessage());
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Location", "/api/user/" + id)
+                .build();
+    }
+
+    @GetMapping("/contacts/{id}")
+    @ResponseBody
+    public ResponseEntity<?> getUserContacts(@PathVariable Long id) {
+        UserContactsDTO user = profileService.getUserContacts(id);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Location", "/api/user/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(user);
+    }
+
+    @PostMapping("/contacts/{id}")
+    @ResponseBody
+    public ResponseEntity<?> editUserContacts(@PathVariable Long id, @Valid @RequestBody UserContactsDTO user) {
+        profileService.copyInUserFrom(id, user);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Location", "/api/user/" + id)
+                .build();
     }
 }

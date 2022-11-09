@@ -35,4 +35,9 @@ public class UserServiceImp implements UserService {
     public User readByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    @Override
+    public boolean isExistById(Long id) {
+        return userRepository.existsById(id);
+    }
 }

@@ -1,11 +1,16 @@
 package ru.tinkoff.edu.backend.DTO;
 
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 import ru.tinkoff.edu.backend.enums.UserGender;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
+@Data
 public class UserMainInfoDTO {
     @NotBlank
     private String firstName;
@@ -13,55 +18,9 @@ public class UserMainInfoDTO {
     private String lastName;
     @NotNull
     private String patronymic;
+    @Past
     private LocalDate dateOfBirth;
     private UserGender gender;
+    @Size(max = 400)
     private String aboutMe;
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public UserGender getGender() {
-        return gender;
-    }
-
-    public void setGender(UserGender gender) {
-        this.gender = gender;
-    }
-
-    public String getAboutMe() {
-        return aboutMe;
-    }
-
-    public void setAboutMe(String aboutMe) {
-        this.aboutMe = aboutMe;
-    }
 }

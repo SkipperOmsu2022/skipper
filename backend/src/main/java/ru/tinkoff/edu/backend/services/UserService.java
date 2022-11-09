@@ -23,4 +23,6 @@ public interface UserService {
      * @param email email пользователя для поиска в БД.
      */
     User readByEmail(String email);
+
+    boolean isExistById(Long id);
 }

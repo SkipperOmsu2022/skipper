@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 
 @RestControllerAdvice
@@ -22,6 +23,7 @@ public class ErrorHandlingControllerAdvice {
                 .body(e.getLocalizedMessage() + "!");
     }
 
+    // Корректный JSON, но некорретная сущность
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<?> onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
@@ -39,4 +41,16 @@ public class ErrorHandlingControllerAdvice {
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(e.getLocalizedMessage() + "!");
     }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<?> onEntityNotFoundException(EntityNotFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.TEXT_PLAIN)
+                .body("User not found" + "!");
+    }
+
+    // TODO
+    //  *HttpMessageNotReadableException
 }
