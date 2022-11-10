@@ -1,0 +1,37 @@
+@import '../../shared/variables.scss';
+
+.filter {
+    &__control {
+        display: flex;
+        width: 14rem;
+        padding: 0.625rem 0.6875rem;
+        border: 1px solid rgb(151, 151, 151);
+        height: 1.9rem;
+        font-size: 1.0625rem;
+        cursor: pointer;
+        border-radius: 10px;
+        &--is-focused {
+            border-color: rgb(48, 48, 48)
+        }
+        &:hover {
+            border-color: rgb(48, 48, 48)
+        }
+    }
+    &__menu {
+        width: 15.5rem;
+        border-bottom: 1px dotted pink;
+        margin-top: -8.5; 
+        padding: 0.625rem 0.625rem;
+        border: 1px solid rgb(48, 48, 48);
+        box-shadow: none;
+        border-radius: 0 0 10px 10px;
+        cursor: pointer;
+    }
+    &__option {
+        font-size: 1.0625rem;
+        padding: 0.625rem 0.6875rem;
+        &--is-focused {
+            background-color: $secondary-button;
+        }
+    }
+}
