@@ -112,8 +112,6 @@
         color: $header;
     }
     &__subheader {
-        padding-bottom: 2.625rem;
-
         font-weight: 400;
         font-size: 1rem;
         color: $additional-text;
@@ -123,8 +121,8 @@
         grid-template-columns: min-content max-content;
         grid-row-gap: 0.625rem;
         &-img {
-            width: 6.25rem;
-            height: 6.25rem;
+            width: 6.5rem;
+            height: 6.5rem;
             border-radius: 50%;
             border: 0.0625rem solid $additional-text;
         }
@@ -150,10 +148,10 @@
             all: unset;
             cursor: pointer;
             user-select: none;
-            padding: 0.37rem 0.8438rem;
+            padding: 0.37rem 0.73rem;
             background: $secondary-button;
             &:active {
-                padding: 0.41rem 0.8438rem 0.33rem;
+                padding: 0.41rem 0.73rem 0.33rem;
             }
         }
         &-input {
@@ -171,7 +169,6 @@
         flex-wrap: wrap;
         gap: 1.25rem;
         &-label {
-            padding: 1rem 0 0;
             width: 9.0625rem;
 
             font-size: 1.0938rem;
@@ -179,6 +176,15 @@
             line-height: 1.25rem;
 
             color: $main-text;
+        }
+        &-label.high-top-padding {
+            padding: 0.675rem 0 0;
+        }
+        &-label.middle-top-padding {
+            padding: 1rem 0 0;
+        }
+        &-label.low-top-padding {
+            padding: 0.6rem 0 0;
         }
         &-text {
             font-family: 'Montserrat';
@@ -221,10 +227,21 @@
         }
         .textarea {
             padding: 1.375rem;
-            height: 6.875rem;
             flex: 1;
             text-align: start;
             resize: none;
+        }
+        .textarea.wide {
+            width: 650px;
+        }
+        .textarea.high {
+            height: 6.875rem;
+        }
+        .textarea.medium-height {
+            height: 4.6rem;
+        }
+        .textarea.small {
+            margin-right: 4px;
         }
         .long-input {
             width: 20.375rem;
@@ -255,14 +272,14 @@
             height: 2.625rem;
         }
     }
+    &__input-group.first-group-padding {
+        padding-top: 2rem;
+    }
     &__password {
         display: flex;
         flex-direction: column;
         gap: 1.25rem;
         min-width: 18.125rem;
-    }
-    .high-block-label {
-        margin-top: -0.325rem;
     }
     .forgot-password {
         width: 9.375rem;
@@ -276,6 +293,40 @@
         line-height: 1.438rem;
         &:hover {
             filter: brightness(80%);
+        }
+    }
+    &__input-group-box {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 510px;
+        gap: 10px;
+    }
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 10px;
+        margin-top: auto;
+        margin-bottom: 20px;
+        .button {
+            margin: auto;
+            font-size: 20px;
+            padding: 3px 6px 9px;
+            width: 30px;
+            height: 30px;
+        }
+    }
+    .certificates {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 510px;
+        .button {
+            width: fit-content;
+        }
+        &__description {
+            color: $additional-text;
         }
     }
 }

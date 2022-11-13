@@ -49,8 +49,8 @@ const Account = () => {
                 <div className="settings__header">
                     НАСТРОЙКИ АККАУНТА
                 </div>
-                <div className="settings__input-group">
-                        <label htmlFor="email" className="settings__input-group-label">
+                <div className="settings__input-group first-group-padding">
+                        <label htmlFor="email" className="settings__input-group-label low-top-padding">
                             Email: 
                         </label>
                         <TextInput
@@ -65,7 +65,7 @@ const Account = () => {
                         </button>
                 </div>
                 <div className="settings__input-group">
-                    <label htmlFor="old-password" className="settings__input-group-label high-block-label">
+                    <label htmlFor="old-password" className="settings__input-group-label high-top-padding">
                         Смена пароля:
                     </label>
                     <div className="settings__password">

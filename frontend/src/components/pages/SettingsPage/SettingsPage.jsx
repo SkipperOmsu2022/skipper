@@ -25,6 +25,11 @@ const SettingsPage = () => {
                                     Способ коммуникации
                                 </NavLink>
                             </li>
+                            <li>
+                                <NavLink end to="./mentor" className={({ isActive }) => isActive ? "settings__navigation-li active" : "settings__navigation-li"}>
+                                    Настройки ментора
+                                </NavLink>
+                            </li>
                         </ul>
                     </nav>
                     <Button className="button submit-button"

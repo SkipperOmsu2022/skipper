@@ -10,6 +10,8 @@ const useService = () => {
     const signup = async (data) => {
         const res = await request(`${_apiBase}/api/auth/registration`, data);
         
+        console.log(res);
+        
         if (res?.status === 201) {
             localStorage.removeItem('logged');
             localStorage.setItem('logged', res.headers.location);
@@ -22,8 +24,16 @@ const useService = () => {
     }
 
     const signin = async (data) => {
-        const res = await request(`${_apiBase}/api/auth/login`, data);
+        let form_data = new FormData();
+
+        for ( var key in data ) {
+            form_data.append(key, data[key]);
+        }
+
+        const res = await request(`${_apiBase}/api/auth/login`, form_data, {"Content-Type": 'multipart/form-data'});
         
+        console.log(res);
+
         if (res?.status === 200) {
             localStorage.removeItem('logged');
             localStorage.setItem('logged', res.headers.location);

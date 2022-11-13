@@ -11,17 +11,11 @@ export const useRequest = () => {
         setError(false);
     }
 
-    const request = useCallback(async (url, data) => {
+    const request = useCallback(async (url, data, header) => {
         clearResponse();
         setLoading(true);
-        
-        let form_data = new FormData();
 
-        for ( var key in data ) {
-            form_data.append(key, data[key]);
-        }
-
-        return axios.post(url, form_data, {headers: { "Content-Type": 'multipart/form-data', "Accept": "*/*"}})
+        return axios.post(url, data, {headers: { "Accept": "*/*", ...header}})
             .then(res => {
                 setLoading(false);
                 return res;

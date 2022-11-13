@@ -1,10 +1,10 @@
-import Select from 'react-select';
+import Select, { components } from 'react-select';
 import './customSelect.scss'
 
 const selectStyles = {
     menu: (provided, state) => ({
         ...provided,
-        width: '15.5rem',
+        width: '100%',
         borderBottom: '1px dotted pink',
         color: state.selectProps.menuColor,
         marginTop: -8.5,
@@ -20,7 +20,8 @@ const selectStyles = {
     }), 
 
     control: (provided, state) => ({
-        borderColor: state.selectProps.error && !state.isFocused ? '#C30000' : 'auto'
+        borderColor: state.selectProps.error && !state.isFocused ? '#C30000' : 'auto',
+        width: state.selectProps.width
     }), 
     
     option: (provided, state) => ({
@@ -37,8 +38,9 @@ const selectStyles = {
         color: state.selectProps.error ? '#C30000' : 'auto'
     }),
 
-    dropdownIndicator: () => ({
-        display: 'none'
+    dropdownIndicator: (provided, state) => ({
+        ...provided,
+        color: state.selectProps.error ? '#C30000' : 'rgba(48, 48, 48, 0.5)'
     }),
 
     indicatorSeparator: () => ({
@@ -90,9 +92,18 @@ const options = {
     ))
 }
 
-const CustomSelect = ({name, placeholder, error, value, onChange, onBlur}) => {
+const DropdownIndicator = props => {
+    return (
+      <components.DropdownIndicator {...props}>
+        <span style={{'fontSize': '25px', 'transform': 'scale(1, 0.5)', }}>V</span>
+      </components.DropdownIndicator>
+    );
+  };
+
+const CustomSelect = ({name, placeholder, error, value, onChange, onBlur, width}) => {
     return (
         <Select
+            components={{ DropdownIndicator }}
             classNamePrefix='filter'
             error={error}
             styles={selectStyles}
@@ -102,6 +113,7 @@ const CustomSelect = ({name, placeholder, error, value, onChange, onBlur}) => {
             value={options[name].find(option => option.value === value) || ""}
             onChange={onChange}
             onBlur={onBlur(name)}
+            width={width}
         />
     )
 }

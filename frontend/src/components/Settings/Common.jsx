@@ -15,11 +15,11 @@ const Common = () => {
     const [image, setImage] = useState(photo);
     const [imgErr, setImgErr] = useState(null);
     const [croppedImg, setCroppedImg] = useState(null);
-    const [text, setText] = useState("");
+    const [aboutMe, setAboutMe] = useState("");
 
     const [initial, setInitial] = useState({
         firstName: '',
-        secondName: '',
+        lastName: '',
         patronymic: '',
         day: '',
         month: '',
@@ -95,7 +95,7 @@ const Common = () => {
                 validationSchema = {Yup.object({
                     firstName: Yup.string()
                             .required('Обязательное поле'),
-                    secondName: Yup.string()
+                    lastName: Yup.string()
                             .required('Обязательное поле'),
                     day: Yup.number().required('Обязательное поле'),
                     month: Yup.number().required('Обязательное поле'),
@@ -103,8 +103,14 @@ const Common = () => {
                     gender: Yup.string()
                             .required('Обязательный параметр')
                 })}
-                onSubmit = {(data) => {
-                    console.log({text, croppedImg, ...data});
+                onSubmit = {({firstName, lastName, patronymic, day, month, year, gender}) => {
+                    if (("" + month).length < 2) 
+                        month = '0' + month;
+                    if (("" + day).length < 2)
+                        day = '0' + day;
+
+                    const dateofBirth = [year, month, day].join('-');
+                    console.log({firstName, lastName, patronymic, dateofBirth, aboutMe, croppedImg, gender});
                 }}
             >
                 {({ errors, setFieldValue, handleChange, touched, handleBlur, values}) => (
@@ -135,7 +141,7 @@ const Common = () => {
                         />
                     </div>
                     <div className="settings__input-group">
-                        <label htmlFor="firstName" className="settings__input-group-label">
+                        <label htmlFor="firstName" className="settings__input-group-label middle-top-padding">
                             Полное имя: 
                         </label>
                         <TextInput
@@ -146,8 +152,8 @@ const Common = () => {
                             className="settings__input-group-text"
                         />
                         <TextInput
-                            id={'secondName'} 
-                            name={'secondName'}
+                            id={'lastName'} 
+                            name={'lastName'}
                             type={'text'}
                             placeholder={'Имя'}
                             className="settings__input-group-text"
@@ -161,7 +167,7 @@ const Common = () => {
                         />
                     </div>
                     <div className="settings__input-group">
-                        <label className="settings__input-group-label">
+                        <label className="settings__input-group-label middle-top-padding">
                             Дата рождения: 
                         </label>
                         <div className="group">
@@ -216,16 +222,16 @@ const Common = () => {
                             className="radio"
                             type="radio"
                             name="gender"
-                            value="man"
-                            id="man"
+                            value="MALE"
+                            id="MALE"
                         />
                         <label
                             className="radio-name"
-                            htmlFor="man"
+                            htmlFor="MALE"
                             tabIndex={0}
                             onKeyPress={(e) => {
                                 if (e.key === ' ' || e.key === "Enter") {
-                                    setFieldValue("gender", "man");
+                                    setFieldValue("gender", "MALE");
                                 }
                             }}
                         >
@@ -235,16 +241,16 @@ const Common = () => {
                             className="radio"
                             type="radio"
                             name="gender"
-                            value="woman"
-                            id="woman"
+                            value="FEMALE"
+                            id="FEMALE"
                         />
                         <label
                             className="radio-name"
-                            htmlFor="woman"
+                            htmlFor="FEMALE"
                             tabIndex={0}
                             onKeyPress={(e) => {
                                 if (e.key === ' ' || e.key === "Enter") {
-                                    setFieldValue("gender", "woman");
+                                    setFieldValue("gender", "FEMALE");
                                 }
                             }}
                         >
@@ -253,11 +259,11 @@ const Common = () => {
                         <ErrorMessage className="group__error" name="gender" component="div"/>
                     </div>
                     <div className="settings__input-group">
-                        <label htmlFor="textarea" className="settings__input-group-label">
+                        <label htmlFor="aboutMe" className="settings__input-group-label middle-top-padding">
                             О себе: 
                         </label>
-                        <textarea className="settings__input-group-text input textarea" placeholder="Расскажите немного о себе:"
-                            id="textarea" maxLength='400' value={text} onChange={(e) => setText(e.target.value)}/>
+                        <textarea className="settings__input-group-text input textarea high" placeholder="Расскажите немного о себе:"
+                            id="aboutMe" maxLength='400' value={aboutMe} onChange={(e) => setAboutMe(e.target.value)}/>
                     </div>
                 </Form>)}
             </Formik>

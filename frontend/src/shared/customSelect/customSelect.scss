@@ -17,6 +17,9 @@
             border-color: rgb(48, 48, 48)
         }
     }
+    &__control.wide {
+        width: 140rem;
+    }
     &__menu {
         width: 15.5rem;
         border-bottom: 1px dotted pink;
