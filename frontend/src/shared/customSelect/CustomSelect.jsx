@@ -70,7 +70,7 @@ const selectStyles = {
 const currentYear = (new Date()).getFullYear();
 
 const options = {
-    day: Array(31).fill(null).map((element, i, arr) => (
+    'day': Array(31).fill(null).map((element, i, arr) => (
         arr[i] = {value: i + 1, label: i + 1}
     )),
     "month": [
@@ -89,7 +89,15 @@ const options = {
     ],
     "year": Array(100).fill(null).map((element, i, arr) => (
         arr[i] = {value: currentYear - i, label: currentYear - i}
-    ))
+    )),
+    "qualification": [
+        { value: 'Бакалавр', label: 'Бакалавр' },
+        { value: 'Специалист', label: 'Специалист' },
+        { value: 'Магистр', label: 'Магистр' },
+        { value: 'Доктор', label: 'Доктор' },
+        { value: 'Кандидат', label: 'Кандидат' },
+        { value: 'Профессор', label: 'Профессор' },
+    ],
 }
 
 const DropdownIndicator = props => {
@@ -118,4 +126,22 @@ const CustomSelect = ({name, placeholder, error, value, onChange, onBlur, width}
     )
 }
 
+const CustomMutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, width, mutableOptions}) => {
+    if(name) mutableOptions = options[name];
+    return (
+        <Select
+            components={{ DropdownIndicator }}
+            classNamePrefix='filter'
+            styles={selectStyles}
+            options={mutableOptions}
+            placeholder={placeholder}
+            noOptionsMessage={() => noOptionsMessage}
+            onChange={onChange}
+            value={mutableOptions.find(option => option.value === value) || ""}
+            width={width}
+        />
+    )
+}
+
 export default CustomSelect;
+export {CustomMutableSelect}

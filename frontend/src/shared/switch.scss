@@ -47,14 +47,28 @@
         -ms-transform: translateX(15.1px);
         transform: translateX(15.1px);
     }
-
-    &__state {
-        margin: auto 0;
+    &__input:disabled + &__slider:before {
+        filter: opacity(60%);
     }
-    &__state.active {
+}
+
+.state {
+    display: flex;
+    flex-direction: row;
+    margin: auto 0;
+    color: $additional-text;
+    .active {
         color: $success;
     }
-    &__state.inactive {
+    .inactive {
         color: $error;
     }
+}
+.message {
+    opacity:0; /*Элемент полностью прозрачный (невидимый)*/
+    transition: .4s; /*Скорость перехода состояния элемента*/
+}
+.msg:hover + .state>.message {
+    opacity:1;
+    transition: .4s;
 }

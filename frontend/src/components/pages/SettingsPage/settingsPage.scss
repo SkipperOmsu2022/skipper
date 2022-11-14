@@ -167,9 +167,10 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 1.25rem;
+        column-gap: 1.25rem;
+        row-gap: 10px;
         &-label {
-            width: 9.0625rem;
+            width: 9.5rem;
 
             font-size: 1.0938rem;
             font-weight: 400;
@@ -271,6 +272,16 @@
             width: 9.375rem;
             height: 2.625rem;
         }
+        .education-group, .experience-group {
+            display: flex;
+            flex-direction: column;
+            row-gap: 1.25rem;
+        }
+        .education, .experience{
+            display: flex;
+            flex-direction: row;
+            column-gap: 1.25rem;
+        }
     }
     &__input-group.first-group-padding {
         padding-top: 2rem;
@@ -305,12 +316,17 @@
     .wrapper {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         flex-wrap: nowrap;
-        gap: 10px;
-        margin-top: auto;
-        margin-bottom: 20px;
+        :first-child {
+            margin-top: 20px;
+        }
+        :last-child {
+            margin-bottom: 20px;
+        }
         .button {
-            margin: auto;
+            margin-left: auto;
+            margin-right: auto;
             font-size: 20px;
             padding: 3px 6px 9px;
             width: 30px;

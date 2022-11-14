@@ -68,8 +68,7 @@ const AppHeader = () => {
                         }}
                     >
                         <div className="app-header__profile-data">
-                            <div className="app-header__profile-name">Фамилия Имя</div>
-                            <div className="app-header__profile-role">Ученик</div>
+                            <div className="app-header__profile-name">Имя Фамилия</div>
                         </div>
                         <img className="app-header__profile-photo" src={photo} alt="" />
 
