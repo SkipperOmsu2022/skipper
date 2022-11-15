@@ -108,7 +108,7 @@ const DropdownIndicator = props => {
     );
   };
 
-const CustomSelect = ({name, placeholder, error, value, onChange, onBlur, width}) => {
+const CustomFormikSelect = ({name, placeholder, error, value, onChange, onBlur}) => {
     return (
         <Select
             components={{ DropdownIndicator }}
@@ -121,13 +121,22 @@ const CustomSelect = ({name, placeholder, error, value, onChange, onBlur, width}
             value={options[name].find(option => option.value === value) || ""}
             onChange={onChange}
             onBlur={onBlur(name)}
-            width={width}
         />
     )
 }
 
-const CustomMutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, width, mutableOptions}) => {
-    if(name) mutableOptions = options[name];
+const CustomDateSelect = ({name, placeholder, value, noOptionsMessage, onChange, width, startDate}) => {
+    let mutableOptions = [];
+
+    if(name) {
+        mutableOptions = options[name];
+    } else {
+        mutableOptions = startDate ?  Array(currentYear - startDate + 2).fill(null).map((element, i, arr) => (
+            i === 0 ? arr[i] = {value: null, label: "Настоящее время"} :
+            arr[i] = {value: currentYear - i + 1, label: currentYear - i + 1}
+        )) : [];
+    }
+    
     return (
         <Select
             components={{ DropdownIndicator }}
@@ -143,5 +152,5 @@ const CustomMutableSelect = ({name, placeholder, value, noOptionsMessage, onChan
     )
 }
 
-export default CustomSelect;
-export {CustomMutableSelect}
+export default CustomFormikSelect;
+export {CustomDateSelect as CustomMutableSelect}

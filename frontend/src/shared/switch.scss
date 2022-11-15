@@ -65,8 +65,9 @@
     }
 }
 .message {
-    opacity:0; /*Элемент полностью прозрачный (невидимый)*/
-    transition: .4s; /*Скорость перехода состояния элемента*/
+    user-select: none;
+    opacity:0;
+    transition: .4s;
 }
 .msg:hover + .state>.message {
     opacity:1;

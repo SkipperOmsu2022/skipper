@@ -177,6 +177,10 @@
             line-height: 1.25rem;
 
             color: $main-text;
+
+            .red {
+                color: $error;
+            }
         }
         &-label.high-top-padding {
             padding: 0.675rem 0 0;
