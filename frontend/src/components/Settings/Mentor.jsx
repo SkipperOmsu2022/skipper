@@ -19,6 +19,9 @@ const Mentor = () => {
     const [experienceEnd, setExperienceEnd] = useState("");
     const [experienceName, setExperienceName] = useState("");
     
+    const [certificates, setCertificates] = useState([]);
+    const [certificateErr, setCertificateErr] = useState(false);
+
     const [otherInformation, setOtherInformation] = useState("");
 
     const [initial, setInitial] = useState({
@@ -49,6 +52,61 @@ const Mentor = () => {
         } else {
             setShowSwitchMsg(false)
         }
+    }
+
+    const onCertificateChange = (e) => {
+        try {
+			e.preventDefault();
+			let file;
+
+			if (e.dataTransfer) {
+				file = e.dataTransfer.files[0];
+			} else if (e.target) {
+				file = e.target.files[0];
+			}
+
+			const reader = new FileReader();
+
+			if (!reader) return;
+
+            if (file.type !== "image/gif" & file.type !== "image/png" & file.type !== "image/jpeg") {
+                setCertificateErr("Неправильный формат файла");
+                return;
+            } else if (file.size > 1048576){
+                setCertificateErr("Слишком большой файл");
+                return;
+            }
+
+			reader.onload = () => {
+				setCertificates(certificates => [...certificates, reader.result?.toString()]);
+				e.target.value = null;
+			};
+
+			reader.readAsDataURL(file);
+		} catch (error) {
+			console.log(error);
+		}
+    };
+
+    const onDeleteCertificate = (i) => {
+        setCertificates([...certificates.slice(0, i), ...certificates.slice(i + 1)])
+    }
+
+    function view() {
+        const elements = certificates.map((item, i) => {
+            return (
+                <div className="certificates__group-item" key={i}>
+                    <img src={item} alt="certificate" className="certificates__group-item-image"
+                        onClick={() => onDeleteCertificate(i)}/>
+                </div>
+            )
+        })
+    
+        return (
+            <div className="certificates__group">
+                {elements}
+            </div>
+        )
     }
 
     const switchMessage = mentor ? 
@@ -220,7 +278,8 @@ const Mentor = () => {
                         Сертификаты:
                     </label>
                     <div className="certificates">
-                        <label htmlFor="upload-photo" className="button settings__photo-button">
+                        {view()}
+                        <label htmlFor="upload-photo" className="button settings__photo-button" onClick={() => setCertificateErr(null)}>
                             Загрузить
                         </label>
                         <input
@@ -228,15 +287,11 @@ const Mentor = () => {
                             name="photo"
                             id="upload-photo"
                             className="settings__photo-input"
+                            onChange={onCertificateChange}
                         />
-                        <div className="certificates__description">
-                            Размер файла не должен привышать 1 Мб
+                        <div className={`certificates__description${certificateErr ? ' error' : ''}`}>
+                            {certificateErr ? certificateErr : 'Размер файла не должен привышать 1 Мб'}
                         </div>
-                    </div>
-                    <div className='wrapper'>
-                        {/* <span className="settings__input-group-btn-width settings__input-group-delete padding-left">
-                            Удалить
-                        </span> */}
                     </div>
                 </div>
                 <div className="settings__input-group">
