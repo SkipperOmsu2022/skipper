@@ -4,11 +4,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.tinkoff.edu.backend.DTO.UserContactsDTO;
-import ru.tinkoff.edu.backend.DTO.UserEditDTO;
-import ru.tinkoff.edu.backend.DTO.UserMainInfoDTO;
+import ru.tinkoff.edu.backend.dto.UserContactsDTO;
+import ru.tinkoff.edu.backend.dto.UserEditDTO;
+import ru.tinkoff.edu.backend.dto.UserMainInfoDTO;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
 import javax.validation.Valid;
@@ -31,19 +33,18 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = {"", "/"})
     @ResponseBody
-    public ResponseEntity<?> getMainInfo(@PathVariable Long id) {
-        UserMainInfoDTO user = profileService.getMainInfo(id);
+    public ResponseEntity<?> getMainInfo(@AuthenticationPrincipal User user) {
+        UserMainInfoDTO userFromDB = profileService.getMainInfo(user.getUsername());
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .header("Location", "/api/user/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(user);
+                .body(userFromDB);
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<?> editMainInfo(@PathVariable Long id, @Valid @RequestBody UserMainInfoDTO user) {
         profileService.copyInUserFrom(id, user);
@@ -66,7 +67,7 @@ public class ProfileController {
                 .body(user);
     }
 
-    @PostMapping("/account/{id}")
+    @PutMapping("/account/{id}")
     @ResponseBody
     public ResponseEntity<?> editAccountDetails(@PathVariable Long id, @Valid @RequestBody UserEditDTO user) {
         try {
@@ -96,7 +97,7 @@ public class ProfileController {
                 .body(user);
     }
 
-    @PostMapping("/contacts/{id}")
+    @PutMapping("/contacts/{id}")
     @ResponseBody
     public ResponseEntity<?> editUserContacts(@PathVariable Long id, @Valid @RequestBody UserContactsDTO user) {
         profileService.copyInUserFrom(id, user);

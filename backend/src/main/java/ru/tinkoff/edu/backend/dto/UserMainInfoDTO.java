@@ -1,7 +1,6 @@
-package ru.tinkoff.edu.backend.DTO;
+package ru.tinkoff.edu.backend.dto;
 
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 import ru.tinkoff.edu.backend.enums.UserGender;
 
 import javax.validation.constraints.NotBlank;

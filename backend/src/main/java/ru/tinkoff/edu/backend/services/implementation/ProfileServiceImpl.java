@@ -1,10 +1,10 @@
-package ru.tinkoff.edu.backend.services.imp;
+package ru.tinkoff.edu.backend.services.implementation;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.edu.backend.DTO.UserContactsDTO;
-import ru.tinkoff.edu.backend.DTO.UserEditDTO;
-import ru.tinkoff.edu.backend.DTO.UserMainInfoDTO;
+import ru.tinkoff.edu.backend.dto.UserContactsDTO;
+import ru.tinkoff.edu.backend.dto.UserEditDTO;
+import ru.tinkoff.edu.backend.dto.UserMainInfoDTO;
 import ru.tinkoff.edu.backend.entities.User;
 import ru.tinkoff.edu.backend.exception.DifferentPasswordException;
 import ru.tinkoff.edu.backend.exception.IncorrectCurrentPasswordException;
@@ -13,11 +13,11 @@ import ru.tinkoff.edu.backend.repositories.UserRepository;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
 @Service
-public class ProfileServiceImp implements ProfileService {
+public class ProfileServiceImpl implements ProfileService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public ProfileServiceImp(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public ProfileServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -69,8 +69,8 @@ public class ProfileServiceImp implements ProfileService {
     }
 
     @Override
-    public UserMainInfoDTO getMainInfo(Long id) {
-        User userFromDB = userRepository.getReferenceById(id);
+    public UserMainInfoDTO getMainInfo(String email) {
+        User userFromDB = userRepository.findByEmail(email);
         UserMainInfoDTO user = new UserMainInfoDTO();
 
         user.setFirstName(userFromDB.getFirstName());

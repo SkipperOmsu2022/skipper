@@ -1,7 +1,7 @@
 package ru.tinkoff.edu.backend.services;
 
 import org.springframework.stereotype.Service;
-import ru.tinkoff.edu.backend.DTO.UserRegDTO;
+import ru.tinkoff.edu.backend.dto.UserRegDTO;
 import ru.tinkoff.edu.backend.entities.User;
 
 @Service

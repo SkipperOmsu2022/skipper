@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.backend.DTO;
+package ru.tinkoff.edu.backend.dto;
 
 import lombok.Data;
 

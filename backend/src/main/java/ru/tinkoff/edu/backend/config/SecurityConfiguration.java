@@ -2,17 +2,14 @@ package ru.tinkoff.edu.backend.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
 
 
 /**
@@ -20,7 +17,7 @@ import java.util.Arrays;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration {
     private static final String[] AUTH_WHITELIST = {
             "/api-ui",
             "/v2/api-docs",
@@ -34,8 +31,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             "/swagger-ui/**"
     };
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    protected SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                     .antMatchers(AUTH_WHITELIST).permitAll()
@@ -43,16 +40,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
-                    .loginPage("/")
-                    .defaultSuccessUrl("/info")
+                    .loginPage("/").permitAll()
                     .loginProcessingUrl("/api/auth/login")
+                    .defaultSuccessUrl("/api/user", true)
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .failureUrl("/api/auth/login/fail")
-                    .permitAll();
+                    .failureUrl("/api/auth/login/fail");
+
 
         http.csrf().disable();
         http.cors();
+
+        return http.build();
     }
 
     @Bean
