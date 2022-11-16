@@ -1,6 +1,10 @@
 @import '../../shared/variables.scss';
 
 .app-header {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+
     display: flex;
     flex-wrap: wrap;
     min-width: 90.5rem;
@@ -12,8 +16,6 @@
     box-shadow: 0 0.3125rem 0.625rem rgba(166, 166, 166, 0.6);
 
     font-family: "Montserrat";
-
-    z-index: -1;
 
     &__logo {
         margin-right: 1.875rem;

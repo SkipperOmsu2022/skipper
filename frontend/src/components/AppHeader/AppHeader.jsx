@@ -97,9 +97,7 @@ const AppHeader = () => {
                     </div>
                 </div>
             </header>
-            <main>
-                <Outlet/>
-            </main>
+            <Outlet/>
         </>
     )
 }
