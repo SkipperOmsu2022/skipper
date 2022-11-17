@@ -1,7 +1,7 @@
 import {useRequest} from "../hooks/useRequest"
 import useAuthContext from '../hooks/useAuthContext'
 
-const useService = () => {
+const useLoginService = () => {
     const {request, loading, response, setResponse, error, clearResponse} = useRequest();
     const { setAuth } = useAuthContext();
 
@@ -9,8 +9,6 @@ const useService = () => {
 
     const signup = async (data) => {
         const res = await request(`${_apiBase}/api/auth/registration`, data);
-        
-        console.log(res);
         
         if (res?.status === 201) {
             localStorage.removeItem('logged');
@@ -53,4 +51,5 @@ const useService = () => {
     return {request, loading, response, error, clearResponse, signup, signin, logout}
 }
 
-export default useService;
+export default useLoginService;
+

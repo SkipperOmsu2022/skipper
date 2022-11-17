@@ -1,3 +1,4 @@
+import { useOutletContext } from "react-router-dom";
 import { useState, useEffect} from "react";
 import { Formik, Form } from "formik";
 import * as Yup from 'yup';
@@ -5,6 +6,8 @@ import * as Yup from 'yup';
 import TextInput from "../../shared/TextInput/TextInput";
 
 const Account = () => {
+    const {setAccountData} = useOutletContext();
+
     const [initial, setInitial] = useState({
         email: '',
         oldPassword: '',
@@ -18,34 +21,47 @@ const Account = () => {
             oldPassword: '',
             newPassword: '',
             confirmPassword: ''
-        });
+        })
     }, []);
 
     return (
         <Formik
             enableReinitialize
             initialValues = {initial}
-            validationSchema = {Yup.object({
+            validationSchema = {Yup.object().shape(({
                 email: Yup.string()
-                        .required('Обязательное поле')
                         .email('Неправильный email адрес'),
                 oldPassword: Yup.string()
-                        .required('Обязательное поле'),
-                newPassword: Yup.string()
-                        .required('Обязательное поле')
-                        .min(8, 'Пароль должен быть не менее 8 символов'),
-                confirmPassword: Yup.string()
-                        .required('Обязательное поле')
                         .when("newPassword", {
                             is: newPassword => (newPassword && newPassword.length > 0 ? true : false),
-                            then: Yup.string().oneOf([Yup.ref("newPassword")], "Пароли не совпадают")
+                            then: Yup.string().required('Подтвердите, что являетесь владельцем аккаунта')
                         }),
-            })}
-            onSubmit = {(data) => {
-                console.log(data);
+                newPassword: Yup.string()
+                        .when("oldPassword", {
+                            is: oldPassword => (oldPassword && oldPassword.length > 0 ? true : false),
+                            then: Yup.string().required('Выберите новый пароль')
+                        })
+                        .min(8, 'Пароль должен быть не менее 8 символов')
+                        .when("oldPassword", {
+                            is: oldPassword => (oldPassword && oldPassword.length > 0 ? true : false),
+                            then: Yup.string().notOneOf([Yup.ref("oldPassword")], "Старый и новый пароли не должны совпадать")
+                        }),
+                confirmPassword: Yup.string()
+                        .when("oldPassword", {
+                            is: oldPassword => (oldPassword && oldPassword.length > 0 ? true : false),
+                            then: Yup.string().required('Обязательное поле')
+                        })
+                        .when("newPassword", {
+                            is: newPassword => (newPassword && newPassword.length > 0 ? true : false),
+                            then: Yup.string().oneOf([Yup.ref("newPassword")], "Повторите новый пароль")
+                        }),
+            }), ['oldPassword', 'newPassword'])}
+            onSubmit = {(data, actions) => {
+                setAccountData(data);
+                actions.setTouched({}, false);
             }}
         >
-            <Form className="settings__column">
+            <Form className="settings__column" id="contact-form">
                 <div className="settings__header">
                     НАСТРОЙКИ АККАУНТА
                 </div>

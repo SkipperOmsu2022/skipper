@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Formik, Form, Field, ErrorMessage, useField } from "formik";
-import TextInput from "../../shared/TextInput/TextInput";
+import cross from "../../resources/icons/cross.svg"
 import "../../shared/switch.scss"
-import CustomFormikSelect, {CustomMutableSelect} from "../../shared/customSelect/CustomSelect";
+import {CustomMutableSelect} from "../../shared/customSelect/CustomSelect";
 
 const Mentor = () => {
     const [mentor, setMentor] = useState(false);
@@ -96,8 +95,11 @@ const Mentor = () => {
         const elements = certificates.map((item, i) => {
             return (
                 <div className="certificates__group-item" key={i}>
-                    <img src={item} alt="certificate" className="certificates__group-item-image"
-                        onClick={() => onDeleteCertificate(i)}/>
+                    <div className="img-wrapper">
+                        <img src={item} alt="certificate" className="certificates__group-item-image"/>
+                        <img src={cross} alt="certificate" className="certificates__group-item-cross"
+                            onClick={() => onDeleteCertificate(i)}/>
+                    </div>
                 </div>
             )
         })
@@ -114,7 +116,7 @@ const Mentor = () => {
             <span className="active">Активный</span>
         </div> : 
         <div className="state">
-            <span className="inactive">Неактивный &#160;</span>
+            <span className="inactive">Неактивный</span>
             <div className="message">
                 (Для активации заполните поля "О себе" и "Специальность")
             </div>
@@ -279,19 +281,22 @@ const Mentor = () => {
                     </label>
                     <div className="certificates">
                         {view()}
-                        <label htmlFor="upload-photo" className="button settings__photo-button" onClick={() => setCertificateErr(null)}>
-                            Загрузить
-                        </label>
-                        <input
-                            type="file"
-                            name="photo"
-                            id="upload-photo"
-                            className="settings__photo-input"
-                            onChange={onCertificateChange}
-                        />
-                        <div className={`certificates__description${certificateErr ? ' error' : ''}`}>
-                            {certificateErr ? certificateErr : 'Размер файла не должен привышать 1 Мб'}
-                        </div>
+                        {certificates.length < 9 ? <>
+                            <label htmlFor="upload-photo" className="button settings__photo-button" onClick={() => setCertificateErr(null)}>
+                                Загрузить
+                            </label>
+                            <input
+                                type="file"
+                                name="photo"
+                                id="upload-photo"
+                                className="settings__photo-input"
+                                onChange={onCertificateChange}
+                            />
+                            <div className={`certificates__description${certificateErr ? ' error' : ''}`}>
+                                {certificateErr ? certificateErr : 'Размер файла не должен привышать 1 Мб'}
+                            </div>
+                        </>
+                            : null}
                     </div>
                 </div>
                 <div className="settings__input-group">

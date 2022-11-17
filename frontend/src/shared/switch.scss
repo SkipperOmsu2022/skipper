@@ -67,9 +67,10 @@
 .message {
     user-select: none;
     opacity:0;
-    transition: .4s;
+    transition: .3s;
+    padding-left: 5px;
 }
 .msg:hover + .state>.message {
     opacity:1;
-    transition: .4s;
+    transition: .3s;
 }

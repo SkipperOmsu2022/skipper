@@ -1,11 +1,11 @@
 import Form from "../Form/Form";
 import { Link } from 'react-router-dom';
 
-import useService from "../../services/loginService";
+import useLoginService from "../../services/loginService";
 import Button from "../../shared/submitButton/Button";
 
 const Signup = () => {
-    const {loading, signup, response, error, clearResponse} = useService();
+    const {loading, signup, response, error, clearResponse} = useLoginService();
     
     return (
         <>
@@ -24,7 +24,6 @@ const Signup = () => {
                     text="ЗАРЕГИСТРИРОВАТЬСЯ"
                     loading={loading}
                     form="contact-form"
-                    type="submit"
             />
             <Link  to="../signin" className="registration">Уже есть аккаунт? Вход</Link>
         </>

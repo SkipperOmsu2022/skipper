@@ -2,8 +2,11 @@ import { Outlet, NavLink } from 'react-router-dom';
 
 import "./settingsPage.scss"
 import Button from "../../../shared/submitButton/Button"
+import useSettingsService from "../../../services/settingsService";
 
 const SettingsPage = () => {
+    const {setAccountData, loading, response, error} = useSettingsService();
+
     return (
         <>
             <section className="settings">
@@ -34,15 +37,15 @@ const SettingsPage = () => {
                     </nav>
                     <Button className="button submit-button"
                         text="СОХРАНИТЬ"
-                        loading={''}
+                        loading={loading}
                         form="contact-form"
                         type="submit"
                     />
-                    <div className="response">
-                        Изменения сохранены
+                    <div className={`response ${error ? 'error' : ''}`}>
+                        {response}
                     </div>
                 </div>
-                    <Outlet/>
+                    <Outlet context={{setAccountData}}/>
             </section>
         </>
     )

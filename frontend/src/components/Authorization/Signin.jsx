@@ -1,11 +1,11 @@
 import Form from "../Form/Form";
 import { Link } from 'react-router-dom';
 
-import useService from "../../services/loginService";
+import useLoginService from "../../services/loginService";
 import Button from "../../shared/submitButton/Button";
 
 const Signin = () => {
-    const {loading, signin, response, error, clearResponse} = useService();
+    const {loading, signin, response, error, clearResponse} = useLoginService();
     
     return (
         <>

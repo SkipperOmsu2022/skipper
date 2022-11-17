@@ -7,13 +7,13 @@ import photo from "../../resources/profile-photo.jpg"
 import { Outlet, Navigate, Link, NavLink } from 'react-router-dom';
 import { useEffect, useState, useRef } from "react"
 import useAuthContext from "../../hooks/useAuthContext";
-import useService from "../../services/loginService"
+import useLoginService from "../../services/loginService"
 import "./appHeader.scss"
 
 const AppHeader = () => {
     const [navBarDisplay, setNavBarDisplay] = useState(false);
     const container = useRef();
-    const { logout } = useService()
+    const { logout } = useLoginService()
     const { auth } = useAuthContext();
 
     useEffect(() => {
