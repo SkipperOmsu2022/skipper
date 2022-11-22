@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.tinkoff.edu.backend.dto.UserLoginDTO;
 import ru.tinkoff.edu.backend.dto.UserRegDTO;
 import ru.tinkoff.edu.backend.services.UserService;
 
@@ -32,11 +33,9 @@ import javax.validation.Valid;
 @CrossOrigin
 public class AuthController {
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
+    public AuthController(UserService userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Operation(summary = "Регистрация пользователя")
@@ -46,21 +45,10 @@ public class AuthController {
                     headers = {@Header(name = "Location", description = "/api/user/{id}",
                             schema = @Schema(example = "/api/user/5")),
                     }),
-            @ApiResponse(responseCode = "400", description = "Пользователь уже существует!",
-                    content = {@Content(mediaType = "text/plain")}
-
+            @ApiResponse(responseCode = "400", description = "User already exist!"
             ) })
     @PostMapping("/registration")
-    public ResponseEntity<?> registration(@Valid @RequestBody UserRegDTO user) {
-        user.setEmail(user.getEmail().toLowerCase());
-        if(userService.readByEmail(user.getEmail()) != null) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .contentType(MediaType.TEXT_PLAIN)
-                    .body("User already exist!");
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public ResponseEntity<String> registration(@Valid @RequestBody UserRegDTO user) {
         String id = userService.create(user).getId().toString();
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -68,10 +56,12 @@ public class AuthController {
                 .build();
     }
 
-    @GetMapping("/login/fail")
-    public ResponseEntity<?> login() {
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@Valid UserLoginDTO user) {
+        String id = userService.readByUserLoginDTO(user).getId().toString();
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body("Failed to log in!");
+                .ok()
+                .header("Location", "/api/user/" + id)
+                .build();
     }
 }

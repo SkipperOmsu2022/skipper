@@ -37,12 +37,13 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                     .antMatchers(AUTH_WHITELIST).permitAll()
                     .antMatchers("/api/auth/registration").permitAll()
-                    .anyRequest().authenticated()
+                .antMatchers("/api/**").permitAll()
                 .and()
                     .formLogin()
-                    .loginPage("/").permitAll()
-                    .loginProcessingUrl("/api/auth/login")
-                    .defaultSuccessUrl("/api/user", true)
+                // временно разрешаю всё
+                    .loginPage("/02943857098/475607y48f65h0h0/09827h4cy5").permitAll()
+                    .loginProcessingUrl("/api/au098уцгнп98th/834whg50987/924h5g90")
+                    .defaultSuccessUrl("/ap982407н5еппi/u4ц985рпser", true)
                     .usernameParameter("email")
                     .passwordParameter("password")
                     .failureUrl("/api/auth/login/fail");

@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.backend.services;
 
 import org.springframework.stereotype.Service;
+import ru.tinkoff.edu.backend.dto.UserLoginDTO;
 import ru.tinkoff.edu.backend.dto.UserRegDTO;
 import ru.tinkoff.edu.backend.entities.User;
 
@@ -25,4 +26,5 @@ public interface UserService {
     User readByEmail(String email);
 
     boolean isExistById(Long id);
+    User readByUserLoginDTO(UserLoginDTO user);
 }

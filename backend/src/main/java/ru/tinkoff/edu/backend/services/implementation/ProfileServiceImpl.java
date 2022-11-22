@@ -36,8 +36,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void copyInUserFrom(Long id, UserEditDTO user) throws DifferentPasswordException,
-            OldPasswordRepeatNewPasswordException, IncorrectCurrentPasswordException {
+    public void copyInUserFrom(Long id, UserEditDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         if(!passwordEncoder.matches(user.getOldPassword(), userFromDB.getPassword())) {
             throw new IncorrectCurrentPasswordException("Incorrect current password!!");
@@ -69,8 +68,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public UserMainInfoDTO getMainInfo(String email) {
-        User userFromDB = userRepository.findByEmail(email);
+    public UserMainInfoDTO getMainInfo(Long id) {
+        User userFromDB = userRepository.getReferenceById(id);
         UserMainInfoDTO user = new UserMainInfoDTO();
 
         user.setFirstName(userFromDB.getFirstName());
