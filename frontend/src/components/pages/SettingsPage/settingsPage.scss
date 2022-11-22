@@ -1,16 +1,44 @@
 @import '../../../shared/variables.scss';
 
-.settings {
+.page-content {
+    padding: 2rem 2.5rem 3.75rem 2.5rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+
     font-family: 'Montserrat';
-    
-    min-width: 86.75rem;
-    min-height: 50vh;
-    margin: 2.5rem 1.875rem;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.app-section {
+    font-family: 'Montserrat';
+    min-height: 45vh;
     padding: 2.5rem 2.5rem 3.75rem 2.5rem;
     background-color: white;
     box-shadow: 0 0 0.625rem rgba(166, 166, 166, 0.6);
     border-radius: 0.625rem;
     z-index: 1;
+}
+
+.app-section-name {
+    cursor: default;
+    font-family: 'Montserrat';
+    z-index: 1;
+
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    color: $main-text;
+
+    .inactive {
+        color: $additional-text;
+    }
+}
+
+.settings {
+    min-width: 86.75rem;
 
     display: flex;
     flex-direction: row;
@@ -61,7 +89,7 @@
                 z-index: 2;
                 border-color:rgba(166, 166, 166, 0.6);
                 border-radius: 50%;
-                border: 0.0625rem solid #DADADA;
+                border: 0.0625rem solid $border;
                 vertical-align: middle;
                 background-color: white;
                 
@@ -85,19 +113,31 @@
             }
         }
     }
+
+    .fixed-content {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+        //position: fixed;
+    }
+
+    .submit-button {
+        height: 1.875rem;
+        padding: 0.375rem 1.8125rem;
+        width: 70%;
+        color: $header;
+        &:active {
+            padding: 0.4375rem 1.8125rem 0.3125rem;
+        }
+    }
+
     &__column {
         display: flex;
         flex-direction: column;
         gap: 1.25rem;
-        .submit-button {
-            height: 1.875rem;
-            padding: 0.375rem 1.8125rem;
-            width: 70%;
-            color: $header;
-            &:active {
-                padding: 0.4375rem 1.8125rem 0.3125rem;
-            }
-        }
+        //padding-left: 26.5rem;
+        
         .response {
             color: $success;
             font-weight: 400;

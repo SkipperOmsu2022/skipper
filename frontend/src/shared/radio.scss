@@ -1,15 +1,17 @@
+@import '../shared/variables.scss';
+
 .radio {
     display: none;
     &-name {
         display: inline-flex;
         align-items: center;
         cursor: pointer;
-        color: #979797; 
+        color: $additional-text; 
         &::before {
             content: "";
             background-clip: content-box;
             padding: 4px;
-            border: 1px solid #979797;
+            border: 1px solid $additional-text;
             border-radius: 50%;
             height: 15px;
             width: 15px;

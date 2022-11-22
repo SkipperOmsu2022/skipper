@@ -1,5 +1,5 @@
 import messages from "../../resources/icons/messages.svg"
-import favorites from "../../resources/icons/favorites.svg"
+import bookmark from "../../resources/icons/bookmark.svg"
 import notifications from "../../resources/icons/notifications.svg"
 import search from "../../resources/icons/search.svg"
 import photo from "../../resources/profile-photo.jpg"
@@ -46,7 +46,7 @@ const AppHeader = () => {
                             <img src={messages} alt="messages" />
                         </a>
                         <a href="favorites">
-                            <img src={favorites} alt="favorites" />
+                            <img src={bookmark} alt="favorites" className="bookmark"/>
                         </a>
                     </div>
                 </div>

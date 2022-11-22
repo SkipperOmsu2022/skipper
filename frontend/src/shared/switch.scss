@@ -30,7 +30,7 @@
     }
 
     &__circle {
-        border: 1.5px solid #979797;
+        border: 1.5px solid $additional-text;
         border-radius: 17px;
     }
     &__circle:before {
@@ -70,7 +70,7 @@
     transition: .3s;
     padding-left: 5px;
 }
-.msg:hover + .state>.message {
+.msg + .state>.message {
     opacity:1;
     transition: .3s;
 }

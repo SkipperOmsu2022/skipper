@@ -42,6 +42,10 @@
         display: flex;
         gap: 1.5rem;
         align-items: center;
+        .bookmark {
+            height: 1.55rem;
+            filter: grayscale(100%) invert(1) brightness(150%);
+        }
     }
     &__profile {
         position: relative;
@@ -83,13 +87,14 @@
     }
     &__dropdown {
         display: flex;
+        
         flex-direction: column;
         gap: 16px;
         margin: 0;
         padding: 20px;
         position: absolute;
         top: 180%;
-        right: -0.61rem;
+        right: 0;
 
         background: white;
         border-radius: 10px;
@@ -124,7 +129,7 @@
         }
         &-divider {
             width: 100%;
-            border: 1px solid #DADADA;
+            border: 1px solid $border;
         }
 
         &:before {
@@ -133,7 +138,7 @@
             height: 0;
             position: absolute;
             bottom: 100%;
-            right: 15px;
+            right: 18px;
             border-width: 0 6px 11px 6px;
             border-style: solid;
             border-color: #fff transparent;

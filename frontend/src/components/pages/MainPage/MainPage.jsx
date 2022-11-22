@@ -1,4 +1,3 @@
-import "../../../shared/submitButton/button.scss"
 
 const MainPage = () => {
     return (

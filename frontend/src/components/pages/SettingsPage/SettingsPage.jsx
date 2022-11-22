@@ -8,10 +8,13 @@ const SettingsPage = () => {
     const {setAccountData, loading, response, error} = useSettingsService();
 
     return (
-        <>
-            <section className="settings">
-                <div className="settings__column">
-                    <nav className="settings__navigation">  
+        <div className='page-content'>
+            <div className="app-section-name">
+                Настройки профиля
+            </div>
+            <section className="app-section settings">
+                <div className="fixed-content">
+                    <nav className="settings__navigation">
                         <ul className="settings__navigation-ul">
                             <li>
                                 <NavLink end to="." className={({ isActive }) => isActive ? "settings__navigation-li active" : "settings__navigation-li"}>
@@ -47,7 +50,7 @@ const SettingsPage = () => {
                 </div>
                     <Outlet context={{setAccountData}}/>
             </section>
-        </>
+        </div>
     )
 }
 
