@@ -42,11 +42,19 @@ const Common = () => {
                     day: +date[2],
                     month: +date[1],
                     year: +date[0],
-                    gender: res?.data?.gender || ''
+                    gender: res?.data?.gender || '' 
                 });
                 setAboutMe(res?.data?.aboutMe || '')
             });
-        return () => clearResponse();
+
+            document.addEventListener("click", clearResponse);
+            document.addEventListener("keydown", clearResponse);
+
+        return () => {
+            clearResponse();
+            document.removeEventListener("click",  clearResponse);
+            document.removeEventListener("keydown",  clearResponse);
+        };
     }, []);
 
     const fileInput = useRef(1);

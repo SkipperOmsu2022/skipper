@@ -14,8 +14,8 @@ const useProfileService = () => {
         console.log(res);
     } */
 
-    const getUserData = async (url) => {
-        const res = await request(`${_apiBase}/api/user/${url}${userId}`, 'get');
+    const getUserData = async (url, id) => {
+        const res = await request(`${_apiBase}/api/user/${url}${id || userId}`, 'get');
         console.log(res);
         return res;
     }

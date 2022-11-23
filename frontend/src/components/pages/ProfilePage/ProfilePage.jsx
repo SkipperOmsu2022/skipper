@@ -1,5 +1,6 @@
 import "./profilePage.scss"
 import { useEffect, useState, useRef } from "react"
+import { useParams } from 'react-router-dom';
 import photo from "../../../resources/profile-photo.jpg"
 import "../../../shared/submitButton/button.scss"
 import useProfileService from "../../../services/profileService";
@@ -7,6 +8,8 @@ import useProfileService from "../../../services/profileService";
 
 const ProfilePage = () => {
     const {getUserData, loading, clearResponse} = useProfileService();
+    const {userId} = useParams();
+
     const [firstName, setFirstName] = useState("Имя");
     const [lastName, setLastName] = useState("Фамилия");
     const [aboutMe, setAboutMe] = useState("");
@@ -16,13 +19,13 @@ const ProfilePage = () => {
     const container = useRef();
 
     useEffect(() => {
-        getUserData('')
+        getUserData('', userId)
             .then(res => {
                 setFirstName(res?.data?.firstName)
                 setLastName(res?.data?.lastName)
                 setAboutMe(res?.data?.aboutMe)
             })
-        getUserData('contacts/')
+        getUserData('contacts/', userId)
             .then(res => {
                 setCommunication([
                     {name: 'Вконтакте', link: res?.data?.linkVk},

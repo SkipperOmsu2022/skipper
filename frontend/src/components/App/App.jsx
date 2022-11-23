@@ -34,7 +34,7 @@ const App = () => {
                             <Route path="communication" element={<Communication/>}/>
                             <Route path="mentor" element={<Mentor/>}/>
                         </Route>
-                        <Route path="profile" element={<ProfilePage/>}/>
+                        <Route path="profile/:userId" element={<ProfilePage/>}/>
                         <Route path="profile-mentor" element={<MentorProfilePage mentor/>}/>
                         <Route path="" element={<MainPage/>}/>
                     </Route>
