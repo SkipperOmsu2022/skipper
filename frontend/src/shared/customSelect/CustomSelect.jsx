@@ -108,24 +108,27 @@ const DropdownIndicator = props => {
     );
   };
 
-const CustomFormikSelect = ({name, placeholder, error, value, onChange, onBlur}) => {
+const FormikSelect = ({name, placeholder, error, value, onChange, onBlur}) => {
     return (
-        <Select
-            components={{ DropdownIndicator }}
-            classNamePrefix='filter'
-            error={error}
-            styles={selectStyles}
-            options={options[name]}
-            placeholder={placeholder}
-            noOptionsMessage={() => "Значений не найдено"}
-            value={options[name].find(option => option.value === value) || ""}
-            onChange={onChange}
-            onBlur={onBlur(name)}
-        />
+        <>
+            <Select
+                components={{ DropdownIndicator }}
+                classNamePrefix='filter'
+                error={error}
+                styles={selectStyles}
+                options={options[name]}
+                placeholder={placeholder}
+                noOptionsMessage={() => "Значений не найдено"}
+                value={options[name].find(option => option.value === value) || ""}
+                onChange={onChange}
+                onBlur={onBlur(name)}
+            />
+            {error ? (<div className="group__error">{error}</div>) : null}
+        </>
     )
 }
 
-const CustomDateSelect = ({name, placeholder, value, noOptionsMessage, onChange, width, startDate}) => {
+const MutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, width, startDate}) => {
     let mutableOptions = [];
 
     if(name) {
@@ -152,5 +155,5 @@ const CustomDateSelect = ({name, placeholder, value, noOptionsMessage, onChange,
     )
 }
 
-export default CustomFormikSelect;
-export {CustomDateSelect as CustomMutableSelect}
+export default FormikSelect;
+export {MutableSelect as MutableSelect}

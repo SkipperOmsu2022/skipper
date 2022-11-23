@@ -26,6 +26,8 @@ const useProfileService = () => {
         console.log(res);
         if (res?.status === 200) {
             setResponse("Изменения сохранены");
+        // } else if (res?.status === 400 && url === 'account/'){
+        //     setResponse("Неверный текущий пароль");
         } else {
             setResponse("Что-то пошло не так");
         }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import cross from "../../resources/icons/cross.svg"
 import "../../shared/switch.scss"
-import {CustomMutableSelect} from "../../shared/customSelect/CustomSelect";
+import {MutableSelect} from "../../shared/customSelect/CustomSelect";
 
 const Mentor = () => {
     const [mentor, setMentor] = useState(false);
@@ -176,7 +176,7 @@ const Mentor = () => {
                         <div className="education">
                             <div className="settings__input-group-box">
                                 <div className="group">
-                                    <CustomMutableSelect
+                                    <MutableSelect
                                         name={"year"}
                                         placeholder="Год начала"
                                         value={educationStart}
@@ -187,7 +187,7 @@ const Mentor = () => {
                                     />
                                 </div>
                                 <div className="group">
-                                    <CustomMutableSelect
+                                    <MutableSelect
                                         placeholder="Год окончания"
                                         noOptionsMessage={"Выберите год начала"}
                                         value={educationEnd}
@@ -198,7 +198,7 @@ const Mentor = () => {
                                     />
                                 </div>
                                 <div className="group" >
-                                    <CustomMutableSelect
+                                    <MutableSelect
                                         name={"qualification"}
                                         placeholder="Квалификация"
                                         value={qualification}
@@ -235,7 +235,7 @@ const Mentor = () => {
                         <div className="experience">
                             <div className="settings__input-group-box">
                             <div className="group">
-                                    <CustomMutableSelect
+                                    <MutableSelect
                                         name={"year"}
                                         placeholder="Год начала"
                                         value={experienceStart}
@@ -246,7 +246,7 @@ const Mentor = () => {
                                     />
                                 </div>
                                 <div className="group">
-                                    <CustomMutableSelect
+                                    <MutableSelect
                                         placeholder="Год окончания"
                                         noOptionsMessage={"Выберите год начала"}
                                         value={experienceEnd}

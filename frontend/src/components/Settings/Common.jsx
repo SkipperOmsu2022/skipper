@@ -2,7 +2,7 @@ import { useOutletContext } from "react-router-dom";
 import { useState, useRef, useEffect} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
-import CustomSelect from "../../shared/customSelect/CustomSelect";
+import FormikSelect from "../../shared/customSelect/CustomSelect";
 import ImageCropper from "../ImageCropper/ImageCropper";
 
 import photo from "../../resources/profile-photo.jpg"
@@ -33,16 +33,15 @@ const Common = () => {
     useEffect(() => {
         getUserData('')
             .then(res => {
-                console.log(res.data)
                 let date = res?.data?.dateOfBirth?.split('-');
                 if (date === undefined) date = ['', '', ''];
                 setInitial({
                     firstName: res?.data?.firstName,
                     lastName: res?.data?.lastName,
                     patronymic: res?.data?.patronymic || '',
-                    day: date[2],
-                    month: date[1],
-                    year: date[0],
+                    day: +date[2],
+                    month: +date[1],
+                    year: +date[0],
                     gender: res?.data?.gender || ''
                 });
                 setAboutMe(res?.data?.aboutMe || '')
@@ -132,163 +131,168 @@ const Common = () => {
                     if (("" + day).length < 2)
                         day = '0' + day;
 
-                    const dateofBirth = [year, month, day].join('-');
-                    setUserData({firstName, lastName, patronymic, dateofBirth, aboutMe, croppedImg, gender}, '');
+                    const dateOfBirth = [year, month, day].join('-');
+                    setUserData({firstName, lastName, patronymic, dateOfBirth, aboutMe, croppedImg, gender}, '');
                 }}
             >
-                {({ errors, setFieldValue, handleChange, touched, handleBlur, values}) => (
-                <Form className="settings__column" id="contact-form">
-                    <div className="settings__header">
-                        ОБЩАЯ ИНФОРМАЦИЯ
-                    </div>    
-                    <div className="settings__photo">
-                        <img className="settings__photo-img" src={croppedImg || photo} alt="" />
-                        <div className="settings__photo-text">
-                            <div className="settings__photo-header">
-                                Добавьте фото своего профиля
+                {({ errors, setFieldValue, handleChange, touched, handleBlur, values, isValid}) => {
+                    console.log(isValid)
+                    if (!isValidDate(values.day, values.month, values.year)) {
+                        errors.day = "Такой даты не существует"
+                    } else if (values.day && errors?.day) {
+                        console.log("Я пытался")
+                        delete errors['day'];
+                    }
+                    return (
+                        <Form className="settings__column" id="contact-form">
+                            <div className="settings__header">
+                                ОБЩАЯ ИНФОРМАЦИЯ
+                            </div>    
+                            <div className="settings__photo">
+                                <img className="settings__photo-img" src={croppedImg || photo} alt="" />
+                                <div className="settings__photo-text">
+                                    <div className="settings__photo-header">
+                                        Добавьте фото своего профиля
+                                    </div>
+                                    <div className={`settings__photo-description${imgErr ? ' error' : ''}`}>
+                                        {imgErr ? imgErr : 'Размер фотографии не должен превышать 1Мб (JPG, GIF или PNG)'}
+                                    </div>
+                                </div>
+                                <label htmlFor="upload-photo" className="button settings__photo-button">
+                                    Изменить
+                                </label>
+                                <input
+                                    type="file"
+                                    name="photo"
+                                    id="upload-photo"
+                                    className="settings__photo-input"
+                                    onChange={onImageChange}
+                                    ref={fileInput}
+                                />
                             </div>
-                            <div className={`settings__photo-description${imgErr ? ' error' : ''}`}>
-                                {imgErr ? imgErr : 'Размер фотографии не должен превышать 1Мб (JPG, GIF или PNG)'}
+                            <div className="settings__input-group">
+                                <label htmlFor="firstName" className="settings__input-group-label middle-top-padding">
+                                    Полное имя: 
+                                </label>
+                                <TextInput
+                                    id='firstName'
+                                    name='firstName'
+                                    type='text'
+                                    placeholder='Фамилия'
+                                    className="settings__input-group-text"
+                                />
+                                <TextInput
+                                    id={'lastName'} 
+                                    name={'lastName'}
+                                    type={'text'}
+                                    placeholder={'Имя'}
+                                    className="settings__input-group-text"
+                                />
+                                <TextInput
+                                    id={'patronymic'} 
+                                    name={'patronymic'}
+                                    type={'text'}
+                                    placeholder={'Отчество'}
+                                    className="settings__input-group-text"
+                                />
                             </div>
-                        </div>
-                        <label htmlFor="upload-photo" className="button settings__photo-button">
-                            Изменить
-                        </label>
-                        <input
-                            type="file"
-                            name="photo"
-                            id="upload-photo"
-                            className="settings__photo-input"
-                            onChange={onImageChange}
-                            ref={fileInput}
-                        />
-                    </div>
-                    <div className="settings__input-group">
-                        <label htmlFor="firstName" className="settings__input-group-label middle-top-padding">
-                            Полное имя: 
-                        </label>
-                        <TextInput
-                            id='firstName'
-                            name='firstName'
-                            type='text'
-                            placeholder='Фамилия'
-                            className="settings__input-group-text"
-                        />
-                        <TextInput
-                            id={'lastName'} 
-                            name={'lastName'}
-                            type={'text'}
-                            placeholder={'Имя'}
-                            className="settings__input-group-text"
-                        />
-                        <TextInput
-                            id={'patronymic'} 
-                            name={'patronymic'}
-                            type={'text'}
-                            placeholder={'Отчество'}
-                            className="settings__input-group-text"
-                        />
-                    </div>
-                    <div className="settings__input-group">
-                        <label className="settings__input-group-label middle-top-padding">
-                            Дата рождения: 
-                        </label>
-                        <div className="group">
-                            <CustomSelect
-                                name={"day"}
-                                placeholder="День"
-                                error={errors.day && touched.day}
-                                value={values.day}
-                                onChange={(selectedOption) => {
-                                    setFieldValue("day", selectedOption.value)
-                                    handleChange("day");
-                                }}
-                                onBlur={handleBlur}
-                            />
-                            { !isValidDate(values.day, values.month, values.year) ? (<div className="group__error">{errors.day = "Такой даты не существует"}</div>) : null}
-                            {errors.day && touched.day && !values.day ? (<div className="group__error">{errors.day}</div>) : null}
-                        </div>
-                        <div className="group">
-                            <CustomSelect
-                                name={"month"}
-                                placeholder="Месяц"
-                                error={errors.month && touched.month}
-                                value={values.month}
-                                onChange={(selectedOption) => {
-                                    setFieldValue("month", selectedOption.value)
-                                    handleChange("month");
-                                }}
-                                onBlur={handleBlur}
-                            />
-                            {errors.month && touched.month ? (<div className="group__error">{errors.month}</div>) : null}
-                        </div>
-                        <div className="group">
-                            <CustomSelect
-                                name={"year"}
-                                placeholder="Год"
-                                error={errors.year && touched.year}
-                                value={values.year}
-                                onChange={(selectedOption) => {
-                                    setFieldValue("year", selectedOption.value)
-                                    handleChange("year");
-                                }}
-                                onBlur={handleBlur}
-                            />
-                            {errors.year && touched.year ? (<div className="group__error">{errors.year}</div>) : null}
-                        </div>
-                    </div>
-                    <div className="settings__input-group">
-                        <label className="settings__input-group-label radio-label">
-                            Пол: 
-                        </label>
-                        <Field
-                            className="radio"
-                            type="radio"
-                            name="gender"
-                            value="MALE"
-                            id="MALE"
-                        />
-                        <label
-                            className="radio-name"
-                            htmlFor="MALE"
-                            tabIndex={0}
-                            onKeyPress={(e) => {
-                                if (e.key === ' ' || e.key === "Enter") {
-                                    setFieldValue("gender", "MALE");
-                                }
-                            }}
-                        >
-                            мужской
-                        </label>
-                        <Field
-                            className="radio"
-                            type="radio"
-                            name="gender"
-                            value="FEMALE"
-                            id="FEMALE"
-                        />
-                        <label
-                            className="radio-name"
-                            htmlFor="FEMALE"
-                            tabIndex={0}
-                            onKeyPress={(e) => {
-                                if (e.key === ' ' || e.key === "Enter") {
-                                    setFieldValue("gender", "FEMALE");
-                                }
-                            }}
-                        >
-                            женский
-                        </label>
-                        <ErrorMessage className="group__error" name="gender" component="div"/>
-                    </div>
-                    <div className="settings__input-group">
-                        <label htmlFor="aboutMe" className="settings__input-group-label middle-top-padding">
-                            О себе: 
-                        </label>
-                        <textarea className="settings__input-group-text input textarea high" placeholder="Расскажите немного о себе:"
-                            id="aboutMe" maxLength='400' value={aboutMe} onChange={(e) => setAboutMe(e.target.value)}/>
-                    </div>
-                </Form>)}
+                            <div className="settings__input-group">
+                                <label className="settings__input-group-label middle-top-padding">
+                                    Дата рождения: 
+                                </label>
+                                <div className="group">
+                                    <FormikSelect
+                                        name={"day"}
+                                        placeholder="День"
+                                        error={touched.day && errors.day}
+                                        value={values.day}
+                                        onChange={(selectedOption) => {
+                                            setFieldValue("day", selectedOption.value)
+                                            handleChange("day");
+                                        }}
+                                        onBlur={handleBlur}
+                                    />
+                                </div>
+                                <div className="group">
+                                    <FormikSelect
+                                        name={"month"}
+                                        placeholder="Месяц"
+                                        error={touched.month && errors.month}
+                                        value={values.month}
+                                        onChange={(selectedOption) => {
+                                            setFieldValue("month", selectedOption.value)
+                                            handleChange("month");
+                                        }}
+                                        onBlur={handleBlur}
+                                    />
+                                </div>
+                                <div className="group">
+                                    <FormikSelect
+                                        name={"year"}
+                                        placeholder="Год"
+                                        error={touched.year && errors.year}
+                                        value={values.year}
+                                        onChange={(selectedOption) => {
+                                            setFieldValue("year", selectedOption.value)
+                                            handleChange("year");
+                                        }}
+                                        onBlur={handleBlur}
+                                    />
+                                </div>
+                            </div>
+                            <div className="settings__input-group">
+                                <label className="settings__input-group-label radio-label">
+                                    Пол: 
+                                </label>
+                                <Field
+                                    className="radio"
+                                    type="radio"
+                                    name="gender"
+                                    value="MALE"
+                                    id="MALE"
+                                />
+                                <label
+                                    className="radio-name"
+                                    htmlFor="MALE"
+                                    tabIndex={0}
+                                    onKeyPress={(e) => {
+                                        if (e.key === ' ' || e.key === "Enter") {
+                                            setFieldValue("gender", "MALE");
+                                        }
+                                    }}
+                                >
+                                    мужской
+                                </label>
+                                <Field
+                                    className="radio"
+                                    type="radio"
+                                    name="gender"
+                                    value="FEMALE"
+                                    id="FEMALE"
+                                />
+                                <label
+                                    className="radio-name"
+                                    htmlFor="FEMALE"
+                                    tabIndex={0}
+                                    onKeyPress={(e) => {
+                                        if (e.key === ' ' || e.key === "Enter") {
+                                            setFieldValue("gender", "FEMALE");
+                                        }
+                                    }}
+                                >
+                                    женский
+                                </label>
+                                <ErrorMessage className="group__error" name="gender" component="div"/>
+                            </div>
+                            <div className="settings__input-group">
+                                <label htmlFor="aboutMe" className="settings__input-group-label middle-top-padding">
+                                    О себе: 
+                                </label>
+                                <textarea className="settings__input-group-text input textarea high" placeholder="Расскажите немного о себе:"
+                                    id="aboutMe" maxLength='400' value={aboutMe} onChange={(e) => setAboutMe(e.target.value)}/>
+                            </div>
+                        </Form>
+                    )}}
             </Formik>
         </>
     )
