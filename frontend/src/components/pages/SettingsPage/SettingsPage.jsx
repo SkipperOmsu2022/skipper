@@ -2,10 +2,10 @@ import { Outlet, NavLink } from 'react-router-dom';
 
 import "./settingsPage.scss"
 import Button from "../../../shared/submitButton/Button"
-import useSettingsService from "../../../services/settingsService";
+import useProfileService from "../../../services/profileService";
 
 const SettingsPage = () => {
-    const {setAccountData, loading, response, error} = useSettingsService();
+    const {getUserData, setUserData, loading, response, error, clearResponse} = useProfileService();
 
     return (
         <div className='page-content'>
@@ -48,7 +48,7 @@ const SettingsPage = () => {
                         {response}
                     </div>
                 </div>
-                    <Outlet context={{setAccountData}}/>
+                    <Outlet context={{getUserData, setUserData, clearResponse}}/>
             </section>
         </div>
     )

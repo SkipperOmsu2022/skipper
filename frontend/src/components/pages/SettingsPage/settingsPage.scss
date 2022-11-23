@@ -120,6 +120,15 @@
         gap: 30px;
 
         //position: fixed;
+        .response {
+            color: $success;
+            font-weight: 400;
+            font-size: 1rem;
+            line-height: 1.0625rem;
+            &.error {
+                color: $error;
+            }
+        }
     }
 
     .submit-button {
@@ -137,16 +146,6 @@
         flex-direction: column;
         gap: 1.25rem;
         //padding-left: 26.5rem;
-        
-        .response {
-            color: $success;
-            font-weight: 400;
-            font-size: 0.9375rem;
-            line-height: 1.0625rem;
-        }
-        .error {
-            color: $error;
-        }
     }
     &__header {
         font-weight: 400;

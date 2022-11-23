@@ -8,15 +8,26 @@ import { Outlet, Navigate, Link, NavLink } from 'react-router-dom';
 import { useEffect, useState, useRef } from "react"
 import useAuthContext from "../../hooks/useAuthContext";
 import useLoginService from "../../services/loginService"
+import useProfileService from "../../services/profileService";
 import "./appHeader.scss"
 
 const AppHeader = () => {
+    const {getUserData} = useProfileService();
+    const [firstName, setFirstName] = useState("Имя");
+    const [lastName, setLastName] = useState("Фамилия");
+    
     const [navBarDisplay, setNavBarDisplay] = useState(false);
     const container = useRef();
     const { logout } = useLoginService()
     const { auth } = useAuthContext();
 
     useEffect(() => {
+        getUserData('')
+            .then(res => {
+                setFirstName(res.data.firstName)
+                setLastName(res.data.lastName)
+            })
+
         document.addEventListener("click", handleClickOutside);
         
         return () => document.removeEventListener("click",  handleClickOutside);
@@ -68,7 +79,7 @@ const AppHeader = () => {
                         }}
                     >
                         <div className="app-header__profile-data">
-                            <div className="app-header__profile-name">Имя Фамилия</div>
+                            <div className="app-header__profile-name">{firstName} {lastName}</div>
                         </div>
                         <img className="app-header__profile-photo" src={photo} alt="" />
 

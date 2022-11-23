@@ -1,3 +1,4 @@
+import { useOutletContext } from "react-router-dom";
 import { useState, useRef, useEffect} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
@@ -11,6 +12,8 @@ import "../../shared/submitButton/button.scss"
 import TextInput from "../../shared/TextInput/TextInput";
 
 const Common = () => {
+    const {getUserData, setUserData, clearResponse} = useOutletContext();
+
     const [showModal, setShowModal] = useState(false);
     const [image, setImage] = useState(photo);
     const [imgErr, setImgErr] = useState(null);
@@ -26,6 +29,26 @@ const Common = () => {
         year: '',
         gender: ''
     });
+
+    useEffect(() => {
+        getUserData('')
+            .then(res => {
+                console.log(res.data)
+                let date = res?.data?.dateOfBirth?.split('-');
+                if (date === undefined) date = ['', '', ''];
+                setInitial({
+                    firstName: res?.data?.firstName,
+                    lastName: res?.data?.lastName,
+                    patronymic: res?.data?.patronymic || '',
+                    day: date[2],
+                    month: date[1],
+                    year: date[0],
+                    gender: res?.data?.gender || ''
+                });
+                setAboutMe(res?.data?.aboutMe || '')
+            });
+        return () => clearResponse();
+    }, []);
 
     const fileInput = useRef(1);
 
@@ -110,7 +133,7 @@ const Common = () => {
                         day = '0' + day;
 
                     const dateofBirth = [year, month, day].join('-');
-                    console.log({firstName, lastName, patronymic, dateofBirth, aboutMe, croppedImg, gender});
+                    setUserData({firstName, lastName, patronymic, dateofBirth, aboutMe, croppedImg, gender}, '');
                 }}
             >
                 {({ errors, setFieldValue, handleChange, touched, handleBlur, values}) => (

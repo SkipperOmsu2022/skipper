@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { Formik, Form, Field, ErrorMessage, useField } from "formik";
+import { useOutletContext } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Formik, Form } from "formik";
 import TextInput from "../../shared/TextInput/TextInput";
 
 const Communication = () => {
+    const {getUserData, setUserData, clearResponse} = useOutletContext();
     const [initial, setInitial] = useState({
         linkVk: '',
         linkSkype: '',
@@ -10,12 +12,25 @@ const Communication = () => {
         linkTelegram: ''
     });
 
+    useEffect(() => {
+        getUserData('contacts/')
+            .then(res => {
+                setInitial({
+                    linkVk: res?.data?.linkVk || '',
+                    linkSkype: res?.data?.linkSkype || '',
+                    linkDiscord: res?.data?.linkDiscord || '',
+                    linkTelegram: res?.data?.linkTelegram || ''
+                });
+            });
+        return () => clearResponse();
+    }, []);
+
     return (
         <Formik
             enableReinitialize
             initialValues = {initial}
             onSubmit = {(data) => {
-                console.log({...data});
+                setUserData({...data}, 'contacts/');
             }}>
             <Form id="contact-form">
                 <div className="settings__column">

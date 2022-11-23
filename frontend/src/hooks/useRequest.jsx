@@ -10,12 +10,12 @@ export const useRequest = () => {
         setResponse(null);
         setError(false);
     }
-
-    const request = useCallback(async (url, data, header) => {
+    
+    const request = useCallback(async (url, method, data, header) => {
         clearResponse();
         setLoading(true);
 
-        return axios.post(url, data, {headers: { "Accept": "*/*", ...header}})
+        return axios.request({url, method, data, headers: { "Accept": "*/*", ...header}})
             .then(res => {
                 setLoading(false);
                 return res;
