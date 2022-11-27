@@ -71,24 +71,24 @@ const currentYear = (new Date()).getFullYear();
 
 const options = {
     'day': Array(31).fill(null).map((element, i, arr) => (
-        arr[i] = {value: i + 1, label: i + 1}
+        arr[i] = {value: ('0' + (i + 1)).slice(-2), label: i + 1}
     )),
     "month": [
-        { value: 1, label: 'Январь' },
-        { value: 2, label: 'Февраль' },
-        { value: 3, label: 'Март' },
-        { value: 4, label: 'Апрель' },
-        { value: 5, label: 'Май' },
-        { value: 6, label: 'Июнь' },
-        { value: 7, label: 'Июль' },
-        { value: 8, label: 'Август' },
-        { value: 9, label: 'Сентябрь' },
-        { value: 10, label: 'Октябрь' },
-        { value: 11, label: 'Ноябрь' },
-        { value: 12, label: 'Декабрь' }
+        { value: '01', label: 'Январь' },
+        { value: '02', label: 'Февраль' },
+        { value: '03', label: 'Март' },
+        { value: '04', label: 'Апрель' },
+        { value: '05', label: 'Май' },
+        { value: '06', label: 'Июнь' },
+        { value: '07', label: 'Июль' },
+        { value: '08', label: 'Август' },
+        { value: '09', label: 'Сентябрь' },
+        { value: '10', label: 'Октябрь' },
+        { value: '11', label: 'Ноябрь' },
+        { value: '12', label: 'Декабрь' }
     ],
     "year": Array(100).fill(null).map((element, i, arr) => (
-        arr[i] = {value: currentYear - i, label: currentYear - i}
+        arr[i] = {value: '' + (currentYear - i), label: currentYear - i}
     )),
     "qualification": [
         { value: 'Бакалавр', label: 'Бакалавр' },
@@ -156,4 +156,4 @@ const MutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, wi
 }
 
 export default FormikSelect;
-export {MutableSelect as MutableSelect}
+export {MutableSelect}

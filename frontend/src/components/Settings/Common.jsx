@@ -35,13 +35,14 @@ const Common = () => {
             .then(res => {
                 let date = res?.data?.dateOfBirth?.split('-');
                 if (date === undefined) date = ['', '', ''];
+                
                 setInitial({
                     firstName: res?.data?.firstName,
                     lastName: res?.data?.lastName,
                     patronymic: res?.data?.patronymic || '',
-                    day: +date[2],
-                    month: +date[1],
-                    year: +date[0],
+                    day: date[2],
+                    month: date[1],
+                    year: date[0],
                     gender: res?.data?.gender || '' 
                 });
                 setAboutMe(res?.data?.aboutMe || '')
@@ -134,21 +135,14 @@ const Common = () => {
                             .required('Обязательный параметр')
                 })}
                 onSubmit = {({firstName, lastName, patronymic, day, month, year, gender}) => {
-                    if (("" + month).length < 2) 
-                        month = '0' + month;
-                    if (("" + day).length < 2)
-                        day = '0' + day;
-
                     const dateOfBirth = [year, month, day].join('-');
                     setUserData({firstName, lastName, patronymic, dateOfBirth, aboutMe, croppedImg, gender}, '');
                 }}
             >
                 {({ errors, setFieldValue, handleChange, touched, handleBlur, values, isValid}) => {
-                    console.log(isValid)
                     if (!isValidDate(values.day, values.month, values.year)) {
                         errors.day = "Такой даты не существует"
                     } else if (values.day && errors?.day) {
-                        console.log("Я пытался")
                         delete errors['day'];
                     }
                     return (

@@ -7,7 +7,7 @@ import useProfileService from "../../../services/profileService";
     
 
 const ProfilePage = () => {
-    const {getUserData, loading, clearResponse} = useProfileService();
+    const {getUserData} = useProfileService();
     const {userId} = useParams();
 
     const [firstName, setFirstName] = useState("Имя");
