@@ -181,7 +181,7 @@ const Mentor = () => {
                                         placeholder="Год начала"
                                         value={educationStart}
                                         onChange={(selectedOption) => {
-                                            setEducationStart(selectedOption.label)
+                                            setEducationStart(selectedOption.value)
                                             setEducationEnd("")
                                         }}
                                     />
@@ -240,7 +240,7 @@ const Mentor = () => {
                                         placeholder="Год начала"
                                         value={experienceStart}
                                         onChange={(selectedOption) => {
-                                            setExperienceStart(selectedOption.label)
+                                            setExperienceStart(selectedOption.value)
                                             setExperienceEnd("")
                                         }}
                                     />
