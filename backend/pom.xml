@@ -30,7 +30,8 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-        <!--Это библиотека для сокращения кода в классах и расширения функциональности языка Java.-->
+        <!--Это библиотека для сокращения кода в классах и расширения функциональности языка
+        Java(в том числе аспектное логирование).-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -61,7 +62,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.11</version>
+            <version>1.6.13</version>
         </dependency>
 
         <!--Для тестирования backend`а-->

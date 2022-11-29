@@ -62,6 +62,7 @@ public class ErrorHandlingControllerAdvice {
     @ExceptionHandler(value = {DifferentPasswordException.class, IncorrectCurrentPasswordException.class,
             OldPasswordRepeatNewPasswordException.class})
     public ResponseEntity<ErrorMessage> onChangeAccountDetails(RuntimeException e) {
+//        WebRequest request
         return ResponseEntity
                 .badRequest()
                 .body(new ErrorMessage(e.getMessage()));
