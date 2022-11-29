@@ -128,6 +128,8 @@ public class ProfileServiceImpl implements ProfileService {
         user.setLastName(userFromDB.getLastName());
         user.setPatronymic(userFromDB.getPatronymic());
         user.setAboutMe(userFromDB.getAbout());
+        user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
+        user.setSpecialization(userFromDB.getSpecialization());
         user.setLinkVk(userFromDB.getLinkVk());
         user.setLinkSkype(userFromDB.getLinkSkype());
         user.setLinkDiscord(userFromDB.getLinkDiscord());

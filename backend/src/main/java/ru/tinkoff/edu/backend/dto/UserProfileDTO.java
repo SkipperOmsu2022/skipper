@@ -16,7 +16,7 @@ public class UserProfileDTO {
     private String patronymic;
     @Size(max = 400)
     private String aboutMe;
-    private boolean isEnabledMentorStatus;
+    private Boolean isEnabledMentorStatus;
     @NotBlank
     private String specialization;
     private String linkVk;
