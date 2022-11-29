@@ -12,6 +12,8 @@ import java.time.LocalDate;
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "id"))
 @SecondaryTable(name = "USERS_CONTACTS",
         pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "id"))
+@SecondaryTable(name = "MENTORS",
+        pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id", referencedColumnName = "id"))
 @Getter
 @Setter
 @Builder
@@ -51,4 +53,11 @@ public class User {
     private String linkDiscord;
     @Column(name="link_telegram", table = "USERS_CONTACTS")
     private String linkTelegram;
+
+    @Column(name = "is_enabled_mentor_status", table = "MENTORS", nullable = false)
+    private Boolean isEnabledMentorStatus;
+    @Column(name = "about_as_mentor", table = "MENTORS", length = 400, nullable = false)
+    private String aboutAsMentor;
+    @Column(name = "specialization", table = "MENTORS", nullable = false)
+    private String specialization;
 }

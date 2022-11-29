@@ -28,7 +28,7 @@ import javax.validation.Valid;
  */
 @RestController
 @Validated
-@Tag(name="Auth Controller", description="Контроллер отвечает за регистрацию и аутентификацию пользователей.")
+@Tag(name="Auth Controller", description="Регистрацию и аутентификацию пользователей.")
 @RequestMapping(value = "/api/auth")
 @CrossOrigin
 public class AuthController {
@@ -52,7 +52,7 @@ public class AuthController {
         String id = userService.create(user).getId().toString();
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .header("Location", "/api/user/" + id)
+                .header("Location", id)
                 .build();
     }
 
@@ -61,7 +61,7 @@ public class AuthController {
         String id = userService.readByUserLoginDTO(user).getId().toString();
         return ResponseEntity
                 .ok()
-                .header("Location", "/api/user/" + id)
+                .header("Location", id)
                 .build();
     }
 }
