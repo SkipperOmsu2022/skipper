@@ -1,10 +1,19 @@
 package ru.tinkoff.edu.backend.entities;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 import ru.tinkoff.edu.backend.enums.UserGender;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+
+import static javax.persistence.TemporalType.DATE;
+import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
 @Table(name = "USERS")
@@ -19,6 +28,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class User {
     @Id
     @Column(name = "id")
@@ -36,6 +46,9 @@ public class User {
     private String lastName;
     @Column(name = "patronymic")
     private String patronymic;
+    @CreatedDate
+    @Column(name = "date_registration")
+    private LocalDate dateOfRegistration;
 
     @Column(name="date_birth", table = "USERS_MAIN_INFO")
     private LocalDate dateBirth;
