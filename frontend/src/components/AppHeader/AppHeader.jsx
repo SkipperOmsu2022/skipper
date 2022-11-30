@@ -24,8 +24,10 @@ const AppHeader = () => {
     useEffect(() => {
         getUserData('')
             .then(res => {
-                setFirstName(res.data.firstName)
-                setLastName(res.data.lastName)
+                if(res) {
+                    setFirstName(res.data.firstName)
+                    setLastName(res.data.lastName)
+                }
             })
 
         document.addEventListener("click", handleClickOutside);

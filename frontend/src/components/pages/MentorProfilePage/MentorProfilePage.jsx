@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react"
 import photo from "../../../resources/profile-photo.jpg"
 import "../../../shared/submitButton/button.scss"
+import "../../../shared/bookmark.scss"
 import bookmark from "../../../resources/icons/bookmark.svg";
 import "./mentorProfilePage.scss"
 import "../ProfilePage/profilePage.scss"
@@ -38,8 +39,8 @@ const MentorProfilePage = ({mentor}) => {
                                 <div className="specialty">Специальность ментора</div>
                             </div>
                             <label className="profile__bookmark" htmlFor="switch">
-                                <input type="checkbox" className="profile__bookmark-input" id="switch"/>
-                                <img className="profile__bookmark-icon" src={bookmark} alt="" />
+                                <input type="checkbox" className="bookmark-input" id="switch"/>
+                                <img className="bookmark-icon bookmark" src={bookmark} alt="" />
                             </label>
                         </div>
                         <div className="complain-btn" ref={container} onClick={handleDropdownClick}

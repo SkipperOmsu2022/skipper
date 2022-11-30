@@ -23,10 +23,6 @@ const Mentor = () => {
 
     const [otherInformation, setOtherInformation] = useState("");
 
-    const [initial, setInitial] = useState({
-        
-    });
-
     const handleMentorChange = () => {
         if(mentor && aboutMe && specialty) {
             setMentor(false)

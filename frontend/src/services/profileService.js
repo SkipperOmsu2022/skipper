@@ -8,6 +8,9 @@ const useProfileService = () => {
 
     const getUserData = async (url, id) => {
         const res = await request(`${_apiBase}/api/user/${url}${id || userId}`, 'get');
+        if (res?.status !== 200) {
+            setResponse("Что-то пошло не так");
+        }
         return res;
     }
     
