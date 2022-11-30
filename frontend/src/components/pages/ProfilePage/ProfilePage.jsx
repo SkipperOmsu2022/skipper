@@ -13,6 +13,7 @@ const ProfilePage = () => {
     const [firstName, setFirstName] = useState("Имя");
     const [lastName, setLastName] = useState("Фамилия");
     const [aboutMe, setAboutMe] = useState("");
+    const [mentorStatus, setMentorStatus] = useState(false);
     const [specialization, setSpecialization] = useState("");
     const [communication, setCommunication] = useState([]);
 
@@ -26,6 +27,7 @@ const ProfilePage = () => {
                 setLastName(res?.data?.lastName);
                 setAboutMe(res?.data?.aboutMe);
                 setSpecialization(res?.data?.specialization)
+                setMentorStatus(res?.data?.isEnabledMentorStatus)
 
                 setCommunication([
                     {name: 'Вконтакте', link: res?.data?.linkVk},
@@ -112,8 +114,7 @@ const ProfilePage = () => {
                         {communicationContent()}
                     </div>
                     <div className="profile__btn-block">
-                        <button className="button">Написать сообщение</button>
-                        <button className="button">Перейти на профиль ментора</button>
+                        {mentorStatus ? <button className="button">Перейти на профиль ментора</button> : null}
                     </div>
                 </div>
             </div>

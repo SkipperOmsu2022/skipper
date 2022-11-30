@@ -262,7 +262,6 @@ const Common = () => {
                                     tabIndex={0}
                                     onKeyPress={(e) => {
                                         if (e.key === ' ' || e.key === "Enter") {
-                                            clearResponse();
                                             setFieldValue("gender", "MALE");
                                         }
                                     }}
@@ -282,7 +281,6 @@ const Common = () => {
                                     tabIndex={0}
                                     onKeyPress={(e) => {
                                         if (e.key === ' ' || e.key === "Enter") {
-                                            clearResponse();
                                             setFieldValue("gender", "FEMALE");
                                         }
                                     }}

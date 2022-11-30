@@ -22,7 +22,7 @@ const Communication = () => {
                     linkTelegram: res?.data?.linkTelegram || ''
                 });
             });
-        //return () => clearResponse();
+        return () => clearResponse();
     }, []);
 
     return (

@@ -15,7 +15,7 @@ export const useRequest = () => {
         clearResponse();
         setLoading(true);
 
-        return axios.request({url, method, data, headers: { "Accept": "*/*", ...header}})
+        return axios.request({url, method, data, headers: {...header}})
             .then(res => {
                 setLoading(false);
                 return res;

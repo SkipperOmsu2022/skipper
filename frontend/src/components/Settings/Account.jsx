@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import TextInput from "../../shared/TextInput/TextInput";
 
 const Account = () => {
-    const {setUserData} = useOutletContext();
+    const {setUserData, clearResponse} = useOutletContext();
 
     const [initial, setInitial] = useState({
         email: '',
@@ -22,6 +22,7 @@ const Account = () => {
             newPassword: '',
             repeatNewPassword: ''
         })
+        return () => clearResponse();
     }, []);
 
     return (

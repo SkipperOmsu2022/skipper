@@ -30,10 +30,7 @@ const useLoginService = () => {
             form_data.append(key, data[key]);
         }
 
-        const res = await request(`${_apiBase}/api/auth/login`, 'post', form_data, {"Content-Type": 'multipart/form-data',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE'
-        });
+        const res = await request(`${_apiBase}/api/auth/login`, 'post', form_data, {"Content-Type": 'multipart/form-data'});
         
         console.log(res);
 

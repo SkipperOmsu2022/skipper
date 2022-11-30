@@ -6,7 +6,7 @@
     gap: 20px;
 
     .filter {
-        height: 1591px;
+        height: fit-content;
         min-width: 320px;
 
         display: flex;
@@ -17,14 +17,12 @@
                 display: flex;
                 flex-direction: row;
                 gap: 20px;
+                padding-bottom: 40px;
                 &-text {
                     color: $header;
                     font-weight: 400;
                     font-size: 20px;
                     min-width: fit-content;
-                }
-                &.padding-btm {
-                    padding-bottom: 20px;
                 }
             }
             &-divider{
@@ -33,45 +31,11 @@
                 width: 100%;
                 margin: auto;
             }
-            .study-fields-wrapper {
-                padding-top: 40px;
-                display: flex;
-                flex-direction: column;
-                gap: 40px;
-
-                .study-field {
-                    &__title {
-                        cursor: pointer;
-                        width: 100%;
-                        
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: space-between;
-                        color: $header;
-                        font-weight: 400;
-                        font-size: 20px;
-                        
-                        &-arrow {
-                            user-select: none;
-                            padding-right: 5px;
-                            color: $additional-text;
-                            font-size: 18px;
-                            transform: scale(2, .9);
-                        }
-                    }
-                }
-            }
             .item-wrapper {
                 overflow: hidden;
-                max-height: 0px;
                 display: flex;
                 flex-direction: column;
                 gap: 20px;
-            }
-            .item-wrapper.show {
-                max-height: 300px;
-                padding-top: 20px;
-                transition: max-height .5s;
             }
             .item-wrapper.rating {
                 .stars {

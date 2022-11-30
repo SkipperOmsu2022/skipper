@@ -67,7 +67,6 @@
 .message {
     user-select: none;
     opacity:0;
-    transition: .3s;
     padding-left: 5px;
 }
 .msg + .state>.message {

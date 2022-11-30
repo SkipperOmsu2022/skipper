@@ -9,7 +9,6 @@ const Mentor = () => {
     const [mentor, setMentor] = useState(false);
     const [aboutMe, setAboutMe] = useState("");
     const [specialty, setSpecialty] = useState("");
-    const [showSwitchMsg, setShowSwitchMsg] = useState(true);
 
     const [educationStart, setEducationStart] = useState("");
     const [educationEnd, setEducationEnd] = useState("");
@@ -29,35 +28,29 @@ const Mentor = () => {
         getUserData('user/profile/settings/mentor/')
             .then(res => {
                 setMentor(res?.data?.isEnabledMentorStatus);
-                setAboutMe(res?.data?.aboutMeAsMentor);
-                setQualification(res?.data?.specialization);
+                setAboutMe(res?.data?.aboutMeAsMentor || '');
+                setQualification(res?.data?.specialization || '');
             });
-        //return () => clearResponse();
+        return () => clearResponse();
     }, []);
 
     const handleMentorChange = () => {
-        if(mentor && aboutMe && specialty) {
+        if(mentor && aboutMe && qualification) {
             setMentor(false)
-        } else if (aboutMe && specialty) {
+        } else if (aboutMe && qualification) {
             setMentor(true)
         }
     }
     const handleAboutMeChange = (e) => {
         setAboutMe(e.target.value)
-        if (!e.target.value || !specialty) {
+        if (!e.target.value || !qualification) {
             setMentor(false)
-            setShowSwitchMsg(true)
-        } else {
-            setShowSwitchMsg(false)
         }
     }
-    const handleSpecialtyChange = (e) => {
-        setSpecialty(e.target.value)
+    const handleQualificationChange = (e) => {
+        setQualification(e.target.value)
         if (!aboutMe || !e.target.value) {
             setMentor(false)
-            setShowSwitchMsg(true)
-        } else {
-            setShowSwitchMsg(false)
         }
     }
 
@@ -149,12 +142,12 @@ const Mentor = () => {
                         <label htmlFor="switch" className="settings__input-group-label">
                             Текущий статус:
                         </label>
-                        <label className={`switch ${showSwitchMsg ? "msg" : ""}`}>
+                        <label className={`switch ${aboutMe && qualification ? "" : "msg"}`}>
                                 <input
                                     id="switch"
                                     className="switch__input"
                                     type="checkbox"
-                                    disabled={!aboutMe || !specialty}
+                                    disabled={!aboutMe || !qualification}
                                     checked={mentor}
                                     onChange={handleMentorChange}/>
                                 <div className="switch__slider switch__circle"></div>
@@ -183,7 +176,7 @@ const Mentor = () => {
                         id="specialty"
                         maxLength='100'
                         value={qualification}
-                        onChange={handleSpecialtyChange}/>
+                        onChange={handleQualificationChange}/>
                 </div>
                 <div className="settings__input-group">
                     <label className="settings__input-group-label middle-top-padding">

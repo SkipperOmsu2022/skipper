@@ -14,78 +14,54 @@ const MainPage = () => {
                         <div className="filter__section-title-text">Сфера обучения</div>
                         <div className="filter__section-divider"></div>
                     </div>
-                    <div className="study-fields-wrapper">
-                        <div className="study-field show">
-                            <div className="study-field__title">
-                                IT и технологии
-                                <span className="study-field__title-arrow">V</span>
-                            </div>
-                            <div className="item-wrapper show">
-                                <div className="filter__section-list-item">
-                                    <input type="checkbox" className="checkbox" id="programming"/>
-                                    <label htmlFor="programming" className="checkbox-name">Программирование</label>
-                                </div>
-                                <div className="filter__section-list-item">
-                                    <input type="checkbox" className="checkbox" id="testing"/>
-                                    <label htmlFor="testing" className="checkbox-name">Тестирование</label>
-                                </div>
-                                <div className="filter__section-list-item">
-                                    <input type="checkbox" className="checkbox" id="DevOps"/>
-                                    <label htmlFor="DevOps" className="checkbox-name">DevOps</label>
-                                </div>
-                                <div className="filter__section-list-item">
-                                    <input type="checkbox" className="checkbox" id="analytics"/>
-                                    <label htmlFor="analytics" className="checkbox-name">Аналитика</label>
-                                </div>
-                                <div className="filter__section-list-item">
-                                    <input type="checkbox" className="checkbox" id="Administrating"/>
-                                    <label htmlFor="Administrating" className="checkbox-name">Администрирование</label>
-                                </div>
-                            </div>
+                    <div className="item-wrapper">
+                        <div className="filter__section-list-item">
+                            <input type="checkbox" className="checkbox" id="programming"/>
+                            <label htmlFor="programming" className="checkbox-name">Программирование</label>
                         </div>
-                        <div className="study-field show">
-                            <div className="study-field__title">
-                                Финансы и расчеты
-                                <span className="study-field__title-arrow">V</span>
-                            </div>
-                            <div className="item-wrapper show">
-                                <div className="filter__section-list-item">
-                                    <input type="checkbox" className="checkbox" id="accounting"/>
-                                    <label htmlFor="accounting" className="checkbox-name">Бухгалтерия</label>
-                                </div>
-                                <div className="filter__section-list-item">
-                                    <input type="checkbox" className="checkbox" id="kickback"/>
-                                    <label htmlFor="kickback" className="checkbox-name">Откаты</label>
-                                </div>
-                                <div className="filter__section-list-item">
-                                    <input type="checkbox" className="checkbox" id="bookkeeping"/>
-                                    <label htmlFor="bookkeeping" className="checkbox-name">Счетоводство</label>
-                                </div>
-                                <div className="filter__section-list-item">
-                                    <input type="checkbox" className="checkbox" id="taxes"/>
-                                    <label htmlFor="taxes" className="checkbox-name">Налоги</label>
-                                </div>
-                            </div>
+                        <div className="filter__section-list-item">
+                            <input type="checkbox" className="checkbox" id="testing"/>
+                            <label htmlFor="testing" className="checkbox-name">Тестирование</label>
                         </div>
-                        <div className="study-field show">
-                            <div className="study-field__title">
-                                Юриспруденция
-                                <span className="study-field__title-arrow">V</span>
-                            </div>
-                            <div className="item-wrapper show">
-                                <div className="filter__section-list-item">
-                                    <input type="checkbox" className="checkbox" id="housing"/>
-                                    <label htmlFor="housing" className="checkbox-name">Жилищные вопросы</label>
-                                </div>
-                                <div className="filter__section-list-item">
-                                    <input type="checkbox" className="checkbox" id="Domestic"/>
-                                    <label htmlFor="Domestic" className="checkbox-name">Бытовые вопросы</label>
-                                </div>
-                                <div className="filter__section-list-item">
-                                    <input type="checkbox" className="checkbox" id="felonies"/>
-                                    <label htmlFor="felonies" className="checkbox-name">Тяжкие преступления</label>
-                                </div>
-                            </div>
+                        <div className="filter__section-list-item">
+                            <input type="checkbox" className="checkbox" id="DevOps"/>
+                            <label htmlFor="DevOps" className="checkbox-name">DevOps</label>
+                        </div>
+                        <div className="filter__section-list-item">
+                            <input type="checkbox" className="checkbox" id="analytics"/>
+                            <label htmlFor="analytics" className="checkbox-name">Аналитика</label>
+                        </div>
+                        <div className="filter__section-list-item">
+                            <input type="checkbox" className="checkbox" id="Administrating"/>
+                            <label htmlFor="Administrating" className="checkbox-name">Администрирование</label>
+                        </div>
+                        <div className="filter__section-list-item">
+                            <input type="checkbox" className="checkbox" id="accounting"/>
+                            <label htmlFor="accounting" className="checkbox-name">Бухгалтерия</label>
+                        </div>
+                        <div className="filter__section-list-item">
+                            <input type="checkbox" className="checkbox" id="kickback"/>
+                            <label htmlFor="kickback" className="checkbox-name">Откаты</label>
+                        </div>
+                        <div className="filter__section-list-item">
+                            <input type="checkbox" className="checkbox" id="bookkeeping"/>
+                            <label htmlFor="bookkeeping" className="checkbox-name">Счетоводство</label>
+                        </div>
+                        <div className="filter__section-list-item">
+                            <input type="checkbox" className="checkbox" id="taxes"/>
+                            <label htmlFor="taxes" className="checkbox-name">Налоги</label>
+                        </div>
+                        <div className="filter__section-list-item">
+                            <input type="checkbox" className="checkbox" id="housing"/>
+                            <label htmlFor="housing" className="checkbox-name">Жилищные вопросы</label>
+                        </div>
+                        <div className="filter__section-list-item">
+                            <input type="checkbox" className="checkbox" id="Domestic"/>
+                            <label htmlFor="Domestic" className="checkbox-name">Бытовые вопросы</label>
+                        </div>
+                        <div className="filter__section-list-item">
+                            <input type="checkbox" className="checkbox" id="felonies"/>
+                            <label htmlFor="felonies" className="checkbox-name">Тяжкие преступления</label>
                         </div>
                     </div>
                 </div>
