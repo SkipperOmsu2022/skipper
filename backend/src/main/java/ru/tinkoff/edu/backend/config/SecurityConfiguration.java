@@ -11,6 +11,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 
 /**
  * Java-конфигурации IoC контейнера, отвечающая за безопасность.
@@ -58,7 +60,13 @@ public class SecurityConfiguration {
     @Bean
     protected CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        CorsConfiguration corsConfig = new CorsConfiguration().applyPermitDefaultValues();
+        corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        corsConfig.setExposedHeaders(Arrays
+                .asList("Authorization", "Location", "Cache-Control", "Content-Type"));
+        corsConfig.setAllowedMethods(Arrays
+                .asList("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
+        source.registerCorsConfiguration("/**", corsConfig);
         return source;
     }
 
