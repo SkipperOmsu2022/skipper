@@ -31,7 +31,7 @@ const Common = () => {
     });
 
     useEffect(() => {
-        getUserData('')
+        getUserData('user/profile/settings/')
             .then(res => {
                 let date = res?.data?.dateOfBirth?.split('-');
                 if (date === undefined) date = ['', '', ''];
@@ -136,7 +136,7 @@ const Common = () => {
                 })}
                 onSubmit = {({firstName, lastName, patronymic, day, month, year, gender}) => {
                     const dateOfBirth = [year, month, day].join('-');
-                    setUserData({firstName, lastName, patronymic, dateOfBirth, aboutMe, croppedImg, gender}, '');
+                    setUserData({firstName, lastName, patronymic, dateOfBirth, aboutMe, croppedImg, gender}, 'user/profile/settings/');
                 }}
             >
                 {({ errors, setFieldValue, handleChange, touched, handleBlur, values, isValid}) => {

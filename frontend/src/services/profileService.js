@@ -7,7 +7,10 @@ const useProfileService = () => {
     const userId = localStorage.getItem('logged');
 
     const getUserData = async (url, id) => {
-        const res = await request(`${_apiBase}/api/user/${url}${id || userId}`, 'get');
+        const res = await request(`${_apiBase}/api/${url}${id || userId}`, 'get');
+
+        console.log(res);
+
         if (res?.status !== 200) {
             setResponse("Что-то пошло не так");
         }
@@ -15,7 +18,7 @@ const useProfileService = () => {
     }
     
     const setUserData = async (data, url) => {
-        const res = await request(`${_apiBase}/api/user/${url}${userId}`, 'put', data);
+        const res = await request(`${_apiBase}/api/${url}${userId}`, 'put', data);
         if (res?.status === 200) {
             setResponse("Изменения сохранены");
         // } else if (res?.status === 400 && url === 'account/'){

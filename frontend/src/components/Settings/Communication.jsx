@@ -13,7 +13,7 @@ const Communication = () => {
     });
 
     useEffect(() => {
-        getUserData('contacts/')
+        getUserData('user/profile/settings/contacts/')
             .then(res => {
                 setInitial({
                     linkVk: res?.data?.linkVk || '',

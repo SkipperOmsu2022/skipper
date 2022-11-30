@@ -22,7 +22,7 @@ const AppHeader = () => {
     const { auth } = useAuthContext();
 
     useEffect(() => {
-        getUserData('')
+        getUserData('user/profile/')
             .then(res => {
                 if(res) {
                     setFirstName(res.data.firstName)

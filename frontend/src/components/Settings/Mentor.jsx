@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { useState, useEffect } from "react";
 import cross from "../../resources/icons/cross.svg"
 import "../../shared/switch.scss"
 import {MutableSelect} from "../../shared/customSelect/CustomSelect";
 
 const Mentor = () => {
+    const {getUserData, setUserData, clearResponse} = useOutletContext();
     const [mentor, setMentor] = useState(false);
     const [aboutMe, setAboutMe] = useState("");
     const [specialty, setSpecialty] = useState("");
@@ -22,6 +24,16 @@ const Mentor = () => {
     const [certificateErr, setCertificateErr] = useState(false);
 
     const [otherInformation, setOtherInformation] = useState("");
+
+    useEffect(() => {
+        getUserData('user/profile/settings/mentor/')
+            .then(res => {
+                setMentor(res?.data?.isEnabledMentorStatus);
+                setAboutMe(res?.data?.aboutMeAsMentor);
+                setAboutMe(res?.data?.specialization);
+            });
+        return () => clearResponse();
+    }, []);
 
     const handleMentorChange = () => {
         if(mentor && aboutMe && specialty) {
@@ -119,7 +131,12 @@ const Mentor = () => {
         </div>;
     
     return (
-        <form id="contact-form">
+        <form 
+            id="contact-form" 
+            onSubmit={(e) => {
+                e.preventDefault();
+                console.log(1);
+            }}>
             <div className="settings__column">
                 <div className="settings__header">
                     НАСТРОЙКИ МЕНТОРА
