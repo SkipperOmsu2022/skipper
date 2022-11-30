@@ -39,7 +39,10 @@ const MentorProfilePage = ({mentor}) => {
 
     return (
         <div className="page-content">
-            <div className="app-section-name"> <span className="inactive" >Профиль |</span> Профиль ментора</div>
+            <div className="app-section-header"> 
+                <span className="inactive" >Профиль |&nbsp;</span>
+                Профиль ментора
+            </div>
             <div className="profile-wrapper">
                 <div className="app-section profile mentor">
                     <div className="profile__section">

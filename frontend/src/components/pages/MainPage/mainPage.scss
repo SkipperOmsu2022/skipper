@@ -1,6 +1,10 @@
 @import '../../../shared/variables.scss';
 
-.page-content.search-wrapper {
+.app-section-header.justify {
+    justify-content: space-between;
+}
+
+.search-wrapper {
     display: flex;
     flex-direction: row;
     gap: 20px;

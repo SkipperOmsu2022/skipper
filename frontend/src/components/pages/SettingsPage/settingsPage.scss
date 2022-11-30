@@ -20,20 +20,24 @@
     box-shadow: 0 0 0.625rem rgba(166, 166, 166, 0.6);
     border-radius: 0.625rem;
     z-index: 1;
-}
 
-.app-section-name {
-    cursor: default;
-    font-family: 'Montserrat';
-    z-index: 1;
-
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 24px;
-    color: $main-text;
-
-    .inactive {
-        color: $additional-text;
+    &-header {
+        display: flex;
+        flex-direction: row;
+        //justify-content: space-between;
+    
+        cursor: default;
+        font-family: 'Montserrat';
+        z-index: 1;
+    
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 24px;
+        color: $main-text;
+    
+        .inactive {
+            color: $additional-text;
+        }
     }
 }
 

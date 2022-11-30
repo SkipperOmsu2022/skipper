@@ -9,7 +9,7 @@ const SettingsPage = () => {
 
     return (
         <div className='page-content'>
-            <div className="app-section-name">
+            <div className="app-section-header">
                 Настройки профиля
             </div>
             <section className="app-section settings">

@@ -75,7 +75,7 @@ const ProfilePage = () => {
 
     return (
         <div className="page-content">
-            <div className="app-section-name">Профиль</div>
+            <div className="app-section-header">Профиль</div>
             <div className="app-section profile">
                 <div className="profile__section">
                     <div className="profile__section-row">
