@@ -30,10 +30,13 @@ const useLoginService = () => {
             form_data.append(key, data[key]);
         }
 
-        const res = await request(`${_apiBase}/api/auth/login`, 'post', form_data, {"Content-Type": 'multipart/form-data'});
+        const res = await request(`${_apiBase}/api/auth/login`, 'post', form_data, {"Content-Type": 'multipart/form-data',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE'
+        });
         
         console.log(res);
-        
+
         if (res?.status === 200) {
             localStorage.removeItem('logged');
             localStorage.setItem('logged', res.headers.location);

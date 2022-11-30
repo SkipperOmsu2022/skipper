@@ -48,12 +48,12 @@ const Common = () => {
                 setAboutMe(res?.data?.aboutMe || '')
             });
 
-            document.addEventListener("click", clearResponse);
+            // document.addEventListener("click", clearResponse);
             document.addEventListener("keydown", clearResponse);
 
         return () => {
             clearResponse();
-            document.removeEventListener("click",  clearResponse);
+            // document.removeEventListener("click",  clearResponse);
             document.removeEventListener("keydown",  clearResponse);
         };
     }, []);
@@ -209,6 +209,7 @@ const Common = () => {
                                         error={touched.day && errors.day}
                                         value={values.day}
                                         onChange={(selectedOption) => {
+                                            clearResponse();
                                             setFieldValue("day", selectedOption.value)
                                             handleChange("day");
                                         }}
@@ -222,6 +223,7 @@ const Common = () => {
                                         error={touched.month && errors.month}
                                         value={values.month}
                                         onChange={(selectedOption) => {
+                                            clearResponse();
                                             setFieldValue("month", selectedOption.value)
                                             handleChange("month");
                                         }}
@@ -235,6 +237,7 @@ const Common = () => {
                                         error={touched.year && errors.year}
                                         value={values.year}
                                         onChange={(selectedOption) => {
+                                            clearResponse();
                                             setFieldValue("year", selectedOption.value)
                                             handleChange("year");
                                         }}
@@ -259,6 +262,7 @@ const Common = () => {
                                     tabIndex={0}
                                     onKeyPress={(e) => {
                                         if (e.key === ' ' || e.key === "Enter") {
+                                            clearResponse();
                                             setFieldValue("gender", "MALE");
                                         }
                                     }}
@@ -278,6 +282,7 @@ const Common = () => {
                                     tabIndex={0}
                                     onKeyPress={(e) => {
                                         if (e.key === ' ' || e.key === "Enter") {
+                                            clearResponse();
                                             setFieldValue("gender", "FEMALE");
                                         }
                                     }}
@@ -291,7 +296,10 @@ const Common = () => {
                                     О себе: 
                                 </label>
                                 <textarea className="settings__input-group-text input textarea high" placeholder="Расскажите немного о себе:"
-                                    id="aboutMe" maxLength='400' value={aboutMe} onChange={(e) => setAboutMe(e.target.value)}/>
+                                    id="aboutMe" maxLength='400' value={aboutMe} onChange={(e) => {
+                                        clearResponse();
+                                        setAboutMe(e.target.value)
+                                    }}/>
                             </div>
                         </Form>
                     )}}

@@ -30,9 +30,9 @@ const Mentor = () => {
             .then(res => {
                 setMentor(res?.data?.isEnabledMentorStatus);
                 setAboutMe(res?.data?.aboutMeAsMentor);
-                setAboutMe(res?.data?.specialization);
+                setQualification(res?.data?.specialization);
             });
-        return () => clearResponse();
+        //return () => clearResponse();
     }, []);
 
     const handleMentorChange = () => {
@@ -135,7 +135,11 @@ const Mentor = () => {
             id="contact-form" 
             onSubmit={(e) => {
                 e.preventDefault();
-                console.log(1);
+                setUserData({
+                    isEnabledMentorStatus: mentor,
+                    aboutMeAsMentor: aboutMe,
+                    specialization: qualification
+                }, 'user/profile/settings/mentor/');
             }}>
             <div className="settings__column">
                 <div className="settings__header">
@@ -178,7 +182,7 @@ const Mentor = () => {
                         placeholder="Добавьте свою специализацию:"
                         id="specialty"
                         maxLength='100'
-                        value={specialty}
+                        value={qualification}
                         onChange={handleSpecialtyChange}/>
                 </div>
                 <div className="settings__input-group">

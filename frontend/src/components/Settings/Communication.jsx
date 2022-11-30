@@ -22,7 +22,7 @@ const Communication = () => {
                     linkTelegram: res?.data?.linkTelegram || ''
                 });
             });
-        return () => clearResponse();
+        //return () => clearResponse();
     }, []);
 
     return (
@@ -30,7 +30,7 @@ const Communication = () => {
             enableReinitialize
             initialValues = {initial}
             onSubmit = {(data) => {
-                setUserData({...data}, 'contacts/');
+                setUserData({...data}, 'user/profile/settings/contacts/');
             }}>
             <Form id="contact-form">
                 <div className="settings__column">

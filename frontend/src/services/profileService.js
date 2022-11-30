@@ -19,10 +19,11 @@ const useProfileService = () => {
     
     const setUserData = async (data, url) => {
         const res = await request(`${_apiBase}/api/${url}${userId}`, 'put', data);
+
+        console.log(res);
+
         if (res?.status === 200) {
             setResponse("Изменения сохранены");
-        // } else if (res?.status === 400 && url === 'account/'){
-        //     setResponse("Неверный текущий пароль");
         } else {
             setResponse("Что-то пошло не так");
         }

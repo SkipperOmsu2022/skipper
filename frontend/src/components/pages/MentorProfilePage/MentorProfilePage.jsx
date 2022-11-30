@@ -5,15 +5,26 @@ import "../../../shared/bookmark.scss"
 import bookmark from "../../../resources/icons/bookmark.svg";
 import "./mentorProfilePage.scss"
 import "../ProfilePage/profilePage.scss"
+import useProfileService from "../../../services/profileService";
 
 const MentorProfilePage = ({mentor}) => {
+    const {getUserData} = useProfileService();
     const [dropdownDisplay, setDropdownDisplay] = useState(false);
     const container = useRef();
-
+    
     useEffect(() => {
         document.addEventListener("click", handleClickOutside);
+
+        getUserData('user/profile/settings/mentor/')
+            .then(res => {
+                // setMentor(res?.data?.isEnabledMentorStatus);
+                // setAboutMe(res?.data?.aboutMeAsMentor);
+                // setQualification(res?.data?.specialization);
+            });
         
-        return () => document.removeEventListener("click",  handleClickOutside);
+        return () => {
+            document.removeEventListener("click",  handleClickOutside);
+        }
     }, []);
 
     const handleDropdownClick = () => setDropdownDisplay((dropdownDisplay) => !dropdownDisplay);
@@ -135,8 +146,8 @@ const MentorProfilePage = ({mentor}) => {
                     </div>
                     <div className="profile__btn-block full-width">
                         <span className="profile__btn-block-name">Консультация:</span>
+                        <button className="button">Забронировать</button>
                         <button className="button">Написать сообщение</button>
-                        <button className="button">Перейти на профиль ментора</button>
                     </div>
                 </div>
                 <div className="app-section profile mentor">

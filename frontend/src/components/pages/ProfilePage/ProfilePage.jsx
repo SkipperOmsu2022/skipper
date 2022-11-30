@@ -13,20 +13,20 @@ const ProfilePage = () => {
     const [firstName, setFirstName] = useState("Имя");
     const [lastName, setLastName] = useState("Фамилия");
     const [aboutMe, setAboutMe] = useState("");
+    const [specialization, setSpecialization] = useState("");
     const [communication, setCommunication] = useState([]);
 
     const [dropdownDisplay, setDropdownDisplay] = useState(false);
     const container = useRef();
 
     useEffect(() => {
-        getUserData('', userId)
+        getUserData('user/profile/', userId)
             .then(res => {
-                setFirstName(res?.data?.firstName)
-                setLastName(res?.data?.lastName)
-                setAboutMe(res?.data?.aboutMe)
-            })
-        getUserData('contacts/', userId)
-            .then(res => {
+                setFirstName(res?.data?.firstName);
+                setLastName(res?.data?.lastName);
+                setAboutMe(res?.data?.aboutMe);
+                setSpecialization(res?.data?.specialization)
+
                 setCommunication([
                     {name: 'Вконтакте', link: res?.data?.linkVk},
                     {name: 'Skype', link: res?.data?.linkSkype},
@@ -80,7 +80,7 @@ const ProfilePage = () => {
                         <img className="profile__photo" src={photo} alt="" />
                         <div className="profile__main-info">
                             <div className="name">{firstName} {lastName}</div>
-                            <div className="specialty">Специальность ментора</div>
+                            <div className="specialty">{specialization || 'Специальность ментора'}</div>
                         </div>
                     </div>
                     <div className="complain-btn" ref={container} onClick={handleDropdownClick}

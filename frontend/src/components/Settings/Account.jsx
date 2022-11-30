@@ -60,7 +60,7 @@ const Account = () => {
                         }),
             }), ['oldPassword', 'newPassword', 'repeatNewPassword'])}
             onSubmit = {(data, actions) => {
-                setUserData(data, 'account/');
+                setUserData(data, 'user/profile/settings/account/');
                 actions.setTouched({}, false);
             }}
         >
