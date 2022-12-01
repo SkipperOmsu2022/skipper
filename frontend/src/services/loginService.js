@@ -10,8 +10,6 @@ const useLoginService = () => {
     const signup = async (data) => {
         const res = await request(`${_apiBase}/api/auth/registration`, 'post', data);
         
-        console.log(res);
-        
         if (res?.status === 201) {
             localStorage.removeItem('logged');
             localStorage.setItem('logged', res.headers.location);
@@ -31,8 +29,6 @@ const useLoginService = () => {
         }
 
         const res = await request(`${_apiBase}/api/auth/login`, 'post', form_data, {"Content-Type": 'multipart/form-data'});
-        
-        console.log(res);
         if (res?.status === 200) {
             localStorage.removeItem('logged');
             localStorage.setItem('logged', res.headers.location);

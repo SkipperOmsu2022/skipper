@@ -9,8 +9,6 @@ const useProfileService = () => {
     const getUserData = async (url, id) => {
         const res = await request(`${_apiBase}/api/${url}${id || userId}`, 'get');
 
-        console.log(res);
-
         if (res?.status !== 200) {
             setResponse("Что-то пошло не так");
         }
@@ -19,8 +17,6 @@ const useProfileService = () => {
     
     const setUserData = async (data, url) => {
         const res = await request(`${_apiBase}/api/${url}${userId}`, 'put', data);
-
-        console.log(res);
 
         if (res?.status === 200) {
             setResponse("Изменения сохранены");
