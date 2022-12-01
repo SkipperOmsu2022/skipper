@@ -3,6 +3,7 @@ package ru.tinkoff.edu.backend.entities;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.enums.UserGender;
 
 import javax.persistence.*;
@@ -46,7 +47,7 @@ public class User {
     @Column(name="date_birth", table = "USERS_MAIN_INFO")
     private LocalDate dateBirth;
     @Column(name="gender", table = "USERS_MAIN_INFO")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private UserGender userGender;
     @Column(name="about", table = "USERS_MAIN_INFO", length = 400)
     private String about;
@@ -64,6 +65,7 @@ public class User {
     private Boolean isEnabledMentorStatus;
     @Column(name = "about_as_mentor", table = "MENTORS", length = 400, nullable = false)
     private String aboutAsMentor;
+    @Enumerated(EnumType.STRING)
     @Column(name = "specialization", table = "MENTORS", nullable = false)
-    private String specialization;
+    private MentorSpecialization mentorSpecialization;
 }
