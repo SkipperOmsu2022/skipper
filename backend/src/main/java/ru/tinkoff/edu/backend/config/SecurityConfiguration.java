@@ -35,22 +35,12 @@ public class SecurityConfiguration {
     // разрешить все запросы на /api**, но разрешить все остальные запросы
 
     @Bean
-<<<<<<< HEAD
-    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                    .antMatchers(AUTH_WHITELIST).permitAll()
-                    .antMatchers("/","/api/auth/login", "/api/auth/registration",
-                            "/authorization/signin", "/authorization/signup", "/static/**").permitAll()
-                    .anyRequest().authenticated()
-=======
     protected SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                     .antMatchers(AUTH_WHITELIST).permitAll()
                     .antMatchers("/api/auth/registration").permitAll()
                 .antMatchers("/api/**").permitAll()
->>>>>>> backend
                 .and()
                     .formLogin()
                 // временно разрешаю всё
@@ -77,15 +67,8 @@ public class SecurityConfiguration {
                 .asList("Authorization", "Location", "Cache-Control", "Content-Type"));
         corsConfig.setAllowedMethods(Arrays
                 .asList("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
-<<<<<<< HEAD
-
-        http.cors().configurationSource(request -> corsConfiguration);
-
-        return http.build();
-=======
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
->>>>>>> backend
     }
 
     /**
