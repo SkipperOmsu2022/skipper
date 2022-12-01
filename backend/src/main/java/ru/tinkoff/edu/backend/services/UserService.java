@@ -1,7 +1,8 @@
 package ru.tinkoff.edu.backend.services;
 
 import org.springframework.stereotype.Service;
-import ru.tinkoff.edu.backend.DTO.UserRegDTO;
+import ru.tinkoff.edu.backend.dto.UserLoginDTO;
+import ru.tinkoff.edu.backend.dto.UserRegDTO;
 import ru.tinkoff.edu.backend.entities.User;
 
 @Service
@@ -23,4 +24,7 @@ public interface UserService {
      * @param email email пользователя для поиска в БД.
      */
     User readByEmail(String email);
+
+    boolean isExistById(Long id);
+    User readByUserLoginDTO(UserLoginDTO user);
 }
