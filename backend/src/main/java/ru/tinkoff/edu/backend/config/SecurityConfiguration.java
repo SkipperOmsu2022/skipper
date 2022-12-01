@@ -2,13 +2,14 @@ package ru.tinkoff.edu.backend.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
@@ -34,6 +35,7 @@ public class SecurityConfiguration {
     // разрешить все запросы на /api**, но разрешить все остальные запросы
 
     @Bean
+<<<<<<< HEAD
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
@@ -41,21 +43,49 @@ public class SecurityConfiguration {
                     .antMatchers("/","/api/auth/login", "/api/auth/registration",
                             "/authorization/signin", "/authorization/signup", "/static/**").permitAll()
                     .anyRequest().authenticated()
+=======
+    protected SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                    .antMatchers(AUTH_WHITELIST).permitAll()
+                    .antMatchers("/api/auth/registration").permitAll()
+                .antMatchers("/api/**").permitAll()
+>>>>>>> backend
                 .and()
-                    .httpBasic();
-        http.csrf().disable();
+                    .formLogin()
+                // временно разрешаю всё
+                    .loginPage("/02943857098/475607y48f65h0h0/09827h4cy5").permitAll()
+                    .loginProcessingUrl("/api/au098уцгнп98th/834whg50987/924h5g90")
+                    .defaultSuccessUrl("/ap982407н5еппi/u4ц985рпser", true)
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                    .failureUrl("/api/auth/login/fail");
 
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-        corsConfiguration.setExposedHeaders(Arrays
+
+        http.csrf().disable();
+        http.cors();
+
+        return http.build();
+    }
+
+    @Bean
+    protected CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration corsConfig = new CorsConfiguration().applyPermitDefaultValues();
+        corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        corsConfig.setExposedHeaders(Arrays
                 .asList("Authorization", "Location", "Cache-Control", "Content-Type"));
-        corsConfiguration.addAllowedOriginPattern("*");
-        corsConfiguration.setAllowedMethods(Arrays
+        corsConfig.setAllowedMethods(Arrays
                 .asList("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
+<<<<<<< HEAD
 
         http.cors().configurationSource(request -> corsConfiguration);
 
         return http.build();
+=======
+        source.registerCorsConfiguration("/**", corsConfig);
+        return source;
+>>>>>>> backend
     }
 
     /**
