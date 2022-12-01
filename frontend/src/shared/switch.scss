@@ -1,0 +1,75 @@
+@import './variables.scss';
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 41px;
+    height: 24px;
+    &__slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+
+        &:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 2.5px;
+            bottom: 1.7px;
+            background-color: $button;
+            -webkit-transition: .2s;
+            transition: .2s;
+        }
+    }
+
+    &__circle {
+        border: 1.5px solid $additional-text;
+        border-radius: 17px;
+    }
+    &__circle:before {
+        border-radius: 50%;
+    }
+
+    &__input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    &__input:checked + &__slider:before {
+        -webkit-transform: translateX(15.1px);
+        -ms-transform: translateX(15.1px);
+        transform: translateX(15.1px);
+    }
+    &__input:disabled + &__slider:before {
+        filter: opacity(60%);
+    }
+}
+
+.state {
+    display: flex;
+    flex-direction: row;
+    margin: auto 0;
+    color: $additional-text;
+    .active {
+        color: $success;
+    }
+    .inactive {
+        color: $error;
+    }
+}
+.message {
+    user-select: none;
+    opacity:0;
+    padding-left: 5px;
+}
+.msg + .state>.message {
+    opacity:1;
+    transition: .3s;
+}

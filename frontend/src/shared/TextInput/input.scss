@@ -1,0 +1,46 @@
+@import '../variables.scss';
+
+.input {
+    border: 1px solid rgb(151, 151, 151);
+    border-radius: 10px;
+    &::placeholder {
+        color: $additional-text;
+    }
+    &:hover {
+        border-color: rgb(48, 48, 48);
+    }
+    &:focus {
+        outline: none;
+        border-color: rgb(48, 48, 48);
+    }
+}
+.group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    &__input {
+        font-family: 'Montserrat';
+        height: 3.563rem;
+    
+        padding-left: 1.312rem;
+        
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.436rem;
+        text-align: left;
+    }
+    &__error {
+        font-family: 'Montserrat';
+        font-weight: 400;
+        font-size: 0.85rem;
+        padding: 0.5rem 0rem 0rem;
+        color: $error;
+    }
+    .error:not(:focus) {
+        border-color: $error;
+        color: $error;
+        &::placeholder {
+            color: $error;
+        }
+    }
+}

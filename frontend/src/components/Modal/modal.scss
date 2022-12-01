@@ -1,0 +1,42 @@
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    
+    background-color: rgba(0,0,0,0.3);
+    &__content {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-height: 30vh;
+        width: 51vw;
+        overflow: hidden !important;
+        
+        
+        backdrop-filter: blur(2px);
+        border-radius: 10px;
+    }
+
+    &__image-wrapper {
+        position: relative;
+        min-height: 30rem;
+        max-height: 50rem;
+    }
+    
+    &__footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1rem 3rem;
+        height: 2.5rem;
+        background-color: white;
+        &-btn {
+            height: auto;
+            width: 10rem;
+        }
+    }
+}

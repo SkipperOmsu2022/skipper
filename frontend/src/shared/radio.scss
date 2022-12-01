@@ -1,0 +1,29 @@
+@import '../shared/variables.scss';
+
+.radio {
+    display: none;
+    &-name {
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+        color: $additional-text; 
+        &::before {
+            content: "";
+            background-clip: content-box;
+            padding: 4px;
+            border: 1px solid $additional-text;
+            border-radius: 50%;
+            height: 15px;
+            width: 15px;
+            min-height: 15px;
+            min-width: 15px;
+            margin-right: 20px;
+        }
+        &:hover {
+            filter: brightness(85%);
+        }
+    }
+}
+.radio:checked + .radio-name::before {
+    background-color: #FFDD2D;
+}

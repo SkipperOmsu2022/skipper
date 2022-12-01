@@ -1,0 +1,34 @@
+@import '../shared/variables.scss';
+
+.checkbox {
+    display: none;
+    &-name {
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+        
+        font-weight: 400;
+        font-size: 16px;
+        &::before {
+            content: '';
+            display: flex;
+            align-items: center;
+            padding: 1px 0px 3px 2px;
+            border: 1px solid $additional-text;
+            border-radius: 3px;
+            height: 16px;
+            width: 17px;
+            min-height: 10px;
+            min-width: 10px;
+            margin-right: 40px;
+        }
+        &:hover {
+            filter: brightness(95%);
+        }
+    }
+}
+
+.checkbox:checked + .checkbox-name::before {
+    content: url(../resources/icons/checked.svg);
+}

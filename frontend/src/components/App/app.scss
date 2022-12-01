@@ -1,0 +1,28 @@
+@import url(https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap);
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #F5F5F5 no-repeat center center;
+    background-size: cover;
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    background: rgb(206, 206, 206);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    max-height: 20%;
+	background: rgb(206, 206, 206); 
+}

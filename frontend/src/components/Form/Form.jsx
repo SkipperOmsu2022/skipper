@@ -1,19 +1,8 @@
-import { Formik, Form, useField } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from 'yup';
 
 import "./form.scss"
-
-const MyTextInput = ({...props}) => {
-    const [field, meta] = useField(props);
-    
-    return (
-        <div className="group">
-            <input {...props} {...field} className={`group__input${meta.touched && meta.error ? " error" : ""}`}/>
-                {meta.touched && meta.error ?
-            (<div className="group_error">{meta.error}</div>) : null}
-        </div>
-    )
-};
+import TextInput from "../../shared/TextInput/TextInput";
 
 const CustomForm = ({inputs, submit, id, clearResponse}) => {
 
@@ -48,8 +37,9 @@ const CustomForm = ({inputs, submit, id, clearResponse}) => {
             }
             
             return (
-                <MyTextInput
+                <TextInput
                     key={i}
+                    className='group__input'
                     id={id} 
                     name={name}
                     type={type}

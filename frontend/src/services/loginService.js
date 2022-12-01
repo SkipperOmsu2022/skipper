@@ -1,20 +1,21 @@
 import {useRequest} from "../hooks/useRequest"
 import useAuthContext from '../hooks/useAuthContext'
-import { useNavigate } from "react-router-dom";
 
-const useService = () => {
+const useLoginService = () => {
     const {request, loading, response, setResponse, error, clearResponse} = useRequest();
     const { setAuth } = useAuthContext();
-    const navigate = useNavigate();
 
     const _apiBase = 'http://127.0.0.1:8080';
 
     const signup = async (data) => {
-        const res = await request(`${_apiBase}/api/auth/registration`, data);
+        const res = await request(`${_apiBase}/api/auth/registration`, 'post', data);
+        
+        console.log(res);
         
         if (res?.status === 201) {
-            setResponse("Регистрация прошла успешно");
-            navigate("../signin");
+            localStorage.removeItem('logged');
+            localStorage.setItem('logged', res.headers.location);
+            setAuth(true);
         } else if (res?.status === 400) {
             setResponse("Такой пользователь уже существует");
         } else {
@@ -23,8 +24,15 @@ const useService = () => {
     }
 
     const signin = async (data) => {
-        const res = await request(`${_apiBase}/api/auth/login`, data);
+        let form_data = new FormData();
+
+        for ( var key in data ) {
+            form_data.append(key, data[key]);
+        }
+
+        const res = await request(`${_apiBase}/api/auth/login`, 'post', form_data, {"Content-Type": 'multipart/form-data'});
         
+        console.log(res);
         if (res?.status === 200) {
             localStorage.removeItem('logged');
             localStorage.setItem('logged', res.headers.location);
@@ -44,4 +52,4 @@ const useService = () => {
     return {request, loading, response, error, clearResponse, signup, signin, logout}
 }
 
-export default useService;
+export default useLoginService;
