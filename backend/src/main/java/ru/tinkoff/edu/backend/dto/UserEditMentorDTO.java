@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.backend.dto;
 
 import lombok.Data;
+import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,6 @@ public class UserEditMentorDTO {
     @NotBlank
     @Size(max = 400)
     private String aboutMeAsMentor;
-    @NotBlank
-    private String specialization;
+    @NotNull
+    private MentorSpecialization mentorSpecialization;
 }

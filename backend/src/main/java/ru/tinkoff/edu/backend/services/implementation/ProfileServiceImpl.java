@@ -106,7 +106,7 @@ public class ProfileServiceImpl implements ProfileService {
         UserEditMentorDTO user = new UserEditMentorDTO();
         user.setAboutMeAsMentor(userFromDB.getAboutAsMentor());
         user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
-        user.setSpecialization(userFromDB.getSpecialization());
+        user.setMentorSpecialization(userFromDB.getMentorSpecialization());
         return user;
     }
 
@@ -115,7 +115,7 @@ public class ProfileServiceImpl implements ProfileService {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setAboutAsMentor(user.getAboutMeAsMentor());
         userFromDB.setIsEnabledMentorStatus(user.getIsEnabledMentorStatus());
-        userFromDB.setSpecialization(user.getSpecialization());
+        userFromDB.setMentorSpecialization(user.getMentorSpecialization());
 
         userRepository.save(userFromDB);
     }
@@ -129,7 +129,7 @@ public class ProfileServiceImpl implements ProfileService {
         user.setPatronymic(userFromDB.getPatronymic());
         user.setAboutMe(userFromDB.getAbout());
         user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
-        user.setSpecialization(userFromDB.getSpecialization());
+        user.setMentorSpecialization(userFromDB.getMentorSpecialization());
         user.setLinkVk(userFromDB.getLinkVk());
         user.setLinkSkype(userFromDB.getLinkSkype());
         user.setLinkDiscord(userFromDB.getLinkDiscord());
