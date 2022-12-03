@@ -50,4 +50,3 @@ const useLoginService = () => {
 }
 
 export default useLoginService;
-
