@@ -14,7 +14,7 @@ import mainPageStore from "../../../store/mainPageStore";
 import Filter from "./Filter";
 import Spinner from "../../../shared/spinner/Spinner";
 
-const Mentors = observer(() => {
+const Mentors = () => {
     return (
         <>
             {mainPageStore.mentors.map((item, i) => (
@@ -69,9 +69,9 @@ const Mentors = observer(() => {
             ))}
         </>
     );
-})
+}
 
-const PaginatedItems = observer(({updateMentors}) => {
+const PaginatedItems = ({updateMentors}) => {
     const itemsPerPage = 6;
     const pageCount = Math.ceil( mainPageStore.totalMentors / itemsPerPage)
     
@@ -108,7 +108,7 @@ const PaginatedItems = observer(({updateMentors}) => {
             />
         </>
     );
-})
+}
 
 const MainPage = observer(() => {
     const {getMentors, loading, response, error} = useMentorSearchService();
