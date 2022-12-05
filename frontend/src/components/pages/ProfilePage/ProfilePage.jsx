@@ -4,7 +4,27 @@ import { useParams } from 'react-router-dom';
 import photo from "../../../resources/profile-photo.jpg"
 import "../../../shared/submitButton/button.scss"
 import useProfileService from "../../../services/profileService";
-    
+
+const communicationContent = (communication) => {
+    const links = communication?.filter((item) => (item.name && item.link)).map((item, i) => {
+        return (
+            <div className="profile__contact" key={i}>
+                <div className="profile__contact-label">
+                    {item.name}:
+                </div>
+                <div className="profile__contact-link">
+                    {item.link}
+                </div>
+            </div>
+        )
+    })
+    if (links?.length === 0) return (
+        <div className="profile__no-info">
+            Пользователь не предоставил контакты для связи
+        </div>
+    )
+    return links;
+}
 
 const ProfilePage = () => {
     const {getUserData} = useProfileService();
@@ -52,27 +72,6 @@ const ProfilePage = () => {
 
     const dropdown = `dropdown ${dropdownDisplay ? '' : 'hide'}`;
 
-    const communicationContent = () => {
-        const links = communication.filter((item) => (item.name && item.link)).map((item, i) => {
-            return (
-                <div className="profile__contact" key={i}>
-                    <div className="profile__contact-label">
-                        {item.name}:
-                    </div>
-                    <div className="profile__contact-link">
-                        {item.link}
-                    </div>
-                </div>
-            )
-        })
-        if (links.length === 0) return (
-            <div className="profile__no-info">
-                Пользователь не предоставил контакты для связи
-            </div>
-        )
-        return links;
-    }
-
     return (
         <div className="page-content">
             <div className="app-section-header">Профиль</div>
@@ -111,7 +110,7 @@ const ProfilePage = () => {
                 <div className="profile__section">
                     <div className="profile__section-column">
                         <div className="profile__section-label">Контакты</div>
-                        {communicationContent()}
+                        {communicationContent(communication)}
                     </div>
                     <div className="profile__btn-block">
                         {mentorStatus ? <button className="button">Перейти на профиль ментора</button> : null}
@@ -123,3 +122,4 @@ const ProfilePage = () => {
 }
 
 export default ProfilePage;
+export {communicationContent};

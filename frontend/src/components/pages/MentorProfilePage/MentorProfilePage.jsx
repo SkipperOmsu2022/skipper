@@ -1,4 +1,5 @@
-import { useEffect } from "react"
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from "react"
 
 import "./mentorProfilePage.scss"
 import "../ProfilePage/profilePage.scss"
@@ -11,14 +12,34 @@ import Lessons from "./Lessons"
 
 const MentorProfilePage = ({mentor}) => {
     const {getUserData} = useProfileService();
+    const {userId} = useParams();
     
+    const [firstName, setFirstName] = useState("Имя");
+    const [lastName, setLastName] = useState("Фамилия");
+    const [aboutAsMentor, setAboutAsMentor] = useState("");
+    const [mentorStatus, setMentorStatus] = useState(false);
+    const [dateOfRegistration, setDateOfRegistration] = useState(false);
+    const [mentorSpecializations, setMentorSpecializations] = useState("");
+    const [communication, setCommunication] = useState([]);
+
     useEffect(() => {
-        getUserData('user/profile/settings/mentor/')
+        getUserData('user/profile/settings/mentor/', userId)
             .then(res => {
-                // setMentor(res?.data?.isEnabledMentorStatus);
-                // setAboutMe(res?.data?.aboutMeAsMentor);
-                // setQualification(res?.data?.specialization);
-            });
+                setFirstName(res?.data?.firstName);
+                setLastName(res?.data?.lastName);
+                setAboutAsMentor(res?.data?.aboutAsMentor);
+                setMentorSpecializations(res?.data?.mentorSpecializations)
+                setDateOfRegistration(res?.data?.dateOfRegistration)
+
+                setMentorStatus(res?.data?.isEnabledMentorStatus)
+
+                setCommunication([
+                    {name: 'Вконтакте', link: res?.data?.linkVk},
+                    {name: 'Skype', link: res?.data?.linkSkype},
+                    {name: 'Discord', link: res?.data?.linkDiscord},
+                    {name: 'Telegram', link: res?.data?.linkTelegram}
+                ])
+            })
     }, []);
 
     return (
@@ -28,8 +49,8 @@ const MentorProfilePage = ({mentor}) => {
                 Профиль ментора
             </div>
             <div className="profile-wrapper">
-                <MainInfo/>
-                <AdditionalInfo/>
+                <MainInfo props={{firstName, lastName, mentorSpecializations, aboutAsMentor, communication}}/>
+                <AdditionalInfo props={{dateOfRegistration, mentorStatus}}/>
                 <Resume/>
                 <Reviews/>
                 <Lessons/>
