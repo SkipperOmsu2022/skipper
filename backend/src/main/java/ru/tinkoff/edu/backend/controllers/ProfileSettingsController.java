@@ -40,7 +40,7 @@ public class ProfileSettingsController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> editMainInfo(@PathVariable Long id, @Valid @RequestBody UserMainInfoDTO user) {
-        profileService.copyInUserFrom(id, user);
+        profileService.updateUser(id, user);
 
         return ResponseEntity.ok().build();
     }
@@ -55,7 +55,7 @@ public class ProfileSettingsController {
 
     @PutMapping("/account/{id}")
     public ResponseEntity<String> editAccountDetails(@PathVariable Long id, @Valid @RequestBody UserEditDTO user) {
-        profileService.copyInUserFrom(id, user);
+        profileService.updateUser(id, user);
 
         return ResponseEntity.ok().build();
     }
@@ -70,7 +70,7 @@ public class ProfileSettingsController {
 
     @PutMapping("/contacts/{id}")
     public ResponseEntity<String> editUserContacts(@PathVariable Long id, @Valid @RequestBody UserContactsDTO user) {
-        profileService.copyInUserFrom(id, user);
+        profileService.updateUser(id, user);
 
         return ResponseEntity.ok().build();
     }
@@ -85,7 +85,7 @@ public class ProfileSettingsController {
     @PutMapping("/mentor/{id}")
     public ResponseEntity<String> editMentorSettings(@PathVariable Long id,
                                                      @Valid @RequestBody UserEditMentorDTO user) {
-        profileService.copyInUserFrom(id, user);
+        profileService.updateUser(id, user);
         return ResponseEntity.ok().build();
     }
 }

@@ -36,7 +36,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void copyInUserFrom(Long id, UserMainInfoDTO user) {
+    public void updateUser(Long id, UserMainInfoDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setFirstName(user.getFirstName());
         userFromDB.setLastName(user.getLastName());
@@ -57,7 +57,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void copyInUserFrom(Long id, UserEditDTO user) {
+    public void updateUser(Long id, UserEditDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         if(!passwordEncoder.matches(user.getOldPassword(), userFromDB.getPassword())) {
             throw new IncorrectCurrentPasswordException("Incorrect current password!!");
@@ -90,7 +90,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void copyInUserFrom(Long id, UserContactsDTO user) {
+    public void updateUser(Long id, UserContactsDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setLinkVk(user.getLinkVk());
         userFromDB.setLinkSkype(user.getLinkSkype());
@@ -111,7 +111,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void copyInUserFrom(Long id, UserEditMentorDTO user) {
+    public void updateUser(Long id, UserEditMentorDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setAboutAsMentor(user.getAboutMeAsMentor());
         userFromDB.setIsEnabledMentorStatus(user.getIsEnabledMentorStatus());
