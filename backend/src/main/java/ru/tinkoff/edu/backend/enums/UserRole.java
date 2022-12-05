@@ -8,12 +8,12 @@ public enum UserRole {
     MENTEE("Ученик"),
     MENTOR("Ментор");
 
-    private final String status;
-    UserRole(String status) {
-        this.status = status;
+    private final String name;
+    UserRole(String name) {
+        this.name = name;
     }
 
     public String getStringUserRole() {
-        return status;
+        return name;
     }
 }
