@@ -39,21 +39,25 @@ const Mentor = () => {
     const [certificateErr, setCertificateErr] = useState(false);
 
     useEffect(() => {
+        let tmp;
         getSpecializationsList()
-            .then(res => 
-                setSpecializationOptions(Object.entries(res)?.map((item) => {
-                    const obj = {value: item[0], label: item[1]}
-                    return obj
-                }))
-            );
-        getUserData('user/profile/settings/mentor/')
             .then(res => {
-                setMentor(res?.data?.isEnabledMentorStatus || false);
-                setAboutMe(res?.data?.aboutMeAsMentor || '');
-                setMentorSpecializations(res?.data?.mentorSpecializations?.map((item) => 
-                    specializationOptions.find(option => option.value === item)
-                ) || '');
-            });
+                tmp = res;
+                setSpecializationOptions(tmp)
+                console.log(specializationOptions)
+            })
+            .then(() => {
+                getUserData('user/profile/settings/mentor/')
+                    .then(res => {
+                        console.log(res?.data?.mentorSpecializations)
+                        console.log(specializationOptions)
+                        setMentor(res?.data?.isEnabledMentorStatus || false);
+                        setAboutMe(res?.data?.aboutMeAsMentor || '');
+                        setMentorSpecializations(res?.data?.mentorSpecializations?.map((item) => 
+                            tmp.find(option => option.value === item)
+                        ) || '');
+                    });
+            })
         return () => clearResponse();
     }, []);
     
@@ -166,14 +170,14 @@ const Mentor = () => {
                             Текущий статус:
                         </label>
                         <label className={`switch ${aboutMe && mentorSpecializations.length ? "" : "msg"}`}>
-                                <input
-                                    id="switch"
-                                    className="switch__input"
-                                    type="checkbox"
-                                    disabled={!aboutMe || !mentorSpecializations.length}
-                                    checked={mentor}
-                                    onChange={handleSwitchChange}/>
-                                <div className="switch__slider switch__circle"></div>
+                            <input
+                                id="switch"
+                                className="switch__input"
+                                type="checkbox"
+                                disabled={!aboutMe || !mentorSpecializations.length}
+                                checked={mentor}
+                                onChange={handleSwitchChange}/>
+                            <div className="switch__slider switch__circle"></div>
                         </label>
                         {switchMessage}
                 </div>

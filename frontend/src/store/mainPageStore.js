@@ -25,6 +25,7 @@ class mainPageStore {
     ]; */
 
     mentors = []
+    filter = []
 
     offset = 0;
     totalMentors = 500;
@@ -45,9 +46,15 @@ class mainPageStore {
         this.offset = newOffset;
         this.mentors = mentors;
     }
-
     changeFavorite(mentor) {
         mentor.favorite =  !mentor.favorite;
+    }
+    
+    setFilter = (filter) => {
+        this.filter = filter;
+    }
+    changeChecked(specialization) {
+        specialization.checked =  !specialization.checked;
     }
 }
 
