@@ -3,6 +3,8 @@ package ru.tinkoff.edu.backend.dto;
 import lombok.Data;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 
+import java.util.Set;
+
 @Data
 public class UserProfileDTO {
     private String firstName;
@@ -10,7 +12,7 @@ public class UserProfileDTO {
     private String patronymic;
     private String aboutMe;
     private Boolean isEnabledMentorStatus;
-    private MentorSpecialization mentorSpecialization;
+    private Set<MentorSpecialization> mentorSpecializations;
     private String linkVk;
     private String linkSkype;
     private String linkDiscord;

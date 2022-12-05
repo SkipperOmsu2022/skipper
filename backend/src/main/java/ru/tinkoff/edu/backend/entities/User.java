@@ -8,6 +8,7 @@ import ru.tinkoff.edu.backend.enums.UserGender;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
@@ -65,7 +66,9 @@ public class User {
     private Boolean isEnabledMentorStatus;
     @Column(name = "about_as_mentor", table = "MENTORS", length = 400, nullable = false)
     private String aboutAsMentor;
+    @ElementCollection(targetClass = MentorSpecialization.class)
+    @CollectionTable(name = "MENTOR_SPECIALIZATIONS", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    @Column(name = "specialization", table = "MENTORS", nullable = false)
-    private MentorSpecialization mentorSpecialization;
+    @Column(name = "specialization", nullable = false)
+    private Set<MentorSpecialization> mentorSpecializations;
 }
