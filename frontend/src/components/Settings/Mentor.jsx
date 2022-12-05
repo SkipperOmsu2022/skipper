@@ -56,7 +56,7 @@ const Mentor = () => {
             });
         return () => clearResponse();
     }, []);
-    console.log(specializationOptions)
+    
     const switchMessage = mentor ? 
         <div className="state">
             <span className="active">Активный</span>
@@ -82,7 +82,6 @@ const Mentor = () => {
         }
     }
     const handleSpecializationChange = (e) => {
-        console.log(e?.length); 
         setMentorSpecializations(Array.isArray(e) ? e : [])
         if (!aboutMe || e?.length === 0) {
             setMentor(false)
