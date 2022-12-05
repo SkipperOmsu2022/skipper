@@ -8,7 +8,7 @@ const Mentor = () => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
     const [mentor, setMentor] = useState(false);
     const [aboutMe, setAboutMe] = useState("");
-    const [specialization, setSpecialization] = useState([]);
+    const [mentorSpecializations, setMentorSpecializations] = useState([]);
 
     const [educationStart, setEducationStart] = useState("");
     const [educationEnd, setEducationEnd] = useState("");
@@ -26,7 +26,9 @@ const Mentor = () => {
             .then(res => {
                 setMentor(res?.data?.isEnabledMentorStatus || false);
                 setAboutMe(res?.data?.aboutMeAsMentor || '');
-                setSpecialization(res?.data?.specialization || '');
+                setMentorSpecializations(res?.data?.mentorSpecializations?.map((item) => 
+                    specializationOptions.find(option => option.value === item)
+                ) || '');
             });
         return () => clearResponse();
     }, []);
@@ -43,38 +45,37 @@ const Mentor = () => {
         </div>;
 
     const handleSwitchChange = () => {
-        if(mentor && aboutMe && specialization.length) {
+        if(mentor && aboutMe && mentorSpecializations.length) {
             setMentor(false)
-        } else if (aboutMe && specialization.length) {
+        } else if (aboutMe && mentorSpecializations.length) {
             setMentor(true)
         }
     }
     const handleAboutMeChange = (e) => {
         setAboutMe(e.target.value)
-        if (!e.target.value || !specialization.length) {
+        if (!e.target.value || !mentorSpecializations.length) {
             setMentor(false)
         }
     }
     const handleSpecializationChange = (e) => {
         console.log(e?.length); 
-        setSpecialization(Array.isArray(e) ? e : [])
+        setMentorSpecializations(Array.isArray(e) ? e : [])
         if (!aboutMe || e?.length === 0) {
             setMentor(false)
         }
     }
 
     const specializationOptions = [
-        { value: 'Программирование', label: 'Программирование' },
-        { value: 'Тестирование', label: 'Тестирование' },
-        { value: 'DevOps', label: 'DevOps' },
-        { value: 'Аналитика', label: 'Аналитика' },
-        { value: 'Администрирование', label: 'Администрирование' },
-        { value: 'Откаты', label: 'Откаты' },
-        { value: 'Счетоводство', label: 'Счетоводство' },
-        { value: 'Налоги', label: 'Налоги' },
-        { value: 'Жилищные вопросы', label: 'Жилищные вопросы' },
-        { value: 'Бытовые вопросы', label: 'Бытовые вопросы' },
-        { value: 'Тяжкие преступления', label: 'Тяжкие преступления' }
+        { value: 'JOURNALISTIC_ACTIVITY', label: 'Журналистская деятельность' },
+        { value: 'TESTING_SOFTWATE', label: 'Тестирование' },
+        { value: 'STOCK_MARKET', label: 'Фондовый рынок' },
+        { value: 'BUSINESS_ANALYTICS', label: 'Бухгалтерия' },
+        { value: 'ADMINISTRATION_SOFTWARE', label: 'Администрирование' },
+        { value: 'PROGRAMMING', label: 'Программирование' },
+        { value: 'JURISPRUDENCE', label: 'Юриспруденция' },
+        { value: 'ACCOUNTING', label: 'Налоги' },
+        { value: 'DEV_OPS', label: 'DevOps' },
+        { value: 'SCHOOL_EDUCATION', label: 'Школьное образование' }
     ]
 
     const onCertificateChange = (e) => {
@@ -143,7 +144,7 @@ const Mentor = () => {
                 setUserData({
                     isEnabledMentorStatus: mentor,
                     aboutMeAsMentor: aboutMe,
-                    specialization: specialization
+                    mentorSpecializations: mentorSpecializations.map((item) => item.value)
                 }, 'user/profile/settings/mentor/');
             }}>
             <div className="settings__column">
@@ -154,12 +155,12 @@ const Mentor = () => {
                         <label htmlFor="switch" className="settings__input-group-label">
                             Текущий статус:
                         </label>
-                        <label className={`switch ${aboutMe && specialization.length ? "" : "msg"}`}>
+                        <label className={`switch ${aboutMe && mentorSpecializations.length ? "" : "msg"}`}>
                                 <input
                                     id="switch"
                                     className="switch__input"
                                     type="checkbox"
-                                    disabled={!aboutMe || !specialization.length}
+                                    disabled={!aboutMe || !mentorSpecializations.length}
                                     checked={mentor}
                                     onChange={handleSwitchChange}/>
                                 <div className="switch__slider switch__circle"></div>
@@ -185,7 +186,7 @@ const Mentor = () => {
                         <div className="group">
                             <MultipleSelect
                                 placeholder="Добавьте свою специализацию"
-                                value={specialization}
+                                value={mentorSpecializations}
                                 multipleOptions={specializationOptions}
                                 noOptionsMessage='Специальностей не найдено'
                                 onChange={handleSpecializationChange}
