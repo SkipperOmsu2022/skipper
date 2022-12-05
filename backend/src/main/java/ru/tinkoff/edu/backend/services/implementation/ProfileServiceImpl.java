@@ -128,7 +128,26 @@ public class ProfileServiceImpl implements ProfileService {
         user.setLastName(userFromDB.getLastName());
         user.setPatronymic(userFromDB.getPatronymic());
         user.setAboutMe(userFromDB.getAbout());
+        user.setDateOfRegistration(userFromDB.getDateOfRegistration());
         user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
+        user.setMentorSpecializations(userFromDB.getMentorSpecializations());
+        user.setLinkVk(userFromDB.getLinkVk());
+        user.setLinkSkype(userFromDB.getLinkSkype());
+        user.setLinkDiscord(userFromDB.getLinkDiscord());
+        user.setLinkTelegram(userFromDB.getLinkTelegram());
+        return user;
+    }
+
+    @Override
+    public UserMentorProfileDTO getUserMentorProfile(Long id) {
+        User userFromDB = userRepository.getReferenceById(id);
+        UserMentorProfileDTO user = new UserMentorProfileDTO();
+        user.setFirstName(userFromDB.getFirstName());
+        user.setLastName(userFromDB.getLastName());
+        user.setPatronymic(userFromDB.getPatronymic());
+        user.setAboutAsMentor(userFromDB.getAboutAsMentor());
+        user.setProfileImageUrl("/api/user/img/" + id);
+        user.setDateOfRegistration(userFromDB.getDateOfRegistration());
         user.setMentorSpecializations(userFromDB.getMentorSpecializations());
         user.setLinkVk(userFromDB.getLinkVk());
         user.setLinkSkype(userFromDB.getLinkSkype());

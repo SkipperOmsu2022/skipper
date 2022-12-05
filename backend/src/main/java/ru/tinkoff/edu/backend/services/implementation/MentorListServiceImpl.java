@@ -23,6 +23,7 @@ public class MentorListServiceImpl implements MentorListService {
                 .stream()
                 .filter(User::getIsEnabledMentorStatus)
                 .map(user -> MentorListItemDTO.builder()
+                        .id(user.getId())
                         .firstName(user.getFirstName())
                         .lastName(user.getLastName())
                         .mentorSpecializations(user.getMentorSpecializations())

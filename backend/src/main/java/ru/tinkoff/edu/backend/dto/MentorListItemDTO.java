@@ -9,6 +9,7 @@ import java.util.Set;
 @Data
 @Builder
 public class MentorListItemDTO {
+    private Long id;
     private String firstName;
     private String lastName;
     private Set<MentorSpecialization> mentorSpecializations;

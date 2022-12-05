@@ -6,6 +6,7 @@ import ru.tinkoff.edu.backend.dto.*;
 @Service
 public interface ProfileService {
     UserProfileDTO getUserProfile(Long id);
+    UserMentorProfileDTO getUserMentorProfile(Long id);
     void updateUser(Long id, UserMainInfoDTO user);
     void updateUser(Long id, UserEditDTO user);
     void updateUser(Long id, UserContactsDTO user);
