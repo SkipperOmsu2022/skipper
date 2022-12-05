@@ -69,6 +69,6 @@ public class User {
     @ElementCollection(targetClass = MentorSpecialization.class)
     @CollectionTable(name = "MENTOR_SPECIALIZATIONS", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    @Column(name = "specialization", nullable = false)
+    @Column(name = "mentor_specialization", nullable = false)
     private Set<MentorSpecialization> mentorSpecializations;
 }

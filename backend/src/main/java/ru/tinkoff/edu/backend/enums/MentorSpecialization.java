@@ -1,5 +1,11 @@
 package ru.tinkoff.edu.backend.enums;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 public enum MentorSpecialization {
     PROGRAMMING("Программирование"),
     TESTING_SOFTWATE("Тестирование ПО"),
@@ -18,5 +24,10 @@ public enum MentorSpecialization {
 
     public String getStringMentorSpecialization() {
         return designation;
+    }
+
+    public static Map<MentorSpecialization, String> getMapMentorSpecialization() {
+        return Arrays.stream(MentorSpecialization.values())
+                .collect(Collectors.toMap(Function.identity(), MentorSpecialization::getStringMentorSpecialization));
     }
 }

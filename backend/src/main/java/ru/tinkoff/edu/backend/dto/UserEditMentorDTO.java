@@ -16,5 +16,7 @@ public class UserEditMentorDTO {
     @Size(max = 400)
     private String aboutMeAsMentor;
     @NotNull
+    @Size(min = 1, message
+            = "Mentor specialization must have at least one element!")
     private Set<MentorSpecialization> mentorSpecializations;
 }
