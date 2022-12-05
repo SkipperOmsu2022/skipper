@@ -1,14 +1,31 @@
 import { useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
+import useSpecializationService from "../../services/SpecializationService";
 import cross from "../../resources/icons/cross.svg"
 import "../../shared/switch.scss"
 import {MutableSelect, MultipleSelect} from "../../shared/customSelect/CustomSelect";
 
 const Mentor = () => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
+    const {getSpecializationsList} = useSpecializationService();
     const [mentor, setMentor] = useState(false);
     const [aboutMe, setAboutMe] = useState("");
+    const [specializationOptions, setSpecializationOptions] = useState("");
+    
     const [mentorSpecializations, setMentorSpecializations] = useState([]);
+
+    /* const specializationOptions = [
+        { value: 'JOURNALISTIC_ACTIVITY', label: 'Журналистская деятельность' },
+        { value: 'TESTING_SOFTWATE', label: 'Тестирование' },
+        { value: 'STOCK_MARKET', label: 'Фондовый рынок' },
+        { value: 'BUSINESS_ANALYTICS', label: 'Бухгалтерия' },
+        { value: 'ADMINISTRATION_SOFTWARE', label: 'Администрирование' },
+        { value: 'PROGRAMMING', label: 'Программирование' },
+        { value: 'JURISPRUDENCE', label: 'Юриспруденция' },
+        { value: 'ACCOUNTING', label: 'Налоги' },
+        { value: 'DEV_OPS', label: 'DevOps' },
+        { value: 'SCHOOL_EDUCATION', label: 'Школьное образование' }
+    ] */
 
     const [educationStart, setEducationStart] = useState("");
     const [educationEnd, setEducationEnd] = useState("");
@@ -22,6 +39,13 @@ const Mentor = () => {
     const [certificateErr, setCertificateErr] = useState(false);
 
     useEffect(() => {
+        getSpecializationsList()
+            .then(res => 
+                setSpecializationOptions(Object.entries(res)?.map((item) => {
+                    const obj = {value: item[0], label: item[1]}
+                    return obj
+                }))
+            );
         getUserData('user/profile/settings/mentor/')
             .then(res => {
                 setMentor(res?.data?.isEnabledMentorStatus || false);
@@ -32,7 +56,7 @@ const Mentor = () => {
             });
         return () => clearResponse();
     }, []);
-
+    console.log(specializationOptions)
     const switchMessage = mentor ? 
         <div className="state">
             <span className="active">Активный</span>
@@ -64,19 +88,6 @@ const Mentor = () => {
             setMentor(false)
         }
     }
-
-    const specializationOptions = [
-        { value: 'JOURNALISTIC_ACTIVITY', label: 'Журналистская деятельность' },
-        { value: 'TESTING_SOFTWATE', label: 'Тестирование' },
-        { value: 'STOCK_MARKET', label: 'Фондовый рынок' },
-        { value: 'BUSINESS_ANALYTICS', label: 'Бухгалтерия' },
-        { value: 'ADMINISTRATION_SOFTWARE', label: 'Администрирование' },
-        { value: 'PROGRAMMING', label: 'Программирование' },
-        { value: 'JURISPRUDENCE', label: 'Юриспруденция' },
-        { value: 'ACCOUNTING', label: 'Налоги' },
-        { value: 'DEV_OPS', label: 'DevOps' },
-        { value: 'SCHOOL_EDUCATION', label: 'Школьное образование' }
-    ]
 
     const onCertificateChange = (e) => {
         try {

@@ -30,7 +30,18 @@ const useProfileService = () => {
         return res;
     }
 
-    return {request, loading, response, error, clearResponse, getUserData, setUserData}
+    const getSpecializationsList = async () => {
+        const res = await request(`${_apiBase}/api/list/specializations`, 'get');
+
+        console.log(res);
+
+        if (res?.status !== 200) {
+            setResponse("Что-то пошло не так");
+        }
+        return res;
+    }
+
+    return {request, loading, response, error, clearResponse, getUserData, setUserData, getSpecializationsList}
 }
 
 export default useProfileService;
