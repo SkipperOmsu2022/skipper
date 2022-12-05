@@ -5,6 +5,10 @@ import photo from "../../../resources/profile-photo.jpg"
 import "../../../shared/submitButton/button.scss"
 import useProfileService from "../../../services/profileService";
 
+//
+import useSpecializationService from "../../../services/SpecializationService";
+//
+
 const communicationContent = (communication) => {
     const links = communication?.filter((item) => (item.name && item.link)).map((item, i) => {
         return (
@@ -27,6 +31,9 @@ const communicationContent = (communication) => {
 }
 
 const ProfilePage = () => {
+    //
+    const {getSpecializationsList} = useSpecializationService();
+    //
     const {getUserData} = useProfileService();
     const {userId} = useParams();
 
@@ -41,20 +48,28 @@ const ProfilePage = () => {
     const container = useRef();
 
     useEffect(() => {
-        getUserData('user/profile/', userId)
+        let tmp;
+        getSpecializationsList()
             .then(res => {
-                setFirstName(res?.data?.firstName);
-                setLastName(res?.data?.lastName);
-                setAboutMe(res?.data?.aboutMe);
-                setSpecialization(res?.data?.specialization)
-                setMentorStatus(res?.data?.isEnabledMentorStatus)
+                tmp = res;
+            })
+            .then(() => {
+                getUserData('user/profile/', userId)
+                    .then(res => {
+                        setFirstName(res?.data?.firstName);
+                        setLastName(res?.data?.lastName);
+                        setAboutMe(res?.data?.aboutMe);
+                        setSpecialization(res?.data?.mentorSpecializations?.map((item) => 
+                            tmp.find(option => option.value === item)).map((item) => item.label).join(', '))
+                        setMentorStatus(res?.data?.isEnabledMentorStatus)
 
-                setCommunication([
-                    {name: 'Вконтакте', link: res?.data?.linkVk},
-                    {name: 'Skype', link: res?.data?.linkSkype},
-                    {name: 'Discord', link: res?.data?.linkDiscord},
-                    {name: 'Telegram', link: res?.data?.linkTelegram}
-                ])
+                        setCommunication([
+                            {name: 'Вконтакте', link: res?.data?.linkVk},
+                            {name: 'Skype', link: res?.data?.linkSkype},
+                            {name: 'Discord', link: res?.data?.linkDiscord},
+                            {name: 'Telegram', link: res?.data?.linkTelegram}
+                        ])
+                    })
             })
 
         document.addEventListener("click", handleClickOutside);
@@ -81,7 +96,7 @@ const ProfilePage = () => {
                         <img className="profile__photo" src={photo} alt="" />
                         <div className="profile__main-info">
                             <div className="name">{firstName} {lastName}</div>
-                            <div className="specialty">{specialization || 'Специальность ментора'}</div>
+                            <div className="specialty">{specialization}</div>
                         </div>
                     </div>
                     <div className="complain-btn" ref={container} onClick={handleDropdownClick}

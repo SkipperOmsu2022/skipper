@@ -5,8 +5,9 @@ import photo from "../../../resources/profile-photo.jpg"
 import bookmark from "../../../resources/icons/bookmark.svg";
 import "../../../shared/bookmark.scss"
 
-const MainInfo = (props) => {
+const MainInfo = ({props}) => {
     const {firstName, lastName, mentorSpecializations, aboutAsMentor, communication} = props;
+    console.log(firstName)
 
     useEffect(() => {
         document.addEventListener("click", handleClickOutside);
@@ -36,7 +37,7 @@ const MainInfo = (props) => {
                     <img className="profile__photo" src={photo} alt="" />
                     <div className="profile__main-info">
                         <div className="name">{firstName} {lastName}</div>
-                        <div className="specialty">Специальность ментора</div>
+                        <div className="specialty">{mentorSpecializations}</div>
                     </div>
                     <label className="profile__bookmark" htmlFor="switch">
                         <input type="checkbox" className="bookmark-input" id="switch"/>

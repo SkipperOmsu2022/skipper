@@ -79,6 +79,7 @@
             line-height: 24px;
         }
         .specialty {
+            max-width: 270px;
             color: $additional-text
         }
     }
@@ -180,7 +181,11 @@
             font-size: 14px;
             color: $header;
             &.inactive {
+                cursor: auto;
                 background-color: $border;
+                &:hover {
+                    filter: none
+                }
             }
         }
     }

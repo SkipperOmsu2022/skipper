@@ -14,19 +14,6 @@ const Mentor = () => {
     
     const [mentorSpecializations, setMentorSpecializations] = useState([]);
 
-    /* const specializationOptions = [
-        { value: 'JOURNALISTIC_ACTIVITY', label: 'Журналистская деятельность' },
-        { value: 'TESTING_SOFTWATE', label: 'Тестирование' },
-        { value: 'STOCK_MARKET', label: 'Фондовый рынок' },
-        { value: 'BUSINESS_ANALYTICS', label: 'Бухгалтерия' },
-        { value: 'ADMINISTRATION_SOFTWARE', label: 'Администрирование' },
-        { value: 'PROGRAMMING', label: 'Программирование' },
-        { value: 'JURISPRUDENCE', label: 'Юриспруденция' },
-        { value: 'ACCOUNTING', label: 'Налоги' },
-        { value: 'DEV_OPS', label: 'DevOps' },
-        { value: 'SCHOOL_EDUCATION', label: 'Школьное образование' }
-    ] */
-
     const [educationStart, setEducationStart] = useState("");
     const [educationEnd, setEducationEnd] = useState("");
     const [qualification, setQualification] = useState("");
