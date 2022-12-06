@@ -8,17 +8,21 @@ import photo from "../../../resources/profile-photo.jpg"
 import ReactPaginate from 'react-paginate';
 import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
+import { Link } from 'react-router-dom';
 import useMentorSearchService from "../../../services/mentorSearchService";
 import mainPageStore from "../../../store/mainPageStore";
 
 import Filter from "./Filter";
 import Spinner from "../../../shared/spinner/Spinner";
 
-const Mentors = () => {
+const Mentors = observer(() => {
     return (
         <>
-            {mainPageStore.mentors.map((item, i) => (
-                <div className="mentor" key={i}>
+            {mainPageStore.currentMentors.map((item, i) => {
+                const specializations = item.mentorSpecializations.map((item) => 
+                    mainPageStore.filter.find(option => option.value === item)).map((item) => item.label).join(', ')
+                return (
+                <div className="mentor" key={item.id}>
                     <div className="mentor__photo">
                         <img className="mentor__photo-img" src={photo} alt="user-avatar"/>
                         <div className="rating">
@@ -30,12 +34,10 @@ const Mentors = () => {
                         <div className="header">
                             <div className="header__column">
                                 <div className="header__column-name">
-                                    {/* {`${item.firstName} ${item.lastName}`} */}
-                                    {item.name}
+                                    {`${item.firstName} ${item.lastName}`}
                                 </div>
                                 <div className="header__column-specialty">
-                                    {/* {item.specialty} */}
-                                    {item.email}
+                                    {specializations}
                                 </div>
                             </div>
                             <label className="header__bookmark bookmark" htmlFor={`switch${i}`}>
@@ -50,8 +52,7 @@ const Mentors = () => {
                             </label>
                         </div>
                         <div className="description">
-                            {/* {item.aboutMe} */}
-                            {item.body}
+                            {item.aboutMeAsMentor}
                         </div>
                     </div>
                     <div className="mentor__divider"/>
@@ -62,22 +63,28 @@ const Mentors = () => {
                         </div>
                         <div className="mentor__interaction-btn-block">
                             <button className="button">Забронировать</button>
-                            <button className="button pale">Посмотреть профиль</button>
+                            <Link
+                                to={`/profile-mentor/${item.id}`}
+                                className="button pale"
+                            >
+                                Посмотреть профиль
+                            </Link>
                         </div>
                     </div>
                 </div>
-            ))}
+            )})}
         </>
     );
-}
+})
 
-const PaginatedItems = ({updateMentors}) => {
+const PaginatedItems = observer(() => {
     const itemsPerPage = 6;
-    const pageCount = Math.ceil( mainPageStore.totalMentors / itemsPerPage)
+    const pageCount = Math.ceil(mainPageStore.pageCount)
     
     const handlePageClick = (event) => {
         const newOffset = event.selected * itemsPerPage % mainPageStore.totalMentors;
-        updateMentors('', newOffset);
+
+        mainPageStore.updateCurrentMentors(newOffset);
         window.scrollTo({
             top: 0,
             left: 0,
@@ -90,6 +97,7 @@ const PaginatedItems = ({updateMentors}) => {
             <ReactPaginate
                 nextLabel=">"
                 onPageChange={handlePageClick}
+                forcePage={mainPageStore.offset / 6}
                 pageRangeDisplayed={6}
                 marginPagesDisplayed={0}
                 pageCount={pageCount}
@@ -108,22 +116,22 @@ const PaginatedItems = ({updateMentors}) => {
             />
         </>
     );
-}
+})
 
 const MainPage = observer(() => {
     const {getMentors, loading, response, error} = useMentorSearchService();
 
     useEffect(() => {
-        updateMentors('', mainPageStore.offset);
+        updateMentors('');
     }, []);
 
-    const updateMentors = async (url, offset) => {
-        const data = await getMentors(`https://jsonplaceholder.typicode.com/comments`, offset);
+    const updateMentors = async () => {
+        const data = await getMentors(``);
         
-        mainPageStore.setMentors(data, offset);
+        mainPageStore.setMentors(data);
     }
 
-    const errorMessage = error ? <span className="search-result__error">Что-то пошло не так</span> : null;
+    const errorMessage = error ? <span className="search-result__error">{response}</span> : null;
     const spinner = loading ? <Spinner/> : null;
     const content = !(loading || error) ? <Mentors/> : null;
 
@@ -137,20 +145,35 @@ const MainPage = observer(() => {
                 <Filter/>
                 <div className="search-result">
                     <div className="search-line">   
-                        <input className="search-line__text" placeholder="Подача отчёта налоговой"/>
+                        <input
+                            className="search-line__text"
+                            placeholder="Подача отчёта налоговой"
+                            value={mainPageStore.search}
+                            onChange={(e) => mainPageStore.setSearch(e.target.value)}
+                            onKeyPress={(e) => {
+                                if (e.key === ' ' || e.key === "Enter") {
+                                    mainPageStore.updateCurrentMentors(0);
+                                }
+                            }}
+                        />
                         <img 
                             className="search-line__icon"
                             src={search}
                             alt="seach-icon"
                             onClick={() => {
-                                updateMentors('', 0);
+                                window.scrollTo({
+                                    top: 0,
+                                    left: 0,
+                                    behavior: 'smooth'
+                                });
+                                mainPageStore.updateCurrentMentors(0);
                             }}
                         />
                     </div>
                     {errorMessage}
                     {spinner}
                     {content}
-                    <PaginatedItems updateMentors={updateMentors}/>
+                    <PaginatedItems/>
                 </div>
             </div>
         </div>

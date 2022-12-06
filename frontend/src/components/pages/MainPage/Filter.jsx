@@ -14,10 +14,10 @@ const Filter =  observer(() => {
             })
     }, []);
 
-    const Specializations = () => {
+    const Specializations = observer(({filter}) => {
         return (
             <>
-                {mainPageStore.filter.map((item, i) => (
+                {filter.map((item, i) => (
                     <div className="filter__section-list-item" key={i}>
                         <input
                             type="checkbox"
@@ -31,7 +31,7 @@ const Filter =  observer(() => {
                 ))}
             </>
         );
-    }
+    })
 
     return (
         <div className="app-section filter">
@@ -41,7 +41,7 @@ const Filter =  observer(() => {
                     <div className="filter__section-divider"></div>
                 </div>
                 <div className="item-wrapper">
-                    <Specializations/>
+                    <Specializations filter={mainPageStore.filter}/>
                 </div>
             </div>
             <div className="filter__section">
@@ -126,8 +126,36 @@ const Filter =  observer(() => {
                 </div>
             </div>
             <div className="filter__btn-block">
-                <button className="button">Применить</button>
-                <button className="button pale">Сбросить</button>
+                <button 
+                    onClick={() => {
+                        window.scrollTo({
+                            top: 0,
+                            left: 0,
+                            behavior: 'smooth'
+                        });
+
+                        mainPageStore.setCurrentFilter()
+                        mainPageStore.updateCurrentMentors(0)
+                    }}
+                    className="button"
+                >
+                    Применить
+                </button>
+                <button
+                    onClick={() => {
+                        window.scrollTo({
+                            top: 0,
+                            left: 0,
+                            behavior: 'smooth'
+                        });
+                        
+                        mainPageStore.resetFilter()
+                        mainPageStore.updateCurrentMentors(0)
+                    }}
+                    className="button pale"
+                >
+                    Сбросить
+                </button>
             </div>
         </div>
     )

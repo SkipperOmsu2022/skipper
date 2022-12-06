@@ -21,8 +21,8 @@ const MentorProfilePage = () => {
     const {getUserData} = useProfileService();
     const {userId} = useParams();
     
-    const [firstName, setFirstName] = useState("Имя");
-    const [lastName, setLastName] = useState("Фамилия");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [aboutAsMentor, setAboutAsMentor] = useState("");
     const [mentorStatus, setMentorStatus] = useState(false);
     const [dateOfRegistration, setDateOfRegistration] = useState(false);
@@ -44,7 +44,6 @@ const MentorProfilePage = () => {
                         setMentorSpecializations(res?.data?.mentorSpecializations?.map((item) => 
                             tmp.find(option => option.value === item)).map((item) => item.label).join(', '))
                         setDateOfRegistration(res?.data?.dateOfRegistration?.split('-'))
-
                         setMentorStatus(res?.data?.isEnabledMentorStatus)
 
                         setCommunication([

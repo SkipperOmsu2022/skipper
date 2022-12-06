@@ -4,8 +4,8 @@ import notifications from "../../resources/icons/notifications.svg"
 import search from "../../resources/icons/search.svg"
 import photo from "../../resources/profile-photo.jpg"
 
-import { Outlet, Navigate, Link, NavLink } from 'react-router-dom';
-import { useEffect, useState, useRef } from "react"
+import { Outlet, Navigate, Link, NavLink, useLocation } from 'react-router-dom';
+import { useEffect, useState, useRef, useLayoutEffect } from "react"
 import useAuthContext from "../../hooks/useAuthContext";
 import useLoginService from "../../services/loginService"
 import useProfileService from "../../services/profileService";
@@ -13,13 +13,18 @@ import "./appHeader.scss"
 
 const AppHeader = () => {
     const {getUserData} = useProfileService();
-    const [firstName, setFirstName] = useState("Имя");
-    const [lastName, setLastName] = useState("Фамилия");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     
     const [navBarDisplay, setNavBarDisplay] = useState(false);
     const container = useRef();
     const { logout } = useLoginService()
     const { auth } = useAuthContext();
+
+    const location = useLocation();
+    useLayoutEffect(() => {
+        document.documentElement.scrollTo(0, 0);
+    }, [location.pathname]);
 
     useEffect(() => {
         getUserData('user/profile/')

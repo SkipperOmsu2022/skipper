@@ -37,8 +37,8 @@ const ProfilePage = () => {
     const {getUserData} = useProfileService();
     const {userId} = useParams();
 
-    const [firstName, setFirstName] = useState("Имя");
-    const [lastName, setLastName] = useState("Фамилия");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [aboutMe, setAboutMe] = useState("");
     const [mentorStatus, setMentorStatus] = useState(false);
     const [specialization, setSpecialization] = useState("");

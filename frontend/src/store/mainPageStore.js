@@ -1,58 +1,69 @@
-import  {makeAutoObservable} from 'mobx';
+import  {observable, makeAutoObservable} from 'mobx';
 
 class mainPageStore {
     constructor() {
-        makeAutoObservable(this)
+        makeAutoObservable(this, { deep: true })
     }
-
-    /* mentors = [
-        {firstName: 'Антон', lastName: 'Анисимов', specialty: 'Программирование', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 1},
-        {firstName: 'Александр', lastName: 'Артамонов', specialty: 'Тестирование', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 2},
-        {firstName: 'Никита', lastName: 'Головатый', specialty: 'DevOps', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 3},
-        {firstName: 'Дарья', lastName: 'Гофман', specialty: 'Аналитика', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 4},
-        {firstName: 'Степан', lastName: 'Дубовицкий', specialty: 'Администрирование', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 5},
-        {firstName: 'Анастасия', lastName: 'Зайнутдинова', specialty: 'Бухгалтерия', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 6},
-        {firstName: 'Алексей', lastName: 'Иванов', specialty: 'Откаты', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 7},
-        {firstName: 'Владислав', lastName: 'Клюев', specialty: 'Счетоводство', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 8},
-        {firstName: 'Дарья', lastName: 'Лаврова', specialty: 'Налоги', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 9},
-        {firstName: 'Даниил', lastName: 'Шахматов', specialty: 'Жилищные вопросы', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 10},
-        {firstName: 'Никита', lastName: 'Дербенёв', specialty: 'Бытовые вопросы', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 11},
-        {firstName: 'Алексей', lastName: 'Лебедев', specialty: 'Тяжкие преступления', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 12},
-        {firstName: 'Илья', lastName: 'Маняпов', specialty: 'Программирование', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 13},
-        {firstName: 'Алексей', lastName: 'Панфилов', specialty: 'Аналитика', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 14},
-        {firstName: 'Антон', lastName: 'Никачёв', specialty: 'Счетоводство', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 15},
-        {firstName: 'Дмитрий', lastName: 'Нестеренко', specialty: 'DevOps', aboutMe: 'Расскажу о себе попозже', favorite: false, id: 16}
-    ]; */
 
     mentors = []
+    currentMentors = []
     filter = []
-
+    currentfilter = []
+    search = ""
+    
     offset = 0;
-    totalMentors = 500;
+    pageCount = 0;
+    totalMentors = 0;
 
-    requestMentors = (newOffset) => {
-        this.loading = true;
-        this.offset = newOffset;
-        fetch('https://jsonplaceholder.typicode.com/comments')
-            .then(response => response.json())
-            .then(items => {
-                this.totalMentors = items.length;
-                this.mentors = items.slice(this.offset, this.offset + 6);
-                console.log(this.mentors)
-            })
-    }
-
-    setMentors = (mentors, newOffset) => {
-        this.offset = newOffset;
+    setMentors = (mentors) => {
+        this.offset = 0;
         this.mentors = mentors;
+        this.totalMentors = mentors.length
+        this.pageCount = Math.ceil( this.mentors.length / 6);
+        this.currentMentors = this.mentors.slice(0, 6)
     }
-    changeFavorite(mentor) {
+
+    updateCurrentMentors = (newOffset) => {
+        this.currentfilter = this.filter.filter((item) => item.checked).map((item) => item.value);
+        this.offset = newOffset;
+        let res = this.mentors;
+
+        if (this.currentfilter.length !== 0) {
+            res = res.filter((item) => this.currentfilter.some(r=> item.mentorSpecializations.includes(r)))
+        }
+
+        if (this.search.length !== 0) {
+            res = res.filter((item) => item.aboutMeAsMentor.toLowerCase().includes(this.search.toLowerCase()))
+        }
+
+        this.totalMentors = res.length
+        this.pageCount = Math.ceil( res.length / 6);
+        this.currentMentors = res.slice(newOffset, newOffset + 6)
+    }
+
+    changeFavorite = (mentor) => {
         mentor.favorite =  !mentor.favorite;
     }
-    
+
+    setSearch = (search) => {
+        this.search = search;
+    }
+
     setFilter = (filter) => {
         this.filter = filter;
     }
+
+    setCurrentFilter = () => {
+        this.currentfilter = this.filter.filter((item) => item.checked).map((item) => item.value);
+    }
+
+    resetFilter = () => {
+        this.filter = this.filter.map((item) => {
+            return {...item, checked: false}
+        })
+        this.currentfilter = [];
+    }
+
     changeChecked(specialization) {
         specialization.checked =  !specialization.checked;
     }

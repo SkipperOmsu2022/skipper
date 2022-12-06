@@ -7,7 +7,6 @@ import "../../../shared/bookmark.scss"
 
 const MainInfo = ({props}) => {
     const {firstName, lastName, mentorSpecializations, aboutAsMentor, communication} = props;
-    console.log(firstName)
 
     useEffect(() => {
         document.addEventListener("click", handleClickOutside);
