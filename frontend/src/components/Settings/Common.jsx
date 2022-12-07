@@ -11,6 +11,10 @@ import "../../shared/submitButton/button.scss"
 
 import TextInput from "../../shared/TextInput/TextInput";
 
+async function getBlobFromUrl(url) {
+    return await fetch(url).then(r => r.blob());
+}
+
 const Common = () => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
 
@@ -119,6 +123,13 @@ const Common = () => {
             return true;
         }
     };
+
+    // если хочу удалить
+    const isDeleteImage = false;
+    // blob картинки
+    let blobImage;
+    getBlobFromUrl(image)
+    .then(res => { blobImage = res });
     
     return (
         <>
@@ -151,8 +162,8 @@ const Common = () => {
 
                     if (croppedImg) {
                         form_data.append('file', croppedImg, 'filename.png');
-                    } else {
-                        form_data.append('file', image, 'filename.png');
+                    } else if (!isDeleteImage) {
+                        form_data.append('file', blobImage, 'filename.png');
                     }
 
                     for ( var key in data ) {
