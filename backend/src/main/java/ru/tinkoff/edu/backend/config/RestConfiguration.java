@@ -35,7 +35,6 @@ public class RestConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        // загрузка фото профиля
         registry.addResourceHandler(apiUserImage + "/**")
                 .addResourceLocations("file:" + rootLocation + "/");
     }

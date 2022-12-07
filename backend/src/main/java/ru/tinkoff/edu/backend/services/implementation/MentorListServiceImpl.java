@@ -1,8 +1,9 @@
 package ru.tinkoff.edu.backend.services.implementation;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
-import ru.tinkoff.edu.backend.entities.User;
+import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
 import ru.tinkoff.edu.backend.services.MentorListService;
 
@@ -21,12 +22,12 @@ public class MentorListServiceImpl implements MentorListService {
     public List<MentorListItemDTO> getMentorList() {
         return userRepository.findAll()
                 .stream()
-                .filter(User::getIsEnabledMentorStatus)
+                .filter(user -> BooleanUtils.isTrue(user.getIsEnabledMentorStatus()))
                 .map(user -> MentorListItemDTO.builder()
                         .id(user.getId())
                         .firstName(user.getFirstName())
                         .lastName(user.getLastName())
-                        .mentorSpecializations(user.getMentorSpecializations())
+                        .mentorSpecializations(user.getInlineMentorSpecializations())
                         .aboutMeAsMentor(user.getAboutAsMentor())
                         .build()).collect(Collectors.toList());
     }

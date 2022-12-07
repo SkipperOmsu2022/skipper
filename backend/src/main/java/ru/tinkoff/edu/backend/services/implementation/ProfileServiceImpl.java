@@ -22,9 +22,9 @@ public class ProfileServiceImpl implements ProfileService {
     private final ImageStorageService imageStorageService;
 
     @Override
-    public UserMainInfoDTO getMainInfo(Long id) {
+    public UserEditMainInfoDTO getMainInfo(Long id) {
         User userFromDB = userRepository.getReferenceById(id);
-        UserMainInfoDTO user = new UserMainInfoDTO();
+        UserEditMainInfoDTO user = new UserEditMainInfoDTO();
 
         user.setFirstName(userFromDB.getFirstName());
         user.setLastName(userFromDB.getLastName());
@@ -38,7 +38,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void updateUser(Long id, UserMainInfoDTO user) {
+    public void updateUser(Long id, UserEditMainInfoDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setFirstName(user.getFirstName());
         userFromDB.setLastName(user.getLastName());
@@ -56,15 +56,15 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public UserEditDTO getAccountDetails(Long id) {
+    public UserEditAccountDTO getAccountDetails(Long id) {
         User userFromDB = userRepository.getReferenceById(id);
-        UserEditDTO user = new UserEditDTO();
+        UserEditAccountDTO user = new UserEditAccountDTO();
         user.setEmail(userFromDB.getEmail());
         return user;
     }
 
     @Override
-    public void updateUser(Long id, UserEditDTO user) {
+    public void updateUser(Long id, UserEditAccountDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         if(!passwordEncoder.matches(user.getOldPassword(), userFromDB.getPassword())) {
             throw new IncorrectCurrentPasswordException("Incorrect current password!!");
@@ -85,9 +85,9 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public UserContactsDTO getUserContacts(Long id) {
+    public UserEditContactsDTO getUserContacts(Long id) {
         User userFromDB = userRepository.getReferenceById(id);
-        UserContactsDTO user = new UserContactsDTO();
+        UserEditContactsDTO user = new UserEditContactsDTO();
         user.setLinkVk(userFromDB.getLinkVk());
         user.setLinkSkype(userFromDB.getLinkSkype());
         user.setLinkDiscord(userFromDB.getLinkDiscord());
@@ -97,7 +97,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void updateUser(Long id, UserContactsDTO user) {
+    public void updateUser(Long id, UserEditContactsDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setLinkVk(user.getLinkVk());
         userFromDB.setLinkSkype(user.getLinkSkype());
@@ -138,7 +138,7 @@ public class ProfileServiceImpl implements ProfileService {
         user.setImageUserResource(userFromDB.getImageUserResource());
         user.setDateOfRegistration(userFromDB.getDateOfRegistration());
         user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
-        user.setMentorSpecializations(userFromDB.getMentorSpecializations());
+        user.setMentorSpecializations(userFromDB.getInlineMentorSpecializations());
         user.setLinkVk(userFromDB.getLinkVk());
         user.setLinkSkype(userFromDB.getLinkSkype());
         user.setLinkDiscord(userFromDB.getLinkDiscord());
@@ -156,7 +156,8 @@ public class ProfileServiceImpl implements ProfileService {
         user.setAboutAsMentor(userFromDB.getAboutAsMentor());
         user.setImageUserResource(userFromDB.getImageUserResource());
         user.setDateOfRegistration(userFromDB.getDateOfRegistration());
-        user.setMentorSpecializations(userFromDB.getMentorSpecializations());
+        user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
+        user.setMentorSpecializations(userFromDB.getInlineMentorSpecializations());
         user.setLinkVk(userFromDB.getLinkVk());
         user.setLinkSkype(userFromDB.getLinkSkype());
         user.setLinkDiscord(userFromDB.getLinkDiscord());

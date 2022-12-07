@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.tinkoff.edu.backend.dto.UserContactsDTO;
-import ru.tinkoff.edu.backend.dto.UserEditDTO;
+import ru.tinkoff.edu.backend.dto.UserEditContactsDTO;
+import ru.tinkoff.edu.backend.dto.UserEditAccountDTO;
 import ru.tinkoff.edu.backend.dto.UserEditMentorDTO;
-import ru.tinkoff.edu.backend.dto.UserMainInfoDTO;
+import ru.tinkoff.edu.backend.dto.UserEditMainInfoDTO;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
 import javax.validation.Valid;
@@ -29,8 +29,8 @@ public class ProfileSettingsController {
     private final ProfileService profileService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserMainInfoDTO> getMainInfo(@PathVariable Long id) {
-        UserMainInfoDTO userFromDB = profileService.getMainInfo(id);
+    public ResponseEntity<UserEditMainInfoDTO> getMainInfo(@PathVariable Long id) {
+        UserEditMainInfoDTO userFromDB = profileService.getMainInfo(id);
 
         return ResponseEntity
                 .ok(userFromDB);
@@ -38,37 +38,37 @@ public class ProfileSettingsController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> editMainInfo(@PathVariable Long id,
-                                               @Valid @ModelAttribute UserMainInfoDTO user ) {
+                                               @Valid @ModelAttribute UserEditMainInfoDTO user ) {
         profileService.updateUser(id, user);
 
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/account/{id}")
-    public ResponseEntity<UserEditDTO> getAccountDetails(@PathVariable Long id) {
-        UserEditDTO user = profileService.getAccountDetails(id);
+    public ResponseEntity<UserEditAccountDTO> getAccountDetails(@PathVariable Long id) {
+        UserEditAccountDTO user = profileService.getAccountDetails(id);
 
         return ResponseEntity
                 .ok(user);
     }
 
     @PutMapping("/account/{id}")
-    public ResponseEntity<String> editAccountDetails(@PathVariable Long id, @Valid @RequestBody UserEditDTO user) {
+    public ResponseEntity<String> editAccountDetails(@PathVariable Long id, @Valid @RequestBody UserEditAccountDTO user) {
         profileService.updateUser(id, user);
 
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/contacts/{id}")
-    public ResponseEntity<UserContactsDTO> getUserContacts(@PathVariable Long id) {
-        UserContactsDTO user = profileService.getUserContacts(id);
+    public ResponseEntity<UserEditContactsDTO> getUserContacts(@PathVariable Long id) {
+        UserEditContactsDTO user = profileService.getUserContacts(id);
 
         return ResponseEntity
                 .ok(user);
     }
 
     @PutMapping("/contacts/{id}")
-    public ResponseEntity<String> editUserContacts(@PathVariable Long id, @Valid @RequestBody UserContactsDTO user) {
+    public ResponseEntity<String> editUserContacts(@PathVariable Long id, @Valid @RequestBody UserEditContactsDTO user) {
         profileService.updateUser(id, user);
 
         return ResponseEntity.ok().build();

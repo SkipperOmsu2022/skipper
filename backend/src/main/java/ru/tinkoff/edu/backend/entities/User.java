@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.backend.entities;
 
 import lombok.*;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
@@ -9,7 +10,9 @@ import ru.tinkoff.edu.backend.enums.UserGender;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+@Log4j2
 @Entity
 @Table(name = "USERS")
 @SecondaryTable(name = "USERS_MAIN_INFO",
@@ -73,4 +76,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "mentor_specialization", nullable = false)
     private Set<MentorSpecialization> mentorSpecializations;
+
+    public String getInlineMentorSpecializations() {
+        return mentorSpecializations.stream()
+                .map(MentorSpecialization::getStringMentorSpecialization)
+                .collect(Collectors.joining(", "));
+    }
 }

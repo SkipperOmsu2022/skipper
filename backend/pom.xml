@@ -84,7 +84,7 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-        <!--Для работы с файлами-->
+        <!--Для работы с типами данных-->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>

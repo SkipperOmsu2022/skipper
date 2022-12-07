@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Data
-public class UserMainInfoDTO {
+public class UserEditMainInfoDTO {
     @NotBlank
     private String firstName;
     @NotBlank

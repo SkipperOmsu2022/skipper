@@ -12,9 +12,10 @@ public class UserMentorProfileDTO {
     private String lastName;
     private String patronymic;
     private String aboutAsMentor;
+    private Boolean isEnabledMentorStatus;
     private String imageUserResource;
     private LocalDate dateOfRegistration;
-    private Set<MentorSpecialization> mentorSpecializations;
+    private String mentorSpecializations;
     private String linkVk;
     private String linkSkype;
     private String linkDiscord;
