@@ -48,12 +48,10 @@ const Common = () => {
                 setAboutMe(res?.data?.aboutMe || '')
             });
 
-            // document.addEventListener("click", clearResponse);
             document.addEventListener("keydown", clearResponse);
 
         return () => {
             clearResponse();
-            // document.removeEventListener("click",  clearResponse);
             document.removeEventListener("keydown",  clearResponse);
         };
     }, []);
@@ -136,7 +134,20 @@ const Common = () => {
                 })}
                 onSubmit = {({firstName, lastName, patronymic, day, month, year, gender}) => {
                     const dateOfBirth = [year, month, day].join('-');
-                    setUserData({firstName, lastName, patronymic, dateOfBirth, aboutMe, /* croppedImg, */ gender}, 'user/profile/settings/');
+                    const data = {firstName, lastName, patronymic, dateOfBirth, aboutMe, /* file: croppedImg, */ gender}
+                    let form_data = new FormData();
+
+                    let fileName = `photo.jpg`;
+                    let file = new File([croppedImg], fileName);
+                    form_data.append('file', file, 'photo.jpg');
+
+                    for ( var key in data ) {
+                        form_data.append(key, data[key]);
+                    }
+                    
+                    setUserData(form_data, 
+                        'user/profile/settings/',
+                        {"Content-Type": 'multipart/form-data'});
                 }}
             >
                 {({ errors, setFieldValue, handleChange, touched, handleBlur, values, isValid}) => {

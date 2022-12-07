@@ -140,7 +140,7 @@ const ProfilePage = () => {
                                 to={`/profile-mentor/${userId}`}
                                 className="button"
                             >
-                                Посмотреть профиль
+                                Перейти на профиль ментора
                             </Link>
                             : null}
                         </div>
