@@ -29,6 +29,7 @@ public class MentorListServiceImpl implements MentorListService {
                         .lastName(user.getLastName())
                         .mentorSpecializations(user.getInlineMentorSpecializations())
                         .aboutMeAsMentor(user.getAboutAsMentor())
+                        .imageUserResource(user.getImageUserResource())
                         .build()).collect(Collectors.toList());
     }
 }

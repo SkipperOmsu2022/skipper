@@ -11,4 +11,5 @@ public class MentorListItemDTO {
     private String lastName;
     private String mentorSpecializations;
     private String aboutMeAsMentor;
+    private String imageUserResource;
 }
