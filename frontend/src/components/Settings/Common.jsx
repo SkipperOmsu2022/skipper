@@ -25,6 +25,13 @@ const Common = () => {
     const [croppedImg, setCroppedImg] = useState(null);
     const [aboutMe, setAboutMe] = useState("");
 
+    // если хочу удалить, заменить на state, обработчик повесить на кнопку
+    const isDeleteImage = false;
+    // blob картинки, измениться, когда придёт результат с сервера
+    let blobImage;
+    getBlobFromUrl(image)
+    .then(res => { blobImage = res });
+
     const [initial, setInitial] = useState({
         firstName: '',
         lastName: '',
@@ -124,12 +131,23 @@ const Common = () => {
         }
     };
 
-    // если хочу удалить
-    const isDeleteImage = false;
-    // blob картинки
-    let blobImage;
-    getBlobFromUrl(image)
-    .then(res => { blobImage = res });
+    const onSubmit = ({firstName, lastName, patronymic, day, month, year, gender}) => {
+        const dateOfBirth = [year, month, day].join('-');
+        const data = {firstName, lastName, patronymic, dateOfBirth, aboutMe, gender}
+        let form_data = new FormData();
+
+        if (croppedImg) {
+            form_data.append('file', croppedImg, 'filename.png');
+        } else if (!isDeleteImage) {
+            form_data.append('file', blobImage, 'filename.png');
+        }
+
+        for ( var key in data ) {
+            form_data.append(key, data[key]);
+        }
+        
+        setUserData(form_data, 'user/profile/settings/', {"Content-Type": 'multipart/form-data'});
+    }
     
     return (
         <>
@@ -155,25 +173,7 @@ const Common = () => {
                     gender: Yup.string()
                             .required('Обязательный параметр')
                 })}
-                onSubmit = {({firstName, lastName, patronymic, day, month, year, gender}) => {
-                    const dateOfBirth = [year, month, day].join('-');
-                    const data = {firstName, lastName, patronymic, dateOfBirth, aboutMe, gender}
-                    let form_data = new FormData();
-
-                    if (croppedImg) {
-                        form_data.append('file', croppedImg, 'filename.png');
-                    } else if (!isDeleteImage) {
-                        form_data.append('file', blobImage, 'filename.png');
-                    }
-
-                    for ( var key in data ) {
-                        form_data.append(key, data[key]);
-                    }
-                    
-                    setUserData(form_data, 
-                        'user/profile/settings/',
-                        {"Content-Type": 'multipart/form-data'});
-                }}
+                onSubmit = {onSubmit}
             >
                 {({ errors, setFieldValue, handleChange, touched, handleBlur, values, isValid}) => {
                     if (!isValidDate(values.day, values.month, values.year)) {

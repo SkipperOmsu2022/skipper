@@ -15,10 +15,11 @@ import mainPageStore from "../../../store/mainPageStore";
 import Filter from "./Filter";
 import Spinner from "../../../shared/spinner/Spinner";
 
-const Mentors = observer(() => {
+const Mentors = observer(({newOffset}) => {
+    console.log(newOffset)
     return (
         <>
-            {mainPageStore.currentMentors.map((item, i) => {
+            {mainPageStore.currentMentors.slice(newOffset, newOffset + 6).map((item, i) => {
                 return (
                 <div className="mentor" key={item.id}>
                     <div className="mentor__photo">
@@ -82,7 +83,7 @@ const PaginatedItems = observer(() => {
     const handlePageClick = (event) => {
         const newOffset = event.selected * itemsPerPage % mainPageStore.totalMentors;
 
-        mainPageStore.updateCurrentMentors(newOffset);
+        mainPageStore.updateOffset(newOffset);
         window.scrollTo({
             top: 0,
             left: 0,
@@ -130,7 +131,7 @@ const MainPage = observer(() => {
 
     const errorMessage = error ? <span className="search-result__error">{response}</span> : null;
     const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error) ? <Mentors/> : null;
+    const content = !(loading || error) ? <Mentors newOffset={mainPageStore.offset}/> : null;
 
     return (
         <div className="page-content">
@@ -148,7 +149,7 @@ const MainPage = observer(() => {
                             value={mainPageStore.search}
                             onChange={(e) => mainPageStore.setSearch(e.target.value)}
                             onKeyPress={(e) => {
-                                if (e.key === ' ' || e.key === "Enter") {
+                                if (e.key === "Enter") {
                                     mainPageStore.updateCurrentMentors(0);
                                 }
                             }}
