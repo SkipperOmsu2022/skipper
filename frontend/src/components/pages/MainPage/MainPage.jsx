@@ -19,12 +19,10 @@ const Mentors = observer(() => {
     return (
         <>
             {mainPageStore.currentMentors.map((item, i) => {
-                const specializations = item.mentorSpecializations.map((item) => 
-                    mainPageStore.filter.find(option => option.value === item)).map((item) => item.label).join(', ')
                 return (
                 <div className="mentor" key={item.id}>
                     <div className="mentor__photo">
-                        <img className="mentor__photo-img" src={photo} alt="user-avatar"/>
+                        <img className="mentor__photo-img" src={/* `"http://127.0.0.1:8080/api/user/image/${item.id}.png"` ||  */photo} alt="user-avatar"/>
                         <div className="rating">
                             <span className="rating-star">&#9733;</span>
                             <span className="rating-value">4,5</span>
@@ -37,7 +35,7 @@ const Mentors = observer(() => {
                                     {`${item.firstName} ${item.lastName}`}
                                 </div>
                                 <div className="header__column-specialty">
-                                    {specializations}
+                                    {item.mentorSpecializations}
                                 </div>
                             </div>
                             <label className="header__bookmark bookmark" htmlFor={`switch${i}`}>
@@ -127,7 +125,6 @@ const MainPage = observer(() => {
 
     const updateMentors = async () => {
         const data = await getMentors(``);
-        
         mainPageStore.setMentors(data);
     }
 

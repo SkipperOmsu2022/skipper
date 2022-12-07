@@ -10,14 +10,7 @@ import Resume from "./Resume"
 import Reviews from "./Reviews"
 import Lessons from "./Lessons"
 
-//
-import useSpecializationService from "../../../services/SpecializationService";
-//
-
 const MentorProfilePage = () => {
-    //
-    const {getSpecializationsList} = useSpecializationService();
-    //
     const {getUserData} = useProfileService();
     const {userId} = useParams();
     
@@ -30,29 +23,21 @@ const MentorProfilePage = () => {
     const [communication, setCommunication] = useState([]);
 
     useEffect(() => {
-        let tmp;
-        getSpecializationsList()
+        getUserData('user/profile/mentor/', userId)
             .then(res => {
-                tmp = res;
-            })
-            .then(() => {
-                getUserData('user/profile/mentor/', userId)
-                    .then(res => {
-                        setFirstName(res?.data?.firstName);
-                        setLastName(res?.data?.lastName);
-                        setAboutAsMentor(res?.data?.aboutAsMentor);
-                        setMentorSpecializations(res?.data?.mentorSpecializations?.map((item) => 
-                            tmp.find(option => option.value === item)).map((item) => item.label).join(', '))
-                        setDateOfRegistration(res?.data?.dateOfRegistration?.split('-'))
-                        setMentorStatus(res?.data?.isEnabledMentorStatus)
+                setFirstName(res?.data?.firstName);
+                setLastName(res?.data?.lastName);
+                setAboutAsMentor(res?.data?.aboutAsMentor);
+                setMentorSpecializations(res?.data?.mentorSpecializations)
+                setDateOfRegistration(res?.data?.dateOfRegistration?.split('-'))
+                setMentorStatus(res?.data?.isEnabledMentorStatus)
 
-                        setCommunication([
-                            {name: 'Вконтакте', link: res?.data?.linkVk},
-                            {name: 'Skype', link: res?.data?.linkSkype},
-                            {name: 'Discord', link: res?.data?.linkDiscord},
-                            {name: 'Telegram', link: res?.data?.linkTelegram}
-                        ])
-                    })
+                setCommunication([
+                    {name: 'Вконтакте', link: res?.data?.linkVk},
+                    {name: 'Skype', link: res?.data?.linkSkype},
+                    {name: 'Discord', link: res?.data?.linkDiscord},
+                    {name: 'Telegram', link: res?.data?.linkTelegram}
+                ])
             })
     }, []);
 

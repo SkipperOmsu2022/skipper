@@ -134,7 +134,6 @@ const Filter =  observer(() => {
                             behavior: 'smooth'
                         });
 
-                        mainPageStore.setCurrentFilter()
                         mainPageStore.updateCurrentMentors(0)
                     }}
                     className="button"

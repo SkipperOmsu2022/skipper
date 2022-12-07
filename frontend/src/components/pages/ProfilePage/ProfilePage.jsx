@@ -6,10 +6,6 @@ import "../../../shared/submitButton/button.scss"
 import useProfileService from "../../../services/profileService";
 import {getDate} from '../MentorProfilePage/AdditionalInfo'
 
-//
-import useSpecializationService from "../../../services/SpecializationService";
-//
-
 const communicationContent = (communication) => {
     const links = communication?.filter((item) => (item.name && item.link)).map((item, i) => {
         return (
@@ -32,9 +28,6 @@ const communicationContent = (communication) => {
 }
 
 const ProfilePage = () => {
-    //
-    const {getSpecializationsList} = useSpecializationService();
-    //
     const {getUserData} = useProfileService();
     const {userId} = useParams();
 
@@ -50,29 +43,22 @@ const ProfilePage = () => {
     const container = useRef();
 
     useEffect(() => {
-        let tmp;
-        getSpecializationsList()
+        getUserData('user/profile/', userId)
             .then(res => {
-                tmp = res;
-            })
-            .then(() => {
-                getUserData('user/profile/', userId)
-                    .then(res => {
-                        setFirstName(res?.data?.firstName);
-                        setLastName(res?.data?.lastName);
-                        setAboutMe(res?.data?.aboutMe);
-                        setSpecialization(res?.data?.mentorSpecializations?.map((item) => 
-                            tmp.find(option => option.value === item)).map((item) => item.label).join(', '))
-                        setMentorStatus(res?.data?.isEnabledMentorStatus)
-                        setDateOfRegistration(res?.data?.dateOfRegistration?.split('-'))
+                console.log(res?.data?.mentorSpecializations)
+                setFirstName(res?.data?.firstName);
+                setLastName(res?.data?.lastName);
+                setAboutMe(res?.data?.aboutMe);
+                setSpecialization(res?.data?.mentorSpecializations)
+                setMentorStatus(res?.data?.isEnabledMentorStatus)
+                setDateOfRegistration(res?.data?.dateOfRegistration?.split('-'))
 
-                        setCommunication([
-                            {name: 'Вконтакте', link: res?.data?.linkVk},
-                            {name: 'Skype', link: res?.data?.linkSkype},
-                            {name: 'Discord', link: res?.data?.linkDiscord},
-                            {name: 'Telegram', link: res?.data?.linkTelegram}
-                        ])
-                    })
+                setCommunication([
+                    {name: 'Вконтакте', link: res?.data?.linkVk},
+                    {name: 'Skype', link: res?.data?.linkSkype},
+                    {name: 'Discord', link: res?.data?.linkDiscord},
+                    {name: 'Telegram', link: res?.data?.linkTelegram}
+                ])
             })
 
         document.addEventListener("click", handleClickOutside);

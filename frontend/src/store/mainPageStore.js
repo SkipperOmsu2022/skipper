@@ -24,11 +24,12 @@ class mainPageStore {
     }
 
     updateCurrentMentors = (newOffset) => {
-        this.currentfilter = this.filter.filter((item) => item.checked).map((item) => item.value);
+        this.currentfilter = this.filter.filter((item) => item.checked).map((item) => item.label);
         this.offset = newOffset;
         let res = this.mentors;
 
         if (this.currentfilter.length !== 0) {
+            console.log(this.currentfilter)
             res = res.filter((item) => this.currentfilter.some(r=> item.mentorSpecializations.includes(r)))
         }
 
@@ -51,10 +52,6 @@ class mainPageStore {
 
     setFilter = (filter) => {
         this.filter = filter;
-    }
-
-    setCurrentFilter = () => {
-        this.currentfilter = this.filter.filter((item) => item.checked).map((item) => item.value);
     }
 
     resetFilter = () => {

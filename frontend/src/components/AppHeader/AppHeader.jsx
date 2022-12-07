@@ -15,6 +15,7 @@ const AppHeader = () => {
     const {getUserData} = useProfileService();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
+    const [imageUserResource, setImageUserResource] = useState("");
     
     const [navBarDisplay, setNavBarDisplay] = useState(false);
     const container = useRef();
@@ -30,8 +31,9 @@ const AppHeader = () => {
         getUserData('user/profile/')
             .then(res => {
                 if(res) {
-                    setFirstName(res.data.firstName)
-                    setLastName(res.data.lastName)
+                    setFirstName(res?.data?.firstName)
+                    setLastName(res?.data?.lastName)
+                    setImageUserResource(res?.data?.imageUserResource)
                 }
             })
 
@@ -88,8 +90,11 @@ const AppHeader = () => {
                         <div className="app-header__profile-data">
                             <div className="app-header__profile-name">{firstName} {lastName}</div>
                         </div>
-                        <img className="app-header__profile-photo" src={photo} alt="" />
-
+                        <img
+                            className="app-header__profile-photo"
+                            src={imageUserResource ? `http://127.0.0.1:8080${imageUserResource}` : photo}
+                            alt=""
+                        />
                         <div className={dropDown} tabIndex="-1">
                             <div className="app-header__dropdown-item">
                                 <NavLink end to="/"  className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}>Главная страница</NavLink>

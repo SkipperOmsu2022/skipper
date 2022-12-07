@@ -31,13 +31,10 @@ const Mentor = () => {
             .then(res => {
                 tmp = res;
                 setSpecializationOptions(tmp)
-                console.log(specializationOptions)
             })
             .then(() => {
                 getUserData('user/profile/settings/mentor/')
                     .then(res => {
-                        console.log(res?.data?.mentorSpecializations)
-                        console.log(specializationOptions)
                         setMentor(res?.data?.isEnabledMentorStatus || false);
                         setAboutMe(res?.data?.aboutMeAsMentor || '');
                         setMentorSpecializations(res?.data?.mentorSpecializations?.map((item) => 

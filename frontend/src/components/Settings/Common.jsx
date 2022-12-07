@@ -15,7 +15,8 @@ const Common = () => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
 
     const [showModal, setShowModal] = useState(false);
-    const [image, setImage] = useState(photo);
+    const [image, setImage] = useState('');
+    const [currentImage, setCurrentImage] = useState('');
     const [imgErr, setImgErr] = useState(null);
     const [croppedImg, setCroppedImg] = useState(null);
     const [aboutMe, setAboutMe] = useState("");
@@ -35,6 +36,12 @@ const Common = () => {
             .then(res => {
                 let date = res?.data?.dateOfBirth?.split('-');
                 if (date === undefined) date = ['', '', ''];
+                
+                if (res?.data?.imageUserResource) {
+                    setImage('http://127.0.0.1:8080' + res?.data?.imageUserResource)
+                } else {
+                    setImage(null)
+                }
                 
                 setInitial({
                     firstName: res?.data?.firstName,
@@ -56,6 +63,12 @@ const Common = () => {
         };
     }, []);
 
+    useEffect(() => {
+        if (croppedImg) {
+            setImage(URL.createObjectURL(croppedImg));
+        }
+    }, [croppedImg])
+
     const fileInput = useRef(1);
 
     const onImageChange = (e) => {
@@ -76,14 +89,14 @@ const Common = () => {
             if (file.type !== "image/gif" & file.type !== "image/png" & file.type !== "image/jpeg") {
                 setImgErr("Неправильный формат файла");
                 return;
-            } else if (file.size > 1048576){
+            } else if (file.size > 3145728){
                 setImgErr("Слишком большой файл");
                 return;
             }
 
 			reader.onload = () => {
                 setImgErr(null);
-				setImage(reader.result?.toString());
+				setCurrentImage(reader.result?.toString());
 				e.target.value = null;
 				setShowModal(true);
 			};
@@ -111,11 +124,10 @@ const Common = () => {
         <>
             <ImageCropper
                 showModal={showModal}
-                imgURL={image}
+                imgURL={currentImage}
                 onSaveHandler={setCroppedImg}
                 onModalClose={() => {
                     setShowModal(false);
-                    setImage(null);
                 }}
             />
             <Formik
@@ -134,12 +146,14 @@ const Common = () => {
                 })}
                 onSubmit = {({firstName, lastName, patronymic, day, month, year, gender}) => {
                     const dateOfBirth = [year, month, day].join('-');
-                    const data = {firstName, lastName, patronymic, dateOfBirth, aboutMe, /* file: croppedImg, */ gender}
+                    const data = {firstName, lastName, patronymic, dateOfBirth, aboutMe, gender}
                     let form_data = new FormData();
 
-                    let fileName = `photo.jpg`;
-                    let file = new File([croppedImg], fileName);
-                    form_data.append('file', file, 'photo.jpg');
+                    if (croppedImg) {
+                        form_data.append('file', croppedImg, 'filename.png');
+                    } else {
+                        form_data.append('file', image, 'filename.png');
+                    }
 
                     for ( var key in data ) {
                         form_data.append(key, data[key]);
@@ -162,13 +176,13 @@ const Common = () => {
                                 ОБЩАЯ ИНФОРМАЦИЯ
                             </div>    
                             <div className="settings__photo">
-                                <img className="settings__photo-img" src={croppedImg || photo} alt="" />
+                                <img className="settings__photo-img" src={image || photo} alt="" />
                                 <div className="settings__photo-text">
                                     <div className="settings__photo-header">
                                         Добавьте фото своего профиля
                                     </div>
                                     <div className={`settings__photo-description${imgErr ? ' error' : ''}`}>
-                                        {imgErr ? imgErr : 'Размер фотографии не должен превышать 1Мб (JPG, GIF или PNG)'}
+                                        {imgErr ? imgErr : 'Размер фотографии не должен превышать 3Мб (JPG, GIF или PNG)'}
                                     </div>
                                 </div>
                                 <label htmlFor="upload-photo" className="button settings__photo-button">
