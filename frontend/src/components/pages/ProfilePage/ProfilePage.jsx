@@ -1,9 +1,10 @@
 import "./profilePage.scss"
 import { useEffect, useState, useRef } from "react"
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import photo from "../../../resources/profile-photo.jpg"
 import "../../../shared/submitButton/button.scss"
 import useProfileService from "../../../services/profileService";
+import {getDate} from '../MentorProfilePage/AdditionalInfo'
 
 //
 import useSpecializationService from "../../../services/SpecializationService";
@@ -42,6 +43,7 @@ const ProfilePage = () => {
     const [aboutMe, setAboutMe] = useState("");
     const [mentorStatus, setMentorStatus] = useState(false);
     const [specialization, setSpecialization] = useState("");
+    const [dateOfRegistration, setDateOfRegistration] = useState([]);
     const [communication, setCommunication] = useState([]);
 
     const [dropdownDisplay, setDropdownDisplay] = useState(false);
@@ -62,6 +64,7 @@ const ProfilePage = () => {
                         setSpecialization(res?.data?.mentorSpecializations?.map((item) => 
                             tmp.find(option => option.value === item)).map((item) => item.label).join(', '))
                         setMentorStatus(res?.data?.isEnabledMentorStatus)
+                        setDateOfRegistration(res?.data?.dateOfRegistration?.split('-'))
 
                         setCommunication([
                             {name: 'Вконтакте', link: res?.data?.linkVk},
@@ -127,8 +130,20 @@ const ProfilePage = () => {
                         <div className="profile__section-label">Контакты</div>
                         {communicationContent(communication)}
                     </div>
-                    <div className="profile__btn-block">
-                        {mentorStatus ? <button className="button">Перейти на профиль ментора</button> : null}
+                    <div className="profile__section-column gap40px">
+                        <div className="profile__registration-date">
+                            {getDate(dateOfRegistration)}
+                        </div>
+                        <div className="profile__btn-block">
+                            {mentorStatus ? 
+                            <Link
+                                to={`/profile-mentor/${userId}`}
+                                className="button"
+                            >
+                                Посмотреть профиль
+                            </Link>
+                            : null}
+                        </div>
                     </div>
                 </div>
             </div>

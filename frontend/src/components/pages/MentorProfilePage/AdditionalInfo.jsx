@@ -1,48 +1,47 @@
 import "../../../shared/submitButton/button.scss"
 
+const getMonth = (month) => {
+    switch(month) {
+        case '01':
+            return 'Января'
+        case '02':
+            return 'Февраля'
+        case '03':
+            return 'Марта'
+        case '04':
+            return 'Апреля'
+        case '05':
+            return 'Мая'
+        case '06':
+            return 'Июня'
+        case '07':
+            return 'Июля'
+        case '08':
+            return 'Августа'
+        case '09':
+            return 'Сентрября'
+        case '10':
+            return 'Октября'
+        case '11':
+            return 'Ноября'
+        case '12':
+            return 'Декабря'
+        default:
+            break;
+    }
+}
+
+const getDate = (dateOfRegistration) => {
+    const month = getMonth(dateOfRegistration[1]);
+    const day = +dateOfRegistration[2]
+    const year = dateOfRegistration[0]
+    return (
+        <span>На Skipper c {day} {month}<br/>{year} года</span>
+    )
+}
+
 const AdditionalInfo = ({props}) => {
     const {dateOfRegistration, mentorStatus} = props;
-
-    const getMonth = () => {
-        const month = dateOfRegistration[1];
-        switch(month) {
-            case '01':
-                return 'Января'
-            case '02':
-                return 'Февраля'
-            case '03':
-                return 'Марта'
-            case '04':
-                return 'Апреля'
-            case '05':
-                return 'Мая'
-            case '06':
-                return 'Июня'
-            case '07':
-                return 'Июля'
-            case '08':
-                return 'Августа'
-            case '09':
-                return 'Сентрября'
-            case '10':
-                return 'Октября'
-            case '11':
-                return 'Ноября'
-            case '12':
-                return 'Декабря'
-            default:
-                break;
-        }
-    }
-
-    const getDate = () => {
-        const month = getMonth();
-        const day = +dateOfRegistration[2]
-        const year = dateOfRegistration[0]
-        return (
-            <span>На Skipper c {day} {month}<br/>{year} года</span>
-        )
-    }
 
     return (
         <div className="app-section profile additional-info">
@@ -70,7 +69,7 @@ const AdditionalInfo = ({props}) => {
                     <span>248 занятий</span>
                 </div>
                 <div className="main-block__section">
-                    {getDate()}
+                    {getDate(dateOfRegistration)}
                 </div>
             </div>
             <div className="profile__btn-block full-width">
@@ -88,3 +87,4 @@ const AdditionalInfo = ({props}) => {
 }
 
 export default AdditionalInfo;
+export {getDate}

@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from "react"
 
 import "./mentorProfilePage.scss"
@@ -25,7 +25,7 @@ const MentorProfilePage = () => {
     const [lastName, setLastName] = useState("");
     const [aboutAsMentor, setAboutAsMentor] = useState("");
     const [mentorStatus, setMentorStatus] = useState(false);
-    const [dateOfRegistration, setDateOfRegistration] = useState(false);
+    const [dateOfRegistration, setDateOfRegistration] = useState([]);
     const [mentorSpecializations, setMentorSpecializations] = useState("");
     const [communication, setCommunication] = useState([]);
 
@@ -59,7 +59,12 @@ const MentorProfilePage = () => {
     return (
         <div className="page-content">
             <div className="app-section-header"> 
-                <span className="inactive" >Профиль |&nbsp;</span>
+                <Link 
+                    to={`/profile/${userId}`}
+                    className="inactive"
+                >
+                    Профиль |&nbsp;
+                </Link>
                 Профиль ментора
             </div>
             <div className="profile-wrapper">
