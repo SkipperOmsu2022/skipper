@@ -36,6 +36,7 @@ const ProfilePage = () => {
     const [aboutMe, setAboutMe] = useState("");
     const [mentorStatus, setMentorStatus] = useState(false);
     const [specialization, setSpecialization] = useState("");
+    const [imageUserResource, setImageUserResource] = useState("");
     const [dateOfRegistration, setDateOfRegistration] = useState([]);
     const [communication, setCommunication] = useState([]);
 
@@ -51,6 +52,7 @@ const ProfilePage = () => {
                 setAboutMe(res?.data?.aboutMe);
                 setSpecialization(res?.data?.mentorSpecializations)
                 setMentorStatus(res?.data?.isEnabledMentorStatus)
+                setImageUserResource(res?.data?.imageUserResource)
                 setDateOfRegistration(res?.data?.dateOfRegistration?.split('-'))
 
                 setCommunication([
@@ -82,7 +84,7 @@ const ProfilePage = () => {
             <div className="app-section profile">
                 <div className="profile__section">
                     <div className="profile__section-row">
-                        <img className="profile__photo" src={photo} alt="" />
+                        <img className="profile__photo" src={`http://127.0.0.1:8080${imageUserResource}` || photo} alt="" />
                         <div className="profile__main-info">
                             <div className="name">{firstName} {lastName}</div>
                             <div className="specialty">{specialization}</div>
