@@ -16,7 +16,6 @@ import Filter from "./Filter";
 import Spinner from "../../../shared/spinner/Spinner";
 
 const Mentors = observer(({newOffset}) => {
-    console.log(newOffset)
     return (
         <>
             {mainPageStore.currentMentors.slice(newOffset, newOffset + 6).map((item, i) => {

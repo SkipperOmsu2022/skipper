@@ -29,7 +29,6 @@ class mainPageStore {
         let res = this.mentors;
 
         if (this.currentfilter.length !== 0) {
-            console.log(this.currentfilter)
             res = res.filter((item) => this.currentfilter.some(r=> item.mentorSpecializations.includes(r)))
         }
 
@@ -39,7 +38,7 @@ class mainPageStore {
                     item.lastName;
                 const searchLine = this.search.toLowerCase().trim().split(/[\s:,]/).filter(e => e.length > 1)
                 if(searchLine.length > 0) {
-                    return searchLine.some(r=> str.includes(r))
+                    return searchLine.some(r=> str.toLowerCase().includes(r))
                 } else {
                     return true;
                 }

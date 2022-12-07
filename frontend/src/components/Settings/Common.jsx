@@ -28,8 +28,6 @@ const Common = () => {
     // если хочу удалить, заменить на state, обработчик повесить на кнопку
     const isDeleteImage = false;
 
-    console.log(1)
-
     const [initial, setInitial] = useState({
         firstName: '',
         lastName: '',
