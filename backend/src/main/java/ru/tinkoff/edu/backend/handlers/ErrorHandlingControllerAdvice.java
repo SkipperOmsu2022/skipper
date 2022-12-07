@@ -17,6 +17,13 @@ import javax.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 public class ErrorHandlingControllerAdvice {
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorMessage> onRuntimeException(ConstraintViolationException e) {
+        return ResponseEntity
+                .badRequest()
+                .body(new ErrorMessage(e.getLocalizedMessage() + "!"));
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorMessage> onConstraintValidationException(ConstraintViolationException e) {
         return ResponseEntity

@@ -67,14 +67,14 @@ public class User {
     @Column(name="link_telegram", table = "USERS_CONTACTS")
     private String linkTelegram;
 
-    @Column(name = "is_enabled_mentor_status", table = "MENTORS", nullable = false)
+    @Column(name = "is_enabled_mentor_status", table = "MENTORS")
     private Boolean isEnabledMentorStatus;
-    @Column(name = "about_as_mentor", table = "MENTORS", length = 400, nullable = false)
+    @Column(name = "about_as_mentor", table = "MENTORS", length = 400)
     private String aboutAsMentor;
     @ElementCollection(targetClass = MentorSpecialization.class)
     @CollectionTable(name = "MENTOR_SPECIALIZATIONS", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    @Column(name = "mentor_specialization", nullable = false)
+    @Column(name = "mentor_specialization")
     private Set<MentorSpecialization> mentorSpecializations;
 
     public String getInlineMentorSpecializations() {
