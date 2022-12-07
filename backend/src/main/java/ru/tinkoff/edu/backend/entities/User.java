@@ -52,6 +52,8 @@ public class User {
     private UserGender userGender;
     @Column(name="about", table = "USERS_MAIN_INFO", length = 400)
     private String about;
+    @Column(name = "image_user_resource", table = "USERS_MAIN_INFO")
+    private String imageUserResource;
 
     @Column(name="link_vk", table = "USERS_CONTACTS")
     private String linkVk;

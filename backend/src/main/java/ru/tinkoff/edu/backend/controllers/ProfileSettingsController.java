@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.backend.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,9 @@ import javax.validation.Valid;
 @Tag(name="Profile Settings Controller", description="Изменение данных в профиле пользователя.")
 @RequestMapping(value = "/api/user/profile/settings")
 @CrossOrigin
+@RequiredArgsConstructor
 public class ProfileSettingsController {
     private final ProfileService profileService;
-
-    public ProfileSettingsController(ProfileService profileService) {
-        this.profileService = profileService;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserMainInfoDTO> getMainInfo(@PathVariable Long id) {
@@ -38,8 +36,9 @@ public class ProfileSettingsController {
                 .ok(userFromDB);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> editMainInfo(@PathVariable Long id, @Valid @RequestBody UserMainInfoDTO user) {
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<String> editMainInfo(@PathVariable Long id,
+                                               @Valid @ModelAttribute UserMainInfoDTO user ) {
         profileService.updateUser(id, user);
 
         return ResponseEntity.ok().build();

@@ -1,5 +1,7 @@
 package ru.tinkoff.edu.backend.services.implementation;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.backend.dto.*;
@@ -8,17 +10,16 @@ import ru.tinkoff.edu.backend.exception.DifferentPasswordException;
 import ru.tinkoff.edu.backend.exception.IncorrectCurrentPasswordException;
 import ru.tinkoff.edu.backend.exception.OldPasswordRepeatNewPasswordException;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
+import ru.tinkoff.edu.backend.services.ImageStorageService;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
 @Service
+@Log4j2
+@RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public ProfileServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final ImageStorageService imageStorageService;
 
     @Override
     public UserMainInfoDTO getMainInfo(Long id) {
@@ -31,6 +32,7 @@ public class ProfileServiceImpl implements ProfileService {
         user.setGender(userFromDB.getUserGender());
         user.setDateOfBirth(userFromDB.getDateBirth());
         user.setAboutMe(userFromDB.getAbout());
+        user.setImageUserResource(userFromDB.getImageUserResource());
 
         return user;
     }
@@ -44,6 +46,11 @@ public class ProfileServiceImpl implements ProfileService {
         userFromDB.setUserGender(user.getGender());
         userFromDB.setDateBirth(user.getDateOfBirth());
         userFromDB.setAbout(user.getAboutMe());
+
+        String imageUserResource = imageStorageService.save(user.getFile(), String.valueOf(id));
+        userFromDB.setImageUserResource(imageUserResource.isEmpty()
+                ? null
+                : imageUserResource);
 
         userRepository.save(userFromDB);
     }
@@ -128,6 +135,7 @@ public class ProfileServiceImpl implements ProfileService {
         user.setLastName(userFromDB.getLastName());
         user.setPatronymic(userFromDB.getPatronymic());
         user.setAboutMe(userFromDB.getAbout());
+        user.setImageUserResource(userFromDB.getImageUserResource());
         user.setDateOfRegistration(userFromDB.getDateOfRegistration());
         user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
         user.setMentorSpecializations(userFromDB.getMentorSpecializations());
@@ -146,7 +154,7 @@ public class ProfileServiceImpl implements ProfileService {
         user.setLastName(userFromDB.getLastName());
         user.setPatronymic(userFromDB.getPatronymic());
         user.setAboutAsMentor(userFromDB.getAboutAsMentor());
-        user.setProfileImageUrl("/api/user/img/" + id);
+        user.setImageUserResource(userFromDB.getImageUserResource());
         user.setDateOfRegistration(userFromDB.getDateOfRegistration());
         user.setMentorSpecializations(userFromDB.getMentorSpecializations());
         user.setLinkVk(userFromDB.getLinkVk());

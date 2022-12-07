@@ -14,6 +14,7 @@ public class UserProfileDTO {
     private String aboutMe;
     private Boolean isEnabledMentorStatus;
     private LocalDate dateOfRegistration;
+    private String imageUserResource;
     private Set<MentorSpecialization> mentorSpecializations;
     private String linkVk;
     private String linkSkype;

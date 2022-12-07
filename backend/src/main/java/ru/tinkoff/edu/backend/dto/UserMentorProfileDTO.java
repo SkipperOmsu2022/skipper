@@ -12,7 +12,7 @@ public class UserMentorProfileDTO {
     private String lastName;
     private String patronymic;
     private String aboutAsMentor;
-    private String profileImageUrl;
+    private String imageUserResource;
     private LocalDate dateOfRegistration;
     private Set<MentorSpecialization> mentorSpecializations;
     private String linkVk;

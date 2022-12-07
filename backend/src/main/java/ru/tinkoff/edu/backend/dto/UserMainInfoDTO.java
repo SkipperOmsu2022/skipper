@@ -1,6 +1,8 @@
 package ru.tinkoff.edu.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 import ru.tinkoff.edu.backend.enums.UserGender;
 
 import javax.validation.constraints.NotBlank;
@@ -19,6 +21,10 @@ public class UserMainInfoDTO {
     private String patronymic;
     @Past
     private LocalDate dateOfBirth;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private MultipartFile file;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String imageUserResource;
     private UserGender gender;
     @Size(max = 400)
     private String aboutMe;
