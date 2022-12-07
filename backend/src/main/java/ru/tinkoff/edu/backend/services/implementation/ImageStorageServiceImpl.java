@@ -45,6 +45,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
             try (InputStream inputStream = image.getInputStream()) {
                 Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
             }
+            log. info("Image save in->" + destinationFile);
             return apiUserImage + '/' + finalFileName;
         } catch (IOException e) {
             throw new ImageStorageException("Failed to save file.", e);
