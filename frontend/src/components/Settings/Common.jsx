@@ -11,6 +11,10 @@ import "../../shared/submitButton/button.scss"
 
 import TextInput from "../../shared/TextInput/TextInput";
 
+async function getBlobFromUrl(url) {
+    return await fetch(url).then(r => r.blob());
+}
+
 const Common = () => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
 
@@ -20,6 +24,13 @@ const Common = () => {
     const [imgErr, setImgErr] = useState(null);
     const [croppedImg, setCroppedImg] = useState(null);
     const [aboutMe, setAboutMe] = useState("");
+
+    // если хочу удалить, заменить на state, обработчик повесить на кнопку
+    const isDeleteImage = false;
+    // blob картинки, измениться, когда придёт результат с сервера
+    let blobImage;
+    getBlobFromUrl(image)
+    .then(res => { blobImage = res });
 
     const [initial, setInitial] = useState({
         firstName: '',
@@ -127,6 +138,8 @@ const Common = () => {
 
         if (croppedImg) {
             form_data.append('file', croppedImg, 'filename.png');
+        } else if (!isDeleteImage) {
+            form_data.append('file', blobImage, 'filename.png');
         }
 
         for ( var key in data ) {
