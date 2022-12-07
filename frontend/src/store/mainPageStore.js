@@ -20,12 +20,12 @@ class mainPageStore {
         this.mentors = mentors;
         this.totalMentors = mentors.length
         this.pageCount = Math.ceil( this.mentors.length / 6);
-        this.currentMentors = this.mentors.slice(0, 6)
+        this.currentMentors = this.mentors
     }
 
-    updateCurrentMentors = (newOffset) => {
+    updateCurrentMentors = () => {
         this.currentfilter = this.filter.filter((item) => item.checked).map((item) => item.label);
-        this.offset = newOffset;
+        this.offset = 0;
         let res = this.mentors;
 
         if (this.currentfilter.length !== 0) {
@@ -34,12 +34,25 @@ class mainPageStore {
         }
 
         if (this.search.length !== 0) {
-            res = res.filter((item) => item.aboutMeAsMentor.toLowerCase().includes(this.search.toLowerCase()))
+            res = res.filter((item) => {
+                const str = item.aboutMeAsMentor + item.mentorSpecializations + item.firstName +
+                    item.lastName;
+                const searchLine = this.search.toLowerCase().trim().split(/[\s:,]/).filter(e => e.length > 1)
+                if(searchLine.length > 0) {
+                    return searchLine.some(r=> str.includes(r))
+                } else {
+                    return true;
+                }
+            })
         }
 
         this.totalMentors = res.length
         this.pageCount = Math.ceil( res.length / 6);
-        this.currentMentors = res.slice(newOffset, newOffset + 6)
+        this.currentMentors = res
+    }
+
+    updateOffset = (newOffset) => {
+        this.offset = newOffset;
     }
 
     changeFavorite = (mentor) => {

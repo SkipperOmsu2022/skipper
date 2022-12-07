@@ -119,6 +119,22 @@ const Common = () => {
             return true;
         }
     };
+
+    const onSubmit = ({firstName, lastName, patronymic, day, month, year, gender}) => {
+        const dateOfBirth = [year, month, day].join('-');
+        const data = {firstName, lastName, patronymic, dateOfBirth, aboutMe, gender}
+        let form_data = new FormData();
+
+        if (croppedImg) {
+            form_data.append('file', croppedImg, 'filename.png');
+        }
+
+        for ( var key in data ) {
+            form_data.append(key, data[key]);
+        }
+        
+        setUserData(form_data, 'user/profile/settings/', {"Content-Type": 'multipart/form-data'});
+    }
     
     return (
         <>
@@ -144,25 +160,7 @@ const Common = () => {
                     gender: Yup.string()
                             .required('Обязательный параметр')
                 })}
-                onSubmit = {({firstName, lastName, patronymic, day, month, year, gender}) => {
-                    const dateOfBirth = [year, month, day].join('-');
-                    const data = {firstName, lastName, patronymic, dateOfBirth, aboutMe, gender}
-                    let form_data = new FormData();
-
-                    if (croppedImg) {
-                        form_data.append('file', croppedImg, 'filename.png');
-                    } else {
-                        form_data.append('file', image, 'filename.png');
-                    }
-
-                    for ( var key in data ) {
-                        form_data.append(key, data[key]);
-                    }
-                    
-                    setUserData(form_data, 
-                        'user/profile/settings/',
-                        {"Content-Type": 'multipart/form-data'});
-                }}
+                onSubmit = {onSubmit}
             >
                 {({ errors, setFieldValue, handleChange, touched, handleBlur, values, isValid}) => {
                     if (!isValidDate(values.day, values.month, values.year)) {
