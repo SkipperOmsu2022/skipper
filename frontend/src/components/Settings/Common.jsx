@@ -27,10 +27,8 @@ const Common = () => {
 
     // если хочу удалить, заменить на state, обработчик повесить на кнопку
     const isDeleteImage = false;
-    // blob картинки, измениться, когда придёт результат с сервера
-    let blobImage;
-    getBlobFromUrl(image)
-    .then(res => { blobImage = res });
+
+    console.log(1)
 
     const [initial, setInitial] = useState({
         firstName: '',
@@ -131,7 +129,7 @@ const Common = () => {
         }
     };
 
-    const onSubmit = ({firstName, lastName, patronymic, day, month, year, gender}) => {
+    const onSubmit = async ({firstName, lastName, patronymic, day, month, year, gender}) => {
         const dateOfBirth = [year, month, day].join('-');
         const data = {firstName, lastName, patronymic, dateOfBirth, aboutMe, gender}
         let form_data = new FormData();
@@ -139,7 +137,7 @@ const Common = () => {
         if (croppedImg) {
             form_data.append('file', croppedImg, 'filename.png');
         } else if (!isDeleteImage) {
-            form_data.append('file', blobImage, 'filename.png');
+            await getBlobFromUrl(image).then(res => form_data.append('file', res, 'filename.png'));
         }
 
         for ( var key in data ) {
