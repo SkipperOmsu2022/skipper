@@ -41,7 +41,7 @@ const getDate = (dateOfRegistration) => {
 }
 
 const AdditionalInfo = ({props}) => {
-    const {dateOfRegistration, mentorStatus, isUsersPage} = props;
+    const {dateOfRegistration, mentorStatus, isOwner} = props;
 
     return (
         <div className="app-section profile additional-info">
@@ -72,7 +72,7 @@ const AdditionalInfo = ({props}) => {
                     {getDate(dateOfRegistration)}
                 </div>
             </div>
-            { isUsersPage ? null :
+            { isOwner ? null :
             <div className="profile__btn-block full-width">
                 <span className="profile__btn-block-name">Консультация:</span>
                 <button

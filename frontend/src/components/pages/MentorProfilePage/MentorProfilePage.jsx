@@ -43,7 +43,7 @@ const MentorProfilePage = () => {
             })
     }, []);
 
-    const isUsersPage = userId === localStorage.getItem('logged');
+    const isOwner = userId === localStorage.getItem('logged');
 
     return (
         <div className="page-content">
@@ -58,7 +58,7 @@ const MentorProfilePage = () => {
             </div>
             <div className="profile-wrapper">
                 <MainInfo props={{firstName, lastName, mentorSpecializations, aboutAsMentor, communication, imageUserResource}}/>
-                <AdditionalInfo props={{dateOfRegistration, mentorStatus, isUsersPage}}/>
+                <AdditionalInfo props={{dateOfRegistration, mentorStatus, isOwner}}/>
                 <Resume/>
                 <Reviews/>
                 <Lessons/>
