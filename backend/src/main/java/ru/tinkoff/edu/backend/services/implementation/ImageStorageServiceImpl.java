@@ -29,7 +29,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
     @Override
     public String save(MultipartFile image, String fileName) {
         if (image == null || image.isEmpty()) {
-            // здесь будет код удаления картинки, если он существует
+            // здесь будет код удаления картинки, если она существует
             return "";
         }
 
