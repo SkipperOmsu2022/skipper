@@ -1,0 +1,236 @@
+@import '../../../shared/variables.scss';
+
+.app-section-header.justify {
+    justify-content: space-between;
+}
+
+.search-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
+    .filter {
+        height: fit-content;
+        min-width: 320px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        &__section {
+            &-title {
+                display: flex;
+                flex-direction: row;
+                gap: 20px;
+                padding-bottom: 40px;
+                &-text {
+                    color: $header;
+                    font-weight: 400;
+                    font-size: 20px;
+                    min-width: fit-content;
+                }
+            }
+            &-divider{
+                border: 1px solid $main;
+                height: 0;
+                width: 100%;
+                margin: auto;
+            }
+            .item-wrapper {
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+            .item-wrapper.rating {
+                .stars {
+                    display: flex;
+                    flex-direction: row;
+                    letter-spacing: -5px;
+                    color: $main;
+                    font-size: 2.5rem;
+                    line-height: 2rem;
+                    user-select: none;
+                }
+                .checkbox-name {
+                    letter-spacing: 7px;
+                    font-size: 20px;
+                }
+            }   
+            &-list-item {
+                display: flex;
+                flex-direction: row;
+                gap: 40px;
+            }
+        }
+        &__btn-block {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: flex-end;
+
+            .button {
+                padding: 11px;  
+                width: 100%;
+                font-weight: 400;
+                font-size: 14px;
+                color: $header;
+                &.pale {
+                    background-color: #FFF5C2;
+                }
+            }
+        }
+    }
+    .search-result {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+
+        .search-line {
+            display:flex;
+            flex-direction:row;
+    
+            padding: 20px 30px 20px 40px;
+            height: fit-content;
+    
+            background: #FFFFFF;
+            box-shadow: 0px 0px 10px rgba(166, 166, 166, 0.6);
+            border-radius: 10px;
+    
+            &__text {
+                border: none;
+                font-family: 'Montserrat';
+                font-size: 16px;
+    
+                flex-grow:2;
+    
+                &::placeholder {
+                    font-style: italic;
+                    color: $additional-text;
+                }
+                &:focus {
+                    outline: none;
+                    border-color: rgb(48, 48, 48);
+                }
+            }
+    
+            &__icon {
+                padding-left: 10px;
+                cursor: pointer;
+                filter: opacity(50%);
+            }
+        }
+
+        .mentor {
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            padding: 2.5rem;
+            background-color: white;
+            box-shadow: 0 0 0.625rem rgba(166, 166, 166, 0.6);
+            border-radius: 0.625rem;
+
+            &__photo {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                &-img {
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                    border: 0.0625rem solid $additional-text;
+                }
+            }
+            .rating {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 10px;
+                text-align: center;
+                align-items: center;
+                &-star {
+                    line-height: 28px;
+                    color: $main;
+                    font-size: 40px;
+                    width: 30px;
+                }
+                &-value {
+                    font-size: 20px;
+                    color: $main-text;
+                    align-items: center;
+                }
+            }
+            &__main-info {
+                flex-grow:2;
+
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+
+                min-width: 400px;
+                .header {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    &__column {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 5px;
+                        &-name {
+                            color: $header;
+                            font-size: 20px;
+                        }
+                        &-specialty {
+                            color: $additional-text;
+                            font-size: 16px;
+                        }
+                    }
+                }
+                .description {
+                    color: $main-text;
+                    font-size: 16px;
+                }
+            }
+            &__divider {
+                border: 1px solid $main;
+                width: 0;
+                height: auto;
+            }
+            &__interaction {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                gap: 19px;
+
+                min-width: 180px;
+                &-info {
+                    margin: auto;
+                    display: flex;
+                    flex-direction: column;
+                    align-items:center;
+
+                    gap: 10px;
+                    color: $main-text;
+                    font-size: 16px;
+                }
+                &-btn-block {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    justify-content: flex-end;
+        
+                    .button {
+                        padding: 8.5px 11.5px;  
+                        width: 100%;
+                        font-weight: 400;
+                        font-size: 14px;
+                        color: $header;
+                        &.pale {
+                            background-color: #FFF5C2;
+                        }
+                    }  
+                }
+            }
+        }
+    }
+}

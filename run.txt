@@ -1,0 +1,3 @@
+mvn clean package
+cd .\backend\target\
+java -jar backend-1.0-SNAPSHOT.jar

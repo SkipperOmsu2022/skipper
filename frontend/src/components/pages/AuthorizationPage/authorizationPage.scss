@@ -1,0 +1,128 @@
+@import '../../../shared/variables.scss';
+
+.login-wrapper {
+    font-family: 'Montserrat';
+    padding: 1.5rem 3.55rem 3rem;
+    box-sizing: border-box;
+
+    .header {
+        display: flex;
+        flex-direction: row;
+        &__title {
+            font-size: 3.625rem;
+            font-weight: 400;
+            letter-spacing: 0.25rem;
+            height: auto;
+        }
+    }
+    
+    .authentication {
+        display: flex;
+        flex-direction: column;
+        height: wrap;
+        &__content {
+            margin: 2.2rem auto;
+        }
+    }
+    
+    .form {
+        width: 30.26rem;
+        min-height: 34.85rem;
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 0 3.12rem rgba(166, 166, 166, 0.7);
+        &__header {
+            height: 4.45rem;
+            display: inline-flex;
+            width: inherit;
+    
+            .tab {
+                padding: 1.6rem;
+                width: 50%;
+    
+                color: #444444;
+                text-decoration: none;
+    
+                font-weight: 400;
+                font-size: 1.125rem;
+                line-height: 1.188rem;
+                text-align: center;
+                background: $border;
+                box-shadow: inset 2px -2px 10px rgba(185, 185, 185, 0.5);
+            }
+            .tab.right {
+                border-radius: 0 0.5rem;
+            }
+            .tab.left {
+                border-radius: 0.5rem 0;
+            }
+            .active{
+                font-weight: 500;
+    
+                background-color: inherit;
+                border-radius: inherit;
+                box-shadow: inherit;
+            }
+            :not(.active):hover{
+                background: #cacaca;
+                box-shadow: inset 2px -2px 10px rgba(185, 185, 185, 0.7);
+            }
+        }
+        &__content {
+            padding: 3.42rem 1.9rem 1.9rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .forgot-password {
+            margin-top: 1.25rem;
+            width: fit-content;
+            height: fit-content;
+    
+            color: $additional-text;
+            text-decoration: none;
+            
+            font-weight: 500;
+            font-size: 1rem;
+            line-height: 1.438rem;
+        }
+        &__response {
+            font-weight: 400;
+            font-size: 0.9rem;
+            padding: 0.65rem 0rem 0rem;
+            color: $success;
+            &.error {
+                color: $error;
+            }
+        }
+        &__apply-button {
+            margin: 1.875rem auto 0;
+            line-height: 1.688rem;
+            min-width: 43%;
+            padding: 0.5rem 4rem;
+            &:active {
+                padding: 0.55rem 4rem 0.45rem;
+            }
+        }
+        .registration {
+            margin: 2.5rem auto;
+    
+            color: $additional-text;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            line-height: 1.438rem;
+        }
+        &__footer {
+            color: $additional-text;
+    
+            text-align: center;
+            font-weight: 300;
+            font-size: 0.86rem;
+            line-height: 1.438rem;
+            .policy, .rules {
+                color: $additional-text;
+            }
+        }
+    }
+}
+

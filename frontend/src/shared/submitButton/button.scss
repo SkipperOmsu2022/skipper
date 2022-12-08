@@ -1,0 +1,19 @@
+@import '../../shared/variables.scss';
+
+.button { 
+    cursor: pointer;
+
+    background: $button;
+    border-radius: 0.625rem!important;
+    border-style: none;
+
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.875rem;
+    text-align: center;
+    color: #444444;
+    &:hover, &:focus {
+        filter: brightness(95%);
+    }
+}
