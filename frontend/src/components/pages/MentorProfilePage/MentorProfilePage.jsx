@@ -13,7 +13,7 @@ import Lessons from "./Lessons"
 const MentorProfilePage = () => {
     const {getUserData} = useProfileService();
     const {userId} = useParams();
-    
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [aboutAsMentor, setAboutAsMentor] = useState("");
@@ -43,6 +43,8 @@ const MentorProfilePage = () => {
             })
     }, []);
 
+    const isUsersPage = userId === localStorage.getItem('logged');
+
     return (
         <div className="page-content">
             <div className="app-section-header"> 
@@ -56,7 +58,7 @@ const MentorProfilePage = () => {
             </div>
             <div className="profile-wrapper">
                 <MainInfo props={{firstName, lastName, mentorSpecializations, aboutAsMentor, communication, imageUserResource}}/>
-                <AdditionalInfo props={{dateOfRegistration, mentorStatus}}/>
+                <AdditionalInfo props={{dateOfRegistration, mentorStatus, isUsersPage}}/>
                 <Resume/>
                 <Reviews/>
                 <Lessons/>

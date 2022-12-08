@@ -1,4 +1,4 @@
-import  {observable, makeAutoObservable} from 'mobx';
+import  {makeAutoObservable} from 'mobx';
 
 class mainPageStore {
     constructor() {
