@@ -17,30 +17,34 @@ import Communication from '../Settings/Communication';
 import Mentor from '../Settings/Mentor';
 
 import "./app.scss"
+import { MessagesPage } from '../pages/MessagesPage/MessagesPage';
 
 const App = () => {
     return (
-        <AuthProvider>
-            <Router>
-                <Routes>
-                    <Route path="/authorization" element={<AuthorizationPage/>}>
-                        <Route path="signin" element={<Signin/>} />
-                        <Route path="signup" element={<Signup/>}/>
-                    </Route>
-                    <Route path="/" element={<AppHeader/>}>
-                        <Route path="settings" element={<SettingsPage/>}>
-                            <Route path="" element={<Common/>}/>
-                            <Route path="account" element={<Account/>}/>
-                            <Route path="communication" element={<Communication/>}/>
-                            <Route path="mentor" element={<Mentor/>}/>
+        <div className='section'>
+            <AuthProvider>
+                <Router>
+                    <Routes>
+                        <Route path="/authorization" element={<AuthorizationPage/>}>
+                            <Route path="signin" element={<Signin/>} />
+                            <Route path="signup" element={<Signup/>}/>
                         </Route>
-                        <Route path="profile/:userId" element={<ProfilePage/>}/>
-                        <Route path="profile-mentor/:userId" element={<MentorProfilePage/>}/>
-                        <Route path="" element={<MainPage/>}/>
-                    </Route>
-                </Routes>
-            </Router>
-        </AuthProvider>
+                        <Route path="/" element={<AppHeader/>}>
+                            <Route path="messages" element={<MessagesPage />} />
+                            <Route path="settings" element={<SettingsPage/>}>
+                                <Route path="" element={<Common/>}/>
+                                <Route path="account" element={<Account/>}/>
+                                <Route path="communication" element={<Communication/>}/>
+                                <Route path="mentor" element={<Mentor/>}/>
+                            </Route>
+                            <Route path="profile/:userId" element={<ProfilePage/>}/>
+                            <Route path="profile-mentor/:userId" element={<MentorProfilePage/>}/>
+                            <Route path="" element={<MainPage/>}/>
+                        </Route>
+                    </Routes>
+                </Router>
+            </AuthProvider>
+        </div>
     )
 }
 

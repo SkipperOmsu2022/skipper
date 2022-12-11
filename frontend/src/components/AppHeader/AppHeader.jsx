@@ -65,7 +65,7 @@ const AppHeader = () => {
                     <Link  to="/" className="app-header__logo">Skipper</Link>
                     <div className="app-header__icons">
                         <a href="messages">
-                            <img src={messages} alt="messages" />
+                            <NavLink to="/messages"><img src={messages} alt="messages" /></NavLink>
                         </a>
                         <a href="favorites">
                             <img src={bookmark} alt="favorites" className="bookmark"/>
