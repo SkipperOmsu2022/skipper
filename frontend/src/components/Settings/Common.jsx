@@ -8,6 +8,7 @@ import ImageCropper from "../ImageCropper/ImageCropper";
 import photo from "../../resources/profile-photo.jpg"
 import "../../shared/radio.scss"
 import "../../shared/submitButton/button.scss"
+import cross from "../../resources/icons/cross.svg"
 
 import TextInput from "../../shared/TextInput/TextInput";
 
@@ -24,9 +25,6 @@ const Common = () => {
     const [imgErr, setImgErr] = useState(null);
     const [croppedImg, setCroppedImg] = useState(null);
     const [aboutMe, setAboutMe] = useState("");
-
-    // если хочу удалить, заменить на state, обработчик повесить на кнопку
-    const isDeleteImage = false;
 
     const [initial, setInitial] = useState({
         firstName: '',
@@ -114,6 +112,12 @@ const Common = () => {
 		}
     };
 
+    const onDeletePhoto = () => {
+        setCroppedImg(null)
+        setCurrentImage(null)
+        setImage(null)
+    }
+
     function isValidDate(day, month, year) {
         if (day && month && year) {
             let monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
@@ -134,7 +138,7 @@ const Common = () => {
 
         if (croppedImg) {
             form_data.append('file', croppedImg, 'filename.png');
-        } else if (!isDeleteImage) {
+        } else if (image) {
             await getBlobFromUrl(image).then(res => form_data.append('file', res, 'filename.png'));
         }
 
@@ -183,7 +187,17 @@ const Common = () => {
                                 ОБЩАЯ ИНФОРМАЦИЯ
                             </div>    
                             <div className="settings__photo">
-                                <img className="settings__photo-img" src={image || photo} alt="" />
+                            {/* <div className="img-wrapper">
+                                    <img src={item} alt="certificate" className="certificates__group-item-image"/>
+                                    <img src={cross} alt="certificate" className="certificates__group-item-cross"
+                                        onClick={() => onDeleteCertificate(i)}/>
+                                </div> */}
+                                <div className="img-wrapper">
+                                    <img className="settings__photo-img" src={image || photo} alt="" />
+                                    <div alt="certificate" className="settings__photo-cross" onClick={onDeletePhoto}>
+                                        <span className="transform">Х</span>
+                                    </div>
+                                </div>
                                 <div className="settings__photo-text">
                                     <div className="settings__photo-header">
                                         Добавьте фото своего профиля

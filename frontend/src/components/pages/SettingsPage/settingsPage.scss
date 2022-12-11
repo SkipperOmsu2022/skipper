@@ -126,11 +126,40 @@
         display: grid;
         grid-template-columns: min-content max-content;
         grid-row-gap: 0.625rem;
+        .img-wrapper {
+            position: relative;
+            &:hover > .settings__photo-cross {
+                opacity: 1;
+                transition: .1s;
+            }
+        }
         &-img {
             width: 6.5rem;
             height: 6.5rem;
             border-radius: 50%;
             border: 0.0625rem solid $additional-text;
+        }
+        &-cross {
+            position: absolute;
+            opacity: 0;
+            background: $additional;
+            border-radius: 50%;
+            top: 0px;
+            right: 0px;
+            height: 30px;
+            line-height: 30px;
+            width: 30px;
+            text-align: center;
+
+            cursor: pointer;
+            &:hover {
+                opacity: 1;
+            }
+            .transform {
+                display: block;
+                color: $main-text;
+                transform: scale(1.3, 1);
+            }
         }
         &-text {
             padding: 1.3125rem 1.875rem;
@@ -383,9 +412,9 @@
                     height: 17px;
 
                     cursor: pointer;
-                }
-                &-cross:hover {
-                    opacity: 1;
+                    &:hover {
+                        opacity: 1;
+                    }
                 }
                 .img-wrapper {
                     position: relative;
