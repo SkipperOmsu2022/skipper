@@ -34,11 +34,16 @@ class mainPageStore {
 
         if (this.search.length !== 0) {
             res = res.filter((item) => {
-                const str = item.aboutMeAsMentor + item.mentorSpecializations + item.firstName +
-                    item.lastName;
-                const searchLine = this.search.toLowerCase().trim().split(/[\s:,]/).filter(e => e.length > 1)
-                if(searchLine.length > 0) {
-                    return searchLine.some(r=> str.toLowerCase().includes(r))
+                const str = (item.aboutMeAsMentor + item.mentorSpecializations + item.firstName +
+                    item.lastName).toLowerCase();
+                    
+                let searchLine = this.search.toLowerCase().trim().split(/[\s:,]/).filter(e => e.length > 1)
+                if(searchLine.length === 0) {
+                    searchLine = this.search.toLowerCase().trim().split(/[\s:,]/)
+                } 
+                if (searchLine.length > 0) {
+                    console.log(str)
+                    return searchLine.some(r=> str.includes(r))
                 } else {
                     return true;
                 }
