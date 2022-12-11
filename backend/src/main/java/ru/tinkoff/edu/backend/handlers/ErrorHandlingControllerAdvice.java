@@ -18,60 +18,9 @@ import javax.validation.ConstraintViolationException;
 @RestControllerAdvice
 public class ErrorHandlingControllerAdvice {
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorMessage> onRuntimeException(ConstraintViolationException e) {
+    public ResponseEntity<ErrorMessage> onRuntimeException(RuntimeException e) {
         return ResponseEntity
                 .badRequest()
                 .body(new ErrorMessage(e.getLocalizedMessage() + "!"));
-    }
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorMessage> onConstraintValidationException(ConstraintViolationException e) {
-        return ResponseEntity
-                .badRequest()
-                .body(new ErrorMessage(e.getLocalizedMessage() + "!"));
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorMessage> onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return ResponseEntity
-                .badRequest()
-                .body(new ErrorMessage(e.getMessage() + "!"));
-    }
-
-    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ErrorMessage> onHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        return ResponseEntity
-                .badRequest()
-                .body(new ErrorMessage(e.getMessage() + "!"));
-    }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorMessage> onHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        return ResponseEntity
-                .badRequest()
-                .body(new ErrorMessage(e.getLocalizedMessage() + '!'));
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorMessage> onEntityNotFoundException(EntityNotFoundException e) {
-        return ResponseEntity
-                .badRequest()
-                .body(new ErrorMessage(e.getMessage()));
-    }
-
-    @ExceptionHandler(EntityExistsException.class)
-    public ResponseEntity<ErrorMessage> onEntityExistsException(EntityExistsException e) {
-        return ResponseEntity
-                .badRequest()
-                .body(new ErrorMessage(e.getMessage()));
-    }
-
-    @ExceptionHandler(value = {DifferentPasswordException.class, IncorrectCurrentPasswordException.class,
-            OldPasswordRepeatNewPasswordException.class})
-    public ResponseEntity<ErrorMessage> onChangeAccountDetails(RuntimeException e) {
-//        WebRequest request
-        return ResponseEntity
-                .badRequest()
-                .body(new ErrorMessage(e.getMessage()));
     }
 }
