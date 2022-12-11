@@ -1,3 +1,5 @@
+import enviroments from "../config/enviroments";
+
 import { useEffect, useState, useRef } from "react"
 import {communicationContent} from '../ProfilePage/ProfilePage'
 
@@ -33,7 +35,7 @@ const MainInfo = ({props}) => {
         <div className="app-section profile mentor">
             <div className="profile__section">
                 <div className="profile__section-row">
-                    <img className="profile__photo" src={`http://127.0.0.1:8080${imageUserResource}` || photo} alt="" />
+                    <img className="profile__photo" src={`${enviroments.apiBase}${imageUserResource}` || photo} alt="" />
                     <div className="profile__main-info">
                         <div className="name">{firstName} {lastName}</div>
                         <div className="specialty">{mentorSpecializations}</div>

@@ -1,3 +1,5 @@
+import enviroments from "../config/enviroments";
+
 import {useRequest} from "../hooks/useRequest"
 import useAuthContext from '../hooks/useAuthContext'
 
@@ -5,7 +7,7 @@ const useLoginService = () => {
     const {request, loading, response, setResponse, error, clearResponse} = useRequest();
     const { setAuth } = useAuthContext();
 
-    const _apiBase = 'http://127.0.0.1:8080';
+    const _apiBase = enviroments.apiBase;
 
     const signup = async (data) => {
         const res = await request(`${_apiBase}/api/auth/registration`, 'post', data);

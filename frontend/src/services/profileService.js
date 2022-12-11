@@ -1,9 +1,11 @@
+import enviroments from "../config/enviroments";
+
 import {useRequest} from "../hooks/useRequest"
 
 const useProfileService = () => {
     const {request, loading, response, setResponse, error, clearResponse} = useRequest();
 
-    const _apiBase = 'http://127.0.0.1:8080';
+    const _apiBase = enviroments.apiBase;
     const userId = localStorage.getItem('logged');
 
     const getUserData = async (url, id) => {

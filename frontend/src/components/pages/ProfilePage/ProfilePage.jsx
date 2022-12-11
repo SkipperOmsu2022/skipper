@@ -1,3 +1,5 @@
+import enviroments from "../config/enviroments";
+
 import "./profilePage.scss"
 import { useEffect, useState, useRef } from "react"
 import { useParams, Link } from 'react-router-dom';
@@ -84,7 +86,7 @@ const ProfilePage = () => {
             <div className="app-section profile">
                 <div className="profile__section">
                     <div className="profile__section-row">
-                        <img className="profile__photo" src={`http://127.0.0.1:8080${imageUserResource}` || photo} alt="" />
+                        <img className="profile__photo" src={`${enviroments.apiBase}${imageUserResource}` || photo} alt="" />
                         <div className="profile__main-info">
                             <div className="name">{firstName} {lastName}</div>
                             <div className="specialty">{specialization}</div>
