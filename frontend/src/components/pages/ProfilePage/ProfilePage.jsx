@@ -1,4 +1,4 @@
-import enviroments from "../config/enviroments";
+import enviroments from "../../../config/enviroments";
 
 import "./profilePage.scss"
 import { useEffect, useState, useRef } from "react"

@@ -1,3 +1,5 @@
+import enviroments from "../../config/enviroments"
+
 import messages from "../../resources/icons/messages.svg"
 import bookmark from "../../resources/icons/bookmark.svg"
 import notifications from "../../resources/icons/notifications.svg"
@@ -92,7 +94,7 @@ const AppHeader = () => {
                         </div>
                         <img
                             className="app-header__profile-photo"
-                            src={imageUserResource ? `http://127.0.0.1:8080${imageUserResource}` : photo}
+                            src={imageUserResource ? `${enviroments.apiBase}${imageUserResource}` : photo}
                             alt=""
                         />
                         <div className={dropDown} tabIndex="-1">

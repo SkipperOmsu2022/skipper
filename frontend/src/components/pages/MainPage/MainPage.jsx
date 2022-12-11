@@ -5,6 +5,8 @@ import bookmark from "../../../resources/icons/bookmark.svg";
 import search from "../../../resources/icons/search.svg"
 import photo from "../../../resources/profile-photo.jpg"
 
+import enviroments from "../../../config/enviroments";
+
 import ReactPaginate from 'react-paginate';
 import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
@@ -22,7 +24,7 @@ const Mentors = observer(({newOffset}) => {
                 return (
                 <div className="mentor" key={item.id}>
                     <div className="mentor__photo">
-                        <img className="mentor__photo-img" src={`http://127.0.0.1:8080/api/user/image/${item.id}.png` || photo} alt="user-avatar"/>
+                        <img className="mentor__photo-img" src={`${enviroments.apiBase}/api/user/image/${item.id}.png` || photo} alt="user-avatar"/>
                         <div className="rating">
                             <span className="rating-star">&#9733;</span>
                             <span className="rating-value">4,5</span>

@@ -1,4 +1,4 @@
-import enviroments from "../config/enviroments";
+import enviroments from "../../../config/enviroments";
 
 import { useEffect, useState, useRef } from "react"
 import {communicationContent} from '../ProfilePage/ProfilePage'
