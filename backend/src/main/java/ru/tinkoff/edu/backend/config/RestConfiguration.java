@@ -9,8 +9,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ru.tinkoff.edu.backend.dto.UserRegDTO;
 import ru.tinkoff.edu.backend.properties.StorageProperties;
 import ru.tinkoff.edu.backend.services.FileStorageService;
+import ru.tinkoff.edu.backend.services.UserService;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,18 +23,20 @@ public class RestConfiguration implements WebMvcConfigurer {
     private final Path rootLocation;
     private final String apiUserImage;
     private final DispatcherServlet servlet;
+    private final UserService userService;
 
-    public RestConfiguration(StorageProperties properties, DispatcherServlet servlet) {
+    public RestConfiguration(StorageProperties properties, DispatcherServlet servlet, UserService userService) {
         this.rootLocation = Paths.get(properties.getLocation());
         this.apiUserImage = properties.getApiUserImage();
         this.servlet = servlet;
+        this.userService = userService;
     }
 
     /**
      * Создаёт директорию для хранения файлов.
      */
     @Bean
-    public CommandLineRunner init(FileStorageService fileStorageService) {
+    public CommandLineRunner initFolderOfFileStorageService(FileStorageService fileStorageService) {
         return args -> fileStorageService.init();
     }
 

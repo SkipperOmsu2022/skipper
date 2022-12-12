@@ -2,7 +2,6 @@ package ru.tinkoff.edu.backend.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,7 +42,8 @@ public class ProfileSettingsController {
     }
 
     @Operation(summary = "Изменение основных данных в профиле пользователя.",
-            requestBody = @RequestBody(content = {@Content(mediaType = "multipart/form-data")}))
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = {@Content(mediaType = "multipart/form-data")}))
     @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> editMainInfo(@PathVariable Long id,
