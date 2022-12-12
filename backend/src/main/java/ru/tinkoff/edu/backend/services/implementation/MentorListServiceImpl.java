@@ -3,7 +3,6 @@ package ru.tinkoff.edu.backend.services.implementation;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
-import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
 import ru.tinkoff.edu.backend.services.MentorListService;
 

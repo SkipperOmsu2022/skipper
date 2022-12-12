@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.backend.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,12 +28,14 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
+    @Operation(summary = "Получение информации для страницы обычного пользователя.")
     @GetMapping("/{id}")
     public ResponseEntity<UserProfileDTO> getMainInfo(@PathVariable Long id) {
         UserProfileDTO user = profileService.getUserProfile(id);
         return ResponseEntity.ok(user);
     }
 
+    @Operation(summary = "Получение информации для страницы ментора.")
     @GetMapping("/mentor/{id}")
     public ResponseEntity<UserMentorProfileDTO> getMainMentorInfo(@PathVariable Long id) {
         UserMentorProfileDTO user = profileService.getUserMentorProfile(id);

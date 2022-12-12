@@ -1,5 +1,10 @@
 package ru.tinkoff.edu.backend.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +33,7 @@ import javax.validation.Valid;
 public class ProfileSettingsController {
     private final ProfileService profileService;
 
+    @Operation(summary = "Получение основной информации об аккаунте пользователя.")
     @GetMapping("/{id}")
     public ResponseEntity<UserEditMainInfoDTO> getMainInfo(@PathVariable Long id) {
         UserEditMainInfoDTO userFromDB = profileService.getMainInfo(id);
@@ -36,6 +42,9 @@ public class ProfileSettingsController {
                 .ok(userFromDB);
     }
 
+    @Operation(summary = "Изменение основных данных в профиле пользователя.",
+            requestBody = @RequestBody(content = {@Content(mediaType = "multipart/form-data")}))
+    @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> editMainInfo(@PathVariable Long id,
                                                @Valid @ModelAttribute UserEditMainInfoDTO user ) {
@@ -44,6 +53,7 @@ public class ProfileSettingsController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Получение почты пользователя.")
     @GetMapping("/account/{id}")
     public ResponseEntity<UserEditAccountDTO> getAccountDetails(@PathVariable Long id) {
         UserEditAccountDTO user = profileService.getAccountDetails(id);
@@ -52,6 +62,12 @@ public class ProfileSettingsController {
                 .ok(user);
     }
 
+    @Operation(summary = "Изменение почты и пароля аккаунта пользователя.",
+            description = "Ошибка будет возникать, если:\n" +
+                    "1. Неверное введённый текущий(старый) пароль.\n" +
+                    "2. Новый пароль и повторно введённый новый пароль - не совпадают.\n" +
+                    "3. Новый пароль совпадает со старым паролем.")
+    @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PutMapping("/account/{id}")
     public ResponseEntity<String> editAccountDetails(@PathVariable Long id, @Valid @RequestBody UserEditAccountDTO user) {
         profileService.updateUser(id, user);
@@ -59,6 +75,7 @@ public class ProfileSettingsController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Получение контактных данных(ссылок на социальные сети) пользователя.")
     @GetMapping("/contacts/{id}")
     public ResponseEntity<UserEditContactsDTO> getUserContacts(@PathVariable Long id) {
         UserEditContactsDTO user = profileService.getUserContacts(id);
@@ -67,6 +84,8 @@ public class ProfileSettingsController {
                 .ok(user);
     }
 
+    @Operation(summary = "Изменение контактных данных(ссылок на социальные сети) пользователя.")
+    @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PutMapping("/contacts/{id}")
     public ResponseEntity<String> editUserContacts(@PathVariable Long id, @Valid @RequestBody UserEditContactsDTO user) {
         profileService.updateUser(id, user);
@@ -74,6 +93,7 @@ public class ProfileSettingsController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Получение информации о менторских настройках пользователя.")
     @GetMapping("/mentor/{id}")
     public ResponseEntity<UserEditMentorDTO> getMentorSettings(@PathVariable Long id) {
         UserEditMentorDTO user = profileService.getMentorInfo(id);
@@ -81,6 +101,8 @@ public class ProfileSettingsController {
                 .ok(user);
     }
 
+    @Operation(summary = "Изменение информации о менторских настройках пользователя.")
+    @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PutMapping("/mentor/{id}")
     public ResponseEntity<String> editMentorSettings(@PathVariable Long id,
                                                      @Valid @RequestBody UserEditMentorDTO user) {

@@ -34,14 +34,19 @@ public interface FileStorageService {
     }
 
     /**
-     * Удаляет файл по указанному пути.
+     * Удаляет файл по указанному пути. Если расширение файла неизвестно,
+     * то передавать вторым аргументом массив всевозможных расширений.
      * @param fileName имя удаляемого файла.
-     * @param extensions возможные расширения удаляемого файла.
+     * @param extensions возможные расширения удаляемого файла, если первоначально оно неизвестно.
      */
     default void delete(String fileName, String ...extensions) {
         try {
-            for(String ex : extensions) {
-                Files.deleteIfExists(Paths.get(fileName.concat(".").concat(ex)));
+            if(extensions.length == 0) {
+                Files.deleteIfExists(Paths.get(fileName));
+            } else {
+                for (String ex : extensions) {
+                    Files.deleteIfExists(Paths.get(fileName.concat(".").concat(ex)));
+                }
             }
         } catch (IOException e) {
             throw new FileStorageServiceException("Failed to delete file with name: " + fileName, e);
