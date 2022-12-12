@@ -21,7 +21,7 @@ import javax.validation.Valid;
  * Данный контроллер отвечает за:
  * <ul>
  *      <li> Регестрацию пользователя</li>
- *      <li> Авторизацию пользователя</li>
+ *      <li> Аутентификацию пользователя</li>
  * </ul>
  */
 @RestController
@@ -39,11 +39,10 @@ public class AuthController {
     @Operation(summary = "Регистрация пользователя")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Успешная регистрация",
-                    content = {@Content(mediaType = "application/json" )},
+                    content = @Content(schema = @Schema(hidden = true)),
                     headers = {@Header(name = "Location", description = "/api/user/{id}",
                             schema = @Schema(example = "/api/user/5")),
-                    }),
-            @ApiResponse(responseCode = "400", description = "User already exist!"
+                    }
             ) })
     @PostMapping("/registration")
     public ResponseEntity<String> registration(@Valid @RequestBody UserRegDTO user) {
@@ -54,6 +53,10 @@ public class AuthController {
                 .build();
     }
 
+    @Operation(summary = "Аутентификация пользователя",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = {@Content(mediaType = "multipart/form-data")}))
+    @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid UserLoginDTO user) {
         String id = userService.readByUserLoginDTO(user).getId().toString();

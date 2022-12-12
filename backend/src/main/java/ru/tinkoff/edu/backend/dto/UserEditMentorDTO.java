@@ -6,6 +6,7 @@ import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Data
 public class UserEditMentorDTO {
@@ -15,5 +16,7 @@ public class UserEditMentorDTO {
     @Size(max = 400)
     private String aboutMeAsMentor;
     @NotNull
-    private MentorSpecialization mentorSpecialization;
+    @Size(min = 1, message
+            = "Mentor specialization must have at least one element!")
+    private Set<MentorSpecialization> mentorSpecializations;
 }

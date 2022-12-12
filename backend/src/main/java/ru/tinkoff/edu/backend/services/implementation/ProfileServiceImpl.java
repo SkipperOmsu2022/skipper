@@ -1,5 +1,7 @@
 package ru.tinkoff.edu.backend.services.implementation;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.backend.dto.*;
@@ -8,22 +10,21 @@ import ru.tinkoff.edu.backend.exception.DifferentPasswordException;
 import ru.tinkoff.edu.backend.exception.IncorrectCurrentPasswordException;
 import ru.tinkoff.edu.backend.exception.OldPasswordRepeatNewPasswordException;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
+import ru.tinkoff.edu.backend.services.FileStorageService;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
 @Service
+@Log4j2
+@RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public ProfileServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final FileStorageService fileStorageService;
 
     @Override
-    public UserMainInfoDTO getMainInfo(Long id) {
+    public UserEditMainInfoDTO getMainInfo(Long id) {
         User userFromDB = userRepository.getReferenceById(id);
-        UserMainInfoDTO user = new UserMainInfoDTO();
+        UserEditMainInfoDTO user = new UserEditMainInfoDTO();
 
         user.setFirstName(userFromDB.getFirstName());
         user.setLastName(userFromDB.getLastName());
@@ -31,12 +32,13 @@ public class ProfileServiceImpl implements ProfileService {
         user.setGender(userFromDB.getUserGender());
         user.setDateOfBirth(userFromDB.getDateBirth());
         user.setAboutMe(userFromDB.getAbout());
+        user.setImageUserResource(userFromDB.getImageUserResource());
 
         return user;
     }
 
     @Override
-    public void copyInUserFrom(Long id, UserMainInfoDTO user) {
+    public void updateUser(Long id, UserEditMainInfoDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setFirstName(user.getFirstName());
         userFromDB.setLastName(user.getLastName());
@@ -45,19 +47,24 @@ public class ProfileServiceImpl implements ProfileService {
         userFromDB.setDateBirth(user.getDateOfBirth());
         userFromDB.setAbout(user.getAboutMe());
 
+        String imageUserResource = fileStorageService.save(user.getFile(), String.valueOf(id));
+        userFromDB.setImageUserResource(imageUserResource.isEmpty()
+                ? null
+                : imageUserResource);
+
         userRepository.save(userFromDB);
     }
 
     @Override
-    public UserEditDTO getAccountDetails(Long id) {
+    public UserEditAccountDTO getAccountDetails(Long id) {
         User userFromDB = userRepository.getReferenceById(id);
-        UserEditDTO user = new UserEditDTO();
+        UserEditAccountDTO user = new UserEditAccountDTO();
         user.setEmail(userFromDB.getEmail());
         return user;
     }
 
     @Override
-    public void copyInUserFrom(Long id, UserEditDTO user) {
+    public void updateUser(Long id, UserEditAccountDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         if(!passwordEncoder.matches(user.getOldPassword(), userFromDB.getPassword())) {
             throw new IncorrectCurrentPasswordException("Incorrect current password!!");
@@ -78,9 +85,9 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public UserContactsDTO getUserContacts(Long id) {
+    public UserEditContactsDTO getUserContacts(Long id) {
         User userFromDB = userRepository.getReferenceById(id);
-        UserContactsDTO user = new UserContactsDTO();
+        UserEditContactsDTO user = new UserEditContactsDTO();
         user.setLinkVk(userFromDB.getLinkVk());
         user.setLinkSkype(userFromDB.getLinkSkype());
         user.setLinkDiscord(userFromDB.getLinkDiscord());
@@ -90,7 +97,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void copyInUserFrom(Long id, UserContactsDTO user) {
+    public void updateUser(Long id, UserEditContactsDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setLinkVk(user.getLinkVk());
         userFromDB.setLinkSkype(user.getLinkSkype());
@@ -106,16 +113,16 @@ public class ProfileServiceImpl implements ProfileService {
         UserEditMentorDTO user = new UserEditMentorDTO();
         user.setAboutMeAsMentor(userFromDB.getAboutAsMentor());
         user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
-        user.setMentorSpecialization(userFromDB.getMentorSpecialization());
+        user.setMentorSpecializations(userFromDB.getMentorSpecializations());
         return user;
     }
 
     @Override
-    public void copyInUserFrom(Long id, UserEditMentorDTO user) {
+    public void updateUser(Long id, UserEditMentorDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setAboutAsMentor(user.getAboutMeAsMentor());
         userFromDB.setIsEnabledMentorStatus(user.getIsEnabledMentorStatus());
-        userFromDB.setMentorSpecialization(user.getMentorSpecialization());
+        userFromDB.setMentorSpecializations(user.getMentorSpecializations());
 
         userRepository.save(userFromDB);
     }
@@ -128,8 +135,29 @@ public class ProfileServiceImpl implements ProfileService {
         user.setLastName(userFromDB.getLastName());
         user.setPatronymic(userFromDB.getPatronymic());
         user.setAboutMe(userFromDB.getAbout());
+        user.setImageUserResource(userFromDB.getImageUserResource());
+        user.setDateOfRegistration(userFromDB.getDateOfRegistration());
         user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
-        user.setMentorSpecialization(userFromDB.getMentorSpecialization());
+        user.setMentorSpecializations(userFromDB.getInlineMentorSpecializations());
+        user.setLinkVk(userFromDB.getLinkVk());
+        user.setLinkSkype(userFromDB.getLinkSkype());
+        user.setLinkDiscord(userFromDB.getLinkDiscord());
+        user.setLinkTelegram(userFromDB.getLinkTelegram());
+        return user;
+    }
+
+    @Override
+    public UserMentorProfileDTO getUserMentorProfile(Long id) {
+        User userFromDB = userRepository.getReferenceById(id);
+        UserMentorProfileDTO user = new UserMentorProfileDTO();
+        user.setFirstName(userFromDB.getFirstName());
+        user.setLastName(userFromDB.getLastName());
+        user.setPatronymic(userFromDB.getPatronymic());
+        user.setAboutAsMentor(userFromDB.getAboutAsMentor());
+        user.setImageUserResource(userFromDB.getImageUserResource());
+        user.setDateOfRegistration(userFromDB.getDateOfRegistration());
+        user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
+        user.setMentorSpecializations(userFromDB.getInlineMentorSpecializations());
         user.setLinkVk(userFromDB.getLinkVk());
         user.setLinkSkype(userFromDB.getLinkSkype());
         user.setLinkDiscord(userFromDB.getLinkDiscord());

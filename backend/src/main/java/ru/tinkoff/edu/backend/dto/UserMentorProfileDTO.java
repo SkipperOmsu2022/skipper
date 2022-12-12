@@ -7,14 +7,14 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Data
-public class UserProfileDTO {
+public class UserMentorProfileDTO {
     private String firstName;
     private String lastName;
     private String patronymic;
-    private String aboutMe;
+    private String aboutAsMentor;
     private Boolean isEnabledMentorStatus;
-    private LocalDate dateOfRegistration;
     private String imageUserResource;
+    private LocalDate dateOfRegistration;
     private String mentorSpecializations;
     private String linkVk;
     private String linkSkype;
