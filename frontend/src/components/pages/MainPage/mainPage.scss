@@ -1,5 +1,45 @@
 @import '../../../shared/variables.scss';
 
+.pagination {
+    margin-left: auto;
+    margin-right: auto;
+
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    list-style: none;
+}
+.page-item {
+    user-select: none;
+    width: 30px;
+    height: 30px;
+    
+    font-size: 20px;
+    line-height: 30px;
+    text-align: center;
+    color: $main-text;
+    border-radius: 50%;
+                    
+    
+}
+.page-link:hover {
+    cursor: pointer;
+}
+
+.active-link {
+    background-color: $main;
+}
+
+#container {
+  margin: 1rem;
+}
+
+.items {
+  margin-bottom: 1rem;
+}
+
+///
+
 .app-section-header.justify {
     justify-content: space-between;
 }
@@ -220,8 +260,7 @@
                     justify-content: flex-end;
         
                     .button {
-                        padding: 8.5px 11.5px;  
-                        width: 100%;
+                        padding: 8.5px 11.5px;
                         font-weight: 400;
                         font-size: 14px;
                         color: $header;
@@ -231,6 +270,11 @@
                     }  
                 }
             }
+        }
+        &__error {
+            margin-left: auto;
+            margin-right: auto;
+            color: $error;
         }
     }
 }

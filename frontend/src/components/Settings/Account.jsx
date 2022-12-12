@@ -31,30 +31,21 @@ const Account = () => {
             initialValues = {initial}
             validationSchema = {Yup.object().shape(({
                 email: Yup.string()
+                        .required('Обязательное поле')
                         .email('Неправильный email адрес'),
                 oldPassword: Yup.string()
-                        .when("newPassword", {
-                            is: newPassword => (newPassword && newPassword.length > 0 ? true : false),
-                            then: Yup.string().required('Подтвердите, что являетесь владельцем аккаунта')
-                        }),
+                        .required('Обязательное поле'),
                 newPassword: Yup.string()
+                        .required('Обязательное поле')
                         .when("oldPassword", {
                             is: oldPassword => (oldPassword && oldPassword.length > 0 ? true : false),
                             then: Yup.string()
                                 .required('Выберите новый пароль')
                                 .notOneOf([Yup.ref("oldPassword")], "Старый и новый пароли не должны совпадать")
                         })
-                        .min(8, 'Пароль должен быть не менее 8 символов')
-                        // .when("repeatNewPassword", {
-                        //     is: repeatNewPassword => (repeatNewPassword && repeatNewPassword.length > 0 ? true : false),
-                        //     then: Yup.string().required('Введите новый пароль')
-                        // })
-                        ,
+                        .min(8, 'Пароль должен быть не менее 8 символов'),
                 repeatNewPassword: Yup.string()
-                        .when("oldPassword", {
-                            is: oldPassword => (oldPassword && oldPassword.length > 0 ? true : false),
-                            then: Yup.string().required('Обязательное поле')
-                        })
+                        .required('Обязательное поле')
                         .when("newPassword", {
                             is: newPassword => (newPassword && newPassword.length > 0 ? true : false),
                             then: Yup.string().oneOf([Yup.ref("newPassword")], "Повторите новый пароль")

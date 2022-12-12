@@ -1,45 +1,5 @@
 @import '../../../shared/variables.scss';
-
-.page-content {
-    padding: 2rem 2.5rem 3.75rem 2.5rem;
-
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-
-    font-family: 'Montserrat';
-    font-weight: 400;
-    font-size: 16px;
-}
-
-.app-section {
-    font-family: 'Montserrat';
-    min-height: 45vh;
-    padding: 2.5rem 2.5rem 3.75rem 2.5rem;
-    background-color: white;
-    box-shadow: 0 0 0.625rem rgba(166, 166, 166, 0.6);
-    border-radius: 0.625rem;
-    z-index: 1;
-
-    &-header {
-        display: flex;
-        flex-direction: row;
-        //justify-content: space-between;
-    
-        cursor: default;
-        font-family: 'Montserrat';
-        z-index: 1;
-    
-        font-size: 20px;
-        font-weight: 400;
-        line-height: 24px;
-        color: $main-text;
-    
-        .inactive {
-            color: $additional-text;
-        }
-    }
-}
+@import '../../../shared/page-content.scss';
 
 .settings {
     min-width: 86.75rem;
@@ -166,11 +126,40 @@
         display: grid;
         grid-template-columns: min-content max-content;
         grid-row-gap: 0.625rem;
+        .img-wrapper {
+            position: relative;
+            &:hover > .settings__photo-cross {
+                opacity: 1;
+                transition: .1s;
+            }
+        }
         &-img {
             width: 6.5rem;
             height: 6.5rem;
             border-radius: 50%;
             border: 0.0625rem solid $additional-text;
+        }
+        &-cross {
+            position: absolute;
+            opacity: 0;
+            background: $additional;
+            border-radius: 50%;
+            top: 0px;
+            right: 0px;
+            height: 30px;
+            line-height: 30px;
+            width: 30px;
+            text-align: center;
+
+            cursor: pointer;
+            &:hover {
+                opacity: 1;
+            }
+            .transform {
+                display: block;
+                color: $main-text;
+                transform: scale(1.3, 1);
+            }
         }
         &-text {
             padding: 1.3125rem 1.875rem;
@@ -215,6 +204,7 @@
         flex-wrap: wrap;
         column-gap: 1.25rem;
         row-gap: 10px;
+        height: fit-content;
         &-label {
             width: 9.5rem;
 
@@ -311,8 +301,8 @@
             }
         }
         &-delete {
+            margin: auto;
             text-align: center;
-            margin: auto 0;
             font-size: 1.0625rem;
 
             color: $error;
@@ -369,21 +359,22 @@
     .wrapper {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        margin-top: auto;
+        gap: 10px;
         flex-wrap: nowrap;
-        :first-child {
-            margin-top: 20px;
-        }
-        :last-child {
-            margin-bottom: 20px;
-        }
+        padding-bottom: 20px;
         .button {
+            background-color: $additional;
             margin-left: auto;
             margin-right: auto;
             font-size: 20px;
             padding: 3px 6px 9px;
             width: 30px;
             height: 30px;
+        }
+        &.no-padding {
+            padding: 0;
+            margin-bottom: auto;
         }
     }
     .certificates {
@@ -421,9 +412,9 @@
                     height: 17px;
 
                     cursor: pointer;
-                }
-                &-cross:hover {
-                    opacity: 1;
+                    &:hover {
+                        opacity: 1;
+                    }
                 }
                 .img-wrapper {
                     position: relative;
@@ -439,6 +430,7 @@
 
         }
         .button {
+            background-color: $additional;
             width: fit-content;
         }
         &__description {
