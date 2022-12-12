@@ -8,14 +8,20 @@ import ImageCropper from "../ImageCropper/ImageCropper";
 import photo from "../../resources/profile-photo.jpg"
 import "../../shared/radio.scss"
 import "../../shared/submitButton/button.scss"
+import cross from "../../resources/icons/cross.svg"
 
 import TextInput from "../../shared/TextInput/TextInput";
+
+async function getBlobFromUrl(url) {
+    return await fetch(url).then(r => r.blob());
+}
 
 const Common = () => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
 
     const [showModal, setShowModal] = useState(false);
-    const [image, setImage] = useState(photo);
+    const [image, setImage] = useState('');
+    const [currentImage, setCurrentImage] = useState('');
     const [imgErr, setImgErr] = useState(null);
     const [croppedImg, setCroppedImg] = useState(null);
     const [aboutMe, setAboutMe] = useState("");
@@ -36,6 +42,12 @@ const Common = () => {
                 let date = res?.data?.dateOfBirth?.split('-');
                 if (date === undefined) date = ['', '', ''];
                 
+                if (res?.data?.imageUserResource) {
+                    setImage('http://127.0.0.1:8080' + res?.data?.imageUserResource)
+                } else {
+                    setImage(null)
+                }
+                
                 setInitial({
                     firstName: res?.data?.firstName,
                     lastName: res?.data?.lastName,
@@ -48,15 +60,19 @@ const Common = () => {
                 setAboutMe(res?.data?.aboutMe || '')
             });
 
-            // document.addEventListener("click", clearResponse);
             document.addEventListener("keydown", clearResponse);
 
         return () => {
             clearResponse();
-            // document.removeEventListener("click",  clearResponse);
             document.removeEventListener("keydown",  clearResponse);
         };
     }, []);
+
+    useEffect(() => {
+        if (croppedImg) {
+            setImage(URL.createObjectURL(croppedImg));
+        }
+    }, [croppedImg])
 
     const fileInput = useRef(1);
 
@@ -78,14 +94,14 @@ const Common = () => {
             if (file.type !== "image/gif" & file.type !== "image/png" & file.type !== "image/jpeg") {
                 setImgErr("Неправильный формат файла");
                 return;
-            } else if (file.size > 1048576){
+            } else if (file.size > 3145728){
                 setImgErr("Слишком большой файл");
                 return;
             }
 
 			reader.onload = () => {
                 setImgErr(null);
-				setImage(reader.result?.toString());
+				setCurrentImage(reader.result?.toString());
 				e.target.value = null;
 				setShowModal(true);
 			};
@@ -95,6 +111,12 @@ const Common = () => {
 			console.log(error);
 		}
     };
+
+    const onDeletePhoto = () => {
+        setCroppedImg(null)
+        setCurrentImage(null)
+        setImage(null)
+    }
 
     function isValidDate(day, month, year) {
         if (day && month && year) {
@@ -108,16 +130,33 @@ const Common = () => {
             return true;
         }
     };
+
+    const onSubmit = async ({firstName, lastName, patronymic, day, month, year, gender}) => {
+        const dateOfBirth = [year, month, day].join('-');
+        const data = {firstName, lastName, patronymic, dateOfBirth, aboutMe, gender}
+        let form_data = new FormData();
+
+        if (croppedImg) {
+            form_data.append('file', croppedImg, 'filename.png');
+        } else if (image) {
+            await getBlobFromUrl(image).then(res => form_data.append('file', res, 'filename.png'));
+        }
+
+        for ( var key in data ) {
+            form_data.append(key, data[key]);
+        }
+        
+        setUserData(form_data, 'user/profile/settings/', {"Content-Type": 'multipart/form-data'});
+    }
     
     return (
         <>
             <ImageCropper
                 showModal={showModal}
-                imgURL={image}
+                imgURL={currentImage}
                 onSaveHandler={setCroppedImg}
                 onModalClose={() => {
                     setShowModal(false);
-                    setImage(null);
                 }}
             />
             <Formik
@@ -134,10 +173,7 @@ const Common = () => {
                     gender: Yup.string()
                             .required('Обязательный параметр')
                 })}
-                onSubmit = {({firstName, lastName, patronymic, day, month, year, gender}) => {
-                    const dateOfBirth = [year, month, day].join('-');
-                    setUserData({firstName, lastName, patronymic, dateOfBirth, aboutMe, croppedImg, gender}, 'user/profile/settings/');
-                }}
+                onSubmit = {onSubmit}
             >
                 {({ errors, setFieldValue, handleChange, touched, handleBlur, values, isValid}) => {
                     if (!isValidDate(values.day, values.month, values.year)) {
@@ -151,13 +187,23 @@ const Common = () => {
                                 ОБЩАЯ ИНФОРМАЦИЯ
                             </div>    
                             <div className="settings__photo">
-                                <img className="settings__photo-img" src={croppedImg || photo} alt="" />
+                            {/* <div className="img-wrapper">
+                                    <img src={item} alt="certificate" className="certificates__group-item-image"/>
+                                    <img src={cross} alt="certificate" className="certificates__group-item-cross"
+                                        onClick={() => onDeleteCertificate(i)}/>
+                                </div> */}
+                                <div className="img-wrapper">
+                                    <img className="settings__photo-img" src={image || photo} alt="" />
+                                    <div alt="certificate" className="settings__photo-cross" onClick={onDeletePhoto}>
+                                        <span className="transform">Х</span>
+                                    </div>
+                                </div>
                                 <div className="settings__photo-text">
                                     <div className="settings__photo-header">
                                         Добавьте фото своего профиля
                                     </div>
                                     <div className={`settings__photo-description${imgErr ? ' error' : ''}`}>
-                                        {imgErr ? imgErr : 'Размер фотографии не должен превышать 1Мб (JPG, GIF или PNG)'}
+                                        {imgErr ? imgErr : 'Размер фотографии не должен превышать 3Мб (JPG, GIF или PNG)'}
                                     </div>
                                 </div>
                                 <label htmlFor="upload-photo" className="button settings__photo-button">

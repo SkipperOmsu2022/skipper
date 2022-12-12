@@ -35,7 +35,7 @@ const App = () => {
                             <Route path="mentor" element={<Mentor/>}/>
                         </Route>
                         <Route path="profile/:userId" element={<ProfilePage/>}/>
-                        <Route path="profile-mentor" element={<MentorProfilePage mentor/>}/>
+                        <Route path="profile-mentor/:userId" element={<MentorProfilePage/>}/>
                         <Route path="" element={<MainPage/>}/>
                     </Route>
                 </Routes>

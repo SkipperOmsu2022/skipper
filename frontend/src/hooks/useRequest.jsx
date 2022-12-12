@@ -9,6 +9,7 @@ export const useRequest = () => {
     const clearResponse = () => {
         setResponse(null);
         setError(false);
+        setLoading(false);
     }
     
     const request = useCallback(async (url, method, data, header) => {

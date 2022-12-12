@@ -1,20 +1,45 @@
+import enviroments from "../../../config/enviroments";
+
 import "./profilePage.scss"
 import { useEffect, useState, useRef } from "react"
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import photo from "../../../resources/profile-photo.jpg"
 import "../../../shared/submitButton/button.scss"
 import useProfileService from "../../../services/profileService";
-    
+import {getDate} from '../MentorProfilePage/AdditionalInfo'
+
+const communicationContent = (communication) => {
+    const links = communication?.filter((item) => (item.name && item.link)).map((item, i) => {
+        return (
+            <div className="profile__contact" key={i}>
+                <div className="profile__contact-label">
+                    {item.name}:
+                </div>
+                <div className="profile__contact-link">
+                    {item.link}
+                </div>
+            </div>
+        )
+    })
+    if (links?.length === 0) return (
+        <div className="profile__no-info">
+            Пользователь не предоставил контакты для связи
+        </div>
+    )
+    return links;
+}
 
 const ProfilePage = () => {
     const {getUserData} = useProfileService();
     const {userId} = useParams();
 
-    const [firstName, setFirstName] = useState("Имя");
-    const [lastName, setLastName] = useState("Фамилия");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [aboutMe, setAboutMe] = useState("");
     const [mentorStatus, setMentorStatus] = useState(false);
     const [specialization, setSpecialization] = useState("");
+    const [imageUserResource, setImageUserResource] = useState("");
+    const [dateOfRegistration, setDateOfRegistration] = useState([]);
     const [communication, setCommunication] = useState([]);
 
     const [dropdownDisplay, setDropdownDisplay] = useState(false);
@@ -23,11 +48,14 @@ const ProfilePage = () => {
     useEffect(() => {
         getUserData('user/profile/', userId)
             .then(res => {
+                console.log(res?.data?.mentorSpecializations)
                 setFirstName(res?.data?.firstName);
                 setLastName(res?.data?.lastName);
                 setAboutMe(res?.data?.aboutMe);
-                setSpecialization(res?.data?.specialization)
+                setSpecialization(res?.data?.mentorSpecializations)
                 setMentorStatus(res?.data?.isEnabledMentorStatus)
+                setImageUserResource(res?.data?.imageUserResource)
+                setDateOfRegistration(res?.data?.dateOfRegistration?.split('-'))
 
                 setCommunication([
                     {name: 'Вконтакте', link: res?.data?.linkVk},
@@ -52,37 +80,16 @@ const ProfilePage = () => {
 
     const dropdown = `dropdown ${dropdownDisplay ? '' : 'hide'}`;
 
-    const communicationContent = () => {
-        const links = communication.filter((item) => (item.name && item.link)).map((item, i) => {
-            return (
-                <div className="profile__contact" key={i}>
-                    <div className="profile__contact-label">
-                        {item.name}:
-                    </div>
-                    <div className="profile__contact-link">
-                        {item.link}
-                    </div>
-                </div>
-            )
-        })
-        if (links.length === 0) return (
-            <div className="profile__no-info">
-                Пользователь не предоставил контакты для связи
-            </div>
-        )
-        return links;
-    }
-
     return (
         <div className="page-content">
             <div className="app-section-header">Профиль</div>
             <div className="app-section profile">
                 <div className="profile__section">
                     <div className="profile__section-row">
-                        <img className="profile__photo" src={photo} alt="" />
+                        <img className="profile__photo" src={`${enviroments.apiBase}${imageUserResource}` || photo} alt="" />
                         <div className="profile__main-info">
                             <div className="name">{firstName} {lastName}</div>
-                            <div className="specialty">{specialization || 'Специальность ментора'}</div>
+                            <div className="specialty">{specialization}</div>
                         </div>
                     </div>
                     <div className="complain-btn" ref={container} onClick={handleDropdownClick}
@@ -111,10 +118,22 @@ const ProfilePage = () => {
                 <div className="profile__section">
                     <div className="profile__section-column">
                         <div className="profile__section-label">Контакты</div>
-                        {communicationContent()}
+                        {communicationContent(communication)}
                     </div>
-                    <div className="profile__btn-block">
-                        {mentorStatus ? <button className="button">Перейти на профиль ментора</button> : null}
+                    <div className="profile__section-column gap40px">
+                        <div className="profile__registration-date">
+                            {getDate(dateOfRegistration)}
+                        </div>
+                        <div className="profile__btn-block">
+                            {mentorStatus ? 
+                            <Link
+                                to={`/profile-mentor/${userId}`}
+                                className="button"
+                            >
+                                Перейти на профиль ментора
+                            </Link>
+                            : null}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -123,3 +142,4 @@ const ProfilePage = () => {
 }
 
 export default ProfilePage;
+export {communicationContent};
