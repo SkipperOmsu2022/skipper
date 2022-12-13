@@ -11,10 +11,11 @@ const useProfileService = () => {
     const getUserData = async (url, id) => {
         const res = await request(`${_apiBase}/api/${url}${id || userId}`, 'get');
         console.log(res)
-        if (res?.status !== 200) {
+        if (res?.status === 200) {
+            return res;
+        } else {
             setResponse("Что-то пошло не так");
         }
-        return res;
     }
     
     const setUserData = async (data, url, headers) => {
@@ -26,17 +27,18 @@ const useProfileService = () => {
             setResponse("Изменения сохранены");
         } else {
             setResponse("Что-то пошло не так");
+            return res;
         }
-        return res;
     }
 
     const getSpecializationsList = async () => {
         const res = await request(`${_apiBase}/api/list/specializations`, 'get');
 
-        if (res?.status !== 200) {
+        if (res?.status === 200) {
+            return res;
+        } else {
             setResponse("Что-то пошло не так");
         }
-        return res;
     }
 
     return {request, loading, response, error, clearResponse, getUserData, setUserData, getSpecializationsList}

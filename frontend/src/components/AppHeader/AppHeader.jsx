@@ -64,9 +64,7 @@ const AppHeader = () => {
                 <div className="app-header__group">
                     <Link  to="/" className="app-header__logo">Skipper</Link>
                     <div className="app-header__icons">
-                        <a href="messages">
-                            <NavLink to="/messages"><img src={messages} alt="messages" /></NavLink>
-                        </a>
+                        <NavLink to="/messages"><img src={messages} alt="messages" /></NavLink>
                         <a href="favorites">
                             <img src={bookmark} alt="favorites" className="bookmark"/>
                         </a>
@@ -83,7 +81,7 @@ const AppHeader = () => {
                     </div>
                     <div className="app-header__profile" ref={container} tabIndex={0} 
                         onClick={handleDropdownClick}
-                        onKeyPress={(e) => {
+                        onKeyDown={(e) => {
                             if (e.key === ' ' || e.key === "Enter") {
                                 setNavBarDisplay((dropdownDisplay) => !dropdownDisplay);
                             }
@@ -109,7 +107,7 @@ const AppHeader = () => {
                                 <div className="app-header__dropdown-text exit"
                                     tabIndex={0}
                                     onClick={logout}
-                                    onKeyPress={(e) => {
+                                    onKeyDown={(e) => {
                                         if (e.key === ' ' || e.key === "Enter") {
                                             logout();
                                         }

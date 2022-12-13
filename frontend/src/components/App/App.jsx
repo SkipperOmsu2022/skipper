@@ -15,9 +15,10 @@ import Common from '../Settings/Common';
 import Account from '../Settings/Account';
 import Communication from '../Settings/Communication';
 import Mentor from '../Settings/Mentor';
+import MessagesPage from '../pages/MessagesPage/MessagesPage';
 
 import "./app.scss"
-import { MessagesPage } from '../pages/MessagesPage/MessagesPage';
+
 
 const App = () => {
     return (

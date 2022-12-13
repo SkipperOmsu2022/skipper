@@ -93,7 +93,7 @@ const ProfilePage = () => {
                         </div>
                     </div>
                     <div className="complain-btn" ref={container} onClick={handleDropdownClick}
-                        onKeyPress={(e) => {
+                        onKeyDown={(e) => {
                             if (e.key === ' ' || e.key === "Enter") {
                                 setDropdownDisplay((dropdownDisplay) => !dropdownDisplay);
                             }

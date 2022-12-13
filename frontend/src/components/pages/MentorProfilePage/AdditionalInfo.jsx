@@ -32,6 +32,9 @@ const getMonth = (month) => {
 }
 
 const getDate = (dateOfRegistration) => {
+    if (!dateOfRegistration[2]) {
+        return;
+    }
     const month = getMonth(dateOfRegistration[1]);
     const day = +dateOfRegistration[2]
     const year = dateOfRegistration[0]
