@@ -112,6 +112,7 @@ const MessagesPage = () => {
                         </div>
                     </div>
                     <div className='chat-body'>
+                        <div className="chat-body__date">12 декабря</div>
                         <div className='chat-body__message'>
                             <img className="chat-body__message-user-photo" src={photo} alt="" />
                             <div className="chat-body__message-content">
@@ -176,6 +177,7 @@ const MessagesPage = () => {
                                 </span>
                             </div>
                         </div>
+                        <div className="chat-body__date">13 декабря</div>
                         <div className='chat-body__message'>
                             <img className="chat-body__message-user-photo" src={photo} alt="" />
                             <div className="chat-body__message-content">
