@@ -83,7 +83,7 @@ const AppHeader = () => {
                     </div>
                     <div className="app-header__profile" ref={container} tabIndex={0} 
                         onClick={handleDropdownClick}
-                        onKeyPress={(e) => {
+                        onKeyDown={(e) => {
                             if (e.key === ' ' || e.key === "Enter") {
                                 setNavBarDisplay((dropdownDisplay) => !dropdownDisplay);
                             }

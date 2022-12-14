@@ -86,14 +86,17 @@ const ProfilePage = () => {
             <div className="app-section profile">
                 <div className="profile__section">
                     <div className="profile__section-row">
-                        <img className="profile__photo" src={`${enviroments.apiBase}${imageUserResource}` || photo} alt="" />
+                        <img
+                            className="profile__photo"
+                            src={imageUserResource ? `${enviroments.apiBase}${imageUserResource}` : photo}
+                            alt="" />
                         <div className="profile__main-info">
                             <div className="name">{firstName} {lastName}</div>
                             <div className="specialty">{specialization}</div>
                         </div>
                     </div>
                     <div className="complain-btn" ref={container} onClick={handleDropdownClick}
-                        onKeyPress={(e) => {
+                        onKeyDown={(e) => {
                             if (e.key === ' ' || e.key === "Enter") {
                                 setDropdownDisplay((dropdownDisplay) => !dropdownDisplay);
                             }
