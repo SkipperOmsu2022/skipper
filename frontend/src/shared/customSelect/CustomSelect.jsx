@@ -16,12 +16,13 @@ const selectStyles = {
     }),
     container: (provided, state) => ({
         ...provided,
-        height: '3.3rem'
+        height: state.selectProps.minHeight || '3.3rem'
     }), 
 
     control: (provided, state) => ({
         borderColor: state.selectProps.error && !state.isFocused ? '#C30000' : 'auto',
-        width: state.selectProps.width
+        width: state.selectProps.width,
+        height: state.selectProps.minHeight || '1.9rem'
     }), 
     
     option: (provided, state) => ({
@@ -64,6 +65,22 @@ const selectStyles = {
         "::-webkit-scrollbar-thumb:hover": {
           background: "#8a8a8a"
         }
+    }),
+
+    multiValueLabel: (provided, state) => ({
+        ...provided,
+        fontSize: 'auto',
+        backgroundColor: 'white'
+    }),
+    
+    multiValue: (provided, state) => ({
+        ...provided,
+        border: '1px solid rgb(230, 230, 230)',
+    }),
+    multiValueRemove: (provided, state) => ({
+        ...provided,
+        backgroundColor: '#FFF5C2',
+        color: '#979797'
     })
 }
 
@@ -119,7 +136,7 @@ const FormikSelect = ({name, placeholder, error, value, onChange, onBlur}) => {
                 options={options[name]}
                 placeholder={placeholder}
                 noOptionsMessage={() => "Значений не найдено"}
-                value={options[name].find(option => option.value === value) || ""}
+                value={options[name]?.find(option => option.value === value) || ""}
                 onChange={onChange}
                 onBlur={onBlur(name)}
             />
@@ -128,16 +145,16 @@ const FormikSelect = ({name, placeholder, error, value, onChange, onBlur}) => {
     )
 }
 
-const MutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, width, startDate}) => {
+const MutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, width, height, startDate}) => {
     let mutableOptions = [];
 
-    if(name) {
-        mutableOptions = options[name];
-    } else {
+    if(name === "yearOfEnd") {
         mutableOptions = startDate ?  Array(currentYear - startDate + 2).fill(null).map((element, i, arr) => (
             i === 0 ? arr[i] = {value: null, label: "Настоящее время"} :
             arr[i] = {value: currentYear - i + 1, label: currentYear - i + 1}
         )) : [];
+    } else {
+        mutableOptions = options[name];
     }
     
     return (
@@ -147,13 +164,32 @@ const MutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, wi
             styles={selectStyles}
             options={mutableOptions}
             placeholder={placeholder}
+            noOptionsMessage={() => noOptionsMessage || "Значений не найдено"}
+            onChange={onChange}
+            value={mutableOptions?.find(option => option.value === value) || ""}
+            width={width}
+            height={height}
+        />
+    )
+}
+
+const MultipleSelect = ({placeholder, value, onChange, noOptionsMessage, width, minHeight, multipleOptions}) => {
+    return (
+        <Select
+            components={{ DropdownIndicator }}
+            classNamePrefix='filter'
+            styles={selectStyles}
+            options={multipleOptions}
+            placeholder={placeholder}
             noOptionsMessage={() => noOptionsMessage}
             onChange={onChange}
-            value={mutableOptions.find(option => option.value === value) || ""}
-            width={width}
+            value={value}
+            width={width}   
+            minHeight={minHeight}
+            isMulti
         />
     )
 }
 
 export default FormikSelect;
-export {MutableSelect}
+export {MutableSelect, MultipleSelect}

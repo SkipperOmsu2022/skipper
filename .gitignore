@@ -18,9 +18,11 @@ node_modules/
 
 # Log files
 *.log
+*.gz
 
 # Package files
 *.jar
+*.gz
 
 # Maven
 target/
@@ -54,4 +56,6 @@ Thumbs.db
 # Project exclude paths
 /frontend/node_modules/
 /frontend/target/
+#Uploads
+uploads/
 

@@ -2,6 +2,8 @@
 
 .button { 
     cursor: pointer;
+    user-select: none;
+    text-decoration: none;
 
     background: $button;
     border-radius: 0.625rem!important;

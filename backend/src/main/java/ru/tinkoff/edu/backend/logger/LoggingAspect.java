@@ -64,7 +64,9 @@ public class LoggingAspect {
         List<String> args = new ArrayList<>();
         for (int i = 0; i < joinPoint.getArgs().length; i++) {
             Object argValue = joinPoint.getArgs()[i];
-            args.add("arg." + i + "= " + argValue);
+            args.add("arg.".concat(String.valueOf(i))
+                    .concat("= ")
+                    .concat(String.valueOf(argValue)));
         }
         return args;
     }

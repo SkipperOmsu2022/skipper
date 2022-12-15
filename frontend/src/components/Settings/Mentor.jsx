@@ -1,19 +1,22 @@
 import { useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
+import useSpecializationService from "../../services/SpecializationService";
 import cross from "../../resources/icons/cross.svg"
 import "../../shared/switch.scss"
-import {MutableSelect} from "../../shared/customSelect/CustomSelect";
+import {MutableSelect, MultipleSelect} from "../../shared/customSelect/CustomSelect";
 
 const Mentor = () => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
+    const {getSpecializationsList} = useSpecializationService();
     const [mentor, setMentor] = useState(false);
     const [aboutMe, setAboutMe] = useState("");
-    const [specialty, setSpecialty] = useState("");
+    const [specializationOptions, setSpecializationOptions] = useState("");
+    
+    const [mentorSpecializations, setMentorSpecializations] = useState([]);
 
     const [educationStart, setEducationStart] = useState("");
     const [educationEnd, setEducationEnd] = useState("");
     const [qualification, setQualification] = useState("");
-    const [specialization, setSpecialization] = useState("");
 
     const [experienceStart, setExperienceStart] = useState("");
     const [experienceEnd, setExperienceEnd] = useState("");
@@ -22,34 +25,53 @@ const Mentor = () => {
     const [certificates, setCertificates] = useState([]);
     const [certificateErr, setCertificateErr] = useState(false);
 
-    const [otherInformation, setOtherInformation] = useState("");
-
     useEffect(() => {
-        getUserData('user/profile/settings/mentor/')
+        let tmp;
+        getSpecializationsList()
             .then(res => {
-                setMentor(res?.data?.isEnabledMentorStatus);
-                setAboutMe(res?.data?.aboutMeAsMentor || '');
-                setQualification(res?.data?.specialization || '');
-            });
+                tmp = res;
+                setSpecializationOptions(tmp)
+            })
+            .then(() => {
+                getUserData('user/profile/settings/mentor/')
+                    .then(res => {
+                        setMentor(res?.data?.isEnabledMentorStatus || false);
+                        setAboutMe(res?.data?.aboutMeAsMentor || '');
+                        setMentorSpecializations(res?.data?.mentorSpecializations?.map((item) => 
+                            tmp.find(option => option.value === item)
+                        ) || '');
+                    });
+            })
         return () => clearResponse();
     }, []);
+    
+    const switchMessage = mentor ? 
+        <div className="state">
+            <span className="active">Активный</span>
+        </div> : 
+        <div className="state">
+            <span className="inactive">Неактивный</span>
+            <div className="message">
+                (Для активации заполните поля "О себе" и "Специальность")
+            </div>
+        </div>;
 
-    const handleMentorChange = () => {
-        if(mentor && aboutMe && qualification) {
+    const handleSwitchChange = () => {
+        if(mentor && aboutMe && mentorSpecializations.length) {
             setMentor(false)
-        } else if (aboutMe && qualification) {
+        } else if (aboutMe && mentorSpecializations.length) {
             setMentor(true)
         }
     }
     const handleAboutMeChange = (e) => {
         setAboutMe(e.target.value)
-        if (!e.target.value || !qualification) {
+        if (!e.target.value || !mentorSpecializations.length) {
             setMentor(false)
         }
     }
-    const handleQualificationChange = (e) => {
-        setQualification(e.target.value)
-        if (!aboutMe || !e.target.value) {
+    const handleSpecializationChange = (e) => {
+        setMentorSpecializations(Array.isArray(e) ? e : [])
+        if (!aboutMe || e?.length === 0) {
             setMentor(false)
         }
     }
@@ -92,7 +114,7 @@ const Mentor = () => {
         setCertificates([...certificates.slice(0, i), ...certificates.slice(i + 1)])
     }
 
-    function view() {
+    function certificatesView() {
         const elements = certificates.map((item, i) => {
             return (
                 <div className="certificates__group-item" key={i}>
@@ -111,17 +133,6 @@ const Mentor = () => {
             </div>
         )
     }
-
-    const switchMessage = mentor ? 
-        <div className="state">
-            <span className="active">Активный</span>
-        </div> : 
-        <div className="state">
-            <span className="inactive">Неактивный</span>
-            <div className="message">
-                (Для активации заполните поля "О себе" и "Специальность")
-            </div>
-        </div>;
     
     return (
         <form 
@@ -131,7 +142,7 @@ const Mentor = () => {
                 setUserData({
                     isEnabledMentorStatus: mentor,
                     aboutMeAsMentor: aboutMe,
-                    specialization: qualification
+                    mentorSpecializations: mentorSpecializations.map((item) => item.value)
                 }, 'user/profile/settings/mentor/');
             }}>
             <div className="settings__column">
@@ -142,15 +153,15 @@ const Mentor = () => {
                         <label htmlFor="switch" className="settings__input-group-label">
                             Текущий статус:
                         </label>
-                        <label className={`switch ${aboutMe && qualification ? "" : "msg"}`}>
-                                <input
-                                    id="switch"
-                                    className="switch__input"
-                                    type="checkbox"
-                                    disabled={!aboutMe || !qualification}
-                                    checked={mentor}
-                                    onChange={handleMentorChange}/>
-                                <div className="switch__slider switch__circle"></div>
+                        <label className={`switch ${aboutMe && mentorSpecializations.length ? "" : "msg"}`}>
+                            <input
+                                id="switch"
+                                className="switch__input"
+                                type="checkbox"
+                                disabled={!aboutMe || !mentorSpecializations.length}
+                                checked={mentor}
+                                onChange={handleSwitchChange}/>
+                            <div className="switch__slider switch__circle"></div>
                         </label>
                         {switchMessage}
                 </div>
@@ -170,13 +181,17 @@ const Mentor = () => {
                     <label htmlFor="specialty" className="settings__input-group-label middle-top-padding">
                         Специальность*:
                     </label>
-                    <textarea
-                        className="settings__input-group-text input textarea wide medium-height"
-                        placeholder="Добавьте свою специализацию:"
-                        id="specialty"
-                        maxLength='100'
-                        value={qualification}
-                        onChange={handleQualificationChange}/>
+                        <div className="group">
+                            <MultipleSelect
+                                placeholder="Добавьте свою специализацию"
+                                value={mentorSpecializations}
+                                multipleOptions={specializationOptions}
+                                noOptionsMessage='Специальностей не найдено'
+                                onChange={handleSpecializationChange}
+                                width='30.15rem'
+                                minHeight='fit-content'
+                            />
+                        </div>
                 </div>
                 <div className="settings__input-group">
                     <label className="settings__input-group-label middle-top-padding">
@@ -187,7 +202,7 @@ const Mentor = () => {
                             <div className="settings__input-group-box">
                                 <div className="group">
                                     <MutableSelect
-                                        name={"year"}
+                                        name="year"
                                         placeholder="Год начала"
                                         value={educationStart}
                                         onChange={(selectedOption) => {
@@ -198,6 +213,7 @@ const Mentor = () => {
                                 </div>
                                 <div className="group">
                                     <MutableSelect
+                                        name="yearOfEnd"
                                         placeholder="Год окончания"
                                         noOptionsMessage={"Выберите год начала"}
                                         value={educationEnd}
@@ -209,7 +225,7 @@ const Mentor = () => {
                                 </div>
                                 <div className="group" >
                                     <MutableSelect
-                                        name={"qualification"}
+                                        name="qualification"
                                         placeholder="Квалификация"
                                         value={qualification}
                                         onChange={(selectedOption) => {
@@ -218,13 +234,6 @@ const Mentor = () => {
                                         width='30.15rem'
                                     />
                                 </div>
-                                <textarea
-                                    className="settings__input-group-text input textarea small"
-                                    placeholder="Добавьте свою специализацию:"
-                                    id="aboutMe"
-                                    maxLength='100'
-                                    value={specialization}
-                                    onChange={(e) => setSpecialization(e.target.value)}/>
                             </div>
                             <div className='wrapper'>
                                 <span className="settings__input-group-btn-width settings__input-group-delete">
@@ -257,6 +266,7 @@ const Mentor = () => {
                                 </div>
                                 <div className="group">
                                     <MutableSelect
+                                        name="yearOfEnd"
                                         placeholder="Год окончания"
                                         noOptionsMessage={"Выберите год начала"}
                                         value={experienceEnd}
@@ -290,7 +300,7 @@ const Mentor = () => {
                         Сертификаты:
                     </label>
                     <div className="certificates">
-                        {view()}
+                        {certificatesView()}
                         {certificates.length < 9 ? <>
                             <label htmlFor="upload-photo" className="button settings__photo-button" onClick={() => setCertificateErr(null)}>
                                 Загрузить
@@ -311,20 +321,12 @@ const Mentor = () => {
                 </div>
                 <div className="settings__input-group">
                     <label htmlFor="other" className="settings__input-group-label middle-top-padding">
-                        Прочая информация: 
+                        Прочая информация:
                     </label>
                     <div className="settings__input-group-box">
                         <textarea className="settings__input-group-text input textarea" placeholder="Добавьте информацию:"
                             id="other" maxLength='100'/>
                     </div>
-                    {/* <wrapper className='wrapper'>
-                        <button className="button settings__input-group-button">
-                            +
-                        </button>
-                        <span className="settings__input-group-btn-width settings__input-group-delete">
-                            Удалить
-                        </span>
-                    </wrapper> */}
                 </div>
             </div>
         </form>
