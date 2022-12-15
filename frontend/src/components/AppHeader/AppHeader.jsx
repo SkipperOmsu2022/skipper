@@ -11,9 +11,13 @@ import { useEffect, useState, useRef, useLayoutEffect } from "react"
 import useAuthContext from "../../hooks/useAuthContext";
 import useLoginService from "../../services/loginService"
 import useProfileService from "../../services/profileService";
+
+import { observer } from "mobx-react-lite";
+import messagesStore from "../../store/messagesStore";
+
 import "./appHeader.scss"
 
-const AppHeader = () => {
+const AppHeader = observer(() => {
     const {getUserData} = useProfileService();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -39,9 +43,14 @@ const AppHeader = () => {
                 }
             })
 
+        messagesStore.setStompClient();
+
         document.addEventListener("click", handleClickOutside);
         
-        return () => document.removeEventListener("click",  handleClickOutside);
+        return () => {
+            document.removeEventListener("click",  handleClickOutside);
+            messagesStore.stompClient.disconnect();
+        }
     }, []);
 
     const handleDropdownClick = () => setNavBarDisplay((dropdownDisplay) => !dropdownDisplay);
@@ -123,6 +132,6 @@ const AppHeader = () => {
             <Outlet/>
         </>
     )
-}
+})
 
 export default AppHeader;
