@@ -45,7 +45,7 @@ public class AuthController {
                     }
             ) })
     @PostMapping("/registration")
-    public ResponseEntity<String> registration(@Valid @RequestBody UserRegDTO user) {
+    public ResponseEntity<Void> registration(@Valid @RequestBody UserRegDTO user) {
         String id = userService.create(user).getId().toString();
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -58,7 +58,7 @@ public class AuthController {
                     content = {@Content(mediaType = "multipart/form-data")}))
     @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid UserLoginDTO user) {
+    public ResponseEntity<Void> login(@Valid UserLoginDTO user) {
         String id = userService.readByUserLoginDTO(user).getId().toString();
         return ResponseEntity
                 .ok()
