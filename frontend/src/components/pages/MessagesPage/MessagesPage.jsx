@@ -50,11 +50,17 @@ const MessagesPage = () => {
                         <div className='list-chats__item-user-name'>
                             Рогачевский Илья
                         </div>
+                        <div className="list-chats__item-new-messages">
+                            99+
+                        </div>
                     </div>
                     <div className='list-chats__item'>
                         <img className='list-chats__item-profile-photo' src={photo} alt=''/>
                         <div className='list-chats__item-user-name'>
                             Рогачевский Илья
+                        </div>
+                        <div className="list-chats__item-new-messages">
+                            3
                         </div>
                     </div>
                     <div className='list-chats__item'>

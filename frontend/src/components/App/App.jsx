@@ -22,30 +22,28 @@ import "./app.scss"
 
 const App = () => {
     return (
-        <div className='section'>
-            <AuthProvider>
-                <Router>
-                    <Routes>
-                        <Route path="/authorization" element={<AuthorizationPage/>}>
-                            <Route path="signin" element={<Signin/>} />
-                            <Route path="signup" element={<Signup/>}/>
+        <AuthProvider>
+            <Router>
+                <Routes>
+                    <Route path="/authorization" element={<AuthorizationPage/>}>
+                        <Route path="signin" element={<Signin/>} />
+                        <Route path="signup" element={<Signup/>}/>
+                    </Route>
+                    <Route path="/" element={<AppHeader/>}>
+                        <Route path="messages" element={<MessagesPage />} />
+                        <Route path="settings" element={<SettingsPage/>}>
+                            <Route path="" element={<Common/>}/>
+                            <Route path="account" element={<Account/>}/>
+                            <Route path="communication" element={<Communication/>}/>
+                            <Route path="mentor" element={<Mentor/>}/>
                         </Route>
-                        <Route path="/" element={<AppHeader/>}>
-                            <Route path="messages" element={<MessagesPage />} />
-                            <Route path="settings" element={<SettingsPage/>}>
-                                <Route path="" element={<Common/>}/>
-                                <Route path="account" element={<Account/>}/>
-                                <Route path="communication" element={<Communication/>}/>
-                                <Route path="mentor" element={<Mentor/>}/>
-                            </Route>
-                            <Route path="profile/:userId" element={<ProfilePage/>}/>
-                            <Route path="profile-mentor/:userId" element={<MentorProfilePage/>}/>
-                            <Route path="" element={<MainPage/>}/>
-                        </Route>
-                    </Routes>
-                </Router>
-            </AuthProvider>
-        </div>
+                        <Route path="profile/:userId" element={<ProfilePage/>}/>
+                        <Route path="profile-mentor/:userId" element={<MentorProfilePage/>}/>
+                        <Route path="" element={<MainPage/>}/>
+                    </Route>
+                </Routes>
+            </Router>
+        </AuthProvider>
     )
 }
 
