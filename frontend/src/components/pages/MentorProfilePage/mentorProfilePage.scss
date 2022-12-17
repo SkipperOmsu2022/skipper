@@ -1,5 +1,9 @@
 @import '../../../shared/variables.scss';
 
+.not-working {
+    filter: brightness(95%) grayscale(100%);
+}
+
 .profile{
     &.additional-info {
         display: flex;

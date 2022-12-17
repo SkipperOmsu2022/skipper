@@ -1,8 +1,8 @@
-import Form from "../Form/Form";
+import Form from "../../Form/Form";
 import { Link } from 'react-router-dom';
 
-import useLoginService from "../../services/loginService";
-import Button from "../../shared/submitButton/Button";
+import useLoginService from "../../../services/loginService";
+import Button from "../../../shared/submitButton/Button";
 
 const Signup = () => {
     const {loading, signup, response, error, clearResponse} = useLoginService();

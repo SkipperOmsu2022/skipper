@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { useEffect, useState } from "react"
 
 import "./mentorProfilePage.scss"
@@ -22,6 +22,8 @@ const MentorProfilePage = () => {
     const [dateOfRegistration, setDateOfRegistration] = useState([]);
     const [mentorSpecializations, setMentorSpecializations] = useState("");
     const [communication, setCommunication] = useState([]);
+
+    const location = useLocation();
 
     useEffect(() => {
         getUserData('user/profile/mentor/', userId)
@@ -58,7 +60,7 @@ const MentorProfilePage = () => {
             </div>
             <div className="profile-wrapper">
                 <MainInfo props={{firstName, lastName, mentorSpecializations, aboutAsMentor, communication, imageUserResource}}/>
-                <AdditionalInfo props={{dateOfRegistration, mentorStatus, isOwner}}/>
+                <AdditionalInfo props={{dateOfRegistration, mentorStatus, isOwner, rating: location?.state?.rating}}/>
                 <Resume/>
                 <Reviews/>
                 <Lessons/>

@@ -149,6 +149,7 @@ const Filter =  observer(() => {
                         });
                         
                         mainPageStore.resetFilter()
+                        mainPageStore.setSearch('')
                         mainPageStore.updateCurrentMentors(0)
                     }}
                     className="button pale"

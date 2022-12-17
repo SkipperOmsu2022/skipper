@@ -1,9 +1,9 @@
 import { useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
-import useSpecializationService from "../../services/SpecializationService";
-import cross from "../../resources/icons/cross.svg"
-import "../../shared/switch.scss"
-import {MutableSelect, MultipleSelect} from "../../shared/customSelect/CustomSelect";
+import useSpecializationService from "../../../services/SpecializationService";
+import cross from "../../../resources/icons/cross.svg"
+import "../../../shared/switch.scss"
+import {MutableSelect, MultipleSelect} from "../../../shared/customSelect/CustomSelect";
 
 const Mentor = () => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
@@ -17,6 +17,7 @@ const Mentor = () => {
     const [educationStart, setEducationStart] = useState("");
     const [educationEnd, setEducationEnd] = useState("");
     const [qualification, setQualification] = useState("");
+    const [educationSpecialization, setEducationSpecialization] = useState("");
 
     const [experienceStart, setExperienceStart] = useState("");
     const [experienceEnd, setExperienceEnd] = useState("");
@@ -234,11 +235,18 @@ const Mentor = () => {
                                         width='30.15rem'
                                     />
                                 </div>
+                                <textarea
+                                    className="settings__input-group-text input textarea small"
+                                    placeholder="Добавьте свою специализацию:"
+                                    id="aboutMe"
+                                    maxLength='100'
+                                    value={educationSpecialization}
+                                    onChange={(e) => setEducationSpecialization(e.target.value)}/>
                             </div>
                             <div className='wrapper'>
-                                <span className="settings__input-group-btn-width settings__input-group-delete">
+                                {/* <span className="settings__input-group-btn-width settings__input-group-delete">
                                     Удалить
-                                </span>
+                                </span> */}
                                 <button className="button settings__input-group-button">
                                     +
                                 </button>
@@ -285,9 +293,9 @@ const Mentor = () => {
                                     onChange={(e) => setExperienceName(e.target.value)}/>
                             </div>
                             <div className='wrapper'>
-                                <span className="settings__input-group-btn-width settings__input-group-delete">
+                                {/* <span className="settings__input-group-btn-width settings__input-group-delete">
                                     Удалить
-                                </span>
+                                </span> */}
                                 <button className="button settings__input-group-button">
                                     +
                                 </button>
