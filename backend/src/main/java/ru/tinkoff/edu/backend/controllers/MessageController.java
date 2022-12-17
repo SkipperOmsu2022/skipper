@@ -1,29 +1,36 @@
 package ru.tinkoff.edu.backend.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.tinkoff.edu.backend.entities.Message;
+import org.springframework.web.bind.annotation.*;
+import ru.tinkoff.edu.backend.dto.MessageDTO;
+import ru.tinkoff.edu.backend.entities.Messages;
+import ru.tinkoff.edu.backend.services.MessageService;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @Validated
-@Tag(name="Message Controller", description="Отправка и принятие сообщений через WebSocket.")
-@RequestMapping(value = "")
+@Tag(name="Messages Controller", description="Отправка и принятие сообщений через WebSocket.")
+@RequestMapping(value = "/api/chat")
 @CrossOrigin
 @Log4j2
 public class MessageController {
     // Реализует простой протокол обмена текстовых сообщений - STOMP
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final MessageService messageService;
 
-    public MessageController(SimpMessagingTemplate simpMessagingTemplate) {
+    public MessageController(SimpMessagingTemplate simpMessagingTemplate, MessageService messageService) {
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.messageService = messageService;
     }
 
     /**
@@ -32,9 +39,19 @@ public class MessageController {
      */
     @MessageMapping("/chat/{id_from}/{id_to}")
     public void sendMessage(@DestinationVariable Long id_from, @DestinationVariable Long id_to,
-                            @Payload Message message) {
+                            @Payload MessageDTO message) {
         log.info("from: " + id_from + ", to: " + id_to + ", message:" + message.getText());
-        simpMessagingTemplate.convertAndSend("/topic/messages/" + id_to, message);
-        // можно потом заменить на SendTo()
+        simpMessagingTemplate.convertAndSend("/topic/messages/" + id_to,
+                messageService.save(id_to, id_from, message));
     }
+
+    @Operation(summary = "Получение списка сообщений.",
+            description = "Возвращает все сообщения пользователя с указанным id. 'additionalProp...' в примере - " +
+                    "индификатор собеседника.")
+    @GetMapping("/list-messages/{id}")
+    public ResponseEntity<Map<Long, List<Messages>>> getMessages(@PathVariable Long id) {
+        return ResponseEntity.ok(messageService.getListMessages(id));
+    }
+
+
 }
