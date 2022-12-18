@@ -57,8 +57,9 @@ const AppHeader = observer(() => {
         document.addEventListener("click", handleClickOutside);
         
         return () => {
+            messagesStore.clearStore()
             document.removeEventListener("click",  handleClickOutside);
-            messagesStore.stompClient.disconnect();
+            messagesStore.disconnect();
         }
     }, []);
 

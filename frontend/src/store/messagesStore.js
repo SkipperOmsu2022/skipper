@@ -35,8 +35,10 @@ class messagesStore {
         this.input = msg;
     }
 
-    addNewMessage = (dialogId, senderId, recevierId) => {
+    addNewMessage = (dialogId, senderId, recevierId, ) => {
         const msgId = -this.interlocutors[dialogId].messages.length
+
+        this.sendMessage()
         
         this.interlocutors[dialogId].messages.push({
             id: msgId,
@@ -47,6 +49,43 @@ class messagesStore {
         });
         
         this.input = '';
+    }
+
+    sendMessage = () => {
+        this.stompClient.send(`/app/chat/${this.user.id}/${this.activeInterlocutor.userId}`, {}, JSON.stringify({
+            messageContent: this.input
+        }));
+    }
+
+    getMessage = (response) => {
+        console.log(response)
+        let data = JSON.parse(response.body);
+        console.log('Пришли данные с сервера: ' + JSON.stringify(data));
+        console.log(data);
+
+        let dialogId;
+
+        this.interlocutors.forEach((item, i) => {
+            console.log(+item.userId === data?.userFrom)
+            console.log(`${+item.userId} === ${data?.userFrom}`)
+            if (+item.userId === data?.userFrom) {
+                dialogId = i;
+            }
+        })
+        
+        if (dialogId === undefined) {
+            dialogId = this.interlocutors.length;
+        }
+        
+        const msgId = -this.interlocutors[dialogId].messages.length;
+
+        this.interlocutors[dialogId].messages.push({
+            id: msgId,
+            userFrom: data?.userFrom,
+            userTo: this.user.id,
+            messageContent: data?.messageContent,
+            dateTimeSend: data?.dateTimeSend
+        });  
     }
 
     setInterlocutors = (res) => {
@@ -83,11 +122,18 @@ class messagesStore {
         });
     }
 
-    getMessage = (response) => {
-        console.log(response)
-        let data = JSON.parse(response.body);
-        console.log('Пришли данные с сервера: ' + JSON.stringify(data));
-        console.log(data);
+    clearStore = () => {
+        this.user = null;
+        this.activeDialog = null;
+        this.activeInterlocutor = null;
+        this.input = ''
+
+        this.interlocutors = []
+    }
+
+    disconnect = () => {
+        this.stompClient.disconnect()
+        this.stompClient = {}
     }
 }
 

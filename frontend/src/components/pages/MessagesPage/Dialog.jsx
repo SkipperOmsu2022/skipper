@@ -73,7 +73,9 @@ const Dialog = observer(() => {
     useEffect(() => {
         document.addEventListener("click", handleClickOutside);
         
-        return () => document.removeEventListener("click",  handleClickOutside);
+        return () => {
+            document.removeEventListener("click",  handleClickOutside)
+        };
     }, []);
 
     const handleDropdownClick = () => setDropdownDisplay((dropdownDisplay) => !dropdownDisplay);
