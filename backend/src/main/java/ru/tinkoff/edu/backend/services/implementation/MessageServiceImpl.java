@@ -79,4 +79,16 @@ public class MessageServiceImpl implements MessageService {
                     .build();
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public UserConversationDTO getUserInfoForConversation(Long id) {
+        User userFromDB = userRepository.getReferenceById(id);
+        return UserConversationDTO.builder()
+                .userId(userFromDB.getId())
+                .firstName(userFromDB.getFirstName())
+                .lastName(userFromDB.getLastName())
+                .imageUserResource(userFromDB.getImageUserResource())
+                .mentorSpecializations(userFromDB.getInlineMentorSpecializations())
+                .build();
+    }
 }

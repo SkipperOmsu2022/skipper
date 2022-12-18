@@ -50,5 +50,9 @@ public class MessageController {
         return ResponseEntity.ok(messageService.getListMessages(id));
     }
 
-
+    @Operation(summary = "Получение информации о пользователе в диалоге.")
+    @GetMapping("/user-info/{id}")
+    public ResponseEntity<UserConversationDTO> getUserInfoForConversation(@PathVariable Long id) {
+        return ResponseEntity.ok(messageService.getUserInfoForConversation(id));
+    }
 }

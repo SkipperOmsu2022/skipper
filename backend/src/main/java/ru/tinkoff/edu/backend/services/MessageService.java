@@ -10,4 +10,5 @@ import java.util.List;
 public interface MessageService {
     MessageDTO save(Long userIdTo, Long userIdFrom, MessageDTO message);
     List<UserConversationDTO> getListMessages(Long id);
+    UserConversationDTO getUserInfoForConversation(Long id);
 }
