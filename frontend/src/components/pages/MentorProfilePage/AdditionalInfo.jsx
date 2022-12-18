@@ -1,8 +1,10 @@
 import "../../../shared/submitButton/button.scss"
+
+import { Link } from 'react-router-dom';
 import DateOfRegistration from "../ProfilePage/DateOfRegistration";
 
 const AdditionalInfo = ({props}) => {
-    const {dateOfRegistration, mentorStatus, isOwner, rating} = props;
+    const {dateOfRegistration, mentorStatus, isOwner, rating, userId} = props;
 
     return (
         <div className="app-section profile additional-info">
@@ -45,7 +47,13 @@ const AdditionalInfo = ({props}) => {
                 <button disabled={true} className={`button inactive`}>
                     Забронировать
                 </button>
-                <button className="button">Написать сообщение</button>
+                <Link
+                    to={`/messages`}
+                    state={{ activeDialog: userId }}
+                    className="button"
+                >
+                    Написать сообщение
+                </Link>
             </div>}
         </div>
     )

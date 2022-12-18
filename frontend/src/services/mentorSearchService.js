@@ -12,6 +12,7 @@ const useMentorSearchService = () => {
         const res = await request(`${_apiBase}/api/list/mentors${url}`, 'get');
 
         if (res?.status !== 201) {
+            //console.log(res?.message)
             setResponse("Что-то пошло не так");
         }
 
