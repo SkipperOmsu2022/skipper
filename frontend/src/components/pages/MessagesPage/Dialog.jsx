@@ -1,7 +1,7 @@
 import addBtn from "../../../resources/icons/add-btn.svg"
 import sendBtn from "../../../resources/icons/send-btn.svg"
 
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react"
 import { Link } from 'react-router-dom';
 
 import { observer } from "mobx-react-lite";
@@ -17,9 +17,6 @@ const months = ["Января", "Февраля", "Марта", "Апреля", 
 const Message = ({item, i}) => {
     const {userId, imageUserResource, lastName, firstName} = messagesStore.activeInterlocutor
     const photo = item.userFrom ===  userId ? imageUserResource : messagesStore.user.imageUserResource
-
-    console.log(item.userFrom)
-    console.log(userId)
 
     const name = item.userFrom === messagesStore.activeInterlocutor.userId ?
         `${lastName} ${firstName}` :
@@ -68,7 +65,10 @@ const Message = ({item, i}) => {
 
 const Dialog = observer(() => {
     const [dropdownDisplay, setDropdownDisplay] = useState(false);
+    const [messagesLength, setMessagesLength] = useState(0);
     const container = useRef();
+
+    const messagesEndRef = useRef(null)
     
     useEffect(() => {
         document.addEventListener("click", handleClickOutside);
@@ -77,6 +77,14 @@ const Dialog = observer(() => {
             document.removeEventListener("click",  handleClickOutside)
         };
     }, []);
+
+    useLayoutEffect(() => {
+        if (messagesLength !== messagesStore.activeInterlocutor.messages.length) {
+            const objDiv = document.getElementsByClassName("chat-body")[0];
+            objDiv.scrollTop = objDiv.scrollHeight;
+            setMessagesLength(messagesStore.activeInterlocutor.messages.length)
+        }
+    });
 
     const handleDropdownClick = () => setDropdownDisplay((dropdownDisplay) => !dropdownDisplay);
 
@@ -131,6 +139,7 @@ const Dialog = observer(() => {
                         key={item.id}
                     />
                 )}
+                <div ref={messagesEndRef}></div>
             </div>
             <div className='chat-input'>
                 <img src={addBtn} className='chat-input__button' alt="add" />
@@ -158,148 +167,3 @@ const Dialog = observer(() => {
 })
 
 export default Dialog;
-
-
-/* 
-<div className="chat-body__date">12 декабря</div>
-    <div className='chat-body__message'>
-        <img className="chat-body__message-user-photo" src={photo} alt="" />
-        <div className="chat-body__message-content">
-            <div className='chat-body__message-header'>
-                <span className='name'>Имя Фамилия</span>
-                <span className='time'>12:10</span>
-            </div>
-            <span>
-                Добрый день!
-            </span>
-        </div>
-    </div>
-    <div className='chat-body__message no-photo'>
-        <div className="chat-body__message-content">
-            <span>
-                Вы посмотрели мою отчётность?
-            </span>
-        </div>
-    </div>
-    <div className='chat-body__message'>
-        <img className="chat-body__message-user-photo" src={photo} alt="" />
-        <div className="chat-body__message-content">
-            <div className='chat-body__message-header'>
-                <span className='name'>Имя Фамилия</span>
-                <span className='time'>12:10</span>
-            </div>
-            <span>
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-                Какое-то сообщение.Какое-то сообщение
-                Какое-то сообщениеКакое-то сообщение.Какое-то сообщение
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-            </span>
-        </div>
-    </div>
-    <div className='chat-body__message'>
-        <img className="chat-body__message-user-photo" src={photo} alt="" />
-        <div className="chat-body__message-content">
-            <div className='chat-body__message-header'>
-                <span className='name'>Имя Фамилия</span>
-                <span className='time'>12:10</span>
-            </div>
-            <span>
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-                Какое-то сообщение.Какое-то сообщение
-                Какое-то сообщениеКакое-то сообщение.Какое-то сообщение
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-            </span>
-        </div>
-    </div>
-    <div className='chat-body__message'>
-        <img className="chat-body__message-user-photo" src={photo} alt="" />
-        <div className="chat-body__message-content">
-            <div className='chat-body__message-header'>
-                <span className='name'>Имя Фамилия</span>
-                <span className='time'>12:10</span>
-            </div>
-            <span>
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-                Какое-то сообщение.Какое-то сообщение
-                Какое-то сообщениеКакое-то сообщение.Какое-то сообщение
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-            </span>
-        </div>
-    </div>
-    <div className="chat-body__date">13 декабря</div>
-    <div className='chat-body__message'>
-        <img className="chat-body__message-user-photo" src={photo} alt="" />
-        <div className="chat-body__message-content">
-            <div className='chat-body__message-header'>
-                <span className='name'>Имя Фамилия</span>
-                <span className='time'>12:10</span>
-            </div>
-            <span>
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-                Какое-то сообщение.Какое-то сообщение
-                Какое-то сообщениеКакое-то сообщение.Какое-то сообщение
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-            </span>
-        </div>
-    </div>
-    <div className='chat-body__message'>
-        <img className="chat-body__message-user-photo" src={photo} alt="" />
-        <div className="chat-body__message-content">
-            <div className='chat-body__message-header'>
-                <span className='name'>Имя Фамилия</span>
-                <span className='time'>12:10</span>
-            </div>
-            <span>
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-                Какое-то сообщение.Какое-то сообщение
-                Какое-то сообщениеКакое-то сообщение.Какое-то сообщение
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-            </span>
-        </div>
-    </div>
-    <div className='chat-body__message'>
-        <img className="chat-body__message-user-photo" src={photo} alt="" />
-        <div className="chat-body__message-content">
-            <div className='chat-body__message-header'>
-                <span className='name'>Имя Фамилия</span>
-                <span className='time'>12:10</span>
-            </div>
-            <span>
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-                Какое-то сообщение.Какое-то сообщение
-                Какое-то сообщениеКакое-то сообщение.Какое-то сообщение
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-            </span>
-        </div>
-    </div>
-    <div className='chat-body__message'>
-        <img className="chat-body__message-user-photo" src={photo} alt="" />
-        <div className="chat-body__message-content">
-            <div className='chat-body__message-header'>
-                <span className='name'>Имя Фамилия</span>
-                <span className='time'>12:10</span>
-            </div>
-            <span>
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-                Какое-то сообщение.Какое-то сообщение
-                Какое-то сообщениеКакое-то сообщение.Какое-то сообщение
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-            </span>
-        </div>
-    </div>
-    <div className='chat-body__message'>
-        <img className="chat-body__message-user-photo" src={photo} alt="" />
-        <div className="chat-body__message-content">
-            <div className='chat-body__message-header'>
-                <span className='name'>Имя Фамилия</span>
-                <span className='time'>12:10</span>
-            </div>
-            <span>
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-                Какое-то сообщение.Какое-то сообщение
-                Какое-то сообщениеКакое-то сообщение.Какое-то сообщение
-                Какое-то сообщение.Какое-то сообщениеКакое-то сообщение.
-            </span>
-        </div>
-    </div>
-*/
