@@ -1,7 +1,7 @@
 import enviroments from "../../../config/enviroments";
 
 import { useEffect, useState, useRef } from "react"
-import {communicationContent} from '../ProfilePage/ProfilePage'
+import CommunicationContent from "../ProfilePage/CommunicationContent";
 
 import photo from "../../../resources/profile-photo.jpg"
 import bookmark from "../../../resources/icons/bookmark.svg";
@@ -35,7 +35,11 @@ const MainInfo = ({props}) => {
         <div className="app-section profile mentor">
             <div className="profile__section">
                 <div className="profile__section-row">
-                    <img className="profile__photo" src={`${enviroments.apiBase}${imageUserResource}` || photo} alt="" />
+                    <img
+                        className="profile__photo"
+                        src={imageUserResource ? `${enviroments.apiBase}${imageUserResource}` : photo}
+                        alt="user-avatar"
+                    />
                     <div className="profile__main-info">
                         <div className="name">{firstName} {lastName}</div>
                         <div className="specialty">{mentorSpecializations}</div>
@@ -46,7 +50,7 @@ const MainInfo = ({props}) => {
                     </label>
                 </div>
                 <div className="complain-btn" ref={container} onClick={handleDropdownClick}
-                    onKeyPress={(e) => {
+                    onKeyDown={(e) => {
                         if (e.key === ' ' || e.key === "Enter") {
                             setDropdownDisplay((dropdownDisplay) => !dropdownDisplay);
                         }
@@ -68,10 +72,7 @@ const MainInfo = ({props}) => {
                 Пользователь не предоставил информацию о себе
             </div>}
             <div className="profile__section">
-                <div className="profile__section-column">
-                    <div className="profile__section-label">Контакты</div>
-                    {communicationContent(communication)}
-                </div>
+                <CommunicationContent communication={communication}/>
             </div>
         </div>
     )

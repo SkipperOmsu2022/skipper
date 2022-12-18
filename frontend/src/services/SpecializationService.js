@@ -11,6 +11,7 @@ const useSpecializationService = () => {
         const res = await request(`${_apiBase}/api/list/specializations`, 'get');
         
         if (res?.status !== 200) {
+            console.log(res?.message)
             setResponse("Что-то пошло не так");
         }
 

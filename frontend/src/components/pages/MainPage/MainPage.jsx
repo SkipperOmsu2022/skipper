@@ -21,13 +21,14 @@ const Mentors = observer(({newOffset}) => {
     return (
         <>
             {mainPageStore.currentMentors.slice(newOffset, newOffset + 6).map((item, i) => {
+                const imageUserResource = item.imageUserResource ? `${enviroments.apiBase}${item.imageUserResource}` : photo;
                 return (
                 <div className="mentor" key={item.id}>
                     <div className="mentor__photo">
-                        <img className="mentor__photo-img" src={`${enviroments.apiBase}/api/user/image/${item.id}.png` || photo} alt="user-avatar"/>
+                        <img className="mentor__photo-img" src={imageUserResource || photo} alt="user-avatar"/>
                         <div className="rating">
                             <span className="rating-star">&#9733;</span>
-                            <span className="rating-value">4,5</span>
+                            <span className="rating-value">{item.rating}</span>
                         </div>
                     </div>
                     <div className="mentor__main-info">
@@ -66,6 +67,9 @@ const Mentors = observer(({newOffset}) => {
                             <Link
                                 to={`/profile-mentor/${item.id}`}
                                 className="button pale"
+                                //
+                                    state={{ rating: item.rating }}
+                                //
                             >
                                 Посмотреть профиль
                             </Link>
@@ -122,7 +126,10 @@ const MainPage = observer(() => {
     const {getMentors, loading, response, error} = useMentorSearchService();
 
     useEffect(() => {
-        updateMentors('');
+        mainPageStore.setSearch('')
+        //
+        if (mainPageStore.mentors.length === 0) updateMentors();
+        //
     }, []);
 
     const updateMentors = async () => {
@@ -149,7 +156,7 @@ const MainPage = observer(() => {
                             placeholder="Подача отчёта налоговой"
                             value={mainPageStore.search}
                             onChange={(e) => mainPageStore.setSearch(e.target.value)}
-                            onKeyPress={(e) => {
+                            onKeyDown={(e) => {
                                 if (e.key === "Enter") {
                                     mainPageStore.updateCurrentMentors(0);
                                 }

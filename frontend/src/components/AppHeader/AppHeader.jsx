@@ -11,16 +11,24 @@ import { useEffect, useState, useRef, useLayoutEffect } from "react"
 import useAuthContext from "../../hooks/useAuthContext";
 import useLoginService from "../../services/loginService"
 import useProfileService from "../../services/profileService";
+import useMessageService from "../../services/messageService"
+
+import { observer } from "mobx-react-lite";
+import messagesStore from "../../store/messagesStore";
+
 import "./appHeader.scss"
 
-const AppHeader = () => {
+const AppHeader = observer(() => {
     const {getUserData} = useProfileService();
+    const { getMessagesList } = useMessageService();
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [imageUserResource, setImageUserResource] = useState("");
     
     const [navBarDisplay, setNavBarDisplay] = useState(false);
     const container = useRef();
+
     const { logout } = useLoginService()
     const { auth } = useAuthContext();
 
@@ -36,12 +44,28 @@ const AppHeader = () => {
                     setFirstName(res?.data?.firstName)
                     setLastName(res?.data?.lastName)
                     setImageUserResource(res?.data?.imageUserResource)
+                    messagesStore.setUser(res)
+                }
+            })
+        getMessagesList()
+            .then((res) => {
+                messagesStore.setInterlocutors(res)
+            })
+            .then(() => {
+                if (location?.state?.activeDialog) {
+                    messagesStore.openUserDialog(location?.state?.activeDialog)
                 }
             })
 
+        messagesStore.setStompClient();
+
         document.addEventListener("click", handleClickOutside);
         
-        return () => document.removeEventListener("click",  handleClickOutside);
+        return () => {
+            messagesStore.clearStore()
+            document.removeEventListener("click",  handleClickOutside);
+            messagesStore.disconnect();
+        }
     }, []);
 
     const handleDropdownClick = () => setNavBarDisplay((dropdownDisplay) => !dropdownDisplay);
@@ -64,9 +88,7 @@ const AppHeader = () => {
                 <div className="app-header__group">
                     <Link  to="/" className="app-header__logo">Skipper</Link>
                     <div className="app-header__icons">
-                        <a href="messages">
-                            <img src={messages} alt="messages" />
-                        </a>
+                        <NavLink to="/messages"><img src={messages} alt="messages" /></NavLink>
                         <a href="favorites">
                             <img src={bookmark} alt="favorites" className="bookmark"/>
                         </a>
@@ -83,7 +105,7 @@ const AppHeader = () => {
                     </div>
                     <div className="app-header__profile" ref={container} tabIndex={0} 
                         onClick={handleDropdownClick}
-                        onKeyPress={(e) => {
+                        onKeyDown={(e) => {
                             if (e.key === ' ' || e.key === "Enter") {
                                 setNavBarDisplay((dropdownDisplay) => !dropdownDisplay);
                             }
@@ -109,7 +131,7 @@ const AppHeader = () => {
                                 <div className="app-header__dropdown-text exit"
                                     tabIndex={0}
                                     onClick={logout}
-                                    onKeyPress={(e) => {
+                                    onKeyDown={(e) => {
                                         if (e.key === ' ' || e.key === "Enter") {
                                             logout();
                                         }
@@ -125,6 +147,6 @@ const AppHeader = () => {
             <Outlet/>
         </>
     )
-}
+})
 
 export default AppHeader;

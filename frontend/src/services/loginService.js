@@ -17,6 +17,7 @@ const useLoginService = () => {
             localStorage.setItem('logged', res.headers.location);
             setAuth(true);
         } else if (res?.status === 400) {
+            console.log(res?.message)
             setResponse("Такой пользователь уже существует");
         } else {
             setResponse("Что-то пошло не так");
@@ -36,6 +37,7 @@ const useLoginService = () => {
             localStorage.setItem('logged', res.headers.location);
             setAuth(true);
         } else if (res?.status === 400 || res?.status === 404) {
+            console.log(res?.message)
             setResponse("Неверный логин или пароль");
         } else {
             setResponse("Что-то пошло не так");
