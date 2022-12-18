@@ -32,7 +32,6 @@ public class Messages {
     @Column(name = "text_content")
     @NotNull
     private String messageContent;
-    // чтобы time zone с часовым поясом
     @CreatedDate
     @NotNull
     @Column(name = "datetime_send")

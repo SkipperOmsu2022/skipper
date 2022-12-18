@@ -12,11 +12,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.edu.backend.dto.MessageDTO;
 import ru.tinkoff.edu.backend.dto.UserConversationDTO;
-import ru.tinkoff.edu.backend.entities.Messages;
 import ru.tinkoff.edu.backend.services.MessageService;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Validated

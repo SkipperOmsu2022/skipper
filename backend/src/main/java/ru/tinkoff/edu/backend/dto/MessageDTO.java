@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 @Builder
 public class MessageDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long idMessage;
+    private Long id;
     @NotBlank
     private String messageContent;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime dateTimeSend;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long userIdSender;
+    private Long userFrom;
 }

@@ -42,9 +42,9 @@ public class MessageServiceImpl implements MessageService {
         message.setUserFrom(userFrom);
         message = messageRepository.save(message);
 
-        messageDTO.setIdMessage(message.getId());
+        messageDTO.setId(message.getId());
         messageDTO.setDateTimeSend(message.getDateTimeSend());
-        messageDTO.setUserIdSender(message.getUserFrom());
+        messageDTO.setUserFrom(message.getUserFrom());
 
         return messageDTO;
     }
