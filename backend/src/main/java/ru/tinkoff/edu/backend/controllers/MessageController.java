@@ -11,6 +11,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.edu.backend.dto.MessageDTO;
+import ru.tinkoff.edu.backend.dto.UserConversationDTO;
 import ru.tinkoff.edu.backend.entities.Messages;
 import ru.tinkoff.edu.backend.services.MessageService;
 
@@ -40,16 +41,14 @@ public class MessageController {
     @MessageMapping("/chat/{id_from}/{id_to}")
     public void sendMessage(@DestinationVariable Long id_from, @DestinationVariable Long id_to,
                             @Payload MessageDTO message) {
-        log.info("from: " + id_from + ", to: " + id_to + ", message:" + message.getText());
         simpMessagingTemplate.convertAndSend("/topic/messages/" + id_to,
                 messageService.save(id_to, id_from, message));
     }
 
     @Operation(summary = "Получение списка сообщений.",
-            description = "Возвращает все сообщения пользователя с указанным id. 'additionalProp...' в примере - " +
-                    "индификатор собеседника.")
+            description = "Возвращает все сообщения пользователя с указанным id.")
     @GetMapping("/list-messages/{id}")
-    public ResponseEntity<Map<Long, List<Messages>>> getMessages(@PathVariable Long id) {
+    public ResponseEntity<List<UserConversationDTO>> getMessages(@PathVariable Long id) {
         return ResponseEntity.ok(messageService.getListMessages(id));
     }
 

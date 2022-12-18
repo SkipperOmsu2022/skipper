@@ -8,6 +8,5 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Messages, Long> {
-    List<Messages> findAllByUserFromContainingOrUserToContaining(@NotNull User userFrom, @NotNull User userTo);
     List<Messages> findAllByUserFromOrUserTo(@NotNull User userFrom, @NotNull User userTo);
 }
