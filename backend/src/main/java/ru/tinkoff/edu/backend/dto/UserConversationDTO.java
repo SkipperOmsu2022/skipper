@@ -13,5 +13,6 @@ public class UserConversationDTO {
     private String firstName;
     private String lastName;
     private String imageUserResource;
+    private String mentorSpecializations;
     private List<Messages> messages;
 }

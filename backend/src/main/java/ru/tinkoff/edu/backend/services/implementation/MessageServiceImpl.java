@@ -74,6 +74,7 @@ public class MessageServiceImpl implements MessageService {
                     .firstName(tempUser.getFirstName())
                     .lastName(tempUser.getLastName())
                     .imageUserResource(tempUser.getImageUserResource())
+                    .mentorSpecializations(tempUser.getInlineMentorSpecializations())
                     .messages(messagesMap.get(userId))
                     .build();
         }).collect(Collectors.toList());
