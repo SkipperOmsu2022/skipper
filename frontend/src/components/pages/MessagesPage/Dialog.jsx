@@ -72,7 +72,7 @@ const Dialog = observer(() => {
     
     useEffect(() => {
         document.addEventListener("click", handleClickOutside);
-        
+
         return () => {
             document.removeEventListener("click",  handleClickOutside)
         };
@@ -104,7 +104,7 @@ const Dialog = observer(() => {
                     <div className="name">
                         {`${messagesStore.activeInterlocutor.lastName} ${messagesStore.activeInterlocutor.firstName}`}
                     </div>
-                    <div className="specialty">Тестировщик</div>
+                    <div className="specialty">{messagesStore.activeInterlocutor.mentorSpecializations}</div>
                 </div>
                 <div className="chat-header__interaction">
                     <Link

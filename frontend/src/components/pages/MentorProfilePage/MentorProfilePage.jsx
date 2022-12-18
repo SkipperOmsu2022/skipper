@@ -58,7 +58,7 @@ const MentorProfilePage = () => {
             </div>
             <div className="profile-wrapper">
                 <MainInfo props={{firstName, lastName, mentorSpecializations, aboutAsMentor, communication, imageUserResource}}/>
-                <AdditionalInfo props={{dateOfRegistration, mentorStatus, isOwner}}/>
+                <AdditionalInfo props={{dateOfRegistration, mentorStatus, isOwner, userId}}/>
                 <Resume/>
                 <Reviews/>
                 <Lessons/>

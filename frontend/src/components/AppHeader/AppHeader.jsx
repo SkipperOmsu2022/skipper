@@ -51,6 +51,11 @@ const AppHeader = observer(() => {
             .then((res) => {
                 messagesStore.setInterlocutors(res)
             })
+            .then(() => {
+                if (location?.state?.activeDialog) {
+                    messagesStore.openUserDialog(location?.state?.activeDialog)
+                }
+            })
 
         messagesStore.setStompClient();
 

@@ -1,5 +1,7 @@
 import "../../../shared/submitButton/button.scss"
 
+import { Link } from 'react-router-dom';
+
 const getMonth = (month) => {
     switch(month) {
         case '01':
@@ -44,7 +46,7 @@ const getDate = (dateOfRegistration) => {
 }
 
 const AdditionalInfo = ({props}) => {
-    const {dateOfRegistration, mentorStatus, isOwner} = props;
+    const {dateOfRegistration, mentorStatus, isOwner, userId} = props;
 
     return (
         <div className="app-section profile additional-info">
@@ -84,7 +86,13 @@ const AdditionalInfo = ({props}) => {
                     >
                     Забронировать
                 </button>
-                <button className="button">Написать сообщение</button>
+                <Link
+                    to={`/messages`}
+                    state={{ activeDialog: userId }}
+                    className="button"
+                >
+                    Написать сообщение
+                </Link>
             </div>}
         </div>
     )
