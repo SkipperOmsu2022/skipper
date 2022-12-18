@@ -18,25 +18,4 @@
         <module>backend</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-            <version>5.3.23</version>
-        </dependency>
-        <!-- Стартер для создания веб-приложений, в том числе RESTful, с использованием Spring MVC.
-        Использует Tomcat в качестве встроенного контейнера по умолчанию. -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.7.5</version>
-        </dependency>
-        <!--Для тестирования backend`а-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
 </project>
