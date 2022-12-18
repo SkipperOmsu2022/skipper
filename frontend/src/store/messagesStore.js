@@ -14,9 +14,10 @@ class messagesStore {
     activeDialog = null;
     activeInterlocutor = null;
     input = ''
+    loading = false
 
     interlocutors = []
-    stompClient = {}
+    stompClient = null
 
     setUser = (res) => {
         const imageUserResource = res?.data?.imageUserResource ? 
@@ -34,6 +35,10 @@ class messagesStore {
 
     setInput = (msg) => {
         this.input = msg;
+    }
+
+    setLoading = (loading) => {
+        this.loading = loading
     }
 
     addNewMessage = (dialogId, senderId, recevierId, ) => {
@@ -95,7 +100,7 @@ class messagesStore {
                         mentorSpecializations: res.data?.mentorSpecializations
                     })
                     const msgId = -this.interlocutors[dialogId].messages.length;
-
+                    
                     this.interlocutors[dialogId].messages.push({
                         id: msgId,
                         userFrom: data?.userFrom,
@@ -144,16 +149,28 @@ class messagesStore {
     openUserDialog = (id) => {
         let dialogId;
 
+        if (this.loading || this.stompClient === null) return;
+        console.log(1)
+        this.loading = true
+
         this.interlocutors.forEach((item, i) => {
+            console.log(+item.userId === +id)
+            console.log(`${+item.userId} === ${+id}`)
             if (+item.userId === +id) {
                 dialogId = i;
             }
         })
 
+        console.log(2)
+
         if(dialogId !== undefined) {
+            console.log(dialogId)
             this.setActiveDialog(dialogId)
+            this.loading = false;
         } else {
+            console.log(dialogId)
             dialogId = this.interlocutors.length;
+            this.loading = true;
 
             axios.request({
                 url : `${enviroments.apiBase}/api/chat/user-info/${id}`,
@@ -176,6 +193,7 @@ class messagesStore {
                 })
                 this.setActiveDialog(dialogId)
             })
+            this.loading = false;
         }
     }
 

@@ -47,9 +47,11 @@ const AppHeader = observer(() => {
                     messagesStore.setUser(res)
                 }
             })
+        messagesStore?.setLoading(true);
         getMessagesList()
             .then((res) => {
                 messagesStore.setInterlocutors(res)
+                messagesStore?.setLoading(false);
             })
             .then(() => {
                 if (location?.state?.activeDialog) {
