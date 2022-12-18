@@ -149,7 +149,7 @@ const MainPage = observer(() => {
                             placeholder="Подача отчёта налоговой"
                             value={mainPageStore.search}
                             onChange={(e) => mainPageStore.setSearch(e.target.value)}
-                            onKeyPress={(e) => {
+                            onKeyDown={(e) => {
                                 if (e.key === "Enter") {
                                     mainPageStore.updateCurrentMentors(0);
                                 }

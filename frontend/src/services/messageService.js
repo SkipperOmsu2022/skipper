@@ -2,24 +2,24 @@ import enviroments from "../config/enviroments";
 
 import {useRequest} from "../hooks/useRequest"
 
-const useMentorSearchService = () => {
+const useMessageService = () => {
     const {request, loading, response, setResponse, error, clearResponse} = useRequest();
 
     const _apiBase = enviroments.apiBase;
     const userId = localStorage.getItem('logged');
 
-    const getMentors = async (url, offset) => {
-        const res = await request(`${_apiBase}/api/list/mentors${url}`, 'get');
+    const getMessagesList = async () => {
+        const res = await request(`${_apiBase}/api/chat/list-messages/${userId}`, 'get');
 
-        if (res?.status !== 201) {
+        if (res?.status === 200) {
+            return res.data;
+        } else {
             console.log(res?.message)
             setResponse("Что-то пошло не так");
         }
-
-        return res?.data?.filter(mentor => +mentor.id !== +userId);
     }
 
-    return {loading, response, error, clearResponse, getMentors}
+    return {request, loading, response, error, clearResponse, getMessagesList}
 }
 
-export default useMentorSearchService;
+export default useMessageService;

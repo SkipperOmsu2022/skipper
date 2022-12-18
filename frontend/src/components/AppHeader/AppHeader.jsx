@@ -11,6 +11,7 @@ import { useEffect, useState, useRef, useLayoutEffect } from "react"
 import useAuthContext from "../../hooks/useAuthContext";
 import useLoginService from "../../services/loginService"
 import useProfileService from "../../services/profileService";
+import useMessageService from "../../services/messageService"
 
 import { observer } from "mobx-react-lite";
 import messagesStore from "../../store/messagesStore";
@@ -19,12 +20,15 @@ import "./appHeader.scss"
 
 const AppHeader = observer(() => {
     const {getUserData} = useProfileService();
+    const { getMessagesList } = useMessageService();
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [imageUserResource, setImageUserResource] = useState("");
     
     const [navBarDisplay, setNavBarDisplay] = useState(false);
     const container = useRef();
+
     const { logout } = useLoginService()
     const { auth } = useAuthContext();
 
@@ -41,6 +45,11 @@ const AppHeader = observer(() => {
                     setLastName(res?.data?.lastName)
                     setImageUserResource(res?.data?.imageUserResource)
                 }
+            })
+        getMessagesList()
+            .then((res) => {
+                console.log(res)
+                messagesStore.setInterlocutors(res)
             })
 
         messagesStore.setStompClient();

@@ -9,7 +9,21 @@ class messagesStore {
     }
 
     userId = localStorage.getItem('logged');
+    activeDialog = 3;
+
+    interlocutors = []
     stompClient = {}
+
+    setInterlocutors = (res) => {
+        for (var key in res) {
+            this.interlocutors.push({id: key})
+        }
+        console.log(this.interlocutors)
+    }
+
+    setActiveDialog = (id) => {
+        this.activeDialog = id;
+    }
 
     setStompClient = () => {
         let socket = new SockJS(enviroments.apiBase + '/chat');
@@ -23,6 +37,7 @@ class messagesStore {
     }
 
     getMessage = (response) => {
+        console.log(response)
         let data = JSON.parse(response.body);
         console.log('Пришли данные с сервера: ' + JSON.stringify(data));
     }

@@ -14,6 +14,7 @@ const useProfileService = () => {
         if (res?.status === 200) {
             return res;
         } else {
+            console.log(res?.message)
             setResponse("Что-то пошло не так");
         }
     }
@@ -26,6 +27,7 @@ const useProfileService = () => {
         if (res?.status === 200) {
             setResponse("Изменения сохранены");
         } else {
+            console.log(res?.message)
             setResponse("Что-то пошло не так");
             return res;
         }
