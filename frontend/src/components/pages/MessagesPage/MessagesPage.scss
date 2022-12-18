@@ -102,7 +102,7 @@
                     }
     
                     &:hover:not(.active) {
-                        background: #fff5c28e;
+                        background: #f1f1f17a;
                     }
                 }
             }
@@ -239,6 +239,7 @@
                             font-size: 16px;
                             .name {
                                 color: $header;
+                                min-width: 10rem;
                             }
                             .time {
                                 opacity: 0.6;

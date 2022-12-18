@@ -1,24 +1,21 @@
 import photo from "../../../resources/profile-photo.jpg"
+import enviroments from "../../../config/enviroments";
 
 import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import messagesStore from "../../../store/messagesStore";
 
-const Interlocutor = observer(({dialog}) => {
-    useEffect(() => {
-
-    })
+const Interlocutor = observer(({item, id}) => {
+    const className = `list-chats__item ${id == messagesStore.activeDialog ? 'active' : ''}`
     
-    const className = `list-chats__item ${+dialog.id === +messagesStore.activeDialog ? 'active' : ''}`
-
     return (
         <div
             className={className}
-            onClick={() => messagesStore.setActiveDialog(dialog.id)}
+            onClick={() => messagesStore.setActiveDialog(id)}
         >
-            <img className='list-chats__item-profile-photo' src={photo} alt=''/>
+            <img className='list-chats__item-profile-photo' src={item.imageUserResource} alt=''/>
             <div className='list-chats__item-user-name'>
-                Рогачевский Илья
+                {`${item.lastName} ${item.firstName}`}
             </div>
         </div>
     )
@@ -29,10 +26,11 @@ const InterlocutorsList = observer(() => {
     return (
         <div className='list-chats'>
             {
-                messagesStore.interlocutors.map((dialog) => 
+                messagesStore.interlocutors.map((item, i) => 
                     <Interlocutor
-                        dialog={dialog}
-                        key={dialog.id}
+                        item={item}
+                        id={i}
+                        key={i}
                     />
                 )
             }

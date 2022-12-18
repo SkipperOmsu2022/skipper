@@ -44,11 +44,11 @@ const AppHeader = observer(() => {
                     setFirstName(res?.data?.firstName)
                     setLastName(res?.data?.lastName)
                     setImageUserResource(res?.data?.imageUserResource)
+                    messagesStore.setUser(res)
                 }
             })
         getMessagesList()
             .then((res) => {
-                console.log(res)
                 messagesStore.setInterlocutors(res)
             })
 
