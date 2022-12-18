@@ -35,17 +35,17 @@ class messagesStore {
         this.input = msg;
     }
 
-    addNewMessage = (id) => {
-        const msgId = this.interlocutors[id].messages.length
-        console.log(msgId)
-        console.log(this.interlocutors[id].messages)
-        this.interlocutors[id].messages.push({
+    addNewMessage = (dialogId, senderId, recevierId) => {
+        const msgId = -this.interlocutors[dialogId].messages.length
+        
+        this.interlocutors[dialogId].messages.push({
             id: msgId,
-            userFrom: 2,
-            userTo: 1,
+            userFrom: senderId,
+            userTo: recevierId,
             messageContent: this.input,
             dateTimeSend: new Date()
         });
+        
         this.input = '';
     }
 

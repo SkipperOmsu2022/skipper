@@ -1,7 +1,3 @@
-import photo from "../../../resources/profile-photo.jpg"
-import enviroments from "../../../config/enviroments";
-
-import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import messagesStore from "../../../store/messagesStore";
 

@@ -18,6 +18,9 @@ const Message = ({item, i}) => {
     const {userId, imageUserResource, lastName, firstName} = messagesStore.activeInterlocutor
     const photo = item.userFrom ===  userId ? imageUserResource : messagesStore.user.imageUserResource
 
+    console.log(item.userFrom)
+    console.log(userId)
+
     const name = item.userFrom === messagesStore.activeInterlocutor.userId ?
         `${lastName} ${firstName}` :
         `${messagesStore.user.lastName} ${messagesStore.user.firstName}`
@@ -32,8 +35,6 @@ const Message = ({item, i}) => {
 
     const newBlock = date.getTime() - previousDate.getTime() > 600000 ||
         item.userFrom !== messagesStore.activeInterlocutor.messages[i-1]?.userFrom
-
-    console.log(item.id)
 
     return (
         <>
@@ -141,7 +142,9 @@ const Dialog = observer(() => {
                     onKeyDown={(e) => {
                         if (e.key === "Enter") {
                             if (messagesStore.input) {
-                                messagesStore.addNewMessage(messagesStore.activeDialog);
+                                messagesStore.addNewMessage(messagesStore.activeDialog, 
+                                    messagesStore.user.id, 
+                                    messagesStore.activeInterlocutor.userId);
                             }
                         }
                     }}
