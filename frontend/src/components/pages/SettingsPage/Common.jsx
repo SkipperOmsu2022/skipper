@@ -1,3 +1,4 @@
+import enviroments from "../../../config/enviroments";
 import { useOutletContext } from "react-router-dom";
 import { useState, useRef, useEffect} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -42,7 +43,7 @@ const Common = () => {
                 if (date === undefined) date = ['', '', ''];
                 
                 if (res?.data?.imageUserResource) {
-                    setImage('http://127.0.0.1:8080' + res?.data?.imageUserResource)
+                    setImage(enviroments.apiBase + res?.data?.imageUserResource)
                 } else {
                     setImage(null)
                 }
