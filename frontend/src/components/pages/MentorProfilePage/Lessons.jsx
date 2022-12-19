@@ -1,6 +1,6 @@
 const Lessons = () => {
     return (
-        <div className="app-section profile mentor">
+        <div className="app-section profile mentor not-working">
             <div className="profile__header">Занятия</div>
             <div className="profile__lessons">
                 <div className="profile__lessons-row">

@@ -3,7 +3,7 @@ import "../../../shared/submitButton/button.scss"
 
 const Reviews = () => {
     return (
-        <div className="app-section profile huge-column">
+        <div className="app-section profile huge-column not-working">
             <div className="main-block">
                 <div className="profile__header">Отзывы</div>
                 <div className="review">
@@ -72,7 +72,7 @@ const Reviews = () => {
                 </div>
             </div>
             <div className="profile__btn-block full-width">
-                <button className="button">Смотреть все отзывы</button>
+                <button className="button inactive" disabled>Смотреть все отзывы</button>
             </div>
         </div>
     )

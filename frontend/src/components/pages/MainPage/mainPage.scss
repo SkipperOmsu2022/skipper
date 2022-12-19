@@ -52,6 +52,7 @@
     .filter {
         height: fit-content;
         min-width: 320px;
+        height: fit-content;
 
         display: flex;
         flex-direction: column;
@@ -164,6 +165,7 @@
         .mentor {
             display: flex;
             flex-direction: row;
+            min-width: fit-content;
             gap: 40px;
             padding: 2.5rem;
             background-color: white;

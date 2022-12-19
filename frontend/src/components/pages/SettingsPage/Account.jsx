@@ -3,7 +3,7 @@ import { useState, useEffect} from "react";
 import { Formik, Form } from "formik";
 import * as Yup from 'yup';
 
-import TextInput from "../../shared/TextInput/TextInput";
+import TextInput from "../../../shared/TextInput/TextInput";
 
 const Account = () => {
     const {setUserData, clearResponse} = useOutletContext();
