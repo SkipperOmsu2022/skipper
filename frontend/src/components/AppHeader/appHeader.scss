@@ -5,8 +5,10 @@
     top: 0;
     z-index: 3;
 
+    max-width: 1900px;
     display: flex;
-    min-width: 50.5rem;
+    min-width: 1308px;
+    margin: 0 auto;
     justify-content: space-between;
     align-items: center;
     padding: 1.5625rem 2.5rem;

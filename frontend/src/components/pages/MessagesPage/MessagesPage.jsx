@@ -12,7 +12,11 @@ const MessagesPage = observer(() => {
     const location = useLocation();
 
     const chatContent = (
-        messagesStore.activeDialog === null ? null : <Dialog/>
+        messagesStore.activeDialog === null ? 
+            <span className='noActiveDialog'>
+                Выберите, кому хотите написать сообщение
+            </span> : 
+            <Dialog/>
     )
     useEffect(() => {
         if (location?.state?.activeDialog) {

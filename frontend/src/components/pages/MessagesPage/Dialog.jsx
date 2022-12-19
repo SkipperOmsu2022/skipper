@@ -72,9 +72,13 @@ const Dialog = observer(() => {
     
     useEffect(() => {
         document.addEventListener("click", handleClickOutside);
+        document.addEventListener("keydown", clearDialog);
 
         return () => {
+            messagesStore.setActiveDialog(null);
+            messagesStore.setInput('')
             document.removeEventListener("click",  handleClickOutside)
+            document.addEventListener("keydown", clearDialog);
         };
     }, []);
 
@@ -85,6 +89,25 @@ const Dialog = observer(() => {
             setMessagesLength(messagesStore.activeInterlocutor.messages.length)
         }
     });
+
+    const clearDialog = (e) => {
+        console.log(e)
+        if (e.key === "Escape") {
+            messagesStore.setActiveDialog(null);
+            messagesStore.setInput('')
+        }
+    }
+    
+    const sendMessage = (e) => {
+        console.log(e);
+        if (e.key === "Enter" || e.type === 'click') {
+            if (messagesStore.input) {
+                messagesStore.addNewMessage(messagesStore.activeDialog, 
+                    messagesStore.user.id, 
+                    messagesStore.activeInterlocutor.userId);
+            }
+        }
+    }
 
     const handleDropdownClick = () => setDropdownDisplay((dropdownDisplay) => !dropdownDisplay);
 
@@ -150,17 +173,15 @@ const Dialog = observer(() => {
                     onChange={(e) => {
                         if (e.target.value !== "\n") messagesStore.setInput(e.target.value)
                     }}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            if (messagesStore.input) {
-                                messagesStore.addNewMessage(messagesStore.activeDialog, 
-                                    messagesStore.user.id, 
-                                    messagesStore.activeInterlocutor.userId);
-                            }
-                        }
-                    }}
+                    onKeyDown={sendMessage}
                 />
-                <img src={sendBtn} className='chat-input__button' alt="send" />
+                <img 
+                    src={sendBtn}
+                    className='chat-input__button'
+                    alt="send"
+                    onKeyDown={sendMessage}
+                    onClick={sendMessage}
+                />
             </div>
         </>
     )
