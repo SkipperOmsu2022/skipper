@@ -115,6 +115,12 @@
                     box-shadow: 0 0 0.625rem rgb(166 166 166 / 60%);
                     border-radius: 0.625rem;
                     width: 60rem;
+
+                    .noActiveDialog {
+                        font-size: 20px;
+                        color: $main-text;
+                        margin: auto;
+                    }
                 }
     
                 &-header {
@@ -177,6 +183,8 @@
                             margin: auto 0;
                             width: 30px;
                             height: 30px;
+                            min-width: 30px;
+                            min-height: 30px;
                             line-height: 30px;
                             .dropdown {
                                 top: 60px;

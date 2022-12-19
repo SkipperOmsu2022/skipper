@@ -5,6 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 import FormikSelect from "../../../shared/customSelect/CustomSelect";
 import ImageCropper from "../../ImageCropper/ImageCropper";
+import enviroments from "../../../config/enviroments";
 
 import photo from "../../../resources/profile-photo.jpg"
 import "../../../shared/radio.scss"

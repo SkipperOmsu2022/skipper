@@ -194,7 +194,7 @@ const Mentor = () => {
                             />
                         </div>
                 </div>
-                <div className="settings__input-group">
+                {/* <div className="settings__input-group">
                     <label className="settings__input-group-label middle-top-padding">
                         Образование: 
                     </label>
@@ -244,9 +244,9 @@ const Mentor = () => {
                                     onChange={(e) => setEducationSpecialization(e.target.value)}/>
                             </div>
                             <div className='wrapper'>
-                                {/* <span className="settings__input-group-btn-width settings__input-group-delete">
+                                <span className="settings__input-group-btn-width settings__input-group-delete">
                                     Удалить
-                                </span> */}
+                                </span>
                                 <button className="button settings__input-group-button">
                                     +
                                 </button>
@@ -293,9 +293,9 @@ const Mentor = () => {
                                     onChange={(e) => setExperienceName(e.target.value)}/>
                             </div>
                             <div className='wrapper'>
-                                {/* <span className="settings__input-group-btn-width settings__input-group-delete">
+                                <span className="settings__input-group-btn-width settings__input-group-delete">
                                     Удалить
-                                </span> */}
+                                </span>
                                 <button className="button settings__input-group-button">
                                     +
                                 </button>
@@ -335,7 +335,7 @@ const Mentor = () => {
                         <textarea className="settings__input-group-text input textarea" placeholder="Добавьте информацию:"
                             id="other" maxLength='100'/>
                     </div>
-                </div>
+                </div> */}
             </div>
         </form>
     )

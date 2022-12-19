@@ -41,7 +41,7 @@ const Mentors = observer(({newOffset}) => {
                                     {item.mentorSpecializations}
                                 </div>
                             </div>
-                            <label className="header__bookmark bookmark" htmlFor={`switch${i}`}>
+                            {/* <label className="header__bookmark bookmark" htmlFor={`switch${i}`}>
                                 <input
                                     type="checkbox"
                                     className="bookmark-input"
@@ -50,7 +50,7 @@ const Mentors = observer(({newOffset}) => {
                                     onChange={() => mainPageStore.changeFavorite(item)}
                                 />
                                 <img className="bookmark-icon" src={bookmark} alt="" />
-                            </label>
+                            </label> */}
                         </div>
                         <div className="description">
                             {item.aboutMeAsMentor}

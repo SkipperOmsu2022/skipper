@@ -19,6 +19,7 @@ const MentorProfilePage = () => {
     const [aboutAsMentor, setAboutAsMentor] = useState("");
     const [mentorStatus, setMentorStatus] = useState(false);
     const [imageUserResource, setImageUserResource] = useState("");
+    const [rating, setRating] = useState(null);
     const [dateOfRegistration, setDateOfRegistration] = useState([]);
     const [mentorSpecializations, setMentorSpecializations] = useState("");
     const [communication, setCommunication] = useState([]);
@@ -35,6 +36,7 @@ const MentorProfilePage = () => {
                 setDateOfRegistration(res?.data?.dateOfRegistration?.split('-'))
                 setMentorStatus(res?.data?.isEnabledMentorStatus)
                 setImageUserResource(res?.data?.imageUserResource)
+                setRating(res?.data?.rating)
 
                 setCommunication([
                     {name: 'Вконтакте', link: res?.data?.linkVk},
@@ -60,7 +62,7 @@ const MentorProfilePage = () => {
             </div>
             <div className="profile-wrapper">
                 <MainInfo props={{firstName, lastName, mentorSpecializations, aboutAsMentor, communication, imageUserResource}}/>
-                <AdditionalInfo props={{dateOfRegistration, mentorStatus, isOwner, rating: location?.state?.rating, userId}}/>
+                <AdditionalInfo props={{dateOfRegistration, mentorStatus, isOwner, rating, userId}}/>
                 <Resume/>
                 <Reviews/>
                 <Lessons/>

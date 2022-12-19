@@ -12,18 +12,10 @@ const useMentorSearchService = () => {
         const res = await request(`${_apiBase}/api/list/mentors${url}`, 'get');
 
         if (res?.status !== 201) {
-            //console.log(res?.message)
             setResponse("Что-то пошло не так");
         }
 
-        return res?.data
-            ?.filter(mentor => +mentor.id !== +userId)
-            ?.map(mentor => {
-                return {
-                    ...mentor,
-                    rating: (Math.random() * (4.9 - 3.8) + 3.8).toFixed(1)
-                }
-            })
+        return res?.data?.filter(mentor => +mentor.id !== +userId)
     }
 
     return {loading, response, error, clearResponse, getMentors}

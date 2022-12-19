@@ -142,6 +142,10 @@ class messagesStore {
     }
 
     setActiveDialog = (id) => {
+        if (id === null) {
+            this.activeDialog = null;
+            this.activeInterlocutor = null
+        }
         this.activeDialog = id;
         this.activeInterlocutor = this.interlocutors[id]
     }
