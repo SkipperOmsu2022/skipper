@@ -12,4 +12,5 @@ public class MentorListItemDTO {
     private String mentorSpecializations;
     private String aboutMeAsMentor;
     private String imageUserResource;
+    private Double rating;
 }

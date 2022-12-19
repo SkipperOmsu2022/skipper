@@ -1,6 +1,5 @@
 package ru.tinkoff.edu.backend.services.implementation;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,13 +12,27 @@ import ru.tinkoff.edu.backend.repositories.UserRepository;
 import ru.tinkoff.edu.backend.services.FileStorageService;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Random;
+
 @Service
 @Log4j2
-@RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final FileStorageService fileStorageService;
+    private final Random rand;
+
+    public ProfileServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                              FileStorageService fileStorageService) throws NoSuchAlgorithmException {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.fileStorageService = fileStorageService;
+        this.rand = SecureRandom.getInstanceStrong();
+    }
 
     @Override
     public UserEditMainInfoDTO getMainInfo(Long id) {
@@ -124,6 +137,11 @@ public class ProfileServiceImpl implements ProfileService {
         userFromDB.setIsEnabledMentorStatus(user.getIsEnabledMentorStatus());
         userFromDB.setMentorSpecializations(user.getMentorSpecializations());
 
+        double randomRating = BigDecimal.valueOf(3.5 + (5 - 3.5) * rand
+                .nextDouble())
+                .setScale(2, RoundingMode.HALF_UP).doubleValue();
+        userFromDB.setRating(randomRating);
+
         userRepository.save(userFromDB);
     }
 
@@ -162,6 +180,7 @@ public class ProfileServiceImpl implements ProfileService {
         user.setLinkSkype(userFromDB.getLinkSkype());
         user.setLinkDiscord(userFromDB.getLinkDiscord());
         user.setLinkTelegram(userFromDB.getLinkTelegram());
+        user.setRating(user.getRating());
         return user;
     }
 }
