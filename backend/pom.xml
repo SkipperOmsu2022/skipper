@@ -3,20 +3,29 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>ru.tinkoff.edu</groupId>
+        <artifactId>skipper</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-    <groupId>ru.tinkoff.edu</groupId>
-    <artifactId>backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>backend</name>
-    <description>backend</description>
+
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
+    <artifactId>backend</artifactId>
+
     <dependencies>
+        <!--Для сборки в один jar файл-->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>frontend</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <!-- we add optional to work with the backend package without building the frontend -->
+            <optional>true</optional>
+        </dependency>
         <!-- Стартер для создания веб-приложений, в том числе RESTful, с использованием Spring MVC.
         Использует Tomcat в качестве встроенного контейнера по умолчанию. -->
         <dependency>
@@ -106,10 +115,10 @@
     <build>
         <plugins>
             <plugin>
-                <!--для удалённого подключения и библиотеки ломбок-->
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <mainClass>ru.tinkoff.edu.backend.BackendApplication</mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -118,6 +127,39 @@
                     </excludes>
                     <excludeDevtools>false</excludeDevtools>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--Чтобы "захватывать" файлы с frontend-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>merge</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>frontend</artifactId>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${project.build.directory}/classes/static</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
