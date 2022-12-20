@@ -28,7 +28,7 @@ const Mentors = observer(({newOffset}) => {
                         <img className="mentor__photo-img" src={imageUserResource || photo} alt="user-avatar"/>
                         <div className="rating">
                             <span className="rating-star">&#9733;</span>
-                            <span className="rating-value">{item.rating}</span>
+                            <span className="rating-value">{item.rating || '-'}</span>
                         </div>
                     </div>
                     <div className="mentor__main-info">
@@ -127,9 +127,8 @@ const MainPage = observer(() => {
 
     useEffect(() => {
         mainPageStore.setSearch('')
-        //
-        if (mainPageStore.mentors.length === 0) updateMentors();
-        //
+        
+        updateMentors();
     }, []);
 
     const updateMentors = async () => {

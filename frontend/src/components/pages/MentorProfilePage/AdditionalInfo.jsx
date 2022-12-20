@@ -6,8 +6,11 @@ import DateOfRegistration from "../ProfilePage/DateOfRegistration";
 const AdditionalInfo = ({props}) => {
     const {dateOfRegistration, mentorStatus, isOwner, rating, userId} = props;
 
-    const filledStars = Array(Math.round(+rating)).fill(<div className="star">&#9733;</div>);
-    const hollowStars = Array(5 - Math.round(+rating)).fill(<div className="star">&#9734;</div>);
+    let filledStars = null, hollowStars = null;
+    if (rating) {
+        filledStars = Array(Math.round(+rating)).fill(<div className="star">&#9733;</div>);
+        hollowStars = Array(5 - Math.round(+rating)).fill(<div className="star">&#9734;</div>);
+    }
     
     return (
         <div className="app-section profile additional-info">

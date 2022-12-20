@@ -36,7 +36,7 @@ const MentorProfilePage = () => {
                 setDateOfRegistration(res?.data?.dateOfRegistration?.split('-'))
                 setMentorStatus(res?.data?.isEnabledMentorStatus)
                 setImageUserResource(res?.data?.imageUserResource)
-                setRating(res?.data?.rating)
+                setRating(location?.state?.rating || res?.data?.rating)
 
                 setCommunication([
                     {name: 'Вконтакте', link: res?.data?.linkVk},
