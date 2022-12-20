@@ -180,7 +180,7 @@ public class ProfileServiceImpl implements ProfileService {
         user.setLinkSkype(userFromDB.getLinkSkype());
         user.setLinkDiscord(userFromDB.getLinkDiscord());
         user.setLinkTelegram(userFromDB.getLinkTelegram());
-        user.setRating(user.getRating());
+        user.setRating(userFromDB.getRating());
         return user;
     }
 }

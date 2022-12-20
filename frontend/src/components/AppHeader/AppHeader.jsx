@@ -91,9 +91,9 @@ const AppHeader = observer(() => {
                     <Link  to="/" className="app-header__logo">Skipper</Link>
                     <div className="app-header__icons">
                         <NavLink to="/messages"><img src={messages} alt="messages" /></NavLink>
-                        <a href="favorites">
+                        {/*<a href="favorites">
                             <img src={bookmark} alt="favorites" className="bookmark"/>
-                        </a>
+                        </a>*/}
                     </div>
                 </div>
                 <div className="app-header__group">

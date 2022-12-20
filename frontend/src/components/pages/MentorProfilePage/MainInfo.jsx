@@ -44,10 +44,10 @@ const MainInfo = ({props}) => {
                         <div className="name">{firstName} {lastName}</div>
                         <div className="specialty">{mentorSpecializations}</div>
                     </div>
-                    <label className="profile__bookmark" htmlFor="switch">
+                    {/*<label className="profile__bookmark" htmlFor="switch">
                         <input type="checkbox" className="bookmark-input" id="switch"/>
                         <img className="bookmark-icon bookmark" src={bookmark} alt="" />
-                    </label>
+                    </label>*/}
                 </div>
                 <div className="complain-btn" ref={container} onClick={handleDropdownClick}
                     onKeyDown={(e) => {
