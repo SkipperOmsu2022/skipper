@@ -202,14 +202,17 @@ class messagesStore {
     }
 
     setStompClient = () => {
-        let socket = new SockJS(enviroments.apiBase + '/chat');
-        this.stompClient = Stomp.over(socket)
+        const id = localStorage.getItem('logged')
+        if (id) {
+            let socket = new SockJS(enviroments.apiBase + '/chat');
+            this.stompClient = Stomp.over(socket)
 
-        this.stompClient.connect({}, (frame) => {
-            console.log("connected to: " + frame);
-            
-            this.stompClient.subscribe("/topic/messages/" + this.user.id, this.getMessage);
-        });
+            this.stompClient.connect({}, (frame) => {
+                console.log("connected to: " + frame);
+                
+                this.stompClient.subscribe("/topic/messages/" + this.user.id, this.getMessage);
+            });
+        }
     }
 
     clearStore = () => {
@@ -222,8 +225,11 @@ class messagesStore {
     }
 
     disconnect = () => {
-        this.stompClient.disconnect()
-        this.stompClient = {}
+        const id = localStorage.getItem('logged')
+        if (id) {
+            this.stompClient.disconnect()
+            this.stompClient = {}
+        }
     }
 }
 

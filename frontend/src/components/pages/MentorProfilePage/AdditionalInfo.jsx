@@ -31,13 +31,10 @@ const AdditionalInfo = ({props}) => {
             { isOwner ? null :
             <div className="profile__btn-block full-width">
                 <span className="profile__btn-block-name">Консультация:</span>
-                {/* <button
+                <button
                     disabled={!mentorStatus}
                     className={`button${mentorStatus ? '' : ' inactive'}`}
                     >
-                    Забронировать
-                </button> */}
-                <button disabled={true} className={`button inactive`}>
                     Забронировать
                 </button>
                 <Link
