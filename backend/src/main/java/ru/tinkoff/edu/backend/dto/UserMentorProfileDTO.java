@@ -9,8 +9,8 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserMentorProfileDTO {
     private String firstName;
     private String lastName;

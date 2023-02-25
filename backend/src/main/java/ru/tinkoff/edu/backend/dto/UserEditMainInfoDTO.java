@@ -16,8 +16,8 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserEditMainInfoDTO {
     @NotBlank
     private String firstName;

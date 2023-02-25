@@ -13,8 +13,8 @@ import java.util.Set;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserEditMentorDTO {
     @NotNull
     private Boolean isEnabledMentorStatus;
