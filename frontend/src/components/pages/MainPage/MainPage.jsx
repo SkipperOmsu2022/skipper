@@ -41,7 +41,7 @@ const Mentors = observer(({newOffset}) => {
                                     {item.mentorSpecializations}
                                 </div>
                             </div>
-                            {/* <label className="header__bookmark bookmark" htmlFor={`switch${i}`}>
+                            <label className="header__bookmark bookmark" htmlFor={`switch${i}`}>
                                 <input
                                     type="checkbox"
                                     className="bookmark-input"
@@ -50,7 +50,7 @@ const Mentors = observer(({newOffset}) => {
                                     onChange={() => mainPageStore.changeFavorite(item)}
                                 />
                                 <img className="bookmark-icon" src={bookmark} alt="" />
-                            </label> */}
+                            </label>
                         </div>
                         <div className="description">
                             {item.aboutMeAsMentor}
@@ -133,7 +133,7 @@ const MainPage = observer(() => {
 
     const updateMentors = async () => {
         const data = await getMentors(``);
-        mainPageStore.setMentors(data);
+        if (data) mainPageStore.setMentors(data);
     }
 
     const errorMessage = error ? <span className="search-result__error">{response}</span> : null;

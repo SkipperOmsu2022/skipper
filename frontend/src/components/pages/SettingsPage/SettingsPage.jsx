@@ -8,7 +8,7 @@ const SettingsPage = () => {
     const {getUserData, setUserData, loading, response, error, clearResponse} = useProfileService();
 
     return (
-        <div className='page-content'>
+        <div className='page-content white-space'>
             <div className="app-section-header">
                 Настройки профиля
             </div>

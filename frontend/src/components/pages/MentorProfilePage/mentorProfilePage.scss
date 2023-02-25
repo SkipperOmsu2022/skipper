@@ -5,6 +5,9 @@
 }
 
 .profile{
+    &.mentor {
+        max-width: 1380px;
+    }
     &.additional-info {
         display: flex;
         flex-direction: column;

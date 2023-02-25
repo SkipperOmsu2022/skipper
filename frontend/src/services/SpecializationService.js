@@ -13,6 +13,7 @@ const useSpecializationService = () => {
         if (res?.status !== 200) {
             console.log(res?.message)
             setResponse("Что-то пошло не так");
+            return;
         }
 
         const specializations = Object.entries(res?.data)?.map((item) => {

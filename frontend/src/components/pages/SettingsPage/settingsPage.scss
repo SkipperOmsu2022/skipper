@@ -2,8 +2,8 @@
 @import '../../../shared/page-content.scss';
 
 .settings {
-    min-width: 86.75rem;
-    max-width: 100%;
+    box-sizing: border-box;
+    width: 100%;
     min-height: 32rem;
 
     display: flex;
@@ -203,7 +203,7 @@
     &__input-group {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         column-gap: 1.25rem;
         row-gap: 0.625rem;
         height: fit-content;
