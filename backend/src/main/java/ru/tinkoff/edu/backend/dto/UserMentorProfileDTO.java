@@ -1,12 +1,16 @@
 package ru.tinkoff.edu.backend.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import ru.tinkoff.edu.backend.enums.MentorSpecialization;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserMentorProfileDTO {
     private String firstName;
     private String lastName;
