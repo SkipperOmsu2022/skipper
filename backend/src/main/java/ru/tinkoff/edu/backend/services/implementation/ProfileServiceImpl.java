@@ -10,7 +10,7 @@ import ru.tinkoff.edu.backend.exception.DifferentPasswordException;
 import ru.tinkoff.edu.backend.exception.IncorrectCurrentPasswordException;
 import ru.tinkoff.edu.backend.exception.OldPasswordRepeatNewPasswordException;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
-import ru.tinkoff.edu.backend.services.ImageStorageService;
+import ru.tinkoff.edu.backend.services.FileStorageService;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
 @Service
@@ -19,7 +19,7 @@ import ru.tinkoff.edu.backend.services.ProfileService;
 public class ProfileServiceImpl implements ProfileService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ImageStorageService imageStorageService;
+    private final FileStorageService fileStorageService;
 
     @Override
     public UserEditMainInfoDTO getMainInfo(Long id) {
@@ -47,7 +47,7 @@ public class ProfileServiceImpl implements ProfileService {
         userFromDB.setDateBirth(user.getDateOfBirth());
         userFromDB.setAbout(user.getAboutMe());
 
-        String imageUserResource = imageStorageService.save(user.getFile(), String.valueOf(id));
+        String imageUserResource = fileStorageService.save(user.getFile(), String.valueOf(id));
         userFromDB.setImageUserResource(imageUserResource.isEmpty()
                 ? null
                 : imageUserResource);

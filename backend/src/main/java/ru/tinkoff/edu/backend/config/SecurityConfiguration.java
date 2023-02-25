@@ -12,6 +12,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 
 /**
@@ -61,7 +62,12 @@ public class SecurityConfiguration {
     protected CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfig = new CorsConfiguration().applyPermitDefaultValues();
-        corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type",
+                "Access-Control-Allow-Headers"));
+
+        corsConfig.setAllowedOriginPatterns(Collections.singletonList("*"));
+        corsConfig.setAllowCredentials(true);
+
         corsConfig.setExposedHeaders(Arrays
                 .asList("Authorization", "Location", "Cache-Control", "Content-Type"));
         corsConfig.setAllowedMethods(Arrays
