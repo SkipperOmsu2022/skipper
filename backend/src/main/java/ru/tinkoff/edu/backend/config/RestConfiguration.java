@@ -23,13 +23,11 @@ public class RestConfiguration implements WebMvcConfigurer {
     private final Path rootLocation;
     private final String apiUserImage;
     private final DispatcherServlet servlet;
-    private final UserService userService;
 
-    public RestConfiguration(StorageProperties properties, DispatcherServlet servlet, UserService userService) {
+    public RestConfiguration(StorageProperties properties, DispatcherServlet servlet) {
         this.rootLocation = Paths.get(properties.getLocation());
         this.apiUserImage = properties.getApiUserImage();
         this.servlet = servlet;
-        this.userService = userService;
     }
 
     /**
