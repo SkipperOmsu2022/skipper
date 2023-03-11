@@ -44,7 +44,6 @@ public class MentorProfileSettingsController {
     @Operation(summary = "Изменение информации о менторских настройках пользователя.", description = "Менторские " +
             "специальности и менторское образование перезаписывается! В каждом запросе нужно отправлять всё что" +
             "нужно сохранить!")
-    @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PutMapping("/{id}")
     public ResponseEntity<Void> editMentorSettings(@PathVariable Long id,
                                                    @Valid @RequestBody UserEditMentorDTO user) {
