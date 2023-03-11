@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.backend.controllers;
+package ru.tinkoff.edu.backend.controllers.profile;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
