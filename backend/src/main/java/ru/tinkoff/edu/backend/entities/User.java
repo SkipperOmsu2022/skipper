@@ -77,6 +77,9 @@ public class User {
     @Column(name = "rating", table = "MENTORS")
     private Double rating;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Education> education;
+
     public String getInlineMentorSpecializations() {
         return mentorSpecializations.stream()
                 .map(MentorSpecialization::getStringMentorSpecialization)
