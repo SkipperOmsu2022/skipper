@@ -41,7 +41,9 @@ public class MentorProfileSettingsController {
                 .ok(user);
     }
 
-    @Operation(summary = "Изменение информации о менторских настройках пользователя.")
+    @Operation(summary = "Изменение информации о менторских настройках пользователя.", description = "Менторские " +
+            "специальности и менторское образование перезаписывается! В каждом запросе нужно отправлять всё что" +
+            "нужно сохранить!")
     @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PutMapping("/{id}")
     public ResponseEntity<Void> editMentorSettings(@PathVariable Long id,
@@ -50,7 +52,8 @@ public class MentorProfileSettingsController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Список всех специальностей Российской Федерации.")
+    @Operation(summary = "Список всех специальностей Российской Федерации.", description = "Основной документ - " +
+            "Приказ Росстандарта от 25.05.2017 №415-ст")
     @GetMapping("/edu")
     public ResponseEntity<List<Qualification>> getEducationRU(@RequestParam String query) {
         return ResponseEntity.ok(profileService.getSpecializationMentorList(query));
