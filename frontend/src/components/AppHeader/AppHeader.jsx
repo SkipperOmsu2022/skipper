@@ -21,7 +21,7 @@ import "./appHeader.scss"
 const AppHeader = observer(() => {
     const {getUserData} = useProfileService();
     const { getMessagesList } = useMessageService();
-
+    
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [imageUserResource, setImageUserResource] = useState("");

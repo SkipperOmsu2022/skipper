@@ -6,8 +6,11 @@ import DateOfRegistration from "../ProfilePage/DateOfRegistration";
 const AdditionalInfo = ({props}) => {
     const {dateOfRegistration, mentorStatus, isOwner, rating, userId} = props;
 
-    const filledStars = Array(Math.round(+rating)).fill(<div className="star">&#9733;</div>);
-    const hollowStars = Array(5 - Math.round(+rating)).fill(<div className="star">&#9734;</div>);
+    let filledStars = null, hollowStars = null;
+    if (rating) {
+        filledStars = Array(Math.round(+rating)).fill(<div className="star">&#9733;</div>);
+        hollowStars = Array(5 - Math.round(+rating)).fill(<div className="star">&#9734;</div>);
+    }
     
     return (
         <div className="app-section profile additional-info">
@@ -28,13 +31,10 @@ const AdditionalInfo = ({props}) => {
             { isOwner ? null :
             <div className="profile__btn-block full-width">
                 <span className="profile__btn-block-name">Консультация:</span>
-                {/* <button
+                <button
                     disabled={!mentorStatus}
                     className={`button${mentorStatus ? '' : ' inactive'}`}
                     >
-                    Забронировать
-                </button> */}
-                <button disabled={true} className={`button inactive`}>
                     Забронировать
                 </button>
                 <Link
