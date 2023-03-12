@@ -194,7 +194,7 @@ const Mentor = () => {
                             />
                         </div>
                 </div>
-                {/* <div className="settings__input-group">
+                <div className="settings__input-group">
                     <label className="settings__input-group-label middle-top-padding">
                         Образование: 
                     </label>
@@ -335,7 +335,7 @@ const Mentor = () => {
                         <textarea className="settings__input-group-text input textarea" placeholder="Добавьте информацию:"
                             id="other" maxLength='100'/>
                     </div>
-                </div> */}
+                </div>
             </div>
         </form>
     )
