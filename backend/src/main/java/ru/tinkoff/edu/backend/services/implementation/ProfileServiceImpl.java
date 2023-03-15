@@ -19,14 +19,14 @@ import ru.tinkoff.edu.backend.services.FileStorageService;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
 import javax.persistence.EntityNotFoundException;
+import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Log4j2
@@ -164,7 +164,8 @@ public class ProfileServiceImpl implements ProfileService {
         userFromDB.setIsEnabledMentorStatus(user.getIsEnabledMentorStatus());
         userFromDB.setMentorSpecializations(user.getMentorSpecializations());
 
-        Set<Education> educations = user.getEducations()
+        Set<Education> educations = Optional.ofNullable(user.getEducations())
+                .orElse(Collections.emptySet())
                 .stream()
                 .map(e -> {
                     Qualification qualification = qualificationRepository
@@ -233,6 +234,6 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public List<Qualification> getSpecializationMentorList(String query) {
-        return qualificationRepository.getSpecializationMentorByNameContains(query);
+        return qualificationRepository.getSpecializationMentorByNameContainsIgnoreCase(query);
     }
 }

@@ -27,5 +27,6 @@ public class UserEditMentorDTO {
             = "Mentor specialization must have at least one element!")
     private Set<MentorSpecialization> mentorSpecializations;
     @Valid
+    @NotNull
     private Set<EducationDTO> educations;
 }
