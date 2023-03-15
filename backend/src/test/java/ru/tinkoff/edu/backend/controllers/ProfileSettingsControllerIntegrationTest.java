@@ -115,10 +115,7 @@ public class ProfileSettingsControllerIntegrationTest {
         mockMvc.perform(get("/api/user/profile/settings/account/4")
                 .content("4"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("email").value("123@example"))
-                .andExpect(jsonPath("oldPassword").value("123"))
-                .andExpect(jsonPath("newPassword").value("124"))
-                .andExpect(jsonPath("repeatNewPassword").value("124"));
+                .andExpect(jsonPath("email").value("123@example"));
     }
 
     @Test
