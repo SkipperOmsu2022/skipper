@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -25,4 +26,6 @@ public class UserEditMentorDTO {
     @Size(min = 1, message
             = "Mentor specialization must have at least one element!")
     private Set<MentorSpecialization> mentorSpecializations;
+    @Valid
+    private Set<EducationDTO> educations;
 }
