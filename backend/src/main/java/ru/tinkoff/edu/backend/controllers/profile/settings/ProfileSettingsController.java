@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.backend.controllers;
+package ru.tinkoff.edu.backend.controllers.profile.settings;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,7 +11,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.edu.backend.dto.UserEditContactsDTO;
 import ru.tinkoff.edu.backend.dto.UserEditAccountDTO;
-import ru.tinkoff.edu.backend.dto.UserEditMentorDTO;
 import ru.tinkoff.edu.backend.dto.UserEditMainInfoDTO;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
@@ -20,7 +19,7 @@ import javax.validation.Valid;
 /**
  * Данный контроллер отвечает за:
  * <ul>
- *      <li> Изменения данных пользователя</li>
+ *      <li> Изменения данных пользователя.</li>
  * </ul>
  */
 @RestController
@@ -46,7 +45,7 @@ public class ProfileSettingsController {
                     content = {@Content(mediaType = "multipart/form-data")}))
     @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> editMainInfo(@PathVariable Long id,
+    public ResponseEntity<Void> editMainInfo(@PathVariable Long id,
                                                @Valid @ModelAttribute UserEditMainInfoDTO user ) {
         profileService.updateUser(id, user);
 
@@ -69,7 +68,7 @@ public class ProfileSettingsController {
                     "3. Новый пароль совпадает со старым паролем.")
     @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PutMapping("/account/{id}")
-    public ResponseEntity<String> editAccountDetails(@PathVariable Long id, @Valid @RequestBody UserEditAccountDTO user) {
+    public ResponseEntity<Void> editAccountDetails(@PathVariable Long id, @Valid @RequestBody UserEditAccountDTO user) {
         profileService.updateUser(id, user);
 
         return ResponseEntity.ok().build();
@@ -87,26 +86,9 @@ public class ProfileSettingsController {
     @Operation(summary = "Изменение контактных данных(ссылок на социальные сети) пользователя.")
     @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PutMapping("/contacts/{id}")
-    public ResponseEntity<String> editUserContacts(@PathVariable Long id, @Valid @RequestBody UserEditContactsDTO user) {
+    public ResponseEntity<Void> editUserContacts(@PathVariable Long id, @Valid @RequestBody UserEditContactsDTO user) {
         profileService.updateUser(id, user);
 
-        return ResponseEntity.ok().build();
-    }
-
-    @Operation(summary = "Получение информации о менторских настройках пользователя.")
-    @GetMapping("/mentor/{id}")
-    public ResponseEntity<UserEditMentorDTO> getMentorSettings(@PathVariable Long id) {
-        UserEditMentorDTO user = profileService.getMentorInfo(id);
-        return ResponseEntity
-                .ok(user);
-    }
-
-    @Operation(summary = "Изменение информации о менторских настройках пользователя.")
-    @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
-    @PutMapping("/mentor/{id}")
-    public ResponseEntity<String> editMentorSettings(@PathVariable Long id,
-                                                     @Valid @RequestBody UserEditMentorDTO user) {
-        profileService.updateUser(id, user);
         return ResponseEntity.ok().build();
     }
 }

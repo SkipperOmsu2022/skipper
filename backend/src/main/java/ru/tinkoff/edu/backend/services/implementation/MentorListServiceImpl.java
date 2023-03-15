@@ -29,6 +29,7 @@ public class MentorListServiceImpl implements MentorListService {
                         .mentorSpecializations(user.getInlineMentorSpecializations())
                         .aboutMeAsMentor(user.getAboutAsMentor())
                         .imageUserResource(user.getImageUserResource())
+                        .rating(user.getRating())
                         .build()).collect(Collectors.toList());
     }
 }

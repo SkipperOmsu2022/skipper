@@ -18,4 +18,12 @@
     &:hover, &:focus {
         filter: brightness(95%);
     }
+    
+    &.inactive {
+        cursor: auto;
+        background-color: $border;
+        &:hover {
+            filter: none
+        }
+    }
 }

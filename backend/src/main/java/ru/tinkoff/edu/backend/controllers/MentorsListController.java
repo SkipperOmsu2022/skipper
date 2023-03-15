@@ -15,7 +15,7 @@ import java.util.Map;
 @RestController
 @Validated
 @Tag(name="Mentors List Controller",
-        description="Получние списка всех менторов и карту специальностей.")
+        description="Получение списка всех менторов и карту специальностей.")
 @RequestMapping(value = "/api")
 @CrossOrigin
 public class MentorsListController {

@@ -1,16 +1,16 @@
+import enviroments from "../../../config/enviroments";
 import { useOutletContext } from "react-router-dom";
 import { useState, useRef, useEffect} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
-import FormikSelect from "../../shared/customSelect/CustomSelect";
-import ImageCropper from "../ImageCropper/ImageCropper";
+import FormikSelect from "../../../shared/customSelect/CustomSelect";
+import ImageCropper from "../../ImageCropper/ImageCropper";
 
-import photo from "../../resources/profile-photo.jpg"
-import "../../shared/radio.scss"
-import "../../shared/submitButton/button.scss"
-import cross from "../../resources/icons/cross.svg"
+import photo from "../../../resources/profile-photo.jpg"
+import "../../../shared/radio.scss"
+import "../../../shared/submitButton/button.scss"
 
-import TextInput from "../../shared/TextInput/TextInput";
+import TextInput from "../../../shared/TextInput/TextInput";
 
 async function getBlobFromUrl(url) {
     return await fetch(url).then(r => r.blob());
@@ -43,7 +43,7 @@ const Common = () => {
                 if (date === undefined) date = ['', '', ''];
                 
                 if (res?.data?.imageUserResource) {
-                    setImage('http://127.0.0.1:8080' + res?.data?.imageUserResource)
+                    setImage(enviroments.apiBase + res?.data?.imageUserResource)
                 } else {
                     setImage(null)
                 }
@@ -187,11 +187,6 @@ const Common = () => {
                                 ОБЩАЯ ИНФОРМАЦИЯ
                             </div>    
                             <div className="settings__photo">
-                            {/* <div className="img-wrapper">
-                                    <img src={item} alt="certificate" className="certificates__group-item-image"/>
-                                    <img src={cross} alt="certificate" className="certificates__group-item-cross"
-                                        onClick={() => onDeleteCertificate(i)}/>
-                                </div> */}
                                 <div className="img-wrapper">
                                     <img className="settings__photo-img" src={image || photo} alt="" />
                                     <div alt="certificate" className="settings__photo-cross" onClick={onDeletePhoto}>

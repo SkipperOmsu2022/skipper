@@ -1,6 +1,6 @@
 const Resume = () => {
     return (
-        <div className="app-section profile mentor">
+        <div className="app-section profile mentor not-working">
                     <div className="profile__header">Резюме</div>
                     <div className="profile__resume">
                         <div className="profile__resume-row">

@@ -105,7 +105,7 @@ const options = {
         { value: '12', label: 'Декабрь' }
     ],
     "year": Array(100).fill(null).map((element, i, arr) => (
-        arr[i] = {value: '' + (currentYear - i), label: currentYear - i}
+        arr[i] = {value: '' + (currentYear - i - 12), label: currentYear - i - 12}
     )),
     "qualification": [
         { value: 'Бакалавр', label: 'Бакалавр' },

@@ -1,5 +1,5 @@
 const enviroments = {
-    apiBase: 'http://127.0.0.1:8080'
+    apiBase: 'http://158.160.8.145:8080'
 }
 
 export default enviroments;

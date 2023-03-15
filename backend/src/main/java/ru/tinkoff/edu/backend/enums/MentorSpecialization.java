@@ -1,14 +1,13 @@
 package ru.tinkoff.edu.backend.enums;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public enum MentorSpecialization {
     PROGRAMMING("Программирование"),
-    TESTING_SOFTWATE("Тестирование ПО"),
+    TESTING_SOFTWARE("Тестирование ПО"),
     DEV_OPS("DevOps"),
     BUSINESS_ANALYTICS("Бизнес-аналитика"),
     ADMINISTRATION_SOFTWARE("Администрирование"),

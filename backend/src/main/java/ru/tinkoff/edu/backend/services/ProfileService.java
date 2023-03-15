@@ -2,6 +2,9 @@ package ru.tinkoff.edu.backend.services;
 
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.backend.dto.*;
+import ru.tinkoff.edu.backend.entities.Qualification;
+
+import java.util.List;
 
 @Service
 public interface ProfileService {
@@ -15,4 +18,5 @@ public interface ProfileService {
     UserEditAccountDTO getAccountDetails(Long id);
     UserEditContactsDTO getUserContacts(Long id);
     UserEditMentorDTO getMentorInfo(Long id);
+    List<Qualification> getSpecializationMentorList(String query);
 }

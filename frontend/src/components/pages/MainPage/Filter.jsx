@@ -11,6 +11,7 @@ const Filter =  observer(() => {
         getSpecializationsList()
             .then(res => {
                 mainPageStore.setFilter(res)
+                console.log(res)
             })
     }, []);
 
@@ -27,6 +28,27 @@ const Filter =  observer(() => {
                             onChange={() => mainPageStore.changeChecked(item)}
                         />
                         <label htmlFor={item.value} className="checkbox-name">{item.label}</label>
+                    </div>
+                ))}
+            </>
+        );
+    })
+    
+    const Rating = observer(({ratingFilter}) => {
+        return (
+            <>
+                {ratingFilter.map((item, i) => (
+                    <div className="filter__section-list-item" key={`${item.value}star`}>
+                        <input
+                            type="checkbox"
+                            className="checkbox"
+                            id={`${item.value}star`}
+                            checked={item.checked}
+                            onChange={() => mainPageStore.changeChecked(item)}
+                        />
+                        <label htmlFor={`${item.value}star`} className="checkbox-name">
+                            {item.value} <span className="stars">{'★ '.repeat(item.value)}</span>
+                        </label>
                     </div>
                 ))}
             </>
@@ -74,36 +96,7 @@ const Filter =  observer(() => {
                     <div className="filter__section-divider"></div>
                 </div>
                 <div className="item-wrapper show rating">
-                    <div className="filter__section-list-item">
-                        <input type="checkbox" className="checkbox" id="5stars"/>
-                        <label htmlFor="5stars" className="checkbox-name">
-                            5 <span className="stars">&#9733; &#9733; &#9733; &#9733; &#9733;</span>
-                        </label>
-                    </div>
-                    <div className="filter__section-list-item">
-                        <input type="checkbox" className="checkbox" id="4stars"/>
-                        <label htmlFor="4stars" className="checkbox-name">
-                            4 <span className="stars">&#9733; &#9733; &#9733; &#9733;</span>
-                        </label>
-                    </div>
-                    <div className="filter__section-list-item">
-                        <input type="checkbox" className="checkbox" id="3stars"/>
-                        <label htmlFor="3stars" className="checkbox-name">
-                            3 <span className="stars">&#9733; &#9733; &#9733;</span>
-                        </label>
-                    </div>
-                    <div className="filter__section-list-item">
-                        <input type="checkbox" className="checkbox" id="2stars"/>
-                        <label htmlFor="2stars" className="checkbox-name">
-                            2 <span className="stars">&#9733; &#9733;</span>
-                        </label>
-                    </div>
-                    <div className="filter__section-list-item">
-                        <input type="checkbox" className="checkbox" id="1star"/>
-                        <label htmlFor="1star" className="checkbox-name">
-                            1 <span className="stars">&#9733;</span>
-                        </label>
-                    </div>
+                    <Rating ratingFilter={mainPageStore.ratingFilter}/>
                 </div>
             </div>
             <div className="filter__section">
@@ -149,6 +142,7 @@ const Filter =  observer(() => {
                         });
                         
                         mainPageStore.resetFilter()
+                        mainPageStore.setSearch('')
                         mainPageStore.updateCurrentMentors(0)
                     }}
                     className="button pale"

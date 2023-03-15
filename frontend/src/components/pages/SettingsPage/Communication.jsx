@@ -1,7 +1,7 @@
 import { useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
-import TextInput from "../../shared/TextInput/TextInput";
+import TextInput from "../../../shared/TextInput/TextInput";
 
 const Communication = () => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
@@ -51,7 +51,9 @@ const Communication = () => {
                                 placeholder='Введите ссылку на ваш профиль'
                                 className="settings__input-group-text input long-input"
                             />
-                            <span className="settings__input-group-btn-width settings__input-group-delete">
+                            <span className="settings__input-group-btn-width settings__input-group-delete"
+                                onClick={() => setInitial({...initial, linkVk: ''})}
+                            >
                                 Удалить
                             </span>
                     </div>
@@ -66,7 +68,9 @@ const Communication = () => {
                                 placeholder='Введите ссылку на ваш профиль'
                                 className="settings__input-group-text input long-input"
                             />
-                            <span className="settings__input-group-btn-width settings__input-group-delete">
+                            <span className="settings__input-group-btn-width settings__input-group-delete"
+                                onClick={() => setInitial({...initial, linkSkype: ''})}
+                            >
                                 Удалить
                             </span>
                     </div>
@@ -81,7 +85,9 @@ const Communication = () => {
                                 placeholder='Введите ссылку на ваш профиль'
                                 className="settings__input-group-text input long-input"
                             />
-                            <span className="settings__input-group-btn-width settings__input-group-delete">
+                            <span className="settings__input-group-btn-width settings__input-group-delete"
+                                onClick={() => setInitial({...initial, linkDiscord: ''})}
+                            >
                                 Удалить
                             </span>
                     </div>
@@ -96,7 +102,9 @@ const Communication = () => {
                                 placeholder='Введите ссылку на ваш профиль'
                                 className="settings__input-group-text input long-input"
                             />
-                            <span className="settings__input-group-btn-width settings__input-group-delete">
+                            <span className="settings__input-group-btn-width settings__input-group-delete"
+                                onClick={() => setInitial({...initial, linkTelegram: ''})}
+                            >
                                 Удалить
                             </span>
                     </div>

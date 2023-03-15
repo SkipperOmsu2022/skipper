@@ -1,39 +1,46 @@
 @import '../../../shared/variables.scss';
 
+.not-working {
+    filter: brightness(95%) grayscale(100%);
+}
+
 .profile{
+    &.mentor {
+        max-width: 1380px;
+    }
     &.additional-info {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        min-height: 460px;
+        min-height: 28.75rem;
     }
     .main-block {
         display: flex;
         flex-direction: column;
-        gap: 40px;
+        gap: 2.5rem;
 
-        font-size: 20px;
+        font-size: 1.25rem;
         color: $main-text;
         &__section {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
             text-align: right;
-            gap: 10px;
+            gap: 0.625rem;
         }
         .review {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            max-height: 140px;
+            gap: 1.25rem;
+            max-height: 8.75rem;
             &__user {
                 display: flex;
                 flex-direction: row;
-                gap: 20px;
+                gap: 1.25rem;
 
                 &-photo {
-                    width: 50px;
-                    height: 50px;
+                    width: 3.125rem;
+                    height: 3.125rem;;
                     border-radius: 50%;
                     border: 0.0625rem solid $additional-text;
                 }
@@ -44,51 +51,48 @@
                     gap: 0.5rem;
                 }
                 &-name {
-                    font-size: 16px;
+                    font-size: 1rem;
                     color: $header;
                 }
                 &-lessons {
-                    font-size: 14px;
+                    font-size: 0.875rem;
                     color: $additional-text;
                 }
             }
             &__content {
                 color: $main-text;
-                font-size: 16px;
+                font-size: 1rem;
             }
         }
     }
     &__btn-block {
         &-name {
-            font-size: 20px;
+            font-size: 1.25rem;
             color: $header;
             text-align: center;
-        }
-        &.full-width > .button{
-            width: 100%;
         }
     }
     &__resume {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 1.25rem;
 
-        padding-top: 20px;
+        padding-top: 1.25rem;
 
         &-row {
             width: 100%;
             display: flex;
             flex-direction: row;
-            gap: 107px;
+            gap: 6.6875rem;
             justify-content: space-around;
         }
         &-column {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 1.25rem;
             justify-content: flex-start;
 
-            width: 160px;
+            width: 10rem;
             &-text {
                 color: $main-text;
                 text-align: center;
@@ -100,8 +104,8 @@
                 border: 1px solid rgb(151, 151, 151);
                 padding: 1px;
                 width: fit-content;
-                max-width: 160px;
-                height: 106px;
+                max-width: 10rem;
+                height: 6.625rem;
             }
             &-image {
                 display: block;
@@ -111,7 +115,7 @@
             }
         }
         &-header {
-            width: 160px;
+            width: 10rem;
             text-align: center;
             color: $header;
         }
@@ -120,11 +124,11 @@
         width: 100%;
         border: 1px solid $main;
         &.padding {
-            margin-bottom: 20px;
+            margin-bottom: 1.25rem;
         }
     }
     &__lessons {
-        margin-top: 20px;
+        margin-top: 1.25rem;
         display: flex;
         flex-direction: column;
         gap: 1.25rem;
@@ -134,25 +138,25 @@
             justify-content: space-between;
         }
         &-header {
-            min-width: 228px;
+            min-width: 14.25rem;
             color: $header;
             text-align: center;
         }
         &-lesson {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 0.625rem;
         }
         &-name {
             color: $main-text;
         }
         &-description {
             color: $additional-text;
-            font-size: 14px;
+            font-size: 0.875rem;
         }
         &-price {
             margin: auto 0;
-            min-width: 228px;
+            min-width: 14.25rem;
             text-align: center;
         }
     }

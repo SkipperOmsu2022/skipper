@@ -8,6 +8,13 @@ class mainPageStore {
     mentors = []
     currentMentors = []
     filter = []
+    ratingFilter = [
+        {value: '5', label: '5', checked: false},
+        {value: '4', label: '4',checked: false},
+        {value: '3', label: '3',checked: false},
+        {value: '2', label: '2',checked: false},
+        {value: '1', label: '1',checked: false},
+    ]
     currentfilter = []
     search = ""
     
@@ -27,6 +34,11 @@ class mainPageStore {
         this.currentfilter = this.filter.filter((item) => item.checked).map((item) => item.label);
         this.offset = 0;
         let res = this.mentors;
+
+        const rating = this.ratingFilter.filter((item) => item.checked).map((item) => +item.label);
+        if (rating.length !== 0) {
+            res = res.filter((item) => rating.some(r=> Math.round(+item.rating) === r))
+        }
 
         if (this.currentfilter.length !== 0) {
             res = res.filter((item) => this.currentfilter.some(r=> item.mentorSpecializations.includes(r)))
@@ -73,6 +85,9 @@ class mainPageStore {
 
     resetFilter = () => {
         this.filter = this.filter.map((item) => {
+            return {...item, checked: false}
+        })
+        this.ratingFilter = this.ratingFilter.map((item) => {
             return {...item, checked: false}
         })
         this.currentfilter = [];

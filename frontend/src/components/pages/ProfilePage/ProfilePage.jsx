@@ -6,28 +6,8 @@ import { useParams, Link } from 'react-router-dom';
 import photo from "../../../resources/profile-photo.jpg"
 import "../../../shared/submitButton/button.scss"
 import useProfileService from "../../../services/profileService";
-import {getDate} from '../MentorProfilePage/AdditionalInfo'
-
-const communicationContent = (communication) => {
-    const links = communication?.filter((item) => (item.name && item.link)).map((item, i) => {
-        return (
-            <div className="profile__contact" key={i}>
-                <div className="profile__contact-label">
-                    {item.name}:
-                </div>
-                <div className="profile__contact-link">
-                    {item.link}
-                </div>
-            </div>
-        )
-    })
-    if (links?.length === 0) return (
-        <div className="profile__no-info">
-            Пользователь не предоставил контакты для связи
-        </div>
-    )
-    return links;
-}
+import DateOfRegistration from "./DateOfRegistration";
+import CommunicationContent from "./CommunicationContent";
 
 const ProfilePage = () => {
     const {getUserData} = useProfileService();
@@ -86,14 +66,17 @@ const ProfilePage = () => {
             <div className="app-section profile">
                 <div className="profile__section">
                     <div className="profile__section-row">
-                        <img className="profile__photo" src={`${enviroments.apiBase}${imageUserResource}` || photo} alt="" />
+                        <img
+                            className="profile__photo"
+                            src={imageUserResource ? `${enviroments.apiBase}${imageUserResource}` : photo}
+                            alt="" />
                         <div className="profile__main-info">
                             <div className="name">{firstName} {lastName}</div>
                             <div className="specialty">{specialization}</div>
                         </div>
                     </div>
                     <div className="complain-btn" ref={container} onClick={handleDropdownClick}
-                        onKeyPress={(e) => {
+                        onKeyDown={(e) => {
                             if (e.key === ' ' || e.key === "Enter") {
                                 setDropdownDisplay((dropdownDisplay) => !dropdownDisplay);
                             }
@@ -116,14 +99,11 @@ const ProfilePage = () => {
                 </div>
                 }
                 <div className="profile__section">
-                    <div className="profile__section-column">
-                        <div className="profile__section-label">Контакты</div>
-                        {communicationContent(communication)}
-                    </div>
+                    <CommunicationContent communication={communication}/>
                     <div className="profile__section-column gap40px">
                         <div className="profile__registration-date">
-                            {getDate(dateOfRegistration)}
-                        </div>
+                            <DateOfRegistration date={dateOfRegistration}/>
+                        </div>  
                         <div className="profile__btn-block">
                             {mentorStatus ? 
                             <Link
@@ -142,4 +122,3 @@ const ProfilePage = () => {
 }
 
 export default ProfilePage;
-export {communicationContent};
