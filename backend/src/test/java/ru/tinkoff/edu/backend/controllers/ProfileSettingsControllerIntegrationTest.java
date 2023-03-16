@@ -15,7 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import ru.tinkoff.edu.backend.dto.*;
+import ru.tinkoff.edu.backend.dto.profile.settings.UserEditAccountDTO;
+import ru.tinkoff.edu.backend.dto.profile.settings.UserEditContactsDTO;
+import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMainInfoDTO;
 import ru.tinkoff.edu.backend.entities.User;
 import ru.tinkoff.edu.backend.enums.UserGender;
 import ru.tinkoff.edu.backend.repositories.UserRepository;

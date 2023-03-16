@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.tinkoff.edu.backend.dto.UserEditContactsDTO;
-import ru.tinkoff.edu.backend.dto.UserEditAccountDTO;
-import ru.tinkoff.edu.backend.dto.UserEditMainInfoDTO;
+import ru.tinkoff.edu.backend.dto.profile.settings.UserEditContactsDTO;
+import ru.tinkoff.edu.backend.dto.profile.settings.UserEditAccountDTO;
+import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMainInfoDTO;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
 import javax.validation.Valid;

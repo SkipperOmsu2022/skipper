@@ -15,8 +15,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 
-import ru.tinkoff.edu.backend.dto.*;
+import ru.tinkoff.edu.backend.dto.profile.UserMentorProfileDTO;
+import ru.tinkoff.edu.backend.dto.profile.UserProfileDTO;
 import ru.tinkoff.edu.backend.entities.User;
+import ru.tinkoff.edu.backend.services.MentorProfileService;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
 @AutoConfigureMockMvc
@@ -28,6 +30,9 @@ public class ProfileControllerIntegrationTest {
 
     @MockBean
     private ProfileService profileService;
+
+    @MockBean
+    private MentorProfileService mentorProfileService;
 
     UserProfileDTO userProfileDTO = UserProfileDTO.builder()
             .firstName("Daniil")
@@ -84,7 +89,7 @@ public class ProfileControllerIntegrationTest {
     @Test
     public void getMainMentorInfo() throws Exception{
 
-        when(profileService.getUserMentorProfile(user_8.getId())).thenReturn(userMentorProfileDTO);
+        when(mentorProfileService.getUserMentorProfile(user_8.getId())).thenReturn(userMentorProfileDTO);
 
         mockMvc.perform(get("/api/user/profile/mentor/8")
                 .content("8"))

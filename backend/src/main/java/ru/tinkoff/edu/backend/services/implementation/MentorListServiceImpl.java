@@ -3,6 +3,8 @@ package ru.tinkoff.edu.backend.services.implementation;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
+import ru.tinkoff.edu.backend.entities.Qualification;
+import ru.tinkoff.edu.backend.repositories.QualificationRepository;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
 import ru.tinkoff.edu.backend.services.MentorListService;
 
@@ -12,9 +14,11 @@ import java.util.stream.Collectors;
 @Service
 public class MentorListServiceImpl implements MentorListService {
     private final UserRepository userRepository;
+    private final QualificationRepository qualificationRepository;
 
-    public MentorListServiceImpl(UserRepository userRepository) {
+    public MentorListServiceImpl(UserRepository userRepository, QualificationRepository qualificationRepository) {
         this.userRepository = userRepository;
+        this.qualificationRepository = qualificationRepository;
     }
 
     @Override
@@ -31,5 +35,10 @@ public class MentorListServiceImpl implements MentorListService {
                         .imageUserResource(user.getImageUserResource())
                         .rating(user.getRating())
                         .build()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Qualification> getSpecializationMentorList(String query) {
+        return qualificationRepository.getSpecializationMentorByNameContainsIgnoreCase(query);
     }
 }

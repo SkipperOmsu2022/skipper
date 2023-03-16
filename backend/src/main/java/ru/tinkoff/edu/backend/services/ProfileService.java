@@ -1,22 +1,18 @@
 package ru.tinkoff.edu.backend.services;
 
 import org.springframework.stereotype.Service;
-import ru.tinkoff.edu.backend.dto.*;
-import ru.tinkoff.edu.backend.entities.Qualification;
-
-import java.util.List;
+import ru.tinkoff.edu.backend.dto.profile.UserProfileDTO;
+import ru.tinkoff.edu.backend.dto.profile.settings.UserEditAccountDTO;
+import ru.tinkoff.edu.backend.dto.profile.settings.UserEditContactsDTO;
+import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMainInfoDTO;
 
 @Service
 public interface ProfileService {
     UserProfileDTO getUserProfile(Long id);
-    UserMentorProfileDTO getUserMentorProfile(Long id);
     void updateUser(Long id, UserEditMainInfoDTO user);
     void updateUser(Long id, UserEditAccountDTO user);
     void updateUser(Long id, UserEditContactsDTO user);
-    void updateUser(Long id, UserEditMentorDTO user);
     UserEditMainInfoDTO getMainInfo(Long id);
     UserEditAccountDTO getAccountDetails(Long id);
     UserEditContactsDTO getUserContacts(Long id);
-    UserEditMentorDTO getMentorInfo(Long id);
-    List<Qualification> getSpecializationMentorList(String query);
 }
