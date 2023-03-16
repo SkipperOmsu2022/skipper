@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.backend.dto.profile.UserMentorProfileDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.EducationDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMentorDTO;
+import ru.tinkoff.edu.backend.dto.profile.settings.WorkExperienceDTO;
 import ru.tinkoff.edu.backend.entities.*;
 import ru.tinkoff.edu.backend.repositories.EducationRepository;
 import ru.tinkoff.edu.backend.repositories.QualificationRepository;
@@ -56,7 +57,19 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                         .qualificationNameWithCode(e.getQualification().getNameWithCode())
                         .build())
                 .collect(Collectors.toSet());
+
+        Set<WorkExperienceDTO> workExperiences = userFromDB
+                .getWorkExperiences()
+                .stream()
+                .map(e -> WorkExperienceDTO.builder()
+                    .dateStart(e.getId().getDateStart())
+                    .dateEnd(e.getDateEnd())
+                    .placeOfWork(e.getId().getPlaceOfWork())
+                    .build())
+                .collect(Collectors.toSet());
+
         user.setEducations(educations);
+        user.setWorkExperiences(workExperiences);
         return user;
     }
 
