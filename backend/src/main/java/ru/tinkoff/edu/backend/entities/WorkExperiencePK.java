@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Embeddable
 @Data
@@ -17,4 +18,6 @@ public class WorkExperiencePK implements Serializable {
     private Long userId;
     @Column(name = "place_of_work", nullable = false, unique = true)
     private String placeOfWork;
+    @Column(name = "date_start", nullable = false, columnDefinition = "DATE")
+    private LocalDate dateStart;
 }

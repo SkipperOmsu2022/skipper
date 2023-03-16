@@ -17,8 +17,6 @@ import java.time.LocalDate;
 public class WorkExperience {
     @EmbeddedId
     private WorkExperiencePK id = new WorkExperiencePK();
-    @Column(nullable = false, columnDefinition = "DATE")
-    private LocalDate dateStart;
     @Column(columnDefinition = "DATE")
     private LocalDate dateEnd;
 
