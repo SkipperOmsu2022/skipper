@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.backend.dto;
+package ru.tinkoff.edu.backend.dto.profile.settings;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,4 +29,7 @@ public class UserEditMentorDTO {
     @Valid
     @NotNull
     private Set<EducationDTO> educations;
+    @Valid
+    @NotNull
+    private Set<WorkExperienceDTO> workExperiences;
 }

@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class WorkExperiencePK implements Serializable {
     @Column(name = "user_id", nullable = false)
     private Long userId;
-    @Column(name = "place_of_work", nullable = false, unique = true)
+    @Column(name = "place_of_work", nullable = false)
     private String placeOfWork;
     @Column(name = "date_start", nullable = false, columnDefinition = "DATE")
     private LocalDate dateStart;
