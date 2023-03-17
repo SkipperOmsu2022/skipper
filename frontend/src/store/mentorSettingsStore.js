@@ -52,14 +52,14 @@ class mainPageStore {
     }
 
     addEducation = (item) => {
-        const {dateStart, dateEnd, qualificationNameWithCode, educationalInstitution} = item;
+        const {qualificationId, yearStart, yearEnd, qualificationNameWithCode, educationalInstitution} = item;
         this.education.push({
             id: this.id,
-            dateStart: '2018' || null,
-            dateEnd: 2023 || undefined,
-            qualificationId: null,
+            yearStart: yearStart || null,
+            yearEnd: +yearEnd || null,
+            qualificationId: qualificationId,
             educationalInstitution: educationalInstitution,
-            label: qualificationNameWithCode?.split(' ')[1],
+            label: qualificationNameWithCode?.substring(qualificationNameWithCode.indexOf(' ')+1),
             value: qualificationNameWithCode?.split(' ')[0],
             noOptionsMessage: 'Введите минимум 3 символа'
         })
@@ -104,8 +104,8 @@ class mainPageStore {
     getEducation = () => {
         return this.education.map((item) => {
             return {
-                dateStart: item.dateStart + '-03-17',
-                dateEnd: item.dateEnd + '-03-17',
+                yearStart: +item.yearStart,
+                yearEnd: item.yearEnd,
                 qualificationId: item.qualificationId,
                 educationalInstitution: item.educationalInstitution
             }
@@ -116,7 +116,7 @@ class mainPageStore {
         let complete = true;
         console.log(this.education)
         this.education.forEach((item) => {
-            if (!(item.dateStart && item.dateEnd !== undefined && item.qualificationId && item.educationalInstitution)) {
+            if (!(item.yearStart && item.yearEnd !== undefined && item.qualificationId && item.educationalInstitution)) {
                 complete = false
             }
         })

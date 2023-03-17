@@ -150,7 +150,7 @@ const MutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, wi
     let mutableOptions = [];
 
     if(name === "yearOfEnd") {
-        mutableOptions = startDate ?  Array(currentYear - startDate + 2).fill(null).map((element, i, arr) => (
+        mutableOptions = startDate !== null ? Array(currentYear - startDate + 2).fill(null).map((element, i, arr) => (
             i === 0 ? arr[i] = {value: null, label: "Настоящее время"} :
             arr[i] = {value: currentYear - i + 1, label: currentYear - i + 1}
         )) : [];

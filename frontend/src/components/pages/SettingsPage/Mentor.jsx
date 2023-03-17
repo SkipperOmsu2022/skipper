@@ -180,9 +180,9 @@ const Mentor = observer(() => {
                                         <MutableSelect
                                             name="year"
                                             placeholder="Год начала"
-                                            value={item.dateStart}
+                                            value={item.yearStart + ''}
                                             onChange={(e) => {
-                                                mentorSettingsStore.setEducation(e, i, 'dateStart')
+                                                mentorSettingsStore.setEducation(e, i, 'yearStart')
                                             }}
                                         />
                                     </div>
@@ -191,10 +191,10 @@ const Mentor = observer(() => {
                                             name="yearOfEnd"
                                             placeholder="Год окончания"
                                             noOptionsMessage={"Выберите год начала"}
-                                            value={item.dateEnd}
-                                            startDate={item.dateStart}
+                                            value={item.yearEnd}
+                                            startDate={item.yearStart}
                                             onChange={(e) => {
-                                                mentorSettingsStore.setEducation(e, i, 'dateEnd')
+                                                mentorSettingsStore.setEducation(e, i, 'yearEnd')
                                             }}
                                         />
                                     </div>
