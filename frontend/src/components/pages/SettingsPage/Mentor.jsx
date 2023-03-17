@@ -1,18 +1,17 @@
 import { useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { observer } from "mobx-react-lite";
+
+import {MutableSelect, MultipleSelect} from "../../../shared/customSelect/CustomSelect";
+import mentorSettingsStore from "../../../store/mentorSettingsStore";
+
 import useSpecializationService from "../../../services/SpecializationService";
 import cross from "../../../resources/icons/cross.svg"
 import "../../../shared/switch.scss"
-import {MutableSelect, MultipleSelect} from "../../../shared/customSelect/CustomSelect";
 
-const Mentor = () => {
+const Mentor = observer(() => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
     const {getSpecializationsList} = useSpecializationService();
-    const [mentor, setMentor] = useState(false);
-    const [aboutMe, setAboutMe] = useState("");
-    const [specializationOptions, setSpecializationOptions] = useState("");
-    
-    const [mentorSpecializations, setMentorSpecializations] = useState([]);
 
     const [educationStart, setEducationStart] = useState("");
     const [educationEnd, setEducationEnd] = useState("");
@@ -27,55 +26,13 @@ const Mentor = () => {
     const [certificateErr, setCertificateErr] = useState(false);
 
     useEffect(() => {
-        let tmp;
         getSpecializationsList()
-            .then(res => {
-                tmp = res;
-                setSpecializationOptions(tmp)
-            })
-            .then(() => {
-                getUserData('user/profile/settings/mentor/')
-                    .then(res => {
-                        setMentor(res?.data?.isEnabledMentorStatus || false);
-                        setAboutMe(res?.data?.aboutMeAsMentor || '');
-                        setMentorSpecializations(res?.data?.mentorSpecializations?.map((item) => 
-                            tmp.find(option => option.value === item)
-                        ) || '');
-                    });
-            })
+            .then(res => mentorSettingsStore.setSpecializationOptions(res))
+            .then(() => getUserData('user/profile/settings/mentor/'))
+            .then(res => mentorSettingsStore.setMentorData(res))
+        
         return () => clearResponse();
     }, []);
-    
-    const switchMessage = mentor ? 
-        <div className="state">
-            <span className="active">Активный</span>
-        </div> : 
-        <div className="state">
-            <span className="inactive">Неактивный</span>
-            <div className="message">
-                (Для активации заполните поля "О себе" и "Специальность")
-            </div>
-        </div>;
-
-    const handleSwitchChange = () => {
-        if(mentor && aboutMe && mentorSpecializations.length) {
-            setMentor(false)
-        } else if (aboutMe && mentorSpecializations.length) {
-            setMentor(true)
-        }
-    }
-    const handleAboutMeChange = (e) => {
-        setAboutMe(e.target.value)
-        if (!e.target.value || !mentorSpecializations.length) {
-            setMentor(false)
-        }
-    }
-    const handleSpecializationChange = (e) => {
-        setMentorSpecializations(Array.isArray(e) ? e : [])
-        if (!aboutMe || e?.length === 0) {
-            setMentor(false)
-        }
-    }
 
     const onCertificateChange = (e) => {
         try {
@@ -134,18 +91,21 @@ const Mentor = () => {
             </div>
         )
     }
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        setUserData({
+            isEnabledMentorStatus: mentorSettingsStore.mentor,
+            aboutMeAsMentor: mentorSettingsStore.aboutMe,
+            mentorSpecializations: mentorSettingsStore.mentorsSpecializations
+                .map((item) => item.value)
+        }, 'user/profile/settings/mentor/');
+    }
     
     return (
         <form 
             id="contact-form" 
-            onSubmit={(e) => {
-                e.preventDefault();
-                setUserData({
-                    isEnabledMentorStatus: mentor,
-                    aboutMeAsMentor: aboutMe,
-                    mentorSpecializations: mentorSpecializations.map((item) => item.value)
-                }, 'user/profile/settings/mentor/');
-            }}>
+            onSubmit={(e) => onSubmit(e)}>
             <div className="settings__column">
                 <div className="settings__header">
                     НАСТРОЙКИ МЕНТОРА
@@ -154,17 +114,27 @@ const Mentor = () => {
                         <label htmlFor="switch" className="settings__input-group-label">
                             Текущий статус:
                         </label>
-                        <label className={`switch ${aboutMe && mentorSpecializations.length ? "" : "msg"}`}>
+                        <label className={`switch ${mentorSettingsStore.aboutMentor && mentorSettingsStore.mentorsSpecializations.length ? "" : "msg"}`}>
                             <input
                                 id="switch"
                                 className="switch__input"
                                 type="checkbox"
-                                disabled={!aboutMe || !mentorSpecializations.length}
-                                checked={mentor}
-                                onChange={handleSwitchChange}/>
+                                disabled={!mentorSettingsStore.aboutMentor || !mentorSettingsStore.mentorsSpecializations.length}
+                                checked={mentorSettingsStore.mentor}
+                                onChange={mentorSettingsStore.handleSwitchChange}/>
                             <div className="switch__slider switch__circle"></div>
                         </label>
-                        {switchMessage}
+                        {mentorSettingsStore.mentor ? 
+                            <div className="state">
+                                <span className="active">Активный</span>
+                            </div> : 
+                            <div className="state">
+                                <span className="inactive">Неактивный</span>
+                                <div className="message">
+                                    (Для активации заполните поля "О себе" и "Специальность")
+                                </div>
+                            </div>
+                        }
                 </div>
                 <div className="settings__input-group">
                     <label htmlFor="aboutMe" className="settings__input-group-label low-top-padding">
@@ -175,8 +145,8 @@ const Mentor = () => {
                         placeholder="Расскажите немного о себе:"
                         id="aboutMe"
                         maxLength='400'
-                        value={aboutMe}
-                        onChange={handleAboutMeChange}/>
+                        value={mentorSettingsStore.aboutMentor}
+                        onChange={mentorSettingsStore.handleAboutMeChange}/>
                 </div>
                 <div className="settings__input-group">
                     <label htmlFor="specialty" className="settings__input-group-label middle-top-padding">
@@ -185,10 +155,10 @@ const Mentor = () => {
                         <div className="group">
                             <MultipleSelect
                                 placeholder="Добавьте свою специализацию"
-                                value={mentorSpecializations}
-                                multipleOptions={specializationOptions}
+                                value={mentorSettingsStore.mentorSpecializations}
+                                multipleOptions={mentorSettingsStore.specializationOptions}
                                 noOptionsMessage='Специальностей не найдено'
-                                onChange={handleSpecializationChange}
+                                onChange={mentorSettingsStore.handleSpecializationChange}
                                 width='30.15rem'
                                 minHeight='fit-content'
                             />
@@ -339,6 +309,6 @@ const Mentor = () => {
             </div>
         </form>
     )
-}
+})
 
 export default Mentor;
