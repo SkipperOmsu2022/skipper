@@ -22,6 +22,7 @@ const Mentor = observer(() => {
     const [certificateErr, setCertificateErr] = useState(false);
 
     useEffect(() => {
+        mentorSettingsStore.reserStore();
         getSpecializationsList()
             .then(res => mentorSettingsStore.setSpecializationOptions(res))
             .then(() => getUserData('user/profile/settings/mentor/'))

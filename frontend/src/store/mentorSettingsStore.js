@@ -122,6 +122,17 @@ class mainPageStore {
         })
         return complete;
     }
+
+    reserStore = () => {
+        this.id = 0;
+        this.specializationOptions = [];
+        this.qualificationOptions = [];
+
+        this.mentor = false;
+        this.aboutMentor = "";
+        this.mentorsSpecializations = [];
+        this.education = []
+    }
 }
 
 export default new mainPageStore();
