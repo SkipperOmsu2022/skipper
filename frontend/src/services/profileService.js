@@ -20,6 +20,7 @@ const useProfileService = () => {
     }
     
     const setUserData = async (data, url, headers) => {
+        console.log(data)
         const res = await request(`${_apiBase}/api/${url}${userId}`, 'put', data, headers);
 
         if (res?.status === 200) {

@@ -2,21 +2,17 @@ import { useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-import {MutableSelect, MultipleSelect} from "../../../shared/customSelect/CustomSelect";
+import {MutableSelect, MultipleSelect, CustomAsyncSelect} from "../../../shared/customSelect/CustomSelect";
 import mentorSettingsStore from "../../../store/mentorSettingsStore";
 
 import useSpecializationService from "../../../services/SpecializationService";
+
 import cross from "../../../resources/icons/cross.svg"
 import "../../../shared/switch.scss"
 
 const Mentor = observer(() => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
     const {getSpecializationsList} = useSpecializationService();
-
-    const [educationStart, setEducationStart] = useState("");
-    const [educationEnd, setEducationEnd] = useState("");
-    const [qualification, setQualification] = useState("");
-    const [educationSpecialization, setEducationSpecialization] = useState("");
 
     const [experienceStart, setExperienceStart] = useState("");
     const [experienceEnd, setExperienceEnd] = useState("");
@@ -94,18 +90,21 @@ const Mentor = observer(() => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        setUserData({
-            isEnabledMentorStatus: mentorSettingsStore.mentor,
-            aboutMeAsMentor: mentorSettingsStore.aboutMe,
-            mentorSpecializations: mentorSettingsStore.mentorsSpecializations
-                .map((item) => item.value)
-        }, 'user/profile/settings/mentor/');
+        if (mentorSettingsStore.validate()) {
+            setUserData({
+                isEnabledMentorStatus: mentorSettingsStore.mentor,
+                aboutMeAsMentor: mentorSettingsStore.aboutMentor,
+                mentorSpecializations: mentorSettingsStore.mentorsSpecializations
+                    .map((item) => item.value),
+                educations: mentorSettingsStore.getEducation()
+            }, 'user/profile/settings/mentor/');
+        }
     }
     
     return (
         <form 
             id="contact-form" 
-            onSubmit={(e) => onSubmit(e)}>
+            onSubmit={onSubmit}>
             <div className="settings__column">
                 <div className="settings__header">
                     НАСТРОЙКИ МЕНТОРА
@@ -155,7 +154,7 @@ const Mentor = observer(() => {
                         <div className="group">
                             <MultipleSelect
                                 placeholder="Добавьте свою специализацию"
-                                value={mentorSettingsStore.mentorSpecializations}
+                                value={mentorSettingsStore.mentorsSpecializations}
                                 multipleOptions={mentorSettingsStore.specializationOptions}
                                 noOptionsMessage='Специальностей не найдено'
                                 onChange={mentorSettingsStore.handleSpecializationChange}
@@ -169,59 +168,78 @@ const Mentor = observer(() => {
                         Образование: 
                     </label>
                     <div className="education-group">
-                        <div className="education">
-                            <div className="settings__input-group-box">
-                                <div className="group">
-                                    <MutableSelect
-                                        name="year"
-                                        placeholder="Год начала"
-                                        value={educationStart}
-                                        onChange={(selectedOption) => {
-                                            setEducationStart(selectedOption.value)
-                                            setEducationEnd("")
+                        {mentorSettingsStore.education.length ? null :
+                            <button className="button settings__input-group-button" onClick={mentorSettingsStore.addEducation}>
+                                +
+                            </button>
+                        }
+                        {mentorSettingsStore.education.map((item, i) => (
+                            <div className="education" key={item.id}>
+                                <div className="settings__input-group-box">
+                                    <div className="group">
+                                        <MutableSelect
+                                            name="year"
+                                            placeholder="Год начала"
+                                            value={item.dateStart}
+                                            onChange={(e) => {
+                                                mentorSettingsStore.setEducation(e, i, 'dateStart')
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="group">
+                                        <MutableSelect
+                                            name="yearOfEnd"
+                                            placeholder="Год окончания"
+                                            noOptionsMessage={"Выберите год начала"}
+                                            value={item.dateEnd}
+                                            startDate={item.dateStart}
+                                            onChange={(e) => {
+                                                mentorSettingsStore.setEducation(e, i, 'dateEnd')
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="group" >
+                                        <CustomAsyncSelect
+                                            placeholder="Квалификация"
+                                            value={item.label && item}
+                                            noOptionsMessage={item.noOptionsMessage}
+                                            onChange={(e) => {
+                                                mentorSettingsStore.setEducation(e, i, 'qualification')
+                                            }}
+                                            width='30.15rem'
+                                            promiseOptions={(e) => mentorSettingsStore.setQualificationOptions(e, i)}
+                                        />
+                                    </div>
+                                    <textarea
+                                        className="settings__input-group-text input textarea small"
+                                        placeholder="Учебное заведение:"
+                                        id="aboutMe"
+                                        maxLength='100'
+                                        value={item.educationalInstitution}
+                                        onChange={(e) => {
+                                            mentorSettingsStore.setEducation(e.target, i, 'educationalInstitution')
                                         }}
                                     />
                                 </div>
-                                <div className="group">
-                                    <MutableSelect
-                                        name="yearOfEnd"
-                                        placeholder="Год окончания"
-                                        noOptionsMessage={"Выберите год начала"}
-                                        value={educationEnd}
-                                        startDate={educationStart}
-                                        onChange={(selectedOption) => {
-                                            setEducationEnd(selectedOption.value)
-                                        }}
-                                    />
+                                <div className='wrapper'>
+                                    <span
+                                        className="settings__input-group-btn-width settings__input-group-delete"
+                                        onClick={() => mentorSettingsStore.removeEducation(i)}
+                                    >
+                                        Удалить
+                                    </span>
+                                    {mentorSettingsStore.education.length - 1 === i ?
+                                        <button 
+                                            className="button settings__input-group-button"
+                                            onClick={mentorSettingsStore.addEducation}
+                                        >
+                                            +
+                                        </button> 
+                                        : null
+                                    }
                                 </div>
-                                <div className="group" >
-                                    <MutableSelect
-                                        name="qualification"
-                                        placeholder="Квалификация"
-                                        value={qualification}
-                                        onChange={(selectedOption) => {
-                                            setQualification(selectedOption.value)
-                                        }}
-                                        width='30.15rem'
-                                    />
-                                </div>
-                                <textarea
-                                    className="settings__input-group-text input textarea small"
-                                    placeholder="Добавьте свою специализацию:"
-                                    id="aboutMe"
-                                    maxLength='100'
-                                    value={educationSpecialization}
-                                    onChange={(e) => setEducationSpecialization(e.target.value)}/>
                             </div>
-                            <div className='wrapper'>
-                                <span className="settings__input-group-btn-width settings__input-group-delete">
-                                    Удалить
-                                </span>
-                                <button className="button settings__input-group-button">
-                                    +
-                                </button>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
                 <div className="settings__input-group">

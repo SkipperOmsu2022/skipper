@@ -1,4 +1,5 @@
 import Select, { components } from 'react-select';
+import AsyncSelect from 'react-select/async';
 import './customSelect.scss'
 
 const selectStyles = {
@@ -105,7 +106,7 @@ const options = {
         { value: '12', label: 'Декабрь' }
     ],
     "year": Array(100).fill(null).map((element, i, arr) => (
-        arr[i] = {value: '' + (currentYear - i - 12), label: currentYear - i - 12}
+        arr[i] = {value: '' + (currentYear - i), label: currentYear - i}
     )),
     "qualification": [
         { value: 'Бакалавр', label: 'Бакалавр' },
@@ -191,5 +192,25 @@ const MultipleSelect = ({placeholder, value, onChange, noOptionsMessage, width, 
     )
 }
 
+const CustomAsyncSelect = ({placeholder, value, noOptionsMessage, onChange, width, height, promiseOptions}) => {
+    return (
+        <AsyncSelect
+            components={{ DropdownIndicator }}
+            classNamePrefix='filter'
+            styles={selectStyles}
+            placeholder={placeholder}
+            noOptionsMessage={() => noOptionsMessage || "Значений не найдено"}
+            onChange={onChange}
+            value={value}
+            width={width}
+            height={height}
+            defaultOptions
+            loadOptions={promiseOptions}
+        />
+    )
+} 
+
+
+
 export default FormikSelect;
-export {MutableSelect, MultipleSelect}
+export {MutableSelect, MultipleSelect, CustomAsyncSelect}
