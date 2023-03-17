@@ -54,7 +54,6 @@ class mainPageStore {
                     searchLine = this.search.toLowerCase().trim().split(/[\s:,]/)
                 } 
                 if (searchLine.length > 0) {
-                    console.log(str)
                     return searchLine.some(r=> str.includes(r))
                 } else {
                     return true;
