@@ -12,6 +12,7 @@ import ru.tinkoff.edu.backend.entities.User;
 import ru.tinkoff.edu.backend.exception.DifferentPasswordException;
 import ru.tinkoff.edu.backend.exception.IncorrectCurrentPasswordException;
 import ru.tinkoff.edu.backend.exception.OldPasswordRepeatNewPasswordException;
+import ru.tinkoff.edu.backend.exception.IncorrectDateTimeException;
 import ru.tinkoff.edu.backend.repositories.EducationRepository;
 import ru.tinkoff.edu.backend.repositories.QualificationRepository;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
@@ -19,14 +20,13 @@ import ru.tinkoff.edu.backend.services.FileStorageService;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
 import javax.persistence.EntityNotFoundException;
-import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.time.Year;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Log4j2
@@ -146,8 +146,9 @@ public class ProfileServiceImpl implements ProfileService {
                 .getEducation()
                 .stream()
                 .map(e -> EducationDTO.builder()
-                        .dateStart(e.getDateStart())
-                        .dateEnd(e.getDateEnd())
+                        .yearStart(e.getYearStart())
+                        .yearEnd(e.getYearEnd())
+                        .qualificationId(e.getQualification().getId())
                         .educationalInstitution(e.getEducationalInstitution())
                         .qualificationNameWithCode(e.getQualification().getNameWithCode())
                         .build())
@@ -171,9 +172,16 @@ public class ProfileServiceImpl implements ProfileService {
                     Qualification qualification = qualificationRepository
                             .findById(e.getQualificationId())
                             .orElseThrow(() -> new EntityNotFoundException("Qualification not found"));
+                    if(!Objects.isNull(e.getYearEnd()) && e.getYearStart() > e.getYearEnd()) {
+                        throw new IncorrectDateTimeException("The start year cannot be less");
+                    }
+                    if(e.getYearStart() > Year.now().getValue()) {
+                        throw new IncorrectDateTimeException("The beginning of the education cannot be in the " +
+                                "future time");
+                    }
                     return Education.builder()
-                                    .dateStart(e.getDateStart())
-                                    .dateEnd(e.getDateEnd())
+                                    .yearStart(e.getYearStart())
+                                    .yearEnd(e.getYearEnd())
                                     .educationalInstitution(e.getEducationalInstitution())
                                     .id(new EducationPK(userFromDB.getId(), qualification.getId()))
                                     .qualification(qualification)
