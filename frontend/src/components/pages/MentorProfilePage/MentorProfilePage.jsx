@@ -19,16 +19,15 @@ const MentorProfilePage = () => {
     const [aboutAsMentor, setAboutAsMentor] = useState("");
     const [mentorStatus, setMentorStatus] = useState(false);
     const [imageUserResource, setImageUserResource] = useState("");
-    const [rating, setRating] = useState(null);
+    const [rating, setRating] = useState(4.9);
     const [dateOfRegistration, setDateOfRegistration] = useState([]);
     const [mentorSpecializations, setMentorSpecializations] = useState("");
     const [communication, setCommunication] = useState([]);
 
-    const location = useLocation();
-
     useEffect(() => {
         getUserData('user/profile/mentor/', userId)
             .then(res => {
+                console.log(res)
                 setFirstName(res?.data?.firstName);
                 setLastName(res?.data?.lastName);
                 setAboutAsMentor(res?.data?.aboutAsMentor);
@@ -36,7 +35,7 @@ const MentorProfilePage = () => {
                 setDateOfRegistration(res?.data?.dateOfRegistration?.split('-'))
                 setMentorStatus(res?.data?.isEnabledMentorStatus)
                 setImageUserResource(res?.data?.imageUserResource)
-                setRating(location?.state?.rating || res?.data?.rating)
+                setRating(res?.data?.rating)
 
                 setCommunication([
                     {name: 'Вконтакте', link: res?.data?.linkVk},
