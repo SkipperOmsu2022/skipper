@@ -18,7 +18,7 @@ const AdditionalInfo = ({props}) => {
                 <div className="stars-rating">
                     {filledStars}
                     {hollowStars}
-                    <span className="grade" >{rating.toFixed(1)}</span>
+                    <span className="grade" >{rating?.toFixed(1)}</span>
                 </div>
                 <div className="main-block__section">
                     <span>45 студентов</span>
