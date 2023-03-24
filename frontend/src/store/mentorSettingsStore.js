@@ -16,6 +16,7 @@ class mainPageStore {
     aboutMentor = "";
     mentorsSpecializations = [];
     education = []
+    dirty = false;
 
     setSpecializationOptions = (arr) => {
         this.specializationOptions = arr;
@@ -61,10 +62,10 @@ class mainPageStore {
             educationalInstitution: educationalInstitution,
             label: qualificationNameWithCode?.substring(qualificationNameWithCode.indexOf(' ')+1),
             value: qualificationNameWithCode?.split(' ')[0],
-            noOptionsMessage: 'Введите минимум 3 символа'
+            noOptionsMessage: 'Введите минимум 3 символа',
+            error: [false, false, false]
         })
         this.id++;
-        console.log(this.education)
     }
     removeEducation = (i) => {
         this.education.splice(i, 1);
@@ -73,10 +74,14 @@ class mainPageStore {
         if (valueName === 'qualification') {
             this.education[i].qualificationId = e.id;
             this.education[i].label = e.label;
-            this.education[i].value = e.value;
-        } else {
-            this.education[i][valueName] = e.value
-        }
+            this.education[i].error[1] = false;
+        } else if (valueName === 'yearStart' && +this.education[i].yearEnd < +e.value) {
+            this.education[i].yearEnd = null;
+            this.education[i].error[0] = false;
+        } else if (valueName === 'educationalInstitution') {
+            this.education[i].error[2] = false;
+        } 
+        this.education[i][valueName] = e.value
     }
 
     handleSwitchChange = () => {
@@ -116,14 +121,24 @@ class mainPageStore {
         let complete = true;
         console.log(this.education)
         this.education.forEach((item) => {
-            if (!(item.yearStart && item.yearEnd !== undefined && item.qualificationId && item.educationalInstitution)) {
+            if (!(item.yearStart && item.qualificationId && item.educationalInstitution)) {
                 complete = false
             }
+            if (!item.yearStart) {
+                item.error[0] = true
+            }
+            if (!item.qualificationId) {
+                item.error[1] = true
+            }
+            if (!item.educationalInstitution) {
+                item.error[2] = true
+            }
         })
+        this.dirty = true;
         return complete;
     }
 
-    reserStore = () => {
+    resetStore = () => {
         this.id = 0;
         this.specializationOptions = [];
         this.qualificationOptions = [];

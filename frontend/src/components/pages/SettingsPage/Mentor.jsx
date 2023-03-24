@@ -22,7 +22,7 @@ const Mentor = observer(() => {
     const [certificateErr, setCertificateErr] = useState(false);
 
     useEffect(() => {
-        mentorSettingsStore.reserStore();
+        mentorSettingsStore.resetStore();
         getSpecializationsList()
             .then(res => mentorSettingsStore.setSpecializationOptions(res))
             .then(() => getUserData('user/profile/settings/mentor/'))
@@ -91,6 +91,7 @@ const Mentor = observer(() => {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        clearResponse();
         if (mentorSettingsStore.validate()) {
             setUserData({
                 isEnabledMentorStatus: mentorSettingsStore.mentor,
@@ -185,6 +186,7 @@ const Mentor = observer(() => {
                                             onChange={(e) => {
                                                 mentorSettingsStore.setEducation(e, i, 'yearStart')
                                             }}
+                                            error={item.error[0] && mentorSettingsStore.dirty}
                                         />
                                     </div>
                                     <div className="group">
@@ -197,6 +199,7 @@ const Mentor = observer(() => {
                                             onChange={(e) => {
                                                 mentorSettingsStore.setEducation(e, i, 'yearEnd')
                                             }}
+                                            error={item.error[0] && mentorSettingsStore.dirty}
                                         />
                                     </div>
                                     <div className="group" >
@@ -209,18 +212,26 @@ const Mentor = observer(() => {
                                             }}
                                             width='30.15rem'
                                             promiseOptions={(e) => mentorSettingsStore.setQualificationOptions(e, i)}
+                                            error={item.error[1] && mentorSettingsStore.dirty}
                                         />
                                     </div>
-                                    <textarea
-                                        className="settings__input-group-text input textarea small"
-                                        placeholder="Учебное заведение:"
-                                        id="aboutMe"
-                                        maxLength='100'
-                                        value={item.educationalInstitution}
-                                        onChange={(e) => {
-                                            mentorSettingsStore.setEducation(e.target, i, 'educationalInstitution')
-                                        }}
-                                    />
+                                    <div className="textarea-wrapper group">
+                                        <textarea
+                                            className={`settings__input-group-text input textarea small
+                                                ${item.error[2] && mentorSettingsStore.dirty ? 'error' : ''}`}
+                                            placeholder="Учебное заведение:"
+                                            id="aboutMe"
+                                            maxLength='100'
+                                            value={item.educationalInstitution}
+                                            onChange={(e) => {
+                                                mentorSettingsStore.setEducation(e.target, i, 'educationalInstitution')
+                                            }}
+                                        />
+                                    </div>
+                                    {item.error.includes(true) && mentorSettingsStore.dirty ? 
+                                        <div className="group-error">Заполните все поля</div>
+                                        :null
+                                    }
                                 </div>
                                 <div className='wrapper'>
                                     <span
@@ -230,8 +241,9 @@ const Mentor = observer(() => {
                                         Удалить
                                     </span>
                                     {mentorSettingsStore.education.length - 1 === i ?
-                                        <button 
-                                            className="button settings__input-group-button"
+                                        <button
+                                            className={`button settings__input-group-button 
+                                                ${item.error.includes(true) && mentorSettingsStore.dirty ? 'mrgn-btm' : ''}`}
                                             onClick={mentorSettingsStore.addEducation}
                                         >
                                             +
@@ -273,13 +285,15 @@ const Mentor = observer(() => {
                                         }}
                                     />
                                 </div>
-                                <textarea
-                                    className="settings__input-group-text input textarea small"
-                                    placeholder="Место работы:"
-                                    id="aboutMe" 
-                                    maxLength='100'
-                                    value={experienceName}
-                                    onChange={(e) => setExperienceName(e.target.value)}/>
+                                <div className="textarea-wrapper">
+                                    <textarea
+                                        className="settings__input-group-text input textarea small"
+                                        placeholder="Место работы:"
+                                        id="aboutMe" 
+                                        maxLength='100'
+                                        value={experienceName}
+                                        onChange={(e) => setExperienceName(e.target.value)}/>
+                                </div>
                             </div>
                             <div className='wrapper'>
                                 <span className="settings__input-group-btn-width settings__input-group-delete">

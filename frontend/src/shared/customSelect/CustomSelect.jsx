@@ -146,7 +146,7 @@ const FormikSelect = ({name, placeholder, error, value, onChange, onBlur}) => {
     )
 }
 
-const MutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, width, height, startDate}) => {
+const MutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, width, height, startDate, error}) => {
     let mutableOptions = [];
 
     if(name === "yearOfEnd") {
@@ -170,6 +170,7 @@ const MutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, wi
             value={mutableOptions?.find(option => option.value === value) || ""}
             width={width}
             height={height}
+            error={error}
         />
     )
 }
@@ -192,7 +193,7 @@ const MultipleSelect = ({placeholder, value, onChange, noOptionsMessage, width, 
     )
 }
 
-const CustomAsyncSelect = ({placeholder, value, noOptionsMessage, onChange, width, height, promiseOptions}) => {
+const CustomAsyncSelect = ({placeholder, value, noOptionsMessage, onChange, width, height, promiseOptions, error}) => {
     return (
         <AsyncSelect
             components={{ DropdownIndicator }}
@@ -206,6 +207,7 @@ const CustomAsyncSelect = ({placeholder, value, noOptionsMessage, onChange, widt
             height={height}
             defaultOptions
             loadOptions={promiseOptions}
+            error={error}
         />
     )
 } 
