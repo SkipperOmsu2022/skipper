@@ -26,14 +26,14 @@ public class ImageStorageService implements FileStorageService {
     @Override
     public String save(MultipartFile image, String fileName) {
         if (image == null || image.isEmpty()) {
-            delete(rootLocation.toString().concat("/").concat(fileName), supportedFileExtension);
+            delete(rootLocation.resolve(fileName).toString(), supportedFileExtension);
             return "";
         }
 
         String fileExtension = getFileExtensionIfSupported(image, supportedFileExtension);
 
         try {
-             final String finalFileName = fileName + '.' + fileExtension;
+            final String finalFileName = fileName + '.' + fileExtension;
 
             Path destinationFile = rootLocation.resolve(finalFileName).normalize().toAbsolutePath();
             if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {

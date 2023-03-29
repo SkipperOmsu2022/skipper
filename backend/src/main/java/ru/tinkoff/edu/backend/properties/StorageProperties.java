@@ -12,8 +12,9 @@ import org.springframework.stereotype.Component;
 public class StorageProperties {
     /**
      * Конфигурация в application.properties для указания местоположения сохранения файлов.
-     * Значение по умолчанию: "uploads"
+     * Значение по умолчанию: "~/uploads"
      */
-    private String location = "uploads";
-    private String apiUserImage = "/image";
+    private String location = "~/uploads";
+    private String apiUserImage = "/api/user/image";
+    private String apiUserCertificates = "apu/user/certificates";
 }

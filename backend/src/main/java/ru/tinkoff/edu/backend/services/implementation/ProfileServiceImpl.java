@@ -22,6 +22,8 @@ import ru.tinkoff.edu.backend.services.ProfileService;
 import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Year;
@@ -37,6 +39,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final PasswordEncoder passwordEncoder;
     private final FileStorageService fileStorageService;
     private final Random rand;
+    private final String NAME_OF_FOLDER_WITH_CERTIFICATES = "certificates";
 
     public ProfileServiceImpl(UserRepository userRepository, QualificationRepository qualificationRepository, EducationRepository educationRepository, PasswordEncoder passwordEncoder,
                               FileStorageService fileStorageService) throws NoSuchAlgorithmException {
@@ -164,6 +167,19 @@ public class ProfileServiceImpl implements ProfileService {
         userFromDB.setAboutAsMentor(user.getAboutMeAsMentor());
         userFromDB.setIsEnabledMentorStatus(user.getIsEnabledMentorStatus());
         userFromDB.setMentorSpecializations(user.getMentorSpecializations());
+
+        /* TODO
+            1) Возможность получать разные картинки
+            2) Возможность их сохранять в постоянной памяти
+            3) Сохранять ссылки на сертификаты картинок в БД (отношение один ко многим)
+         */
+        String[] certificatesResource = new String[user.getCertificates().length];
+        for(int i = 0; i < certificatesResource.length; ++i) {
+            /*certificatesResource[i] = fileStorageService.save(user.getCertificates()[i],
+                    NAME_OF_FOLDER_WITH_CERTIFICATES );*/
+        }
+
+
 
         Set<Education> educations = Optional.ofNullable(user.getEducations())
                 .orElse(Collections.emptySet())
