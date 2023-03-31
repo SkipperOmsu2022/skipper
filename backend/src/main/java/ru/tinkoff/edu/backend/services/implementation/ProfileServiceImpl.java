@@ -28,7 +28,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public UserEditMainInfoDTO getMainInfo(Long id) {
+    public UserEditMainInfoDTO getMainInfoUser(Long id) {
         User userFromDB = userRepository.getReferenceById(id);
         UserEditMainInfoDTO user = new UserEditMainInfoDTO();
 
@@ -44,7 +44,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void updateUser(Long id, UserEditMainInfoDTO user) {
+    public void updateMainInfoUser(Long id, UserEditMainInfoDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setFirstName(user.getFirstName());
         userFromDB.setLastName(user.getLastName());
@@ -62,7 +62,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public UserEditAccountDTO getAccountDetails(Long id) {
+    public UserEditAccountDTO getAccountDetailsUser(Long id) {
         User userFromDB = userRepository.getReferenceById(id);
         UserEditAccountDTO user = new UserEditAccountDTO();
         user.setEmail(userFromDB.getEmail());
@@ -70,7 +70,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void updateUser(Long id, UserEditAccountDTO user) {
+    public void updateAccountDetailsUser(Long id, UserEditAccountDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         if(!passwordEncoder.matches(user.getOldPassword(), userFromDB.getPassword())) {
             throw new IncorrectCurrentPasswordException("Incorrect current password!!");
@@ -91,7 +91,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public UserEditContactsDTO getUserContacts(Long id) {
+    public UserEditContactsDTO getContactsUser(Long id) {
         User userFromDB = userRepository.getReferenceById(id);
         UserEditContactsDTO user = new UserEditContactsDTO();
         user.setLinkVk(userFromDB.getLinkVk());
@@ -103,7 +103,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void updateUser(Long id, UserEditContactsDTO user) {
+    public void updateContactsUser(Long id, UserEditContactsDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setLinkVk(user.getLinkVk());
         userFromDB.setLinkSkype(user.getLinkSkype());

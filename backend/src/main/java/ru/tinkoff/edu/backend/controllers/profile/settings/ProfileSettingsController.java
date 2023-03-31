@@ -34,7 +34,7 @@ public class ProfileSettingsController {
     @Operation(summary = "Получение основной информации об аккаунте пользователя.")
     @GetMapping("/{id}")
     public ResponseEntity<UserEditMainInfoDTO> getMainInfo(@PathVariable Long id) {
-        UserEditMainInfoDTO userFromDB = profileService.getMainInfo(id);
+        UserEditMainInfoDTO userFromDB = profileService.getMainInfoUser(id);
 
         return ResponseEntity
                 .ok(userFromDB);
@@ -47,7 +47,7 @@ public class ProfileSettingsController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Void> editMainInfo(@PathVariable Long id,
                                                @Valid @ModelAttribute UserEditMainInfoDTO user ) {
-        profileService.updateUser(id, user);
+        profileService.updateMainInfoUser(id, user);
 
         return ResponseEntity.ok().build();
     }
@@ -55,7 +55,7 @@ public class ProfileSettingsController {
     @Operation(summary = "Получение почты пользователя.")
     @GetMapping("/account/{id}")
     public ResponseEntity<UserEditAccountDTO> getAccountDetails(@PathVariable Long id) {
-        UserEditAccountDTO user = profileService.getAccountDetails(id);
+        UserEditAccountDTO user = profileService.getAccountDetailsUser(id);
 
         return ResponseEntity
                 .ok(user);
@@ -69,7 +69,7 @@ public class ProfileSettingsController {
     @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PutMapping("/account/{id}")
     public ResponseEntity<Void> editAccountDetails(@PathVariable Long id, @Valid @RequestBody UserEditAccountDTO user) {
-        profileService.updateUser(id, user);
+        profileService.updateAccountDetailsUser(id, user);
 
         return ResponseEntity.ok().build();
     }
@@ -77,7 +77,7 @@ public class ProfileSettingsController {
     @Operation(summary = "Получение контактных данных(ссылок на социальные сети) пользователя.")
     @GetMapping("/contacts/{id}")
     public ResponseEntity<UserEditContactsDTO> getUserContacts(@PathVariable Long id) {
-        UserEditContactsDTO user = profileService.getUserContacts(id);
+        UserEditContactsDTO user = profileService.getContactsUser(id);
 
         return ResponseEntity
                 .ok(user);
@@ -87,7 +87,7 @@ public class ProfileSettingsController {
     @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PutMapping("/contacts/{id}")
     public ResponseEntity<Void> editUserContacts(@PathVariable Long id, @Valid @RequestBody UserEditContactsDTO user) {
-        profileService.updateUser(id, user);
+        profileService.updateContactsUser(id, user);
 
         return ResponseEntity.ok().build();
     }

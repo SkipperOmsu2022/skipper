@@ -42,7 +42,7 @@ public class MentorProfileSettingsController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> editMentorSettings(@PathVariable Long id,
                                                    @Valid @RequestBody UserEditMentorDTO user) {
-        mentorProfileService.updateUser(id, user);
+        mentorProfileService.updateMentorInfo(id, user);
         return ResponseEntity.ok().build();
     }
 }

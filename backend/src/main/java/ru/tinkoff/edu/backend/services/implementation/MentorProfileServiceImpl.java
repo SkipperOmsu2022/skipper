@@ -73,7 +73,7 @@ public class MentorProfileServiceImpl implements MentorProfileService {
 
     @Transactional
     @Override
-    public void updateUser(Long id, UserEditMentorDTO user) {
+    public void updateMentorInfo(Long id, UserEditMentorDTO user) {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setAboutAsMentor(user.getAboutMeAsMentor());
         userFromDB.setIsEnabledMentorStatus(user.getIsEnabledMentorStatus());
