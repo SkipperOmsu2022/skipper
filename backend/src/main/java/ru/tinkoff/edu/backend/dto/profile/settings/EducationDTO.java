@@ -7,18 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PastOrPresent;
-import java.time.LocalDate;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class EducationDTO {
-    @PastOrPresent(message = "The beginning of the education cannot be in the future time")
-    private LocalDate dateStart;
-    private LocalDate dateEnd;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Integer yearStart;
+    private Integer yearEnd;
     private Long qualificationId;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String qualificationNameWithCode;

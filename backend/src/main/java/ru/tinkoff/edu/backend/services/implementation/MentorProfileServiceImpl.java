@@ -7,6 +7,7 @@ import ru.tinkoff.edu.backend.dto.profile.settings.EducationDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMentorDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.WorkExperienceDTO;
 import ru.tinkoff.edu.backend.entities.*;
+import ru.tinkoff.edu.backend.exception.IncorrectDateTimeException;
 import ru.tinkoff.edu.backend.repositories.EducationRepository;
 import ru.tinkoff.edu.backend.repositories.QualificationRepository;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.time.Year;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,8 +51,8 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                 .getEducation()
                 .stream()
                 .map(e -> EducationDTO.builder()
-                        .dateStart(e.getDateStart())
-                        .dateEnd(e.getDateEnd())
+                        .yearStart(e.getYearStart())
+                        .yearEnd(e.getYearEnd())
                         .educationalInstitution(e.getEducationalInstitution())
                         .qualificationNameWithCode(e.getQualification().getNameWithCode())
                         .build())
@@ -83,12 +85,19 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                 .orElse(Collections.emptySet())
                 .stream()
                 .map(e -> {
-                            Qualification qualification = qualificationRepository
-                                    .findById(e.getQualificationId())
-                                    .orElseThrow(() -> new EntityNotFoundException("Qualification not found"));
+                    Qualification qualification = qualificationRepository
+                            .findById(e.getQualificationId())
+                            .orElseThrow(() -> new EntityNotFoundException("Qualification not found"));
+                    if(!Objects.isNull(e.getYearEnd()) && e.getYearStart() > e.getYearEnd()) {
+                        throw new IncorrectDateTimeException("The start year cannot be less");
+                    }
+                    if(e.getYearStart() > Year.now().getValue()) {
+                        throw new IncorrectDateTimeException("The beginning of the education cannot be in the " +
+                                "future time");
+                    }
                             return Education.builder()
-                                    .dateStart(e.getDateStart())
-                                    .dateEnd(e.getDateEnd())
+                                    .yearStart(e.getYearStart())
+                                    .yearEnd(e.getYearEnd())
                                     .educationalInstitution(e.getEducationalInstitution())
                                     .id(new EducationPK(userFromDB.getId(), qualification.getId()))
                                     .qualification(qualification)
@@ -125,6 +134,31 @@ public class MentorProfileServiceImpl implements MentorProfileService {
         user.setLastName(userFromDB.getLastName());
         user.setPatronymic(userFromDB.getPatronymic());
         user.setAboutAsMentor(userFromDB.getAboutAsMentor());
+
+        Set<EducationDTO> educations = userFromDB
+                .getEducation()
+                .stream()
+                .map(e -> EducationDTO.builder()
+                        .yearStart(e.getYearStart())
+                        .yearEnd(e.getYearEnd())
+                        .educationalInstitution(e.getEducationalInstitution())
+                        .qualificationNameWithCode(e.getQualification().getNameWithCode())
+                        .build())
+                .collect(Collectors.toSet());
+
+        Set<WorkExperienceDTO> workExperiences = userFromDB
+                .getWorkExperiences()
+                .stream()
+                .map(e -> WorkExperienceDTO.builder()
+                        .dateStart(e.getId().getDateStart())
+                        .dateEnd(e.getDateEnd())
+                        .placeOfWork(e.getId().getPlaceOfWork())
+                        .build())
+                .collect(Collectors.toSet());
+
+        user.setEducations(educations);
+        user.setWorkExperiences(workExperiences);
+
         user.setImageUserResource(userFromDB.getImageUserResource());
         user.setDateOfRegistration(userFromDB.getDateOfRegistration());
         user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
