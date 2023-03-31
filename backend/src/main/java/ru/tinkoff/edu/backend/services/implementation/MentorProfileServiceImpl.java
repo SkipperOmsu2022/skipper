@@ -27,16 +27,14 @@ public class MentorProfileServiceImpl implements MentorProfileService {
     private final QualificationRepository qualificationRepository;
     private final EducationRepository educationRepository;
     private final WorkExperienceRepository workExperienceRepository;
-    private final Random rand;
 
     public MentorProfileServiceImpl(UserRepository userRepository, QualificationRepository qualificationRepository,
                                     EducationRepository educationRepository,
-                                    WorkExperienceRepository workExperienceRepository) throws NoSuchAlgorithmException {
+                                    WorkExperienceRepository workExperienceRepository) {
         this.userRepository = userRepository;
         this.qualificationRepository = qualificationRepository;
         this.educationRepository = educationRepository;
         this.workExperienceRepository = workExperienceRepository;
-        this.rand = SecureRandom.getInstanceStrong();
     }
 
     @Override
@@ -111,11 +109,6 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                 )
                 .collect(Collectors.toSet());
 
-        double randomRating = BigDecimal.valueOf(3.5 + (5 - 3.5) * rand
-                        .nextDouble())
-                .setScale(2, RoundingMode.HALF_UP).doubleValue();
-        userFromDB.setRating(randomRating);
-
         educationRepository.deleteEducationsByUser(userFromDB);
         educationRepository.saveAll(educations);
 
@@ -140,7 +133,6 @@ public class MentorProfileServiceImpl implements MentorProfileService {
         user.setLinkSkype(userFromDB.getLinkSkype());
         user.setLinkDiscord(userFromDB.getLinkDiscord());
         user.setLinkTelegram(userFromDB.getLinkTelegram());
-        user.setRating(userFromDB.getRating());
         return user;
     }
 }
