@@ -5,40 +5,36 @@ import static org.mockito.Mockito.when;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
 
 import ru.tinkoff.edu.backend.dto.UserLoginDTO;
 import ru.tinkoff.edu.backend.dto.UserRegDTO;
 import ru.tinkoff.edu.backend.entities.User;
-import ru.tinkoff.edu.backend.services.ProfileService;
 import ru.tinkoff.edu.backend.services.UserService;
 
 
-@AutoConfigureMockMvc
-@SpringBootTest
-public class AuthControllerIntegrationTest {
+@WebMvcTest(value = AuthController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
+@Import(ControllerTestConfiguration.class)
+class AuthControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
-    // имитирует поведение сервисного слоя
     @MockBean
     private UserService userService;
 
-    @MockBean
-    private ProfileService profileService;
-
-    // Создаём пользователей DTO - пользователи для отправки по сети
-    // И обычных User - пользователи, которые лежат в БД
     UserLoginDTO userLoginDTO_1 = new UserLoginDTO("123@example.com", "123");
     User user_1 = User.builder()
             .id(1L)
@@ -61,38 +57,32 @@ public class AuthControllerIntegrationTest {
 
     String jsonUser = objectMapper.writeValueAsString(userRegDTO_1);
 
-    public AuthControllerIntegrationTest() throws JsonProcessingException {
+    public AuthControllerTest() throws JsonProcessingException {
     }
 
     @Test
-    public void loginSuccess() throws Exception {
-        // Делаем затычку, что должен возратить метод 'readByUserLoginDTO()', который находится в контроллере
+    void loginUser_thenStatus200() throws Exception {
         when(userService.readByUserLoginDTO(userLoginDTO_1)).thenReturn(user_1);
 
-        // имитирует вызов (на стороне клиента) API метода login() контроллера AuthController
         mockMvc.perform(post("/api/auth/login")
                 .param("email", userLoginDTO_1.getEmail())
                 .param("password", userLoginDTO_1.getPassword())
                 .contentType(MediaType.MULTIPART_FORM_DATA))
-                // экспектируем на статус
+                .andDo(print())
                 .andExpect(status().isOk())
-                // экспектируем на заголовок Location ()
                 .andExpect(header().longValue("Location", user_1.getId()));
     }
 
 
     @Test
-    public void registrationSuccess() throws Exception {
-
-
-
+    void registrationUser_thenStatus201() throws Exception {
         when (userService.create(userRegDTO_1)).thenReturn(user_2);
 
         mockMvc.perform(post("/api/auth/registration")
                         .content(jsonUser)
                         .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(header().longValue("Location", user_2.getId()));
-
     }
 }
