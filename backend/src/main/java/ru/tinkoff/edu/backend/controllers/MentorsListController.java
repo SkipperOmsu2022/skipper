@@ -26,10 +26,10 @@ public class MentorsListController {
         this.mentorListService = mentorListService;
     }
 
-    @Operation(summary = "Получение объекта/карты для сопоставления ключа и название специальности на кирилице.")
+    @Operation(summary = "Получение объекта/карты для сопоставления ключа и название специальности на кириллице.")
     @GetMapping("/list/specializations")
     public ResponseEntity<Map<MentorSpecialization, String>> getMapMentorSpecialization() {
-        return ResponseEntity.ok(MentorSpecialization.getMapMentorSpecialization());
+        return ResponseEntity.ok(mentorListService.getMapMentorSpecialization());
     }
 
     @Operation(summary = "Получение списка менторов.")
