@@ -15,6 +15,7 @@ import ru.tinkoff.edu.backend.dto.UserConversationDTO;
 import ru.tinkoff.edu.backend.services.MessageService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @Validated
@@ -46,7 +47,7 @@ public class MessageController {
     @Operation(summary = "Получение списка сообщений.",
             description = "Возвращает все сообщения пользователя с указанным id.")
     @GetMapping("/list-messages/{id}")
-    public ResponseEntity<List<UserConversationDTO>> getMessages(@PathVariable Long id) {
+    public ResponseEntity<Set<UserConversationDTO>> getMessages(@PathVariable Long id) {
         return ResponseEntity.ok(messageService.getListMessages(id));
     }
 

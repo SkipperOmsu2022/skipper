@@ -80,6 +80,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Education> education;
 
+    @OneToMany(mappedBy = "user")
+    private Set<WorkExperience> workExperiences;
+
     public String getInlineMentorSpecializations() {
         return mentorSpecializations.stream()
                 .map(MentorSpecialization::getStringMentorSpecialization)

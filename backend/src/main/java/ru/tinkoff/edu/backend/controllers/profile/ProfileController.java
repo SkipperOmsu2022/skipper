@@ -5,8 +5,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.tinkoff.edu.backend.dto.UserMentorProfileDTO;
-import ru.tinkoff.edu.backend.dto.UserProfileDTO;
+import ru.tinkoff.edu.backend.dto.profile.UserMentorProfileDTO;
+import ru.tinkoff.edu.backend.dto.profile.UserProfileDTO;
+import ru.tinkoff.edu.backend.services.MentorProfileService;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
 /**
@@ -23,9 +24,11 @@ import ru.tinkoff.edu.backend.services.ProfileService;
 @CrossOrigin
 public class ProfileController {
     private final ProfileService profileService;
+    private final MentorProfileService mentorProfileService;
 
-    public ProfileController(ProfileService profileService) {
+    public ProfileController(ProfileService profileService, MentorProfileService mentorProfileService) {
         this.profileService = profileService;
+        this.mentorProfileService = mentorProfileService;
     }
 
     @Operation(summary = "Получение информации для страницы обычного пользователя.")
@@ -38,7 +41,7 @@ public class ProfileController {
     @Operation(summary = "Получение информации для страницы ментора.")
     @GetMapping("/mentor/{id}")
     public ResponseEntity<UserMentorProfileDTO> getMainMentorInfo(@PathVariable Long id) {
-        UserMentorProfileDTO user = profileService.getUserMentorProfile(id);
+        UserMentorProfileDTO user = mentorProfileService.getUserMentorProfile(id);
         return ResponseEntity.ok(user);
     }
 }

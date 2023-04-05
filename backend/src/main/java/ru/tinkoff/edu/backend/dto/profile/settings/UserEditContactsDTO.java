@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.backend.dto;
+package ru.tinkoff.edu.backend.dto.profile.settings;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

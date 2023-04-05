@@ -50,20 +50,20 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<UserConversationDTO> getListMessages(Long id) {
+    public Set<UserConversationDTO> getListMessages(Long id) {
         User user = userRepository.getReferenceById(id);
         List<Messages> messages = messageRepository.findAllByUserFromOrUserTo(user, user);
-        Map<Long, List<Messages>> messagesMap = new HashMap<>();
+        Map<Long, Set<Messages>> messagesMap = new HashMap<>();
 
         for(Messages m: messages) {
             if(!(Objects.equals(m.getUserFrom(), id))) {
-                messagesMap.merge(m.getUserFrom(), Collections.singletonList(m),
+                messagesMap.merge(m.getUserFrom(), Collections.singleton(m),
                         (oldValue, value) ->
-                                Stream.concat(oldValue.stream(), value.stream()).collect(Collectors.toList()));
+                                Stream.concat(oldValue.stream(), value.stream()).collect(Collectors.toSet()));
             } else if(!(Objects.equals(m.getUserTo(), id))) {
-                messagesMap.merge(m.getUserTo(), Collections.singletonList(m),
+                messagesMap.merge(m.getUserTo(), Collections.singleton(m),
                         (oldValue, value) ->
-                                Stream.concat(oldValue.stream(),value.stream()).collect(Collectors.toList()));
+                                Stream.concat(oldValue.stream(),value.stream()).collect(Collectors.toSet()));
             }
         }
 
@@ -77,7 +77,7 @@ public class MessageServiceImpl implements MessageService {
                     .mentorSpecializations(tempUser.getInlineMentorSpecializations())
                     .messages(messagesMap.get(userId))
                     .build();
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toSet());
     }
 
     @Override
