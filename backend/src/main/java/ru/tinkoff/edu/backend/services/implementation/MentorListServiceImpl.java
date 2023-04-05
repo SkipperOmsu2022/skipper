@@ -36,7 +36,8 @@ public class MentorListServiceImpl implements MentorListService {
                         .aboutMeAsMentor(user.getAboutAsMentor())
                         .imageUserResource(user.getImageUserResource())
                         .rating(user.getRating())
-                        .build()).collect(Collectors.toList());
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @Override
