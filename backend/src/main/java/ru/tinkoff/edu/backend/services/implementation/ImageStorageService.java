@@ -21,6 +21,7 @@ public class ImageStorageService implements FileStorageService {
     public ImageStorageService(StorageProperties properties) {
         this.rootLocation = Paths.get(properties.getLocation());
         this.apiUserImage = properties.getApiUserImage();
+        init();
     }
 
     @Override

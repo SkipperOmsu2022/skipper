@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.backend.dto;
+package ru.tinkoff.edu.backend.dto.profile;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,18 +11,17 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserMentorProfileDTO {
+public class UserProfileDTO {
     private String firstName;
     private String lastName;
     private String patronymic;
-    private String aboutAsMentor;
+    private String aboutMe;
     private Boolean isEnabledMentorStatus;
-    private String imageUserResource;
     private LocalDate dateOfRegistration;
+    private String imageUserResource;
     private String mentorSpecializations;
     private String linkVk;
     private String linkSkype;
     private String linkDiscord;
     private String linkTelegram;
-    private Double rating;
 }

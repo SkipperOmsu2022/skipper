@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.backend.dto;
+package ru.tinkoff.edu.backend.dto.profile.settings;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -31,6 +31,9 @@ public class UserEditMentorDTO {
     @Valid
     @NotNull
     private Set<EducationDTO> educations;
+    @Valid
+    @NotNull
+    private Set<WorkExperienceDTO> workExperiences;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private MultipartFile[] certificates;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
