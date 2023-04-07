@@ -166,7 +166,7 @@ const Mentor = observer(() => {
                             />
                         </div>
                 </div>
-                <MentorEducation store={mentorSettingsStore}/>
+                <MentorEducation/>
                 {/* <div className="settings__input-group">
                     <label className="settings__input-group-label middle-top-padding">
                         Опыт работы: 
