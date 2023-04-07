@@ -64,10 +64,7 @@ class messagesStore {
     }
 
     getMessage = (response) => {
-        console.log(response)
         let data = JSON.parse(response.body);
-        console.log('Пришли данные с сервера: ' + JSON.stringify(data));
-        console.log(data);
 
         let dialogId;
 
@@ -85,8 +82,6 @@ class messagesStore {
                     method: 'get'
                 })
                 .then(res => {
-                    console.log(res)
-
                     const imageUserResource = res?.data?.imageUserResource ? 
                         `${enviroments.apiBase}${res?.data?.imageUserResource}` : 
                         photo;
@@ -123,7 +118,6 @@ class messagesStore {
     }
 
     setInterlocutors = (res) => {
-        console.log(res)
         for (let key in res) {
             const imageUserResource = res[key]?.imageUserResource ? 
                 `${enviroments.apiBase}${res[key]?.imageUserResource}` : 
@@ -138,7 +132,6 @@ class messagesStore {
                 mentorSpecializations: res[key]?.mentorSpecializations
             })
         }
-        console.log(this.interlocutors)
     }
 
     setActiveDialog = (id) => {
@@ -154,25 +147,18 @@ class messagesStore {
         let dialogId;
 
         if (this.loading || this.stompClient === null) return;
-        console.log(1)
         this.loading = true
 
         this.interlocutors.forEach((item, i) => {
-            console.log(+item.userId === +id)
-            console.log(`${+item.userId} === ${+id}`)
             if (+item.userId === +id) {
                 dialogId = i;
             }
         })
 
-        console.log(2)
-
         if(dialogId !== undefined) {
-            console.log(dialogId)
             this.setActiveDialog(dialogId)
             this.loading = false;
         } else {
-            console.log(dialogId)
             dialogId = this.interlocutors.length;
             this.loading = true;
 
@@ -181,7 +167,6 @@ class messagesStore {
                 method: 'get'
             })
             .then(res => {
-                console.log(res)
 
                 const imageUserResource = res?.data?.imageUserResource ? 
                     `${enviroments.apiBase}${res?.data?.imageUserResource}` : 
@@ -208,8 +193,6 @@ class messagesStore {
             this.stompClient = Stomp.over(socket)
 
             this.stompClient.connect({}, (frame) => {
-                console.log("connected to: " + frame);
-                
                 this.stompClient.subscribe("/topic/messages/" + this.user.id, this.getMessage);
             });
         }

@@ -11,7 +11,6 @@ const Filter =  observer(() => {
         getSpecializationsList()
             .then(res => {
                 mainPageStore.setFilter(res)
-                console.log(res)
             })
     }, []);
 

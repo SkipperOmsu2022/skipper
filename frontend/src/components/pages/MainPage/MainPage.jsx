@@ -67,9 +67,6 @@ const Mentors = observer(({newOffset}) => {
                             <Link
                                 to={`/profile-mentor/${item.id}`}
                                 className="button pale"
-                                //
-                                    state={{ rating: item.rating }}
-                                //
                             >
                                 Посмотреть профиль
                             </Link>

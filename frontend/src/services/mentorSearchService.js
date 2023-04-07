@@ -16,12 +16,6 @@ const useMentorSearchService = () => {
         }
 
         return res?.data?.filter(mentor => +mentor.id !== +userId)
-            ?.map(mentor => {
-                return {
-                    ...mentor,
-                    rating: mentor.reting || (Math.random() * (4.9 - 3.8) + 3.8).toFixed(1)
-                }
-            })
     }
 
     return {loading, response, error, clearResponse, getMentors}

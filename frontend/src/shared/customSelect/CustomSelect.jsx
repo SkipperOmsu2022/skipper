@@ -1,4 +1,5 @@
 import Select, { components } from 'react-select';
+import AsyncSelect from 'react-select/async';
 import './customSelect.scss'
 
 const selectStyles = {
@@ -105,7 +106,7 @@ const options = {
         { value: '12', label: 'Декабрь' }
     ],
     "year": Array(100).fill(null).map((element, i, arr) => (
-        arr[i] = {value: '' + (currentYear - i - 12), label: currentYear - i - 12}
+        arr[i] = {value: '' + (currentYear - i), label: currentYear - i}
     )),
     "qualification": [
         { value: 'Бакалавр', label: 'Бакалавр' },
@@ -145,11 +146,11 @@ const FormikSelect = ({name, placeholder, error, value, onChange, onBlur}) => {
     )
 }
 
-const MutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, width, height, startDate}) => {
+const MutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, width, height, startDate, error}) => {
     let mutableOptions = [];
 
     if(name === "yearOfEnd") {
-        mutableOptions = startDate ?  Array(currentYear - startDate + 2).fill(null).map((element, i, arr) => (
+        mutableOptions = startDate !== null ? Array(currentYear - startDate + 2).fill(null).map((element, i, arr) => (
             i === 0 ? arr[i] = {value: null, label: "Настоящее время"} :
             arr[i] = {value: currentYear - i + 1, label: currentYear - i + 1}
         )) : [];
@@ -169,6 +170,7 @@ const MutableSelect = ({name, placeholder, value, noOptionsMessage, onChange, wi
             value={mutableOptions?.find(option => option.value === value) || ""}
             width={width}
             height={height}
+            error={error}
         />
     )
 }
@@ -191,5 +193,26 @@ const MultipleSelect = ({placeholder, value, onChange, noOptionsMessage, width, 
     )
 }
 
+const CustomAsyncSelect = ({placeholder, value, noOptionsMessage, onChange, width, height, promiseOptions, error}) => {
+    return (
+        <AsyncSelect
+            components={{ DropdownIndicator }}
+            classNamePrefix='filter'
+            styles={selectStyles}
+            placeholder={placeholder}
+            noOptionsMessage={() => noOptionsMessage || "Значений не найдено"}
+            onChange={onChange}
+            value={value}
+            width={width}
+            height={height}
+            defaultOptions
+            loadOptions={promiseOptions}
+            error={error}
+        />
+    )
+} 
+
+
+
 export default FormikSelect;
-export {MutableSelect, MultipleSelect}
+export {MutableSelect, MultipleSelect, CustomAsyncSelect}
