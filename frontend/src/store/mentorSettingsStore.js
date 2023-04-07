@@ -22,7 +22,7 @@ class mainPageStore {
         this.specializationOptions = arr;
     }
 
-    setQualificationOptions = (e, i) => {
+    asyncGetQualificationOptions = (e, i) => {
         const url = enviroments.apiBase + '/api/user/profile/settings/mentor/edu';
         if (e.length >= 3) {
             this.education[i].noOptionsMessage = 'Значений не найдено'

@@ -50,7 +50,7 @@ const MentorEducation = observer(() => {
                                         mentorSettingsStore.setEducation(e, i, 'qualification')
                                     }}
                                     width='30.15rem'
-                                    promiseOptions={(e) => mentorSettingsStore.setQualificationOptions(e, i)}
+                                    promiseOptions={(e) => mentorSettingsStore.asyncGetQualificationOptions(e, i)}
                                     error={item.error[1] && mentorSettingsStore.dirty}
                                 />
                             </div>
