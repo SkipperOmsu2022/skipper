@@ -15,6 +15,7 @@
     font-size: 0.875rem;
     text-align: center;
     color: #444444;
+    
     &:hover, &:focus {
         filter: brightness(95%);
     }
@@ -25,5 +26,9 @@
         &:hover {
             filter: none
         }
+    }
+    
+    &.pale {
+        background-color: #FFF5C2;
     }
 }

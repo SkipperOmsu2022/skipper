@@ -36,6 +36,10 @@
         display: flex;
         gap: 2.9375rem;
         align-items: center;
+        .button {
+            color: $header;
+            padding: 11px 27px;
+        }
     }
     &__icons {
         display: flex;

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import DateOfRegistration from "../ProfilePage/DateOfRegistration";
 
 const AdditionalInfo = ({props}) => {
-    const {dateOfRegistration, mentorStatus, isOwner, rating, userId} = props;
+    const {dateOfRegistration, mentorStatus, isOwner, rating = 4.78, userId} = props;
 
     let filledStars = null, hollowStars = null;
     if (rating) {
