@@ -25,8 +25,7 @@ import java.util.Set;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @WebMvcTest(value = MentorProfileSettingsController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
@@ -62,8 +61,13 @@ class MentorProfileSettingsControllerTest {
             Sets.set("/api/user/certificate/1", "/api/user/certificate/2")
     );
 
+    MockMultipartFile[] multipartFiles = new MockMultipartFile[] {
+            new MockMultipartFile("certificates", "diplom1.jpg", "image/jpeg", "diplom1.jpg".getBytes()),
+            new MockMultipartFile("certificates", "diplom2.jpg", "image/jpeg", "diplom2.jpg".getBytes())
+    };
+
     @Test
-    void get_MentorSettings_thenReturnObjectWithStatus200() throws Exception {
+    void get_mentorSettings_thenReturnObjectWithStatus200() throws Exception {
         Long id = 1L;
         when(mentorProfileService.getMentorInfo(id)).thenReturn(userEditMentorDTO);
 
@@ -75,13 +79,9 @@ class MentorProfileSettingsControllerTest {
     }
 
     @Test
-    void put_MentorSettings_thenReturnStatus200() throws Exception {
-        long id = 1L;
+    void put_mentorSettings_thenReturnStatus200() throws Exception {
+        long id = 2L;
 
-        MockMultipartFile[] multipartFiles = new MockMultipartFile[] {
-                new MockMultipartFile("certificates", "diplom1.jpg", "image/jpeg", "diplom1.jpg".getBytes()),
-                new MockMultipartFile("certificates", "diplom2.jpg", "image/jpeg", "diplom2.jpg".getBytes())
-        };
         MockMultipartFile jsonObject = new MockMultipartFile("info", "info",
                 "application/json", objectMapper.writeValueAsString(userEditMentorDTO).getBytes());
 
@@ -96,5 +96,32 @@ class MentorProfileSettingsControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void put_mentorSettings_withExceptionMaxNumberOfFIle_thenReturnObjectWIthStatus400() throws Exception {
+        long id = 3L;
+        MockMultipartFile jsonObject = new MockMultipartFile("info", "info",
+                "application/json", objectMapper.writeValueAsString(userEditMentorDTO).getBytes());
+
+        mockMvc.perform(multipart("/api/user/profile/settings/mentor/{id}", id)
+                        .file(multipartFiles[0])
+                        .file(multipartFiles[1])
+                        .file(multipartFiles[0])
+                        .file(multipartFiles[1])
+                        .file(multipartFiles[0])
+                        .file(multipartFiles[1])
+                        .file(jsonObject)
+                        .with(request -> {
+                            request.setMethod("PUT");
+                            return request;
+                        })
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("message")
+                        .value("editMentorSettings.certificates: Максимальное количество файлов: 4!"));
+
     }
 }
