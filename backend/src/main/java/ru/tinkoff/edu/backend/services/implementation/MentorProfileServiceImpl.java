@@ -2,23 +2,22 @@ package ru.tinkoff.edu.backend.services.implementation;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.tinkoff.edu.backend.dto.profile.UserMentorProfileDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.EducationDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMentorDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.WorkExperienceDTO;
 import ru.tinkoff.edu.backend.entities.*;
+import ru.tinkoff.edu.backend.enums.FileStorageLocation;
 import ru.tinkoff.edu.backend.exception.IncorrectDateTimeException;
 import ru.tinkoff.edu.backend.repositories.EducationRepository;
 import ru.tinkoff.edu.backend.repositories.QualificationRepository;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
 import ru.tinkoff.edu.backend.repositories.WorkExperienceRepository;
+import ru.tinkoff.edu.backend.services.FileStorageService;
 import ru.tinkoff.edu.backend.services.MentorProfileService;
 
 import javax.persistence.EntityNotFoundException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.time.Year;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,14 +28,17 @@ public class MentorProfileServiceImpl implements MentorProfileService {
     private final QualificationRepository qualificationRepository;
     private final EducationRepository educationRepository;
     private final WorkExperienceRepository workExperienceRepository;
+    private final FileStorageService fileStorageService;
 
     public MentorProfileServiceImpl(UserRepository userRepository, QualificationRepository qualificationRepository,
                                     EducationRepository educationRepository,
-                                    WorkExperienceRepository workExperienceRepository) {
+                                    WorkExperienceRepository workExperienceRepository,
+                                    FileStorageService fileStorageService) {
         this.userRepository = userRepository;
         this.qualificationRepository = qualificationRepository;
         this.educationRepository = educationRepository;
         this.workExperienceRepository = workExperienceRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     @Override
@@ -53,6 +55,7 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                 .map(e -> EducationDTO.builder()
                         .yearStart(e.getYearStart())
                         .yearEnd(e.getYearEnd())
+                        .qualificationId(e.getQualification().getId())
                         .educationalInstitution(e.getEducationalInstitution())
                         .qualificationNameWithCode(e.getQualification().getNameWithCode())
                         .build())
@@ -68,6 +71,7 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                     .build())
                 .collect(Collectors.toSet());
 
+        user.setCertificatesResource(userFromDB.getCertificateResources());
         user.setEducations(educations);
         user.setWorkExperiences(workExperiences);
         return user;
@@ -75,7 +79,7 @@ public class MentorProfileServiceImpl implements MentorProfileService {
 
     @Transactional
     @Override
-    public void updateMentorInfo(Long id, UserEditMentorDTO user) {
+    public void updateMentorInfo(Long id, UserEditMentorDTO user, MultipartFile[] certificates) {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setAboutAsMentor(user.getAboutMeAsMentor());
         userFromDB.setIsEnabledMentorStatus(user.getIsEnabledMentorStatus());
@@ -118,11 +122,25 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                 )
                 .collect(Collectors.toSet());
 
+        Set<String> certificateResources = new HashSet<>((int) (certificates.length * 1.5));
+
+        userFromDB.getCertificateResources().forEach(
+                e -> fileStorageService
+                        .deleteFromFileStorageLocation(FileStorageLocation.USER_CERTIFICATES, e)
+        );
+
+        for(int i = 0; i < certificates.length; ++i) {
+            certificateResources.add(fileStorageService
+                    .save(FileStorageLocation.USER_CERTIFICATES, certificates[i], id + "_" + i));
+        }
+
         educationRepository.deleteEducationsByUser(userFromDB);
         educationRepository.saveAll(educations);
 
         workExperienceRepository.deleteWorkExperiencesByUser(userFromDB);
         workExperienceRepository.saveAll(workExperiences);
+
+        userFromDB.setCertificateResources(certificateResources);
 
         userRepository.save(userFromDB);
     }
@@ -158,7 +176,7 @@ public class MentorProfileServiceImpl implements MentorProfileService {
 
         user.setEducations(educations);
         user.setWorkExperiences(workExperiences);
-
+        user.setCertificatesResource(userFromDB.getCertificateResources());
         user.setImageUserResource(userFromDB.getImageUserResource());
         user.setDateOfRegistration(userFromDB.getDateOfRegistration());
         user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());

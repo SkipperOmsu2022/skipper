@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.backend.dto.profile.UserProfileDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.*;
 import ru.tinkoff.edu.backend.entities.*;
+import ru.tinkoff.edu.backend.enums.FileStorageLocation;
 import ru.tinkoff.edu.backend.exception.DifferentPasswordException;
 import ru.tinkoff.edu.backend.exception.IncorrectCurrentPasswordException;
 import ru.tinkoff.edu.backend.exception.OldPasswordRepeatNewPasswordException;
@@ -53,7 +54,8 @@ public class ProfileServiceImpl implements ProfileService {
         userFromDB.setDateBirth(user.getDateOfBirth());
         userFromDB.setAbout(user.getAboutMe());
 
-        String imageUserResource = fileStorageService.save(user.getFile(), String.valueOf(id));
+        String imageUserResource = fileStorageService
+                .save(FileStorageLocation.USER_PROFILE_PHOTO, user.getFile(), String.valueOf(id));
         userFromDB.setImageUserResource(imageUserResource.isEmpty()
                 ? null
                 : imageUserResource);

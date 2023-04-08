@@ -3,6 +3,7 @@ package ru.tinkoff.edu.backend.services;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.tinkoff.edu.backend.enums.FileStorageLocation;
 import ru.tinkoff.edu.backend.exception.FileExtensionNotSupportedException;
 import ru.tinkoff.edu.backend.exception.FileStorageServiceException;
 
@@ -15,11 +16,12 @@ import java.util.Arrays;
 public interface FileStorageService {
     /**
      * Сохраняет картинку в директории(настраивает в application.properties)
+     * @param fileStorageLocation тип сохраняемого файла
      * @param image картинка в формате MultipartFile.
      * @param fileName имя сохраняемого файла.
      * @return пустую строку, если файл пустой, или место сохранения, если файл сохранён.
      */
-    String save(MultipartFile image, String fileName);
+    String save(FileStorageLocation fileStorageLocation, MultipartFile image, String fileName);
 
     /**
      * Возвращает расширение файла, если оно поддерживается, иначе выбрасывает FileExtensionNotSupportedException
@@ -52,6 +54,8 @@ public interface FileStorageService {
             throw new FileStorageServiceException("Failed to delete file with name: " + fileName, e);
         }
     }
+
+    void deleteFromFileStorageLocation(FileStorageLocation fileStorageLocation, String fileNameOrPath);
 
     /**
      * Создаёт папку для хранения файлов.
