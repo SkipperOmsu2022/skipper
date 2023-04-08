@@ -15,6 +15,4 @@ public class StorageProperties {
      * Значение по умолчанию: "~/uploads"
      */
     private String location = "~/uploads";
-    private String apiUserImage = "/api/user/image";
-    private String apiUserCertificates = "apu/user/certificates";
 }
