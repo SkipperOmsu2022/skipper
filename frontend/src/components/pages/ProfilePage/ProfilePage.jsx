@@ -63,7 +63,7 @@ const ProfilePage = () => {
     return (
         <div className="page-content">
             <div className="app-section-header">Профиль</div>
-            <div className="app-section profile">
+            <div className="app-section profile min-width">
                 <div className="profile__section">
                     <div className="profile__section-row">
                         <img

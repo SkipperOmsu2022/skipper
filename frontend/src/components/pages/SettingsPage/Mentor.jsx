@@ -1,23 +1,19 @@
 import { useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { observer } from "mobx-react-lite";
+
+import {MultipleSelect} from "../../../shared/customSelect/CustomSelect";
+import MentorEducation from "./MentorEducation";
+import mentorSettingsStore from "../../../store/mentorSettingsStore";
+
 import useSpecializationService from "../../../services/SpecializationService";
+
 import cross from "../../../resources/icons/cross.svg"
 import "../../../shared/switch.scss"
-import {MutableSelect, MultipleSelect} from "../../../shared/customSelect/CustomSelect";
 
-const Mentor = () => {
+const Mentor = observer(() => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
     const {getSpecializationsList} = useSpecializationService();
-    const [mentor, setMentor] = useState(false);
-    const [aboutMe, setAboutMe] = useState("");
-    const [specializationOptions, setSpecializationOptions] = useState("");
-    
-    const [mentorSpecializations, setMentorSpecializations] = useState([]);
-
-    const [educationStart, setEducationStart] = useState("");
-    const [educationEnd, setEducationEnd] = useState("");
-    const [qualification, setQualification] = useState("");
-    const [educationSpecialization, setEducationSpecialization] = useState("");
 
     const [experienceStart, setExperienceStart] = useState("");
     const [experienceEnd, setExperienceEnd] = useState("");
@@ -27,55 +23,14 @@ const Mentor = () => {
     const [certificateErr, setCertificateErr] = useState(false);
 
     useEffect(() => {
-        let tmp;
+        mentorSettingsStore.resetStore();
         getSpecializationsList()
-            .then(res => {
-                tmp = res;
-                setSpecializationOptions(tmp)
-            })
-            .then(() => {
-                getUserData('user/profile/settings/mentor/')
-                    .then(res => {
-                        setMentor(res?.data?.isEnabledMentorStatus || false);
-                        setAboutMe(res?.data?.aboutMeAsMentor || '');
-                        setMentorSpecializations(res?.data?.mentorSpecializations?.map((item) => 
-                            tmp.find(option => option.value === item)
-                        ) || '');
-                    });
-            })
+            .then(res => mentorSettingsStore.setSpecializationOptions(res))
+            .then(() => getUserData('user/profile/settings/mentor/'))
+            .then(res => mentorSettingsStore.setMentorData(res))
+        
         return () => clearResponse();
     }, []);
-    
-    const switchMessage = mentor ? 
-        <div className="state">
-            <span className="active">Активный</span>
-        </div> : 
-        <div className="state">
-            <span className="inactive">Неактивный</span>
-            <div className="message">
-                (Для активации заполните поля "О себе" и "Специальность")
-            </div>
-        </div>;
-
-    const handleSwitchChange = () => {
-        if(mentor && aboutMe && mentorSpecializations.length) {
-            setMentor(false)
-        } else if (aboutMe && mentorSpecializations.length) {
-            setMentor(true)
-        }
-    }
-    const handleAboutMeChange = (e) => {
-        setAboutMe(e.target.value)
-        if (!e.target.value || !mentorSpecializations.length) {
-            setMentor(false)
-        }
-    }
-    const handleSpecializationChange = (e) => {
-        setMentorSpecializations(Array.isArray(e) ? e : [])
-        if (!aboutMe || e?.length === 0) {
-            setMentor(false)
-        }
-    }
 
     const onCertificateChange = (e) => {
         try {
@@ -134,18 +89,25 @@ const Mentor = () => {
             </div>
         )
     }
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        clearResponse();
+        if (mentorSettingsStore.validate()) {
+            setUserData({
+                isEnabledMentorStatus: mentorSettingsStore.mentor,
+                aboutMeAsMentor: mentorSettingsStore.aboutMentor,
+                mentorSpecializations: mentorSettingsStore.mentorsSpecializations
+                    .map((item) => item.value),
+                educations: mentorSettingsStore.getEducation()
+            }, 'user/profile/settings/mentor/');
+        }
+    }
     
     return (
         <form 
             id="contact-form" 
-            onSubmit={(e) => {
-                e.preventDefault();
-                setUserData({
-                    isEnabledMentorStatus: mentor,
-                    aboutMeAsMentor: aboutMe,
-                    mentorSpecializations: mentorSpecializations.map((item) => item.value)
-                }, 'user/profile/settings/mentor/');
-            }}>
+            onSubmit={onSubmit}>
             <div className="settings__column">
                 <div className="settings__header">
                     НАСТРОЙКИ МЕНТОРА
@@ -154,17 +116,27 @@ const Mentor = () => {
                         <label htmlFor="switch" className="settings__input-group-label">
                             Текущий статус:
                         </label>
-                        <label className={`switch ${aboutMe && mentorSpecializations.length ? "" : "msg"}`}>
+                        <label className={`switch ${mentorSettingsStore.aboutMentor && mentorSettingsStore.mentorsSpecializations.length ? "" : "msg"}`}>
                             <input
                                 id="switch"
                                 className="switch__input"
                                 type="checkbox"
-                                disabled={!aboutMe || !mentorSpecializations.length}
-                                checked={mentor}
-                                onChange={handleSwitchChange}/>
+                                disabled={!mentorSettingsStore.aboutMentor || !mentorSettingsStore.mentorsSpecializations.length}
+                                checked={mentorSettingsStore.mentor}
+                                onChange={mentorSettingsStore.handleSwitchChange}/>
                             <div className="switch__slider switch__circle"></div>
                         </label>
-                        {switchMessage}
+                        {mentorSettingsStore.mentor ? 
+                            <div className="state">
+                                <span className="active">Активный</span>
+                            </div> : 
+                            <div className="state">
+                                <span className="inactive">Неактивный</span>
+                                <div className="message">
+                                    (Для активации заполните поля "О себе" и "Специальность")
+                                </div>
+                            </div>
+                        }
                 </div>
                 <div className="settings__input-group">
                     <label htmlFor="aboutMe" className="settings__input-group-label low-top-padding">
@@ -175,8 +147,8 @@ const Mentor = () => {
                         placeholder="Расскажите немного о себе:"
                         id="aboutMe"
                         maxLength='400'
-                        value={aboutMe}
-                        onChange={handleAboutMeChange}/>
+                        value={mentorSettingsStore.aboutMentor}
+                        onChange={mentorSettingsStore.handleAboutMeChange}/>
                 </div>
                 <div className="settings__input-group">
                     <label htmlFor="specialty" className="settings__input-group-label middle-top-padding">
@@ -185,76 +157,17 @@ const Mentor = () => {
                         <div className="group">
                             <MultipleSelect
                                 placeholder="Добавьте свою специализацию"
-                                value={mentorSpecializations}
-                                multipleOptions={specializationOptions}
+                                value={mentorSettingsStore.mentorsSpecializations}
+                                multipleOptions={mentorSettingsStore.specializationOptions}
                                 noOptionsMessage='Специальностей не найдено'
-                                onChange={handleSpecializationChange}
+                                onChange={mentorSettingsStore.handleSpecializationChange}
                                 width='30.15rem'
                                 minHeight='fit-content'
                             />
                         </div>
                 </div>
-                <div className="settings__input-group">
-                    <label className="settings__input-group-label middle-top-padding">
-                        Образование: 
-                    </label>
-                    <div className="education-group">
-                        <div className="education">
-                            <div className="settings__input-group-box">
-                                <div className="group">
-                                    <MutableSelect
-                                        name="year"
-                                        placeholder="Год начала"
-                                        value={educationStart}
-                                        onChange={(selectedOption) => {
-                                            setEducationStart(selectedOption.value)
-                                            setEducationEnd("")
-                                        }}
-                                    />
-                                </div>
-                                <div className="group">
-                                    <MutableSelect
-                                        name="yearOfEnd"
-                                        placeholder="Год окончания"
-                                        noOptionsMessage={"Выберите год начала"}
-                                        value={educationEnd}
-                                        startDate={educationStart}
-                                        onChange={(selectedOption) => {
-                                            setEducationEnd(selectedOption.value)
-                                        }}
-                                    />
-                                </div>
-                                <div className="group" >
-                                    <MutableSelect
-                                        name="qualification"
-                                        placeholder="Квалификация"
-                                        value={qualification}
-                                        onChange={(selectedOption) => {
-                                            setQualification(selectedOption.value)
-                                        }}
-                                        width='30.15rem'
-                                    />
-                                </div>
-                                <textarea
-                                    className="settings__input-group-text input textarea small"
-                                    placeholder="Добавьте свою специализацию:"
-                                    id="aboutMe"
-                                    maxLength='100'
-                                    value={educationSpecialization}
-                                    onChange={(e) => setEducationSpecialization(e.target.value)}/>
-                            </div>
-                            <div className='wrapper'>
-                                <span className="settings__input-group-btn-width settings__input-group-delete">
-                                    Удалить
-                                </span>
-                                <button className="button settings__input-group-button">
-                                    +
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="settings__input-group">
+                <MentorEducation/>
+                {/* <div className="settings__input-group">
                     <label className="settings__input-group-label middle-top-padding">
                         Опыт работы: 
                     </label>
@@ -284,13 +197,15 @@ const Mentor = () => {
                                         }}
                                     />
                                 </div>
-                                <textarea
-                                    className="settings__input-group-text input textarea small"
-                                    placeholder="Место работы:"
-                                    id="aboutMe" 
-                                    maxLength='100'
-                                    value={experienceName}
-                                    onChange={(e) => setExperienceName(e.target.value)}/>
+                                <div className="textarea-wrapper">
+                                    <textarea
+                                        className="settings__input-group-text input textarea small"
+                                        placeholder="Место работы:"
+                                        id="aboutMe" 
+                                        maxLength='100'
+                                        value={experienceName}
+                                        onChange={(e) => setExperienceName(e.target.value)}/>
+                                </div>
                             </div>
                             <div className='wrapper'>
                                 <span className="settings__input-group-btn-width settings__input-group-delete">
@@ -335,10 +250,10 @@ const Mentor = () => {
                         <textarea className="settings__input-group-text input textarea" placeholder="Добавьте информацию:"
                             id="other" maxLength='100'/>
                     </div>
-                </div>
+                </div> */}
             </div>
         </form>
     )
-}
+})
 
 export default Mentor;
