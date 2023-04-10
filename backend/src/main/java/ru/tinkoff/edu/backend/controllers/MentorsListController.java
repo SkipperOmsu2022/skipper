@@ -6,10 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
+import ru.tinkoff.edu.backend.dto.MentorListPageSortDTO;
 import ru.tinkoff.edu.backend.entities.Qualification;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.services.MentorListService;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +39,16 @@ public class MentorsListController {
     @GetMapping("/list/mentors")
     public ResponseEntity<List<MentorListItemDTO>> getMentorsList() {
         return ResponseEntity.ok(mentorListService.getMentorList());
+    }
+
+    @Operation(summary = "Получение списка менторов с использованием пагинации и сортировки.")
+    @GetMapping("/list/page_sort/mentors")
+    public ResponseEntity<MentorListPageSortDTO> getMentorsListWithPageableAndSort(
+            @RequestParam(defaultValue = "0", required = false) @Min(0) Integer offset,
+            @RequestParam(defaultValue = "30", required = false) @Min(1) @Max(100) Integer limit,
+            @RequestParam(value = "sort", defaultValue = "id", required = false) String sortField
+            ) {
+        return ResponseEntity.ok(mentorListService.getMentorListPageSort(offset, limit, sortField));
     }
 
     @Operation(summary = "Список всех образовательных специальностей Российской Федерации.",
