@@ -13,10 +13,6 @@ import "../../../shared/switch.scss"
 const Mentor = observer(() => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
     const {getSpecializationsList} = useSpecializationService();
-
-    const [experienceStart, setExperienceStart] = useState("");
-    const [experienceEnd, setExperienceEnd] = useState("");
-    const [experienceName, setExperienceName] = useState("");
     
     const [certificates, setCertificates] = useState([]);
     const [certificateErr, setCertificateErr] = useState(false);
@@ -98,7 +94,7 @@ const Mentor = observer(() => {
                 aboutMeAsMentor: mentorSettingsStore.aboutMentor,
                 mentorSpecializations: mentorSettingsStore.mentorsSpecializations
                     .map((item) => item.value),
-                educations: mentorSettingsStore.getEducation(),
+                educations: mentorSettingsStore.getEducations(),
                 workExperiences: []
             }
 
@@ -177,59 +173,9 @@ const Mentor = observer(() => {
                             />
                         </div>
                 </div>
-                <MentorEducation/>
+                <MentorEducations/>
+                <MentorExperiences/>
                 {/* <div className="settings__input-group">
-                    <label className="settings__input-group-label middle-top-padding">
-                        Опыт работы: 
-                    </label>
-                    <div className="experience-group">
-                        <div className="experience">
-                            <div className="settings__input-group-box">
-                            <div className="group">
-                                    <MutableSelect
-                                        name={"year"}
-                                        placeholder="Год начала"
-                                        value={experienceStart}
-                                        onChange={(selectedOption) => {
-                                            setExperienceStart(selectedOption.value)
-                                            setExperienceEnd("")
-                                        }}
-                                    />
-                                </div>
-                                <div className="group">
-                                    <MutableSelect
-                                        name="yearOfEnd"
-                                        placeholder="Год окончания"
-                                        noOptionsMessage={"Выберите год начала"}
-                                        value={experienceEnd}
-                                        startDate={experienceStart}
-                                        onChange={(selectedOption) => {
-                                            setExperienceEnd(selectedOption.value)
-                                        }}
-                                    />
-                                </div>
-                                <div className="textarea-wrapper">
-                                    <textarea
-                                        className="settings__input-group-text input textarea small"
-                                        placeholder="Место работы:"
-                                        id="aboutMe" 
-                                        maxLength='100'
-                                        value={experienceName}
-                                        onChange={(e) => setExperienceName(e.target.value)}/>
-                                </div>
-                            </div>
-                            <div className='wrapper'>
-                                <span className="settings__input-group-btn-width settings__input-group-delete">
-                                    Удалить
-                                </span>
-                                <button className="button settings__input-group-button">
-                                    +
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="settings__input-group">
                     <label htmlFor="upload-photo" className="settings__input-group-label">
                         Сертификаты:
                     </label>
@@ -267,19 +213,19 @@ const Mentor = observer(() => {
     )
 })
 
-const MentorEducation = observer(() => {
+const MentorEducations = observer(() => {
     return (
         <div className="settings__input-group">
             <label className="settings__input-group-label middle-top-padding">
                 Образование: 
             </label>
             <div className="education-group">
-                {mentorSettingsStore.education.length ? null :
+                {mentorSettingsStore.educations.length ? null :
                     <button className="button settings__input-group-button" onClick={mentorSettingsStore.addEducation}>
                         +
                     </button>
                 }
-                {mentorSettingsStore.education.map((item, i) => (
+                {mentorSettingsStore.educations.map((item, i) => (
                     <div className="education" key={item.id}>
                         <div className="settings__input-group-box">
                             <div className="group">
@@ -344,11 +290,87 @@ const MentorEducation = observer(() => {
                             >
                                 Удалить
                             </span>
-                            {mentorSettingsStore.education.length - 1 === i ?
+                            {mentorSettingsStore.educations.length - 1 === i ?
                                 <button
                                     className={`button settings__input-group-button 
                                         ${item.error.includes(true) && mentorSettingsStore.dirty ? 'mrgn-btm' : ''}`}
                                     onClick={mentorSettingsStore.addEducation}
+                                >
+                                    +
+                                </button> 
+                                : null
+                            }
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+})
+
+const MentorExperiences = observer(() => {
+    const [experienceStart, setExperienceStart] = useState("");
+    const [experienceEnd, setExperienceEnd] = useState("");
+    const [experienceName, setExperienceName] = useState("");
+    return (
+        <div className="settings__input-group">
+            <label className="settings__input-group-label middle-top-padding">
+                Опыт работы: 
+            </label>
+            <div className="experience-group">
+                {mentorSettingsStore.workExperiences.length ? null :
+                    <button className="button settings__input-group-button" onClick={mentorSettingsStore.addExperience}>
+                        +
+                    </button>
+                }
+                {mentorSettingsStore.workExperiences.map((item, i) => (
+                    <div className="experience" key={item.id}>
+                        <div className="settings__input-group-box">
+                        <div className="group">
+                                <MutableSelect
+                                    name={"year"}
+                                    placeholder="Год начала"
+                                    value={experienceStart}
+                                    onChange={(selectedOption) => {
+                                        setExperienceStart(selectedOption.value)
+                                        setExperienceEnd("")
+                                    }}
+                                />
+                            </div>
+                            <div className="group">
+                                <MutableSelect
+                                    name="yearOfEnd"
+                                    placeholder="Год окончания"
+                                    noOptionsMessage={"Выберите год начала"}
+                                    value={experienceEnd}
+                                    startDate={experienceStart}
+                                    onChange={(selectedOption) => {
+                                        setExperienceEnd(selectedOption.value)
+                                    }}
+                                />
+                            </div>
+                            <div className="textarea-wrapper">
+                                <textarea
+                                    className="settings__input-group-text input textarea small"
+                                    placeholder="Место работы:"
+                                    id="aboutMe" 
+                                    maxLength='100'
+                                    value={experienceName}
+                                    onChange={(e) => setExperienceName(e.target.value)}/>
+                            </div>
+                        </div>
+                        <div className='wrapper'>
+                            <span
+                                className="settings__input-group-btn-width settings__input-group-delete"
+                                onClick={() => mentorSettingsStore.removeExperience(i)}
+                            >
+                                Удалить
+                            </span>
+                            {mentorSettingsStore.workExperiences.length - 1 === i ?
+                                <button
+                                    className={`button settings__input-group-button 
+                                        ${/* item.error.includes(true) && */ mentorSettingsStore.dirty ? 'mrgn-btm' : ''}`}
+                                    onClick={mentorSettingsStore.addExperience}
                                 >
                                     +
                                 </button> 

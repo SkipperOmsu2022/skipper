@@ -15,7 +15,8 @@ class mainPageStore {
     mentor = false;
     aboutMentor = "";
     mentorsSpecializations = [];
-    education = []
+    educations = []
+    workExperiences = []
     dirty = false;
 
     setSpecializationOptions = (arr) => {
@@ -25,7 +26,7 @@ class mainPageStore {
     asyncGetQualificationOptions = (e, i) => {
         const url = enviroments.apiBase + '/api/list/edu';
         if (e.length >= 3) {
-            this.education[i].noOptionsMessage = 'Значений не найдено'
+            this.educations[i].noOptionsMessage = 'Значений не найдено'
             return axios.request({url, method: 'get', params: {query: e}})
                 .then(res => {
                     return(res.data.map((item) => {
@@ -37,12 +38,13 @@ class mainPageStore {
                     }))
                 })
         } else {
-            this.education[i].noOptionsMessage = 'Введите минимум 3 символа'
+            this.educations[i].noOptionsMessage = 'Введите минимум 3 символа'
             return new Promise((resolve) => resolve([]));
         }
     }
 
     setMentorData = (res) => {
+        console.log(res)
         this.mentor = res?.data?.isEnabledMentorStatus || false;
         this.aboutMentor = res?.data?.aboutMeAsMentor || '';
         this.mentorsSpecializations = res?.data?.mentorSpecializations
@@ -50,11 +52,15 @@ class mainPageStore {
         res?.data?.educations.forEach((item) => {
             this.addEducation(item)
         });
+        res?.data?.workExperiences.forEach((item) => {
+            this.addExperience(item)
+        });
+
     }
 
     addEducation = (item) => {
         const {qualificationId, yearStart, yearEnd, qualificationNameWithCode, educationalInstitution} = item;
-        this.education.push({
+        this.educations.push({
             id: this.id,
             yearStart: yearStart || null,
             yearEnd: +yearEnd || null,
@@ -68,20 +74,34 @@ class mainPageStore {
         this.id++;
     }
     removeEducation = (i) => {
-        this.education.splice(i, 1);
+        this.educations.splice(i, 1);
     }
     setEducation = (e, i, valueName) => {
         if (valueName === 'qualification') {
-            this.education[i].qualificationId = e.id;
-            this.education[i].label = e.label;
-            this.education[i].error[1] = false;
-        } else if (valueName === 'yearStart' && +this.education[i].yearEnd < +e.value) {
-            this.education[i].yearEnd = null;
-            this.education[i].error[0] = false;
+            this.educations[i].qualificationId = e.id;
+            this.educations[i].label = e.label;
+            this.educations[i].error[1] = false;
+        } else if (valueName === 'yearStart' && +this.educations[i].yearEnd < +e.value) {
+            this.educations[i].yearEnd = null;
+            this.educations[i].error[0] = false;
         } else if (valueName === 'educationalInstitution') {
-            this.education[i].error[2] = false;
+            this.educations[i].error[2] = false;
         } 
-        this.education[i][valueName] = e.value
+        this.educations[i][valueName] = e.value
+    }
+
+    addExperience = (item) => {
+        const {dateStart, dateEnd, placeOfWork} = item;
+        this.workExperiences.push({
+            id: this.id,
+            dateStart: dateStart || null,
+            dateEnd: +dateEnd || null,
+            placeOfWork: placeOfWork
+        })
+        this.id++;
+    }
+    removeExperience = (i) => {
+        this.workExperiences.splice(i, 1);
     }
 
     handleSwitchChange = () => {
@@ -106,8 +126,8 @@ class mainPageStore {
         }
     }
 
-    getEducation = () => {
-        return this.education.map((item) => {
+    getEducations = () => {
+        return this.educations.map((item) => {
             return {
                 yearStart: +item.yearStart,
                 yearEnd: item.yearEnd,
@@ -119,8 +139,8 @@ class mainPageStore {
 
     validate = () => {
         let complete = true;
-        console.log(this.education)
-        this.education.forEach((item) => {
+        console.log(this.educations)
+        this.educations.forEach((item) => {
             if (!(item.yearStart && item.qualificationId && item.educationalInstitution)) {
                 complete = false
             }
@@ -146,7 +166,7 @@ class mainPageStore {
         this.mentor = false;
         this.aboutMentor = "";
         this.mentorsSpecializations = [];
-        this.education = []
+        this.educations = []
     }
 }
 
