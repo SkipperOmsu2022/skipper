@@ -145,7 +145,7 @@ const Common = () => {
         for ( var key in data ) {
             form_data.append(key, data[key]);
         }
-        
+        console.log(form_data)
         setUserData(form_data, 'user/profile/settings/', {"Content-Type": 'multipart/form-data'});
     }
     

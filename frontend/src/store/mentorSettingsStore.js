@@ -23,7 +23,7 @@ class mainPageStore {
     }
 
     asyncGetQualificationOptions = (e, i) => {
-        const url = enviroments.apiBase + '/api/user/profile/settings/mentor/edu';
+        const url = enviroments.apiBase + '/api/list/edu';
         if (e.length >= 3) {
             this.education[i].noOptionsMessage = 'Значений не найдено'
             return axios.request({url, method: 'get', params: {query: e}})

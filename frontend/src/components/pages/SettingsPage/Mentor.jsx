@@ -93,13 +93,25 @@ const Mentor = observer(() => {
         e.preventDefault();
         clearResponse();
         if (mentorSettingsStore.validate()) {
-            setUserData({
+            const info = {
                 isEnabledMentorStatus: mentorSettingsStore.mentor,
                 aboutMeAsMentor: mentorSettingsStore.aboutMentor,
                 mentorSpecializations: mentorSettingsStore.mentorsSpecializations
                     .map((item) => item.value),
-                educations: mentorSettingsStore.getEducation()
-            }, 'user/profile/settings/mentor/');
+                educations: mentorSettingsStore.getEducation(),
+                workExperiences: []
+            }
+
+            let form_data = new FormData();
+
+            form_data.append('info', JSON.stringify(info));
+            form_data.append('certificates', []);
+
+            setUserData(
+                form_data,
+                'user/profile/settings/mentor/',
+                {'Content-Type':'multipart/form-data' }
+            );
         }
     }
     
