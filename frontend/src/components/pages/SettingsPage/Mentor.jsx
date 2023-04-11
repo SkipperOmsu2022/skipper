@@ -13,9 +13,6 @@ import "../../../shared/switch.scss"
 const Mentor = observer(() => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
     const {getSpecializationsList} = useSpecializationService();
-    
-    const [certificates, setCertificates] = useState([]);
-    const [certificateErr, setCertificateErr] = useState(false);
 
     useEffect(() => {
         mentorSettingsStore.resetStore();
@@ -26,64 +23,6 @@ const Mentor = observer(() => {
         
         return () => clearResponse();
     }, []);
-
-    const onCertificateChange = (e) => {
-        try {
-			e.preventDefault();
-			let file;
-
-			if (e.dataTransfer) {
-				file = e.dataTransfer.files[0];
-			} else if (e.target) {
-				file = e.target.files[0];
-			}
-
-			const reader = new FileReader();
-
-			if (!reader) return;
-
-            if (file.type !== "image/gif" & file.type !== "image/png" & file.type !== "image/jpeg") {
-                setCertificateErr("Неправильный формат файла");
-                return;
-            } else if (file.size > 1048576){
-                setCertificateErr("Слишком большой файл");
-                return;
-            }
-
-			reader.onload = () => {
-				setCertificates(certificates => [...certificates, reader.result?.toString()]);
-				e.target.value = null;
-			};
-
-			reader.readAsDataURL(file);
-		} catch (error) {
-			console.log(error);
-		}
-    };
-
-    const onDeleteCertificate = (i) => {
-        setCertificates([...certificates.slice(0, i), ...certificates.slice(i + 1)])
-    }
-
-    function certificatesView() {
-        const elements = certificates.map((item, i) => {
-            return (
-                <div className="certificates__group-item" key={i}>
-                    <div className="img-wrapper">
-                        <img src={item} alt="certificate" className="certificates__group-item-image"/>
-                        <img src={cross} alt="certificate" className="certificates__group-item-cross"
-                            onClick={() => onDeleteCertificate(i)}/>
-                    </div>
-                </div>
-            )
-        })
-    
-        return (
-            <div className="certificates__group">
-                {elements}
-            </div>
-        )
-    }
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -175,39 +114,7 @@ const Mentor = observer(() => {
                 </div>
                 <MentorEducations/>
                 <MentorExperiences/>
-                {/* <div className="settings__input-group">
-                    <label htmlFor="upload-photo" className="settings__input-group-label">
-                        Сертификаты:
-                    </label>
-                    <div className="certificates">
-                        {certificatesView()}
-                        {certificates.length < 9 ? <>
-                            <label htmlFor="upload-photo" className="button settings__photo-button" onClick={() => setCertificateErr(null)}>
-                                Загрузить
-                            </label>
-                            <input
-                                type="file"
-                                name="photo"
-                                id="upload-photo"
-                                className="settings__photo-input"
-                                onChange={onCertificateChange}
-                            />
-                            <div className={`certificates__description${certificateErr ? ' error' : ''}`}>
-                                {certificateErr ? certificateErr : 'Размер файла не должен привышать 1 Мб'}
-                            </div>
-                        </>
-                            : null}
-                    </div>
-                </div>
-                <div className="settings__input-group">
-                    <label htmlFor="other" className="settings__input-group-label middle-top-padding">
-                        Прочая информация:
-                    </label>
-                    <div className="settings__input-group-box">
-                        <textarea className="settings__input-group-text input textarea" placeholder="Добавьте информацию:"
-                            id="other" maxLength='100'/>
-                    </div>
-                </div> */}
+                <MentorCertificates/>
             </div>
         </form>
     )
@@ -387,6 +294,53 @@ const MentorExperiences = observer(() => {
                 ))}
             </div>
         </div>
+    )
+})
+
+const MentorCertificates = observer(() => {
+    return (
+        <>
+            <div className="settings__input-group">
+                <label htmlFor="upload-photo" className="settings__input-group-label middle-top-padding">
+                    Сертификаты:
+                </label>
+                <div className="certificates">
+                    <div className="certificates__group">
+                        {mentorSettingsStore.certificates.map((item, i) => (
+                            <div className="certificates__group-item" key={i}>
+                                <div className="img-wrapper">
+                                    <img src={item} alt="certificate" className="certificates__group-item-image"/>
+                                    <img src={cross} alt="certificate" className="certificates__group-item-cross"
+                                        onClick={() => mentorSettingsStore.removeCertificate(i)}/>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    {mentorSettingsStore.certificates.length < 3 ? 
+                        <>
+                            <label 
+                                htmlFor="upload-photo"
+                                className="button settings__photo-button"
+                                onClick={() => {mentorSettingsStore.certificatesErr = false}}
+                            >
+                                Загрузить
+                            </label>
+                            <input
+                                type="file"
+                                name="photo"
+                                id="upload-photo"
+                                className="settings__photo-input"
+                                onChange={mentorSettingsStore.onCertificatesChange}
+                            />
+                            <div className={`certificates__description${mentorSettingsStore.certificatesErr ? ' error' : ''}`}>
+                                {mentorSettingsStore.certificatesErr ? mentorSettingsStore.certificatesErr : 'Размер файла не должен привышать 3 Мб'}
+                            </div>
+                        </>
+                        : null
+                    }
+                </div>
+            </div>
+        </>
     )
 })
 

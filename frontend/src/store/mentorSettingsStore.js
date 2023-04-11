@@ -3,7 +3,7 @@ import axios from "axios";
 
 import enviroments from '../config/enviroments';
 
-class mainPageStore {
+class mentorSettingsStore {
     constructor() {
         makeAutoObservable(this, { deep: true })
     }
@@ -17,6 +17,8 @@ class mainPageStore {
     mentorsSpecializations = [];
     educations = []
     workExperiences = []
+    certificates = []
+    certificatesErr = false
     dirty = false;
 
     setSpecializationOptions = (arr) => {
@@ -113,6 +115,43 @@ class mainPageStore {
         this.workExperiences.splice(i, 1);
     }
 
+    onCertificatesChange = (e) => {
+        try {
+			e.preventDefault();
+			let file;
+
+			if (e.dataTransfer) {
+				file = e.dataTransfer.files[0];
+			} else if (e.target) {
+				file = e.target.files[0];
+			}
+
+			const reader = new FileReader();
+
+			if (!reader) return;
+
+            if (file.type !== "image/gif" & file.type !== "image/png" & file.type !== "image/jpeg") {
+                this.certificatesErr = "Неправильный формат файла";
+                return;
+            } else if (file.size > 1048576 * 3){
+                this.certificatesErr = "Слишком большой файл";
+                return;
+            }
+
+			reader.onload = () => {
+				this.certificates.push(reader.result?.toString());
+				e.target.value = null;
+			};
+
+			reader.readAsDataURL(file);
+		} catch (error) {
+			console.log(error);
+		}
+    };
+    removeCertificate = (i) => {
+        this.certificates.splice(i, 1);
+    }
+
     handleSwitchChange = () => {
         if(this.mentor && this.aboutMentor && this.mentorsSpecializations.length) {
             this.mentor = false;
@@ -187,7 +226,11 @@ class mainPageStore {
         this.aboutMentor = "";
         this.mentorsSpecializations = [];
         this.educations = []
+        this.workExperiences = []
+        this.certificates = []
+        this.certificatesErr = false
+        this.dirty = false;
     }
 }
 
-export default new mainPageStore();
+export default new mentorSettingsStore();
