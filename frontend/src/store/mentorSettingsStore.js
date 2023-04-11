@@ -105,7 +105,7 @@ class mainPageStore {
             this.workExperiences[i].dateEnd = null;
             this.workExperiences[i].error[0] = false;
         } else if (valueName === 'placeOfWork') {
-            this.educations[i].error[1] = false;
+            this.workExperiences[i].error[1] = false;
         }
         this.workExperiences[i][valueName] = e.value
     }
