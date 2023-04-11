@@ -44,7 +44,6 @@ class mainPageStore {
     }
 
     setMentorData = (res) => {
-        console.log(res)
         this.mentor = res?.data?.isEnabledMentorStatus || false;
         this.aboutMentor = res?.data?.aboutMeAsMentor || '';
         this.mentorsSpecializations = res?.data?.mentorSpecializations
@@ -96,9 +95,19 @@ class mainPageStore {
             id: this.id,
             dateStart: dateStart || null,
             dateEnd: +dateEnd || null,
-            placeOfWork: placeOfWork
+            placeOfWork: placeOfWork,
+            error: [false, false]
         })
         this.id++;
+    }
+    setExperience = (e, i, valueName) => {
+        if (valueName === 'dateStart' && +this.workExperiences[i].dateEnd < +e.value) {
+            this.workExperiences[i].dateEnd = null;
+            this.workExperiences[i].error[0] = false;
+        } else if (valueName === 'placeOfWork') {
+            this.educations[i].error[1] = false;
+        }
+        this.workExperiences[i][valueName] = e.value
     }
     removeExperience = (i) => {
         this.workExperiences.splice(i, 1);
@@ -152,6 +161,17 @@ class mainPageStore {
             }
             if (!item.educationalInstitution) {
                 item.error[2] = true
+            }
+        })
+        this.workExperiences.forEach((item) => {
+            if (!(item.dateStart && item.placeOfWork)) {
+                complete = false
+            }
+            if (!item.dateStart) {
+                item.error[0] = true
+            }
+            if (!item.placeOfWork) {
+                item.error[1] = true
             }
         })
         this.dirty = true;

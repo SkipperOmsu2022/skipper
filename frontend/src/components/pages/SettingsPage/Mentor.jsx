@@ -270,7 +270,7 @@ const MentorEducations = observer(() => {
                                     className={`settings__input-group-text input textarea small
                                         ${item.error[2] && mentorSettingsStore.dirty ? 'error' : ''}`}
                                     placeholder="Учебное заведение:"
-                                    id="aboutMe"
+                                    id={`educations${i}`}
                                     maxLength='100'
                                     value={item.educationalInstitution}
                                     onChange={(e) => {
@@ -309,9 +309,6 @@ const MentorEducations = observer(() => {
 })
 
 const MentorExperiences = observer(() => {
-    const [experienceStart, setExperienceStart] = useState("");
-    const [experienceEnd, setExperienceEnd] = useState("");
-    const [experienceName, setExperienceName] = useState("");
     return (
         <div className="settings__input-group">
             <label className="settings__input-group-label middle-top-padding">
@@ -330,11 +327,11 @@ const MentorExperiences = observer(() => {
                                 <MutableSelect
                                     name={"year"}
                                     placeholder="Год начала"
-                                    value={experienceStart}
-                                    onChange={(selectedOption) => {
-                                        setExperienceStart(selectedOption.value)
-                                        setExperienceEnd("")
+                                    value={item.dateStart + ''}
+                                    onChange={(e) => {
+                                        mentorSettingsStore.setExperience(e, i, 'dateStart')
                                     }}
+                                    error={item.error[0] && mentorSettingsStore.dirty}
                                 />
                             </div>
                             <div className="group">
@@ -342,22 +339,31 @@ const MentorExperiences = observer(() => {
                                     name="yearOfEnd"
                                     placeholder="Год окончания"
                                     noOptionsMessage={"Выберите год начала"}
-                                    value={experienceEnd}
-                                    startDate={experienceStart}
-                                    onChange={(selectedOption) => {
-                                        setExperienceEnd(selectedOption.value)
+                                    value={item.dateEnd}
+                                    startDate={item.dateStart}
+                                    onChange={(e) => {
+                                        mentorSettingsStore.setExperience(e, i, 'dateEnd')
+                                    }}
+                                    error={item.error[0] && mentorSettingsStore.dirty}
+                                />
+                            </div>
+                            <div className="textarea-wrapper group">
+                                <textarea
+                                    className={`settings__input-group-text input textarea small
+                                        ${item.error[1] && mentorSettingsStore.dirty ? 'error' : ''}`}
+                                    placeholder="Место работы:"
+                                    id={`workExperiences${i}`} 
+                                    maxLength='100'
+                                    value={item.placeOfWork}
+                                    onChange={(e) => {
+                                        mentorSettingsStore.setExperience(e.target, i, 'placeOfWork')
                                     }}
                                 />
                             </div>
-                            <div className="textarea-wrapper">
-                                <textarea
-                                    className="settings__input-group-text input textarea small"
-                                    placeholder="Место работы:"
-                                    id="aboutMe" 
-                                    maxLength='100'
-                                    value={experienceName}
-                                    onChange={(e) => setExperienceName(e.target.value)}/>
-                            </div>
+                            {item.error.includes(true) && mentorSettingsStore.dirty ? 
+                                <div className="group-error">Заполните все поля</div>
+                                :null
+                            }
                         </div>
                         <div className='wrapper'>
                             <span
@@ -369,7 +375,7 @@ const MentorExperiences = observer(() => {
                             {mentorSettingsStore.workExperiences.length - 1 === i ?
                                 <button
                                     className={`button settings__input-group-button 
-                                        ${/* item.error.includes(true) && */ mentorSettingsStore.dirty ? 'mrgn-btm' : ''}`}
+                                        ${item.error.includes(true) && mentorSettingsStore.dirty ? 'mrgn-btm' : ''}`}
                                     onClick={mentorSettingsStore.addExperience}
                                 >
                                     +
