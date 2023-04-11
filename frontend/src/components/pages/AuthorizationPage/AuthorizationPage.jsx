@@ -7,7 +7,7 @@ const AuthorizationPage = (props) => {
     const { auth } = useAuthContext()
 
     if (auth) {
-        return <Navigate to="/" replace={true} />
+        return <Navigate to="/mentors" replace={true} />
     }
 
     return (
