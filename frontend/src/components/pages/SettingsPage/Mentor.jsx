@@ -24,7 +24,11 @@ const Mentor = observer(() => {
         return () => clearResponse();
     }, []);
 
-    const onSubmit = (e) => {
+    async function getBlobFromUrl(url) {
+        return await fetch(url).then(r => r.blob());
+    }
+
+    const onSubmit = async (e) => {
         e.preventDefault();
         clearResponse();
         if (mentorSettingsStore.validate()) {
@@ -34,9 +38,9 @@ const Mentor = observer(() => {
                 mentorSpecializations: mentorSettingsStore.mentorsSpecializations
                     .map((item) => item.value),
                 educations: mentorSettingsStore.getEducations(),
-                workExperiences: []
+                workExperiences: mentorSettingsStore.getWorkExperiences()
             }
-
+            
             let form_data = new FormData();
 
             const json = JSON.stringify(info);
@@ -46,7 +50,8 @@ const Mentor = observer(() => {
             form_data.append('info', jsonBlob);
             
             // массив блобов с фотками сертификатов
-            const filesBlob = [new Blob()];
+            const filesBlob = await mentorSettingsStore.getCertificates();
+            console.log(filesBlob)
             filesBlob.forEach(file => {
                 form_data.append('certificates', file);
             });

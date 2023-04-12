@@ -3,6 +3,10 @@ import axios from "axios";
 
 import enviroments from '../config/enviroments';
 
+async function getBlobFromUrl(url) {
+    return await fetch(url).then(r => r.blob());
+}
+
 class mentorSettingsStore {
     constructor() {
         makeAutoObservable(this, { deep: true })
@@ -53,10 +57,11 @@ class mentorSettingsStore {
         res?.data?.educations.forEach((item) => {
             this.addEducation(item)
         });
+        console.log(res)
         res?.data?.workExperiences.forEach((item) => {
-            this.addExperience(item)
+            console.log(item)
+            //this.addExperience(item)
         });
-
     }
 
     addEducation = (item) => {
@@ -183,6 +188,18 @@ class mentorSettingsStore {
                 educationalInstitution: item.educationalInstitution
             }
         })
+    }
+    getWorkExperiences = () => {
+        return this.workExperiences.map((item) => {
+            return {
+                dateStart: +item.dateStart,
+                dateEnd: item.dateEnd,
+                placeOfWork: item.placeOfWork
+            }
+        })
+    }
+    getCertificates = async () => {
+        return await Promise.all(this.certificates.map(async (item) => getBlobFromUrl(item)))
     }
 
     validate = () => {
