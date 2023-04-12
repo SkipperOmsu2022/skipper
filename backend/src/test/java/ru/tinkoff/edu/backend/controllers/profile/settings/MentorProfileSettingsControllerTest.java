@@ -18,6 +18,7 @@ import ru.tinkoff.edu.backend.dto.profile.settings.WorkExperienceDTO;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.services.MentorProfileService;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Set;
 
@@ -82,7 +83,8 @@ class MentorProfileSettingsControllerTest {
         long id = 2L;
 
         MockMultipartFile jsonObject = new MockMultipartFile("info", "info",
-                "application/json", objectMapper.writeValueAsString(userEditMentorDTO).getBytes());
+                "application/json", objectMapper.writeValueAsString(userEditMentorDTO)
+                .getBytes(StandardCharsets.UTF_8));
 
         mockMvc.perform(multipart("/api/user/profile/settings/mentor/{id}", id)
                         .file(multipartFiles[0])
@@ -101,7 +103,8 @@ class MentorProfileSettingsControllerTest {
     void put_mentorSettings_withExceptionMaxNumberOfFIle_thenReturnObjectWIthStatus400() throws Exception {
         long id = 3L;
         MockMultipartFile jsonObject = new MockMultipartFile("info", "info",
-                "application/json", objectMapper.writeValueAsString(userEditMentorDTO).getBytes());
+                "application/json", objectMapper.writeValueAsString(userEditMentorDTO)
+                .getBytes(StandardCharsets.UTF_8));
 
         mockMvc.perform(multipart("/api/user/profile/settings/mentor/{id}", id)
                         .file(multipartFiles[0])
