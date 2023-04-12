@@ -10,5 +10,4 @@ import ru.tinkoff.edu.backend.entities.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
     Page<User> findAllByIsEnabledMentorStatus(Boolean mentorStatus, Pageable pageable);
-    Page<User> findAllBy
 }
