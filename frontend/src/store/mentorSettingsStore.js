@@ -59,8 +59,7 @@ class mentorSettingsStore {
         });
         console.log(res)
         res?.data?.workExperiences.forEach((item) => {
-            console.log(item)
-            //this.addExperience(item)
+            this.addExperience(item)
         });
     }
 

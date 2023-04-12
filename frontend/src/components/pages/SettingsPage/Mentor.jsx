@@ -24,10 +24,6 @@ const Mentor = observer(() => {
         return () => clearResponse();
     }, []);
 
-    async function getBlobFromUrl(url) {
-        return await fetch(url).then(r => r.blob());
-    }
-
     const onSubmit = async (e) => {
         e.preventDefault();
         clearResponse();
@@ -55,6 +51,9 @@ const Mentor = observer(() => {
             filesBlob.forEach(file => {
                 form_data.append('certificates', file);
             });
+            if (filesBlob.length === 0) {
+                form_data.append('certificates', new Blob());
+            }
 
             setUserData(
                 form_data,
