@@ -18,7 +18,6 @@ import ru.tinkoff.edu.backend.dto.profile.settings.WorkExperienceDTO;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.services.MentorProfileService;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Set;
 
@@ -48,7 +47,7 @@ class MentorProfileSettingsControllerTest {
     );
 
     Set<WorkExperienceDTO> workExperienceDTOS = Sets.set(
-            new WorkExperienceDTO(LocalDate.of(2020, 2, 1), null,
+            new WorkExperienceDTO(2020L, null,
                     "ГазпромМежРегионГаз")
     );
 

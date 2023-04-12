@@ -65,10 +65,10 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                 .getWorkExperiences()
                 .stream()
                 .map(e -> WorkExperienceDTO.builder()
-                    .dateStart(e.getId().getDateStart())
-                    .dateEnd(e.getDateEnd())
-                    .placeOfWork(e.getId().getPlaceOfWork())
-                    .build())
+                        .yearStart(e.getId().getYearStart())
+                        .yearEnd(e.getYearEnd())
+                        .placeOfWork(e.getId().getPlaceOfWork())
+                        .build())
                 .collect(Collectors.toSet());
 
         user.setCertificatesResource(userFromDB.getCertificateResources());
@@ -114,11 +114,20 @@ public class MentorProfileServiceImpl implements MentorProfileService {
         Set<WorkExperience> workExperiences = Optional.ofNullable(user.getWorkExperiences())
                 .orElse(Collections.emptySet())
                 .stream()
-                .map(e -> WorkExperience.builder()
-                        .id(new WorkExperiencePK(userFromDB.getId(), e.getPlaceOfWork(), e.getDateStart()))
-                        .user(userFromDB)
-                        .dateEnd(e.getDateEnd())
-                        .build()
+                .map(e -> {
+                    if(!Objects.isNull(e.getYearEnd()) && e.getYearStart() > e.getYearEnd()) {
+                        throw new IncorrectDateTimeException("The start year cannot be less");
+                    }
+                    if(e.getYearStart() > Year.now().getValue()) {
+                        throw new IncorrectDateTimeException("The beginning of the work experience cannot be in the " +
+                                "future time");
+                    }
+                    return WorkExperience.builder()
+                                    .id(new WorkExperiencePK(userFromDB.getId(), e.getPlaceOfWork(), e.getYearStart()))
+                                    .user(userFromDB)
+                                    .yearEnd(e.getYearEnd())
+                                    .build();
+                        }
                 )
                 .collect(Collectors.toSet());
 
@@ -168,8 +177,8 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                 .getWorkExperiences()
                 .stream()
                 .map(e -> WorkExperienceDTO.builder()
-                        .dateStart(e.getId().getDateStart())
-                        .dateEnd(e.getDateEnd())
+                        .yearStart(e.getId().getYearStart())
+                        .yearEnd(e.getYearEnd())
                         .placeOfWork(e.getId().getPlaceOfWork())
                         .build())
                 .collect(Collectors.toSet());
