@@ -17,7 +17,6 @@ import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMentorDTO;
 import ru.tinkoff.edu.backend.services.MentorProfileService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Size;
 
 /**
  * Данный контроллер отвечает за:
@@ -46,15 +45,13 @@ public class MentorProfileSettingsController {
     @Operation(summary = "Изменение информации о менторских настройках пользователя.",
             description = "Менторские специальности и менторское образование перезаписывается! В каждом запросе нужно" +
             "отправлять всё что нужно сохранить! Вес одного сертификаты не более 3МБ. Совокупный вес всех" +
-            "сертификатов не более 10 МБ. Максимальное количество сертификатов: 4."
+            "сертификатов не более 9 МБ. Максимальное количество сертификатов: 3."
     )
     @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> editMentorSettings(@PathVariable Long id,
                                                    @RequestPart("info") @Valid UserEditMentorDTO user,
-                                                   @Valid @Nullable
-                                                       @Size(message = "Максимальное количество файлов: 4", max = 4)
-                                                       @RequestPart("certificates") MultipartFile[] certificates) {
+                                                   @RequestPart("certificates") MultipartFile[] certificates) {
         mentorProfileService.updateMentorInfo(id, user, certificates);
         return ResponseEntity.ok().build();
     }

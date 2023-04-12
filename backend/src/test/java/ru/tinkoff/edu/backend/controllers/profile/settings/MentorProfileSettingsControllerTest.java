@@ -123,7 +123,7 @@ class MentorProfileSettingsControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("message")
-                        .value("editMentorSettings.certificates: Максимальное количество файлов: 4!"));
+                        .value("editMentorSettings.certificates: Максимальное количество файлов: 3!"));
 
     }
 }

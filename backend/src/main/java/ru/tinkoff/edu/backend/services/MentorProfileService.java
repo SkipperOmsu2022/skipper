@@ -1,9 +1,12 @@
 package ru.tinkoff.edu.backend.services;
 
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.tinkoff.edu.backend.dto.profile.UserMentorProfileDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMentorDTO;
+
+import javax.validation.constraints.Size;
 
 @Service
 public interface MentorProfileService {
@@ -27,7 +30,9 @@ public interface MentorProfileService {
      * @param certificates массив сертификатов.
      * @see UserEditMentorDTO
      */
-    void updateMentorInfo(Long id, UserEditMentorDTO user, MultipartFile[] certificates);
+    void updateMentorInfo(Long id, UserEditMentorDTO user,
+                          @Nullable @Size(message = "Максимальное количество файлов: 3", max = 3)
+                          MultipartFile[] certificates);
 
     /**
      * Возвращает UserEditMentorDTO объект с менторской информацией о пользователе.
