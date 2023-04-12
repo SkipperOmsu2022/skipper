@@ -96,19 +96,19 @@ class mentorSettingsStore {
     }
 
     addExperience = (item) => {
-        const {dateStart, dateEnd, placeOfWork} = item;
+        const {yearStart, yearEnd, placeOfWork} = item;
         this.workExperiences.push({
             id: this.id,
-            dateStart: dateStart || null,
-            dateEnd: +dateEnd || null,
+            yearStart: yearStart || null,
+            yearEnd: +yearEnd || null,
             placeOfWork: placeOfWork,
             error: [false, false]
         })
         this.id++;
     }
     setExperience = (e, i, valueName) => {
-        if (valueName === 'dateStart' && +this.workExperiences[i].dateEnd < +e.value) {
-            this.workExperiences[i].dateEnd = null;
+        if (valueName === 'yearStart' && +this.workExperiences[i].yearEnd < +e.value) {
+            this.workExperiences[i].yearEnd = null;
             this.workExperiences[i].error[0] = false;
         } else if (valueName === 'placeOfWork') {
             this.workExperiences[i].error[1] = false;
@@ -191,8 +191,8 @@ class mentorSettingsStore {
     getWorkExperiences = () => {
         return this.workExperiences.map((item) => {
             return {
-                dateStart: +item.dateStart,
-                dateEnd: item.dateEnd,
+                yearStart: +item.yearStart,
+                yearEnd: item.yearEnd,
                 placeOfWork: item.placeOfWork
             }
         })
@@ -219,10 +219,10 @@ class mentorSettingsStore {
             }
         })
         this.workExperiences.forEach((item) => {
-            if (!(item.dateStart && item.placeOfWork)) {
+            if (!(item.yearStart && item.placeOfWork)) {
                 complete = false
             }
-            if (!item.dateStart) {
+            if (!item.yearStart) {
                 item.error[0] = true
             }
             if (!item.placeOfWork) {
