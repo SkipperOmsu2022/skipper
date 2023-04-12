@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +52,8 @@ public class MentorProfileSettingsController {
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> editMentorSettings(@PathVariable Long id,
                                                    @RequestPart("info") @Valid UserEditMentorDTO user,
-                                                   @Valid @Size(message = "Максимальное количество файлов: 4", max = 4)
+                                                   @Valid @Nullable
+                                                       @Size(message = "Максимальное количество файлов: 4", max = 4)
                                                        @RequestPart("certificates") MultipartFile[] certificates) {
         mentorProfileService.updateMentorInfo(id, user, certificates);
         return ResponseEntity.ok().build();

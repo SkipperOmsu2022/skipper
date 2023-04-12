@@ -130,17 +130,20 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                         }
                 )
                 .collect(Collectors.toSet());
+        if(certificates != null) {
+            Set<String> certificateResources = new HashSet<>((int) (certificates.length * 1.5));
 
-        Set<String> certificateResources = new HashSet<>((int) (certificates.length * 1.5));
+            userFromDB.getCertificateResources().forEach(
+                    e -> fileStorageService
+                            .deleteFromFileStorageLocation(FileStorageLocation.USER_CERTIFICATES, e)
+            );
 
-        userFromDB.getCertificateResources().forEach(
-                e -> fileStorageService
-                        .deleteFromFileStorageLocation(FileStorageLocation.USER_CERTIFICATES, e)
-        );
+            for (int i = 0; i < certificates.length; ++i) {
+                certificateResources.add(fileStorageService
+                        .save(FileStorageLocation.USER_CERTIFICATES, certificates[i], id + "_" + i));
+            }
 
-        for(int i = 0; i < certificates.length; ++i) {
-            certificateResources.add(fileStorageService
-                    .save(FileStorageLocation.USER_CERTIFICATES, certificates[i], id + "_" + i));
+            userFromDB.setCertificateResources(certificateResources);
         }
 
         educationRepository.deleteEducationsByUser(userFromDB);
@@ -148,8 +151,6 @@ public class MentorProfileServiceImpl implements MentorProfileService {
 
         workExperienceRepository.deleteWorkExperiencesByUser(userFromDB);
         workExperienceRepository.saveAll(workExperiences);
-
-        userFromDB.setCertificateResources(certificateResources);
 
         userRepository.save(userFromDB);
     }

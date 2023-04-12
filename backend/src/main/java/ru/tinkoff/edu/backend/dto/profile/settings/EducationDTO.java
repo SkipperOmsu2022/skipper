@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EducationDTO {
+    @NotNull(message = "Начало получения образования обязательно!")
     private Integer yearStart;
     private Integer yearEnd;
     @NotNull
