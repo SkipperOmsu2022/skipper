@@ -39,8 +39,17 @@ const Mentor = observer(() => {
 
             let form_data = new FormData();
 
-            form_data.append('info', JSON.stringify(info));
-            form_data.append('certificates', []);
+            const json = JSON.stringify(info);
+            const jsonBlob = new Blob([json], {
+                type: 'application/json'
+            });
+            form_data.append('info', jsonBlob);
+            
+            // массив блобов с фотками сертификатов
+            const filesBlob = [new Blob()];
+            filesBlob.forEach(file => {
+                form_data.append('certificates', file);
+            });
 
             setUserData(
                 form_data,
