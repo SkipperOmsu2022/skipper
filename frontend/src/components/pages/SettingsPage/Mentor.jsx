@@ -45,15 +45,11 @@ const Mentor = observer(() => {
             });
             form_data.append('info', jsonBlob);
             
-            // массив блобов с фотками сертификатов
             const filesBlob = await mentorSettingsStore.getCertificates();
             console.log(filesBlob)
             filesBlob.forEach(file => {
-                form_data.append('certificates', file);
+                form_data.append('certificates', file, "image.jpg");
             });
-            if (filesBlob.length === 0) {
-                form_data.append('certificates', new Blob());
-            }
 
             setUserData(
                 form_data,
