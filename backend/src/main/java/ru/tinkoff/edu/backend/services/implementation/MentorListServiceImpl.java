@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.tinkoff.edu.backend.dto.FilterSortPaginationMentorListDTO;
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
 import ru.tinkoff.edu.backend.dto.MentorListPageSortDTO;
 import ru.tinkoff.edu.backend.entities.Qualification;
@@ -14,8 +15,7 @@ import ru.tinkoff.edu.backend.repositories.QualificationRepository;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
 import ru.tinkoff.edu.backend.services.MentorListService;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,12 +46,15 @@ public class MentorListServiceImpl implements MentorListService {
     }
 
     @Override
-    public MentorListPageSortDTO getMentorListPageSort(Integer offset, Integer limit, String sortField) {
-        Page<User> pages = userRepository
-                .findAllByIsEnabledMentorStatus(
-                        true,
-                        PageRequest.of(offset, limit)
-                                .withSort(Sort.Direction.ASC, sortField)
+    public MentorListPageSortDTO getMentorListPageSortFilter(FilterSortPaginationMentorListDTO dto) {
+        Page<User> pages =
+                userRepository
+                        .getAllMentorsWithPageSortAndFilter(
+                        PageRequest.of(dto.getOffset(), dto.getLimit())
+                                .withSort(Sort.Direction.ASC, dto.getSortFiled()),
+                        dto.getMentorSpecializations(),
+                        dto.getQuery(),
+                        dto.getOnlyWithPhoto()
                 );
         return MentorListPageSortDTO.builder()
                 .content(
