@@ -41,7 +41,7 @@ public class MentorsListController {
     }
 
     @Operation(summary = "Получение списка менторов с использованием пагинации и сортировки.")
-    @GetMapping("/list/page_sort/mentors")
+    @GetMapping("/list/mentors/page_sort_filter")
     public ResponseEntity<MentorListPageSortDTO> getMentorsListWithPageableAndSort(
             FilterSortPaginationMentorListDTO dto
             ) {
