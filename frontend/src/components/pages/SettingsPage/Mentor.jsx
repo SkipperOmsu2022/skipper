@@ -1,5 +1,5 @@
 import { useOutletContext } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
 import { MultipleSelect, MutableSelect, CustomAsyncSelect} from "../../../shared/customSelect/CustomSelect";
@@ -46,7 +46,6 @@ const Mentor = observer(() => {
             form_data.append('info', jsonBlob);
             
             const filesBlob = await mentorSettingsStore.getCertificates();
-            console.log(filesBlob)
             filesBlob.forEach(file => {
                 form_data.append('certificates', file, "image.jpg");
             });
@@ -315,8 +314,7 @@ const MentorCertificates = observer(() => {
                 </label>
                 <div className="certificates">
                     <div className="certificates__group">
-                        {mentorSettingsStore.certificates.map((item, i) => (
-                            <div className="certificates__group-item" key={i}>
+                        {mentorSettingsStore.certificates.map((item, i) => (<div className="certificates__group-item" key={i}>
                                 <div className="img-wrapper">
                                     <img src={item} alt="certificate" className="certificates__group-item-image"/>
                                     <img src={cross} alt="certificate" className="certificates__group-item-cross"

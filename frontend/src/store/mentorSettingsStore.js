@@ -57,10 +57,12 @@ class mentorSettingsStore {
         res?.data?.educations.forEach((item) => {
             this.addEducation(item)
         });
-        console.log(res)
+        
         res?.data?.workExperiences.forEach((item) => {
             this.addExperience(item)
         });
+        
+        this.certificates = res?.data?.certificatesResource?.map(item => enviroments.apiBase+item);
     }
 
     addEducation = (item) => {
@@ -203,7 +205,6 @@ class mentorSettingsStore {
 
     validate = () => {
         let complete = true;
-        console.log(this.educations)
         this.educations.forEach((item) => {
             if (!(item.yearStart && item.qualificationId && item.educationalInstitution)) {
                 complete = false
