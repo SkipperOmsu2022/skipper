@@ -11,7 +11,7 @@ import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
-    @Query("SELECT u FROM User u JOIN u.mentorSpecializations ms " +
+    @Query("SELECT DISTINCT u FROM User u JOIN u.mentorSpecializations ms " +
             "WHERE u.isEnabledMentorStatus=TRUE " +
             "AND ms IN :mentorSpecializations " +
             "AND UPPER(u.aboutAsMentor) LIKE UPPER(CONCAT('%', :query, '%')) " +
