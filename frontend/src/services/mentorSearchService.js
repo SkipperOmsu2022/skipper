@@ -7,8 +7,9 @@ const useMentorSearchService = () => {
 
     const _apiBase = enviroments.apiBase;
 
-    const getMentors = async (offset) => { 
-        const res = await request(`${_apiBase}/api/list/page_sort/mentors?offset=${offset}&limit=30&sort=id`, 'get');
+    const getMentors = async (dto) => {
+        const params = new URLSearchParams(dto);
+        const res = await request(`${_apiBase}/api/list/mentors/page_sort_filter?${params.toString()}`, 'get',);
         
         if (res?.status !== 201) {
             setResponse("Что-то пошло не так");

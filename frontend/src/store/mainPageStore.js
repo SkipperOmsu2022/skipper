@@ -20,6 +20,7 @@ class mainPageStore {
     offset = 0;
     pageCount = 0;
     totalMentors = 0;
+    onlyWithPhoto = false;
     
     setMentors = (data, offset, newdisplayStart) => {
         this.mentors = data.mentors;
@@ -36,6 +37,11 @@ class mainPageStore {
 
     changeFavorite = (mentor) => {
         mentor.favorite =  !mentor.favorite;
+    }
+    
+    changeOnlyWithPhoto = () => {
+        this.onlyWithPhoto = !this.onlyWithPhoto;
+        console.log(this.onlyWithPhoto)
     }
 
     setSearch = (search) => {

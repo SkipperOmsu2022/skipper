@@ -18,9 +18,6 @@ import Filter from "./Filter";
 import Spinner from "../../../shared/spinner/Spinner";
 
 const Mentors = observer(({displayStart}) => {
-    console.log(mainPageStore.mentors.map(item => item.id))
-    console.log(mainPageStore.mentors.slice(displayStart, displayStart + 6).map(item => item.id))
-    console.log(displayStart)
     return (
         <>
             {mainPageStore.mentors.slice(displayStart, displayStart + 6).map((item, i) => {
@@ -89,17 +86,9 @@ const PaginatedItems = observer(({updateMentors}) => {
         const mentorsEnd = mainPageStore.offset * 30 + mainPageStore.mentors.length;
         const newDisplayStart = event.selected * itemsPerPage % 30;
 
-        console.log(`mentorsStart = ${mentorsStart}`)
-        console.log(`mentorsEnd = ${mentorsEnd}`)
-        console.log(`selected = ${event.selected * itemsPerPage}`)
-        console.log(`displayStart = ${mainPageStore.displayStart}`)
-        console.log(' ')
-
         if (event.selected * itemsPerPage < mentorsStart) {
-            console.log(`Запрос ${mainPageStore.offset - 1}`)
             await updateMentors(mainPageStore.offset - 1, newDisplayStart)
         } else if (event.selected * itemsPerPage >= mentorsEnd) {
-            console.log(`Запрос ${mainPageStore.offset + 1}`)
             await updateMentors(mainPageStore.offset + 1, newDisplayStart)
         } else {
             mainPageStore.updateDisplayStart(newDisplayStart);
@@ -148,7 +137,19 @@ const MainPage = observer(() => {
     }, []);
 
     const updateMentors = async (offset, displayStart) => {
-        const data = await getMentors(offset);
+        const mentorSpecializations = mainPageStore.filter.filter(item => item.checked).map(item => item.value)
+        let dto = {
+            offset: offset,
+            limit: 30,
+            sortFiled: "id",
+            query: mainPageStore.search,
+            onlyWithPhoto: mainPageStore.onlyWithPhoto
+        }
+        if (mentorSpecializations.length) {
+            dto.mentorSpecializations = mentorSpecializations
+        }
+        const data = await getMentors(dto);
+
         if (data) mainPageStore.setMentors(data, offset, displayStart);
     }
 
@@ -163,7 +164,7 @@ const MainPage = observer(() => {
                 <span>{mainPageStore.totalMentors} специалистов найдено</span>
             </div>  
             <div className="search-wrapper">
-                <Filter/>
+                <Filter updateMentors={updateMentors}/>
                 <div className="search-result">
                     <div className="search-line">   
                         <input
