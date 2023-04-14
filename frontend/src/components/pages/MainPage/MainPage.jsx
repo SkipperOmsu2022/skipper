@@ -17,10 +17,13 @@ import mainPageStore from "../../../store/mainPageStore";
 import Filter from "./Filter";
 import Spinner from "../../../shared/spinner/Spinner";
 
-const Mentors = observer(({newOffset}) => {
+const Mentors = observer(({displayStart}) => {
+    console.log(mainPageStore.mentors.map(item => item.id))
+    console.log(mainPageStore.mentors.slice(displayStart, displayStart + 6).map(item => item.id))
+    console.log(displayStart)
     return (
         <>
-            {mainPageStore.currentMentors.slice(newOffset, newOffset + 6).map((item, i) => {
+            {mainPageStore.mentors.slice(displayStart, displayStart + 6).map((item, i) => {
                 const imageUserResource = item.imageUserResource ? `${enviroments.apiBase}${item.imageUserResource}` : photo;
                 return (
                 <div className="mentor" key={item.id}>
@@ -78,14 +81,30 @@ const Mentors = observer(({newOffset}) => {
     );
 })
 
-const PaginatedItems = observer(() => {
+const PaginatedItems = observer(({updateMentors}) => {
     const itemsPerPage = 6;
-    const pageCount = Math.ceil(mainPageStore.pageCount)
     
-    const handlePageClick = (event) => {
-        const newOffset = event.selected * itemsPerPage % mainPageStore.totalMentors;
+    const handlePageClick = async (event) => {
+        const mentorsStart = mainPageStore.offset * 30;
+        const mentorsEnd = mainPageStore.offset * 30 + mainPageStore.mentors.length;
+        const newDisplayStart = event.selected * itemsPerPage % 30;
 
-        mainPageStore.updateOffset(newOffset);
+        console.log(`mentorsStart = ${mentorsStart}`)
+        console.log(`mentorsEnd = ${mentorsEnd}`)
+        console.log(`selected = ${event.selected * itemsPerPage}`)
+        console.log(`displayStart = ${mainPageStore.displayStart}`)
+        console.log(' ')
+
+        if (event.selected * itemsPerPage < mentorsStart) {
+            console.log(`Запрос ${mainPageStore.offset - 1}`)
+            await updateMentors(mainPageStore.offset - 1, newDisplayStart)
+        } else if (event.selected * itemsPerPage >= mentorsEnd) {
+            console.log(`Запрос ${mainPageStore.offset + 1}`)
+            await updateMentors(mainPageStore.offset + 1, newDisplayStart)
+        } else {
+            mainPageStore.updateDisplayStart(newDisplayStart);
+        }
+
         window.scrollTo({
             top: 0,
             left: 0,
@@ -98,10 +117,10 @@ const PaginatedItems = observer(() => {
             <ReactPaginate
                 nextLabel=">"
                 onPageChange={handlePageClick}
-                forcePage={mainPageStore.offset / 6}
+                forcePage={mainPageStore.offset * 5 + mainPageStore.displayStart / 6}
                 pageRangeDisplayed={6}
                 marginPagesDisplayed={0}
-                pageCount={pageCount}
+                pageCount={mainPageStore.pageCount}
                 previousLabel="<"
                 breakLabel={null}
                 renderOnZeroPageCount={null}
@@ -123,19 +142,19 @@ const MainPage = observer(() => {
     const {getMentors, loading, response, error} = useMentorSearchService();
 
     useEffect(() => {
-        mainPageStore.setSearch('')
-        
-        updateMentors();
+        updateMentors(0, 0);
+
+        return () => mainPageStore.reset();
     }, []);
 
-    const updateMentors = async () => {
-        const data = await getMentors(``);
-        if (data) mainPageStore.setMentors(data);
+    const updateMentors = async (offset, displayStart) => {
+        const data = await getMentors(offset);
+        if (data) mainPageStore.setMentors(data, offset, displayStart);
     }
 
     const errorMessage = error ? <span className="search-result__error">{response}</span> : null;
     const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error) ? <Mentors newOffset={mainPageStore.offset}/> : null;
+    const content = !(loading || error) ? <Mentors displayStart={mainPageStore.displayStart}/> : null;
 
     return (
         <div className="page-content">
@@ -154,7 +173,7 @@ const MainPage = observer(() => {
                             onChange={(e) => mainPageStore.setSearch(e.target.value)}
                             onKeyDown={(e) => {
                                 if (e.key === "Enter") {
-                                    mainPageStore.updateCurrentMentors(0);
+                                    updateMentors(0, 0);
                                 }
                             }}
                         />
@@ -168,14 +187,14 @@ const MainPage = observer(() => {
                                     left: 0,
                                     behavior: 'smooth'
                                 });
-                                mainPageStore.updateCurrentMentors(0);
+                                updateMentors(0, 0);
                             }}
                         />
                     </div>
                     {errorMessage}
                     {spinner}
                     {content}
-                    <PaginatedItems/>
+                    <PaginatedItems updateMentors={updateMentors}/>
                 </div>
             </div>
         </div>
