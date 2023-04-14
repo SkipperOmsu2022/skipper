@@ -31,7 +31,6 @@ public interface MentorProfileService {
      * @see UserEditMentorDTO
      */
     void updateMentorInfo(Long id, UserEditMentorDTO user,
-                          @Nullable @Size(message = "Максимальное количество файлов: 3", max = 3)
                           MultipartFile[] certificates);
 
     /**

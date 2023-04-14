@@ -17,6 +17,7 @@ import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMentorDTO;
 import ru.tinkoff.edu.backend.services.MentorProfileService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
 /**
  * Данный контроллер отвечает за:
@@ -51,6 +52,7 @@ public class MentorProfileSettingsController {
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> editMentorSettings(@PathVariable Long id,
                                                    @RequestPart("info") @Valid UserEditMentorDTO user,
+                                                   @Nullable @Size(message = "Максимальное количество файлов: 3", max = 3)
                                                    @RequestPart("certificates") MultipartFile[] certificates) {
         mentorProfileService.updateMentorInfo(id, user, certificates);
         return ResponseEntity.ok().build();
