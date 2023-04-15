@@ -120,42 +120,15 @@ class mentorSettingsStore {
     removeExperience = (i) => {
         this.workExperiences.splice(i, 1);
     }
-
-    onCertificatesChange = (e) => {
-        try {
-			e.preventDefault();
-			let file;
-
-			if (e.dataTransfer) {
-				file = e.dataTransfer.files[0];
-			} else if (e.target) {
-				file = e.target.files[0];
-			}
-
-			const reader = new FileReader();
-
-			if (!reader) return;
-
-            if (file.type !== "image/gif" & file.type !== "image/png" & file.type !== "image/jpeg") {
-                this.certificatesErr = "Неправильный формат файла";
-                return;
-            } else if (file.size > 1048576 * 3){
-                this.certificatesErr = "Слишком большой файл";
-                return;
-            }
-
-			reader.onload = () => {
-				this.certificates.push(reader.result?.toString());
-				e.target.value = null;
-			};
-
-			reader.readAsDataURL(file);
-		} catch (error) {
-			console.log(error);
-		}
-    };
+    
+    addCertificate = (item) => {
+        this.certificates.push(item);
+    }
     removeCertificate = (i) => {
         this.certificates.splice(i, 1);
+    }
+    setCertificatesErr = (error) => {
+        this.certificatesErr = error;
     }
 
     handleSwitchChange = () => {

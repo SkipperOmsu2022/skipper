@@ -49,6 +49,9 @@ const Mentor = observer(() => {
             filesBlob.forEach(file => {
                 form_data.append('certificates', file, "image.jpg");
             });
+            if (filesBlob.length === 0) {
+                form_data.append('certificates', new Blob());
+            }
 
             setUserData(
                 form_data,
@@ -306,6 +309,40 @@ const MentorExperiences = observer(() => {
 })
 
 const MentorCertificates = observer(() => {
+    const onCertificatesChange = (e) => {
+        try {
+			e.preventDefault();
+			let file;
+
+			if (e.dataTransfer) {
+				file = e.dataTransfer.files[0];
+			} else if (e.target) {
+				file = e.target.files[0];
+			}
+
+			const reader = new FileReader();
+
+			if (!reader) return;
+
+            if (file.type !== "image/gif" & file.type !== "image/png" & file.type !== "image/jpeg") {
+                mentorSettingsStore.setCertificatesErr("Неправильный формат файла");
+                return;
+            } else if (file.size > 1048576 * 3){
+                mentorSettingsStore.setCertificatesErr("Слишком большой файл");
+                return;
+            }
+
+			reader.onload = () => {
+				mentorSettingsStore.addCertificate(reader.result?.toString());
+				e.target.value = null;
+			};
+
+			reader.readAsDataURL(file);
+		} catch (error) {
+			console.log(error);
+		}
+    };
+
     return (
         <>
             <div className="settings__input-group">
@@ -328,7 +365,7 @@ const MentorCertificates = observer(() => {
                             <label 
                                 htmlFor="upload-photo"
                                 className="button settings__photo-button"
-                                onClick={() => {mentorSettingsStore.certificatesErr = false}}
+                                onClick={mentorSettingsStore.removeCertificatesErr}
                             >
                                 Загрузить
                             </label>
@@ -337,7 +374,7 @@ const MentorCertificates = observer(() => {
                                 name="photo"
                                 id="upload-photo"
                                 className="settings__photo-input"
-                                onChange={mentorSettingsStore.onCertificatesChange}
+                                onChange={onCertificatesChange}
                             />
                             <div className={`certificates__description${mentorSettingsStore.certificatesErr ? ' error' : ''}`}>
                                 {mentorSettingsStore.certificatesErr ? mentorSettingsStore.certificatesErr : 'Размер файла не должен привышать 3 Мб'}
