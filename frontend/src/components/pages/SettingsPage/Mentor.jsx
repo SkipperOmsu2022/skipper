@@ -327,7 +327,7 @@ const MentorCertificates = observer(() => {
             if (file.type !== "image/gif" & file.type !== "image/png" & file.type !== "image/jpeg") {
                 mentorSettingsStore.setCertificatesErr("Неправильный формат файла");
                 return;
-            } else if (file.size > 1048576 * 3){
+            } else if (file.size > 1048576 * 2.5){
                 mentorSettingsStore.setCertificatesErr("Слишком большой файл");
                 return;
             }
@@ -360,7 +360,7 @@ const MentorCertificates = observer(() => {
                             </div>
                         ))}
                     </div>
-                    {mentorSettingsStore.certificates.length < 3 ? 
+                    {mentorSettingsStore.certificates.length < 4 ? 
                         <>
                             <label 
                                 htmlFor="upload-photo"
@@ -377,7 +377,7 @@ const MentorCertificates = observer(() => {
                                 onChange={onCertificatesChange}
                             />
                             <div className={`certificates__description${mentorSettingsStore.certificatesErr ? ' error' : ''}`}>
-                                {mentorSettingsStore.certificatesErr ? mentorSettingsStore.certificatesErr : 'Размер файла не должен привышать 3 Мб'}
+                                {mentorSettingsStore.certificatesErr ? mentorSettingsStore.certificatesErr : 'Размер файла не должен привышать 2.5 Мб'}
                             </div>
                         </>
                         : null
