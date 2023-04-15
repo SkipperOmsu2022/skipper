@@ -16,8 +16,13 @@ class mentorProfileStore {
     dateOfRegistration = [];
     mentorSpecializations = "";
     communication = [];
+
+    certificatesResource = [];
+    educations = [];
+    workExperiences = [];
     
     setMentorData = (res) => {
+        console.log(res)
         this.firstName = res?.data?.firstName
         this.lastName = res?.data?.lastName
         this.aboutAsMentor = res?.data?.aboutAsMentor
@@ -34,6 +39,9 @@ class mentorProfileStore {
         if (res?.data?.imageUserResource) {
             this.imageUserResource = `${enviroments.apiBase}${res?.data?.imageUserResource}`
         }
+        this.certificatesResource = res?.data?.certificatesResource.map(item => enviroments.apiBase + item);
+        this.educations = res?.data?.educations;
+        this.workExperiences = res?.data?.workExperiences;
     }
 
     resetStore = () => {
