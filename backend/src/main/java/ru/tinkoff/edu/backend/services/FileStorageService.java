@@ -58,6 +58,11 @@ public interface FileStorageService {
         }
     }
 
+    /**
+     * Удаляет указанный файл или папку из переданного места хранения.
+     * @param fileStorageLocation тип места.
+     * @param fileNameOrPath название файла или путь.
+     */
     void deleteFromFileStorageLocation(FileStorageLocation fileStorageLocation, String fileNameOrPath);
 
     /**

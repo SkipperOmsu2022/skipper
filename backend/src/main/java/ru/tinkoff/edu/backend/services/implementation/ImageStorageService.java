@@ -64,8 +64,6 @@ public class ImageStorageService implements FileStorageService {
         delete(path.toString());
     }
 
-
-
     @Override
     public void init() {
         try {
