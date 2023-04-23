@@ -21,10 +21,14 @@ class FileStorageServiceTest {
         public String save(FileStorageLocation fileStorageLocation, MultipartFile image, String fileName) {
             return null;
         }
+
         @Override
-        public void deleteFromFileStorageLocation(FileStorageLocation fileStorageLocation, String fileNameOrPath) {}
+        public void deleteFromFileStorageLocation(FileStorageLocation fileStorageLocation, String fileNameOrPath) {
+        }
+
         @Override
-        public void init() {}
+        public void init() {
+        }
     };
     private final String[] supportedExtensions = new String[]{"jpg", "png"};
 
@@ -54,13 +58,13 @@ class FileStorageServiceTest {
                 "image(1234562346)".getBytes()
         );
 
-        FileExtensionNotSupportedException exception = assertThrows(
+        String messageActual = assertThrows(
                 FileExtensionNotSupportedException.class,
                 () -> fileStorageService.getFileExtensionIfSupported(multipartFile, supportedExtensions)
-        );
+        ).getMessage();
         assertEquals(
                 "The file extension is not supported! File:" + originalFileName,
-                exception.getMessage()
+                messageActual
         );
     }
 
