@@ -122,7 +122,7 @@ const Filter =  observer(({updateMentors}) => {
 const Specializations = observer(() => {
     return (
         <>
-            {mainPageStore.filter.map((item, i) => (
+            {mainPageStore.filter?.map((item, i) => (
                 <div className="filter__section-list-item" key={i}>
                     <input
                         type="checkbox"
