@@ -12,6 +12,7 @@ import MainPage from "../pages/MainPage/MainPage";
 import SettingsPage from '../pages/SettingsPage/SettingsPage';
 import ProfilePage from '../pages/ProfilePage/ProfilePage';
 import MentorProfilePage from '../pages/MentorProfilePage/MentorProfilePage';
+import FavoritesPage from '../pages/FavoritesPage/FavoritesPage';
 import OnboardingPage from '../pages/OnboardingPage/OnboardingPage';
 
 import Common from '../pages/SettingsPage/Common';
@@ -44,6 +45,7 @@ const App = () => {
                         <Route path="profile/:userId" element={<ProfilePage/>}/>
                         <Route path="profile-mentor/:userId" element={<MentorProfilePage/>}/>
                         <Route path="mentors" element={<MainPage/>}/>
+                        <Route path="favorites" element={<FavoritesPage/>}/>
                         <Route path="" element={<OnboardingPage/>}/>
                     </Route>
                 </Routes>

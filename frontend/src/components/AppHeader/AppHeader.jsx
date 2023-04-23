@@ -34,9 +34,7 @@ const AppHeader = () => {
                         auth ?
                         <div className="app-header__icons">
                             <NavLink to="/messages"><img src={messages} alt="messages" /></NavLink>
-                            <a href="favorites">
-                                <img src={bookmark} alt="favorites" className="bookmark"/>
-                            </a>
+                            <NavLink to="/favorites"><img src={bookmark} alt="favorites" className="bookmark-icon"/></NavLink>
                         </div> : null
                     }
                 </div>
