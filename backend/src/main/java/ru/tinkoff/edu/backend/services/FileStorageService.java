@@ -9,6 +9,7 @@ import ru.tinkoff.edu.backend.exception.FileStorageServiceException;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
@@ -58,6 +59,22 @@ public interface FileStorageService {
     }
 
     void deleteFromFileStorageLocation(FileStorageLocation fileStorageLocation, String fileNameOrPath);
+
+    /**
+     * Возвращает абсолютный нормализированый путь к папке или файлу.
+     * Префикс пути - rootLocation, остальные части пути последовательно соединяются.
+     * @param rootLocation абсолютный путь корневой папки.
+     * @param partOfPath часть составного пути, необходимо указывать только название без разделительного знака.
+     * @return абсолютный нормализированый путь к папке или файлу.
+     */
+    default Path getNormalizeAbsolutePathFromRootLocation(Path rootLocation, String... partOfPath) {
+        for(String file : partOfPath) {
+            rootLocation = rootLocation.resolve(file);
+        }
+        return rootLocation
+                .normalize()
+                .toAbsolutePath();
+    }
 
     /**
      * Создаёт папку для хранения файлов.

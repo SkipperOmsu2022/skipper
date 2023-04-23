@@ -26,7 +26,7 @@ public class ImageStorageService implements FileStorageService {
     @Override
     public String save(FileStorageLocation fileStorageLocation, MultipartFile image, String fileName) {
         if (image == null || image.isEmpty()) {
-            delete(getNormalizeAbsolutePathFromRootLocation(fileStorageLocation.getPath(), fileName)
+            delete(getNormalizeAbsolutePathFromRootLocation(rootLocation, fileStorageLocation.getPath(), fileName)
                             .toString(),
                     SUPPORTED_FILE_EXTENSION);
             return "";
@@ -37,8 +37,11 @@ public class ImageStorageService implements FileStorageService {
         try {
             final String finalFileName = fileName + '.' + fileExtension;
 
-            Path destinationFile =
-                    getNormalizeAbsolutePathFromRootLocation(fileStorageLocation.getPath(), finalFileName);
+            Path destinationFile = getNormalizeAbsolutePathFromRootLocation(
+                    rootLocation,
+                    fileStorageLocation.getPath(),
+                    finalFileName
+            );
             if (!destinationFile.getParent().startsWith(rootLocation.normalize().toAbsolutePath())) {
                 throw new ImageStorageException("Cannot store file outside current directory!");
             }
@@ -56,20 +59,12 @@ public class ImageStorageService implements FileStorageService {
 
     @Override
     public void deleteFromFileStorageLocation(FileStorageLocation fileStorageLocation, String fileNameOrPath) {
-        Path path = getNormalizeAbsolutePathFromRootLocation(fileStorageLocation.getPath(),
+        Path path = getNormalizeAbsolutePathFromRootLocation(rootLocation, fileStorageLocation.getPath(),
                 Paths.get(fileNameOrPath).getFileName().toString());
         delete(path.toString());
     }
 
-    private Path getNormalizeAbsolutePathFromRootLocation(String... files) {
-        Path path = rootLocation;
-        for(String file : files) {
-            path = path.resolve(file);
-        }
-        return path
-                .normalize()
-                .toAbsolutePath();
-    }
+
 
     @Override
     public void init() {

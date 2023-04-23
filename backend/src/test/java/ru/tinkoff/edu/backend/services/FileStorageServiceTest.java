@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -99,5 +100,16 @@ class FileStorageServiceTest {
 
         assertFalse(Files.exists(tempFile1));
         assertFalse(Files.exists(tempFile2));
+    }
+
+    @Test
+    void testGetNormalizeAbsolutePathFromRootLocation() {
+        Path rootLocation = Paths.get("/root/folder");
+        String[] partOfPath = {"subfolder1", "subfolder2", "file.txt"};
+        Path expectedPath = Paths.get("/root/folder/subfolder1/subfolder2/file.txt").normalize().toAbsolutePath();
+
+        Path actualPath = fileStorageService.getNormalizeAbsolutePathFromRootLocation(rootLocation, partOfPath);
+
+        assertEquals(expectedPath, actualPath);
     }
 }
