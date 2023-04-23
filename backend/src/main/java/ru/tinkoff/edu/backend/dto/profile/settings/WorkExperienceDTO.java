@@ -14,8 +14,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class WorkExperienceDTO {
     @NotNull(message = "Начало опыта работы обязательно!")
-    private Long yearStart;
-    private Long yearEnd;
+    private Integer yearStart;
+    private Integer yearEnd;
     @NotBlank
     private String placeOfWork;
 }

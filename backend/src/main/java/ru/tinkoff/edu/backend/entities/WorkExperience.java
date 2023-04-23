@@ -17,7 +17,7 @@ public class WorkExperience {
     @EmbeddedId
     private WorkExperiencePK id = new WorkExperiencePK();
     @Column(name = "year_end")
-    private Long yearEnd;
+    private Integer yearEnd;
 
     @ManyToOne
     @MapsId("userId")

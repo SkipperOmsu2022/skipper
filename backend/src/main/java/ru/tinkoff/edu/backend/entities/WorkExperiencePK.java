@@ -18,5 +18,5 @@ public class WorkExperiencePK implements Serializable {
     @Column(name = "place_of_work", nullable = false)
     private String placeOfWork;
     @Column(name = "year_start", nullable = false)
-    private Long yearStart;
+    private Integer yearStart;
 }

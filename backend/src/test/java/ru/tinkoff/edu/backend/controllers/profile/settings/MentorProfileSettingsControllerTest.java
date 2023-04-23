@@ -48,7 +48,7 @@ class MentorProfileSettingsControllerTest {
     );
 
     Set<WorkExperienceDTO> workExperienceDTOS = Sets.set(
-            new WorkExperienceDTO(2020L, null,
+            new WorkExperienceDTO(2020, null,
                     "ГазпромМежРегионГаз")
     );
 
