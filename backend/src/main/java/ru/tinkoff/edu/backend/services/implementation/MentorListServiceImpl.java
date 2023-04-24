@@ -11,6 +11,7 @@ import ru.tinkoff.edu.backend.dto.MentorListPageSortDTO;
 import ru.tinkoff.edu.backend.entities.Qualification;
 import ru.tinkoff.edu.backend.entities.User;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
+import ru.tinkoff.edu.backend.mappers.UserMapper;
 import ru.tinkoff.edu.backend.repositories.QualificationRepository;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
 import ru.tinkoff.edu.backend.services.MentorListService;
@@ -22,10 +23,13 @@ import java.util.stream.Collectors;
 public class MentorListServiceImpl implements MentorListService {
     private final UserRepository userRepository;
     private final QualificationRepository qualificationRepository;
+    private final UserMapper userMapper;
 
-    public MentorListServiceImpl(UserRepository userRepository, QualificationRepository qualificationRepository) {
+    public MentorListServiceImpl(UserRepository userRepository, QualificationRepository qualificationRepository,
+                                 UserMapper userMapper) {
         this.userRepository = userRepository;
         this.qualificationRepository = qualificationRepository;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -50,26 +54,15 @@ public class MentorListServiceImpl implements MentorListService {
         Page<User> pages =
                 userRepository
                         .getAllMentorsWithPageSortAndFilter(
-                        PageRequest.of(dto.getOffset(), dto.getLimit())
-                                .withSort(Sort.Direction.ASC, dto.getSortFiled()),
-                        dto.getMentorSpecializations(),
-                        dto.getQuery(),
-                        dto.getOnlyWithPhoto()
-                );
+                                PageRequest.of(dto.getOffset(), dto.getLimit())
+                                        .withSort(Sort.Direction.ASC, dto.getSortFiled()),
+                                dto.getMentorSpecializations(),
+                                dto.getQuery(),
+                                dto.getOnlyWithPhoto()
+                        );
         return MentorListPageSortDTO.builder()
                 .content(
-                        pages
-                                .stream()
-                                .map(user -> MentorListItemDTO.builder()
-                                        .id(user.getId())
-                                        .firstName(user.getFirstName())
-                                        .lastName(user.getLastName())
-                                        .mentorSpecializations(user.getInlineMentorSpecializations())
-                                        .aboutMeAsMentor(user.getAboutAsMentor())
-                                        .imageUserResource(user.getImageUserResource())
-                                        .rating(user.getRating())
-                                        .build())
-                                .collect(Collectors.toList())
+                        userMapper.userToMentorListItemDTOs(pages.getContent())
                 ).totalElement(
                         pages.getTotalElements()
                 ).build();

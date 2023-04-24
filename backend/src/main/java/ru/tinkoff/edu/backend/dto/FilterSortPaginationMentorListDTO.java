@@ -15,12 +15,18 @@ import javax.validation.constraints.Min;
 @NoArgsConstructor
 public class FilterSortPaginationMentorListDTO {
     @Min(0)
+    @Builder.Default
     private Integer offset = 0;
     @Min(1)
     @Max(100)
+    @Builder.Default
     private Integer limit = 30;
+    @Builder.Default
     private String sortFiled = "id";
+    @Builder.Default
     private MentorSpecialization[] mentorSpecializations = MentorSpecialization.values();
+    @Builder.Default
     private String query = "";
+    @Builder.Default
     private Boolean onlyWithPhoto = false;
 }
