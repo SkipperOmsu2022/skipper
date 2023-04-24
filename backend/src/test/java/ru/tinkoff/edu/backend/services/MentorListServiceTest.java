@@ -25,6 +25,7 @@ import ru.tinkoff.edu.backend.services.implementation.MentorListServiceImpl;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
+import static ru.tinkoff.edu.backend.mappers.UserMapper.userToMentorListItemDTOs;
 
 @ExtendWith(MockitoExtension.class)
 class MentorListServiceTest {
@@ -32,8 +33,6 @@ class MentorListServiceTest {
     private UserRepository userRepository;
     @Mock
     private QualificationRepository qualificationRepository;
-    @Mock
-    private UserMapper userMapper;
     @InjectMocks
     private MentorListServiceImpl mentorListService;
 
@@ -80,7 +79,7 @@ class MentorListServiceTest {
 
     @Test
     void getMentorList_thenReturnListOfMentors() {
-        when(userRepository.findAll()).thenReturn(listUser);
+        when(userRepository.findAllByIsEnabledMentorStatusTrue()).thenReturn(listUser);
 
         List<MentorListItemDTO> actualList = mentorListService.getMentorList();
         Assertions.assertEquals(expectedListMentorListItemDTO, actualList);
@@ -113,8 +112,6 @@ class MentorListServiceTest {
                 dto.getQuery(),
                 dto.getOnlyWithPhoto())
         ).thenReturn(pageUser);
-
-        when(userMapper.userToMentorListItemDTOs(pageUser.getContent())).thenReturn(expectedList);
 
         MentorListPageSortDTO mentorListPageSortDTO_Actual = mentorListService.getMentorListPageSortFilter(dto);
         Assertions.assertEquals(2, mentorListPageSortDTO_Actual.getTotalElement());

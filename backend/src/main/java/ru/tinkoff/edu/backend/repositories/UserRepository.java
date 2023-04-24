@@ -8,9 +8,14 @@ import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.backend.entities.User;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
+
+    List<User> findAllByIsEnabledMentorStatusTrue();
+
     @Query("SELECT DISTINCT u FROM User u JOIN u.mentorSpecializations ms " +
             "WHERE u.isEnabledMentorStatus=TRUE " +
             "AND ms IN :mentorSpecializations " +
