@@ -86,7 +86,6 @@ class MentorListServiceTest {
         Assertions.assertEquals(expectedListMentorListItemDTO, actualList);
     }
 
-    @Disabled("This method not ready yet")
     @Test
     void getMentorListPageSortFilter_thenReturnPageSortFilterListOfMentors() {
         int indexElementShouldBeReturn = 1;
@@ -106,6 +105,7 @@ class MentorListServiceTest {
                 pageable,
                 listUser.size()
         );
+        List<MentorListItemDTO> expectedList = Lists.list(expectedListMentorListItemDTO.get(indexElementShouldBeReturn));
 
         when(userRepository.getAllMentorsWithPageSortAndFilter(
                 pageable,
@@ -114,7 +114,7 @@ class MentorListServiceTest {
                 dto.getOnlyWithPhoto())
         ).thenReturn(pageUser);
 
-        when(userMapper.userToMentorListItemDTOs(listUser)).thenReturn(expectedListMentorListItemDTO);
+        when(userMapper.userToMentorListItemDTOs(pageUser.getContent())).thenReturn(expectedList);
 
         MentorListPageSortDTO mentorListPageSortDTO_Actual = mentorListService.getMentorListPageSortFilter(dto);
         Assertions.assertEquals(2, mentorListPageSortDTO_Actual.getTotalElement());
@@ -130,7 +130,7 @@ class MentorListServiceTest {
         String nameSpecializationMentor = "Комп";
         List<Qualification> qualificationsListExpected = Lists.list(
                 new Qualification(1L, "10.05.01", "Компьютерная безопасность"),
-                new Qualification(2L, "09.01.02","Наладчик компьютерных сетей")
+                new Qualification(2L, "09.01.02", "Наладчик компьютерных сетей")
         );
 
         when(qualificationRepository.getSpecializationMentorByNameContainsIgnoreCase(nameSpecializationMentor))
