@@ -77,9 +77,6 @@ public class MentorProfileServiceImpl implements MentorProfileService {
         return user;
     }
 
-    /**
-     * У метода большая когнитивная сложность. Оптимизирую в другой ветке.
-     */
     @Transactional
     @Override
     public void updateMentorInfo(Long id, UserEditMentorDTO user, MultipartFile[] certificates) {
@@ -92,16 +89,11 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                 .orElse(Collections.emptySet())
                 .stream()
                 .map(e -> {
-                    Qualification qualification = qualificationRepository
-                            .findById(e.getQualificationId())
-                            .orElseThrow(() -> new EntityNotFoundException("Qualification not found"));
-                    if(!Objects.isNull(e.getYearEnd()) && e.getYearStart() > e.getYearEnd()) {
-                        throw new IncorrectDateTimeException("The start year cannot be less");
-                    }
-                    if(e.getYearStart() > Year.now().getValue()) {
-                        throw new IncorrectDateTimeException("The beginning of the education cannot be in the " +
-                                "future time");
-                    }
+                            Qualification qualification = qualificationRepository
+                                    .findById(e.getQualificationId())
+                                    .orElseThrow(() -> new EntityNotFoundException("Qualification not found"));
+                            validateYearRange(e.getYearStart(), e.getYearEnd());
+                            validateYearStart(e.getYearStart());
                             return Education.builder()
                                     .yearStart(e.getYearStart())
                                     .yearEnd(e.getYearEnd())
@@ -118,14 +110,9 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                 .orElse(Collections.emptySet())
                 .stream()
                 .map(e -> {
-                    if(!Objects.isNull(e.getYearEnd()) && e.getYearStart() > e.getYearEnd()) {
-                        throw new IncorrectDateTimeException("The start year cannot be less");
-                    }
-                    if(e.getYearStart() > Year.now().getValue()) {
-                        throw new IncorrectDateTimeException("The beginning of the work experience cannot be in the " +
-                                "future time");
-                    }
-                    return WorkExperience.builder()
+                            validateYearRange(e.getYearStart(), e.getYearEnd());
+                            validateYearStart(e.getYearStart());
+                            return WorkExperience.builder()
                                     .id(new WorkExperiencePK(userFromDB.getId(), e.getPlaceOfWork(), e.getYearStart()))
                                     .user(userFromDB)
                                     .yearEnd(e.getYearEnd())
@@ -139,13 +126,13 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                         .deleteFromFileStorageLocation(FileStorageLocation.USER_CERTIFICATES, e)
         );
 
-        if(certificates != null) {
+        if (certificates != null) {
             Set<String> certificateResourcesSet = new HashSet<>(certificates.length * 2);
 
             for (int i = 0; i < certificates.length; ++i) {
                 String certificateResource = fileStorageService
                         .save(FileStorageLocation.USER_CERTIFICATES, certificates[i], id + "_" + i);
-                if(!certificateResource.isEmpty()) {
+                if (!certificateResource.isEmpty()) {
                     certificateResourcesSet.add(certificateResource);
                 }
             }
@@ -161,6 +148,30 @@ public class MentorProfileServiceImpl implements MentorProfileService {
 
         userRepository.save(userFromDB);
     }
+
+    /**
+     * Проверяет правильность диапазона лет и генерирует исключение, если год начала меньше года окончания.
+     *
+     * @param yearStart дата начала.
+     * @param yearEnd   дата конца.
+     */
+    protected void validateYearRange(Integer yearStart, Integer yearEnd) {
+        if (!Objects.isNull(yearEnd) && yearStart > yearEnd) {
+            throw new IncorrectDateTimeException("The start year cannot be less");
+        }
+    }
+
+    /**
+     * Проверяет правильность начального года и генерирует исключение, если он находится в будущем времени.
+     *
+     * @param yearStart год начала.
+     */
+    protected void validateYearStart(Integer yearStart) {
+        if (yearStart > Year.now().getValue()) {
+            throw new IncorrectDateTimeException("The beginning cannot be in the future time");
+        }
+    }
+
     @Override
     public UserMentorProfileDTO getUserMentorProfile(Long id) {
         User userFromDB = userRepository.getReferenceById(id);
