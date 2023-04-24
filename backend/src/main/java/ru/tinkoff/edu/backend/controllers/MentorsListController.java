@@ -5,7 +5,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.tinkoff.edu.backend.dto.FilterSortPaginationMentorListDTO;
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
+import ru.tinkoff.edu.backend.dto.MentorListPageSortDTO;
 import ru.tinkoff.edu.backend.entities.Qualification;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.services.MentorListService;
@@ -36,6 +38,14 @@ public class MentorsListController {
     @GetMapping("/list/mentors")
     public ResponseEntity<List<MentorListItemDTO>> getMentorsList() {
         return ResponseEntity.ok(mentorListService.getMentorList());
+    }
+
+    @Operation(summary = "Получение списка менторов с использованием пагинации и сортировки.")
+    @GetMapping("/list/mentors/page_sort_filter")
+    public ResponseEntity<MentorListPageSortDTO> getMentorsListWithPageableAndSort(
+            FilterSortPaginationMentorListDTO dto
+            ) {
+        return ResponseEntity.ok(mentorListService.getMentorListPageSortFilter(dto));
     }
 
     @Operation(summary = "Список всех образовательных специальностей Российской Федерации.",
