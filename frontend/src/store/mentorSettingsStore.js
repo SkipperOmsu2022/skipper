@@ -1,5 +1,6 @@
 import  {makeAutoObservable} from 'mobx';
-import axios from "axios";
+
+import {getEducationsList} from '../services/api'
 
 import enviroments from '../config/enviroments';
 
@@ -30,10 +31,9 @@ class mentorSettingsStore {
     }
 
     asyncGetQualificationOptions = (e, i) => {
-        const url = enviroments.apiBase + '/api/list/edu';
         if (e.length >= 3) {
             this.educations[i].noOptionsMessage = 'Значений не найдено'
-            return axios.request({url, method: 'get', params: {query: e}})
+            return getEducationsList(e)
                 .then(res => {
                     return(res.data.map((item) => {
                         return {
