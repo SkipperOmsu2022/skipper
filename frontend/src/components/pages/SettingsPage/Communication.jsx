@@ -51,7 +51,7 @@ const Communication = () => {
                                 placeholder='Введите ссылку на ваш профиль'
                                 className="settings__input-group-text input long-input"
                             />
-                            <span className="settings__input-group-btn-width settings__input-group-delete"
+                            <span className="settings__input-group-btn-width settings__input-group-delete center"
                                 onClick={() => setInitial({...initial, linkVk: ''})}
                             >
                                 Удалить
@@ -68,7 +68,7 @@ const Communication = () => {
                                 placeholder='Введите ссылку на ваш профиль'
                                 className="settings__input-group-text input long-input"
                             />
-                            <span className="settings__input-group-btn-width settings__input-group-delete"
+                            <span className="settings__input-group-btn-width settings__input-group-delete center"
                                 onClick={() => setInitial({...initial, linkSkype: ''})}
                             >
                                 Удалить
@@ -85,7 +85,7 @@ const Communication = () => {
                                 placeholder='Введите ссылку на ваш профиль'
                                 className="settings__input-group-text input long-input"
                             />
-                            <span className="settings__input-group-btn-width settings__input-group-delete"
+                            <span className="settings__input-group-btn-width settings__input-group-delete center"
                                 onClick={() => setInitial({...initial, linkDiscord: ''})}
                             >
                                 Удалить
@@ -102,7 +102,7 @@ const Communication = () => {
                                 placeholder='Введите ссылку на ваш профиль'
                                 className="settings__input-group-text input long-input"
                             />
-                            <span className="settings__input-group-btn-width settings__input-group-delete"
+                            <span className="settings__input-group-btn-width settings__input-group-delete center"
                                 onClick={() => setInitial({...initial, linkTelegram: ''})}
                             >
                                 Удалить

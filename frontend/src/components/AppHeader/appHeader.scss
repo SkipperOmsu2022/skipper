@@ -148,3 +148,9 @@
         }
     }
 }
+
+.hover {
+    &:hover {
+        cursor: pointer;
+    }
+}

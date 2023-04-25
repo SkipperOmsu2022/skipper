@@ -21,6 +21,7 @@ const Mentors = observer(({displayStart}) => {
     return (
         <>
             {mainPageStore.mentors.slice(displayStart, displayStart + 6).map((item, i) => {
+                const isOwner = +item.id === +localStorage.getItem('logged');
                 const imageUserResource = item.imageUserResource ? `${enviroments.apiBase}${item.imageUserResource}` : photo;
                 return (
                 <div className="mentor" key={item.id}>
@@ -63,7 +64,7 @@ const Mentors = observer(({displayStart}) => {
                             <span>20 отзывов</span>
                         </div>
                         <div className="mentor__interaction-btn-block">
-                            <button className="button">Забронировать</button>
+                            {isOwner ? null : <button className="button">Забронировать</button>}
                             <Link
                                 to={`/profile-mentor/${item.id}`}
                                 className="button pale"

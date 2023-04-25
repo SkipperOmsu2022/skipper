@@ -34,7 +34,10 @@ const AppHeader = () => {
                         auth ?
                         <div className="app-header__icons">
                             <NavLink to="/messages"><img src={messages} alt="messages" /></NavLink>
-                            <NavLink to="/favorites"><img src={bookmark} alt="favorites" className="bookmark-icon"/></NavLink>
+                            <div>
+                                <img src={bookmark} alt="favorites" className="bookmark-icon"/>
+                            </div>
+                            {/* <NavLink to="/favorites"><img src={bookmark} alt="favorites" className="bookmark-icon"/></NavLink> */}
                         </div> : null
                     }
                 </div>
@@ -105,12 +108,12 @@ const LoggedDisplay = observer(() => {
     return (
         <div className="app-header__group">
             <div className="app-header__icons">
-                <a href="notifications">
+                <div href="notifications" className="hover">
                     <img src={notifications} alt="notifications" />
-                </a>
-                <a href="search">
+                </div>
+                <div href="search" className="hover">
                     <img src={search} alt="search" />
-                </a>
+                </div>
             </div>
             <div 
                 className="app-header__profile" ref={container} tabIndex={0} 

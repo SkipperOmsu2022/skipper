@@ -45,7 +45,7 @@ const App = () => {
                         <Route path="profile/:userId" element={<ProfilePage/>}/>
                         <Route path="profile-mentor/:userId" element={<MentorProfilePage/>}/>
                         <Route path="mentors" element={<MainPage/>}/>
-                        <Route path="favorites" element={<FavoritesPage/>}/>
+                        {/* <Route path="favorites" element={<FavoritesPage/>}/> */}
                         <Route path="" element={<OnboardingPage/>}/>
                     </Route>
                 </Routes>

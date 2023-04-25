@@ -322,6 +322,10 @@
                 cursor: pointer;
                 text-decoration: underline;
             }
+
+            &.center {
+                margin: auto;
+            }
         }
         &-btn-wide {
             width: 9.375rem;
