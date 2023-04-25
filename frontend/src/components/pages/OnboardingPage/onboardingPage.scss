@@ -1,0 +1,42 @@
+@import '../../../shared/variables.scss';
+
+.onboarding {
+    display: flex;
+    flex-direction: row;
+    gap: 136px;
+    min-height: auto;
+    max-height: fit-content;
+    min-width: 78rem;
+    padding: 125px 120px;
+    
+    &-group {
+        display: flex;
+        flex-direction: column;
+        gap: 70px;
+    }
+    
+    &-header {
+        color: $header;
+        font-size: 55px;
+        line-height: 67px;
+    }
+    
+    &-description {
+        color: $header;
+        font-size: 20px;
+        line-height: 24px;
+    }
+
+    &-button {
+        width: fit-content;
+        padding: 12px 58px;
+        font-size: 20px;
+    }
+    
+    &-picture {
+        display: block;
+        max-height: 400px;
+        max-width: 300px;
+    }
+
+}

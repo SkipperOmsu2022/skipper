@@ -1010,7 +1010,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (11, 
 insert into mentor_specializations (user_id, mentor_specialization) values (12, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (13, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (14, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (15, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (15, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (16, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (17, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (18, 'BUSINESS_ANALYTICS');
@@ -1020,7 +1020,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (21, 
 insert into mentor_specializations (user_id, mentor_specialization) values (22, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (23, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (24, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (25, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (25, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (26, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (27, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (28, 'BUSINESS_ANALYTICS');
@@ -1030,7 +1030,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (31, 
 insert into mentor_specializations (user_id, mentor_specialization) values (32, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (33, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (34, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (35, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (35, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (36, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (37, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (38, 'BUSINESS_ANALYTICS');
@@ -1040,7 +1040,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (41, 
 insert into mentor_specializations (user_id, mentor_specialization) values (42, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (43, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (44, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (45, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (45, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (46, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (47, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (48, 'BUSINESS_ANALYTICS');
@@ -1050,7 +1050,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (51, 
 insert into mentor_specializations (user_id, mentor_specialization) values (52, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (53, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (54, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (55, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (55, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (56, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (57, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (58, 'BUSINESS_ANALYTICS');
@@ -1060,7 +1060,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (61, 
 insert into mentor_specializations (user_id, mentor_specialization) values (62, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (63, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (64, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (65, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (65, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (66, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (67, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (68, 'BUSINESS_ANALYTICS');
@@ -1070,7 +1070,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (71, 
 insert into mentor_specializations (user_id, mentor_specialization) values (72, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (73, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (74, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (75, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (75, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (76, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (77, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (78, 'BUSINESS_ANALYTICS');
@@ -1080,7 +1080,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (81, 
 insert into mentor_specializations (user_id, mentor_specialization) values (82, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (83, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (84, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (85, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (85, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (86, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (87, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (88, 'BUSINESS_ANALYTICS');
@@ -1090,7 +1090,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (91, 
 insert into mentor_specializations (user_id, mentor_specialization) values (92, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (93, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (94, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (95, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (95, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (96, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (97, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (98, 'BUSINESS_ANALYTICS');
@@ -1100,7 +1100,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (101,
 insert into mentor_specializations (user_id, mentor_specialization) values (102, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (103, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (104, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (105, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (105, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (106, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (107, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (108, 'BUSINESS_ANALYTICS');
@@ -1110,7 +1110,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (111,
 insert into mentor_specializations (user_id, mentor_specialization) values (112, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (113, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (114, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (115, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (115, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (116, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (117, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (118, 'BUSINESS_ANALYTICS');
@@ -1120,7 +1120,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (121,
 insert into mentor_specializations (user_id, mentor_specialization) values (122, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (123, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (124, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (125, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (125, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (126, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (127, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (128, 'BUSINESS_ANALYTICS');
@@ -1130,7 +1130,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (131,
 insert into mentor_specializations (user_id, mentor_specialization) values (132, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (133, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (134, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (135, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (135, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (136, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (137, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (138, 'BUSINESS_ANALYTICS');
@@ -1140,7 +1140,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (141,
 insert into mentor_specializations (user_id, mentor_specialization) values (142, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (143, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (144, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (145, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (145, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (146, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (147, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (148, 'BUSINESS_ANALYTICS');
@@ -1150,7 +1150,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (151,
 insert into mentor_specializations (user_id, mentor_specialization) values (152, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (153, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (154, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (155, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (155, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (156, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (157, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (158, 'BUSINESS_ANALYTICS');
@@ -1160,7 +1160,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (161,
 insert into mentor_specializations (user_id, mentor_specialization) values (162, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (163, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (164, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (165, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (165, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (166, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (167, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (168, 'BUSINESS_ANALYTICS');
@@ -1170,7 +1170,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (171,
 insert into mentor_specializations (user_id, mentor_specialization) values (172, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (173, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (174, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (175, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (175, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (176, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (177, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (178, 'BUSINESS_ANALYTICS');
@@ -1180,7 +1180,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (181,
 insert into mentor_specializations (user_id, mentor_specialization) values (182, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (183, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (184, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (185, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (185, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (186, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (187, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (188, 'BUSINESS_ANALYTICS');
@@ -1190,7 +1190,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (191,
 insert into mentor_specializations (user_id, mentor_specialization) values (192, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (193, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (194, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (195, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (195, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (196, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (197, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (198, 'BUSINESS_ANALYTICS');
@@ -1200,7 +1200,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (201,
 insert into mentor_specializations (user_id, mentor_specialization) values (202, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (203, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (204, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (205, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (205, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (206, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (207, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (208, 'BUSINESS_ANALYTICS');
@@ -1210,7 +1210,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (211,
 insert into mentor_specializations (user_id, mentor_specialization) values (212, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (213, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (214, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (215, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (215, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (216, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (217, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (218, 'BUSINESS_ANALYTICS');
@@ -1220,7 +1220,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (221,
 insert into mentor_specializations (user_id, mentor_specialization) values (222, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (223, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (224, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (225, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (225, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (226, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (227, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (228, 'BUSINESS_ANALYTICS');
@@ -1230,7 +1230,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (231,
 insert into mentor_specializations (user_id, mentor_specialization) values (232, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (233, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (234, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (235, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (235, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (236, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (237, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (238, 'BUSINESS_ANALYTICS');
@@ -1240,7 +1240,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (241,
 insert into mentor_specializations (user_id, mentor_specialization) values (242, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (243, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (244, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (245, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (245, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (246, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (247, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (248, 'BUSINESS_ANALYTICS');
@@ -1250,7 +1250,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (251,
 insert into mentor_specializations (user_id, mentor_specialization) values (252, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (253, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (254, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (255, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (255, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (256, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (257, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (258, 'BUSINESS_ANALYTICS');
@@ -1260,7 +1260,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (261,
 insert into mentor_specializations (user_id, mentor_specialization) values (262, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (263, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (264, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (265, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (265, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (266, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (267, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (268, 'BUSINESS_ANALYTICS');
@@ -1270,7 +1270,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (271,
 insert into mentor_specializations (user_id, mentor_specialization) values (272, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (273, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (274, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (275, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (275, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (276, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (277, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (278, 'BUSINESS_ANALYTICS');
@@ -1280,7 +1280,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (281,
 insert into mentor_specializations (user_id, mentor_specialization) values (282, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (283, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (284, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (285, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (285, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (286, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (287, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (288, 'BUSINESS_ANALYTICS');
@@ -1290,7 +1290,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (291,
 insert into mentor_specializations (user_id, mentor_specialization) values (292, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (293, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (294, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (295, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (295, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (296, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (297, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (298, 'BUSINESS_ANALYTICS');
@@ -1300,7 +1300,7 @@ insert into mentor_specializations (user_id, mentor_specialization) values (301,
 insert into mentor_specializations (user_id, mentor_specialization) values (302, 'PROGRAMMING');
 insert into mentor_specializations (user_id, mentor_specialization) values (303, 'JURISPRUDENCE');
 insert into mentor_specializations (user_id, mentor_specialization) values (304, 'JOURNALISTIC_ACTIVITY');
-insert into mentor_specializations (user_id, mentor_specialization) values (305, 'TESTING_SOFTWATE');
+insert into mentor_specializations (user_id, mentor_specialization) values (305, 'TESTING_SOFTWARE');
 insert into mentor_specializations (user_id, mentor_specialization) values (306, 'SCHOOL_EDUCATION');
 insert into mentor_specializations (user_id, mentor_specialization) values (307, 'STOCK_MARKET');
 insert into mentor_specializations (user_id, mentor_specialization) values (308, 'BUSINESS_ANALYTICS');

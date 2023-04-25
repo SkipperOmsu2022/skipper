@@ -2,7 +2,7 @@ import { useField } from "formik";
 
 import "./input.scss"
 
-const TextInput = ({className, disabled, ...props}) => {
+const FormikInput = ({className, disabled, ...props}) => {
     const [field, meta] = useField(props);
     
     return (
@@ -18,4 +18,4 @@ const TextInput = ({className, disabled, ...props}) => {
     )
 }
 
-export default TextInput;
+export default FormikInput;

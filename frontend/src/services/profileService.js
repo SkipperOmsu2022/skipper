@@ -25,7 +25,7 @@ const useProfileService = () => {
         if (res?.status === 200) {
             setResponse("Изменения сохранены");
         } else {
-            console.log(res?.message)
+            console.log(res?.data?.message)
             setResponse("Что-то пошло не так");
             return res;
         }

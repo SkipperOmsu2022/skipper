@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import ru.tinkoff.edu.backend.entities.Messages;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -20,5 +21,5 @@ public class UserConversationDTO {
     private String imageUserResource;
     private String mentorSpecializations;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<Messages> messages;
+    private Set<Messages> messages;
 }

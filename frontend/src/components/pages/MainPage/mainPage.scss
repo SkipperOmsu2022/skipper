@@ -158,122 +158,123 @@
             }
         }
 
-        .mentor {
-            display: flex;
-            flex-direction: row;
-            min-width: fit-content;
-            max-width: 1350px;
-            gap: 40px;
-            padding: 2.5rem;
-            background-color: white;
-            box-shadow: 0 0 0.625rem rgba(166, 166, 166, 0.6);
-            border-radius: 0.625rem;
-
-            &__photo {
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-                &-img {
-                    width: 100px;
-                    height: 100px;
-                    border-radius: 50%;
-                    border: 0.0625rem solid $additional-text;
-                }
-            }
-            .rating {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                gap: 10px;
-                text-align: center;
-                align-items: center;
-                &-star {
-                    line-height: 28px;
-                    color: $main;
-                    font-size: 40px;
-                    width: 30px;
-                }
-                &-value {
-                    font-size: 20px;
-                    color: $main-text;
-                    align-items: center;
-                }
-            }
-            &__main-info {
-                flex-grow:2;
-
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-
-                min-width: 400px;
-                .header {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    &__column {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 5px;
-                        &-name {
-                            color: $header;
-                            font-size: 20px;
-                        }
-                        &-specialty {
-                            color: $additional-text;
-                            font-size: 16px;
-                        }
-                    }
-                }
-                .description {
-                    color: $main-text;
-                    font-size: 16px;
-                }
-            }
-            &__divider {
-                border: 1px solid $main;
-                width: 0;
-                height: auto;
-            }
-            &__interaction {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                gap: 19px;
-
-                min-width: 180px;
-                &-info {
-                    margin: auto;
-                    display: flex;
-                    flex-direction: column;
-                    align-items:center;
-
-                    gap: 10px;
-                    color: $main-text;
-                    font-size: 16px;
-                }
-                &-btn-block {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                    justify-content: flex-end;
-        
-                    .button {
-                        padding: 8.5px 11.5px;
-                        font-weight: 400;
-                        font-size: 14px;
-                        color: $header;
-                        &.pale {
-                            background-color: #FFF5C2;
-                        }
-                    }  
-                }
-            }
-        }
         &__error {
             margin-left: auto;
             margin-right: auto;
             color: $error;
         }
+    }
+}
+
+.mentor {
+    display: flex;
+    flex-direction: row;
+    min-width: fit-content;
+    max-width: 1350px;
+    gap: 40px;
+    padding: 2.5rem;
+    background-color: white;
+    box-shadow: 0 0 0.625rem rgba(166, 166, 166, 0.6);
+    border-radius: 0.625rem;
+
+    &__photo {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        &-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 0.0625rem solid $additional-text;
+        }
+    }
+    .rating {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+        text-align: center;
+        align-items: center;
+        &-star {
+            line-height: 28px;
+            color: $main;
+            font-size: 40px;
+            width: 30px;
+        }
+        &-value {
+            font-size: 20px;
+            color: $main-text;
+            align-items: center;
+        }
+    }
+    &__main-info {
+        flex-grow:2;
+
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        min-width: 400px;
+        .header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            &__column {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                &-name {
+                    color: $header;
+                    font-size: 20px;
+                }
+                &-specialty {
+                    color: $additional-text;
+                    font-size: 16px;
+                }
+            }
+        }
+        .description {
+            color: $main-text;
+            font-size: 16px;
+        }
+    }
+    &__divider {
+        border: 1px solid $main;
+        width: 0;
+        height: auto;
+    }
+    &__interaction {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 19px;
+
+        min-width: 180px;
+        &-info {
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items:center;
+
+            gap: 10px;
+            color: $main-text;
+            font-size: 16px;
+        }
+        &-btn-block {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: flex-end;
+
+            .button {
+                padding: 8.5px 11.5px;
+            }  
+        }
+    }
+
+    &.max-width {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: none;
     }
 }

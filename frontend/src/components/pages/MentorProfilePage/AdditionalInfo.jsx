@@ -1,15 +1,19 @@
+import { Link } from 'react-router-dom';
+import { observer } from "mobx-react-lite";
+
+import DateOfRegistration from "../ProfilePage/DateOfRegistration";
+import mentorProfileStore from '../../../store/mentorProfileStore';
+
 import "../../../shared/submitButton/button.scss"
 
-import { Link } from 'react-router-dom';
-import DateOfRegistration from "../ProfilePage/DateOfRegistration";
-
-const AdditionalInfo = ({props}) => {
-    const {dateOfRegistration, mentorStatus, isOwner, rating, userId} = props;
+const AdditionalInfo = observer(({isOwner, userId}) => {
 
     let filledStars = null, hollowStars = null;
-    if (rating) {
-        filledStars = Array(Math.round(+rating)).fill(<div className="star">&#9733;</div>);
-        hollowStars = Array(5 - Math.round(+rating)).fill(<div className="star">&#9734;</div>);
+    if (mentorProfileStore.rating) {
+        const roundedRating = Math.round(+mentorProfileStore.rating)
+        
+        filledStars = Array.from({length: roundedRating}, (_, i) => <div className="star" key={i}>&#9733;</div>);
+        hollowStars = Array.from({length: 5 - roundedRating}, (_, i) => <div className="star" key={i}>&#9734;</div>);
     }
     
     return (
@@ -18,22 +22,22 @@ const AdditionalInfo = ({props}) => {
                 <div className="stars-rating">
                     {filledStars}
                     {hollowStars}
-                    <span className="grade" >{rating}</span>
+                    <span className="grade" >{(mentorProfileStore.rating + '').slice(0, 3)}</span>
                 </div>
                 <div className="main-block__section">
                     <span>45 студентов</span>
                     <span>248 занятий</span>
                 </div>
                 <div className="main-block__section">
-                    <DateOfRegistration date={dateOfRegistration}/>
+                    <DateOfRegistration date={mentorProfileStore.dateOfRegistration}/>
                 </div>
             </div>
             { isOwner ? null :
             <div className="profile__btn-block full-width">
                 <span className="profile__btn-block-name">Консультация:</span>
                 <button
-                    disabled={!mentorStatus}
-                    className={`button${mentorStatus ? '' : ' inactive'}`}
+                    disabled={!mentorProfileStore.mentorStatus}
+                    className={`button${mentorProfileStore.mentorStatus ? '' : ' inactive'}`}
                     >
                     Забронировать
                 </button>
@@ -47,6 +51,6 @@ const AdditionalInfo = ({props}) => {
             </div>}
         </div>
     )
-}
+})
 
 export default AdditionalInfo;

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "Educations")
@@ -27,10 +26,10 @@ public class Education {
     @JoinColumn(name = "qualification_id")
     private Qualification qualification;
 
-    @Column(nullable = false, columnDefinition = "DATE")
-    private LocalDate dateStart;
-    @Column(columnDefinition = "DATE")
-    private LocalDate dateEnd;
+    @Column(nullable = false)
+    private Integer yearStart;
+    @Column
+    private Integer yearEnd;
     @Column(nullable = false)
     private String educationalInstitution;
 }

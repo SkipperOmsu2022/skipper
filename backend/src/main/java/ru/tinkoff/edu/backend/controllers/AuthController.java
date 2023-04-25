@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,6 @@ import ru.tinkoff.edu.backend.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.xml.ws.spi.http.HttpContext;
 
 /**
  * Данный контроллер отвечает за:
@@ -61,11 +60,9 @@ public class AuthController {
                 .build();
     }
 
-    @Operation(summary = "Аутентификация пользователя",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    content = {@Content(mediaType = "multipart/form-data")}))
+    @Operation(summary = "Аутентификация пользователя")
     @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
-    @PostMapping("/login")
+    @PostMapping(value = "/login", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> login(@Valid UserLoginDTO user, HttpServletRequest httpServletRequest) {
         // можно узнать ip отправителя
         log.info("remote host:" + httpServletRequest.getRemoteHost());

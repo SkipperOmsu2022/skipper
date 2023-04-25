@@ -6,7 +6,7 @@ import notifications from "../../resources/icons/notifications.svg"
 import search from "../../resources/icons/search.svg"
 import photo from "../../resources/profile-photo.jpg"
 
-import { Outlet, Navigate, Link, NavLink, useLocation } from 'react-router-dom';
+import { Outlet, Link, NavLink, useLocation } from 'react-router-dom';
 import { useEffect, useState, useRef, useLayoutEffect } from "react"
 import useAuthContext from "../../hooks/useAuthContext";
 import useLoginService from "../../services/loginService"
@@ -18,7 +18,37 @@ import messagesStore from "../../store/messagesStore";
 
 import "./appHeader.scss"
 
-const AppHeader = observer(() => {
+const AppHeader = () => {
+    const { auth } = useAuthContext();
+    const location = useLocation();
+    useLayoutEffect(() => {
+        document.documentElement.scrollTo(0, 0);
+    }, [location.pathname]);
+
+    return (
+        <>
+            <header className="app-header">
+                <div className="app-header__group">
+                    <Link  to="/mentors" className="app-header__logo">Skipper</Link>
+                    { 
+                        auth ?
+                        <div className="app-header__icons">
+                            <NavLink to="/messages"><img src={messages} alt="messages" /></NavLink>
+                            <div>
+                                <img src={bookmark} alt="favorites" className="bookmark-icon"/>
+                            </div>
+                            {/* <NavLink to="/favorites"><img src={bookmark} alt="favorites" className="bookmark-icon"/></NavLink> */}
+                        </div> : null
+                    }
+                </div>
+                { auth ? <LoggedDisplay/> : <UnloggedDisplay/>}
+            </header>
+            <Outlet/>
+        </>
+    )
+}
+
+const LoggedDisplay = observer(() => {
     const {getUserData} = useProfileService();
     const { getMessagesList } = useMessageService();
     
@@ -30,13 +60,8 @@ const AppHeader = observer(() => {
     const container = useRef();
 
     const { logout } = useLoginService()
-    const { auth } = useAuthContext();
-
     const location = useLocation();
-    useLayoutEffect(() => {
-        document.documentElement.scrollTo(0, 0);
-    }, [location.pathname]);
-
+    
     useEffect(() => {
         getUserData('user/profile/')
             .then(res => {
@@ -78,77 +103,71 @@ const AppHeader = observer(() => {
         }
     };
 
-    if (!auth) {
-        return <Navigate to="authorization/signin" replace={true} />
-    }
-
     const dropDown = `app-header__dropdown ${navBarDisplay ? '' : 'hide'}`;
 
     return (
-        <>
-            <header className="app-header">
-                <div className="app-header__group">
-                    <Link  to="/" className="app-header__logo">Skipper</Link>
-                    <div className="app-header__icons">
-                        <NavLink to="/messages"><img src={messages} alt="messages" /></NavLink>
-                        {/*<a href="favorites">
-                            <img src={bookmark} alt="favorites" className="bookmark"/>
-                        </a>*/}
+        <div className="app-header__group">
+            <div className="app-header__icons">
+                <div href="notifications" className="hover">
+                    <img src={notifications} alt="notifications" />
+                </div>
+                <div href="search" className="hover">
+                    <img src={search} alt="search" />
+                </div>
+            </div>
+            <div 
+                className="app-header__profile" ref={container} tabIndex={0} 
+                onClick={handleDropdownClick}
+                onKeyDown={(e) => {
+                    if (e.key === ' ' || e.key === "Enter") {
+                        setNavBarDisplay((dropdownDisplay) => !dropdownDisplay);
+                    }
+                }}
+            >
+                <div className="app-header__profile-data">
+                    <div className="app-header__profile-name">{firstName} {lastName}</div>
+                </div>
+                <img
+                    className="app-header__profile-photo"
+                    src={imageUserResource ? `${enviroments.apiBase}${imageUserResource}` : photo}
+                    alt=""
+                />
+                <div className={dropDown} tabIndex="-1">
+                    <div className="app-header__dropdown-item">
+                        <NavLink end to="/"  className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}>Главная страница</NavLink>
+                    </div>
+                    <div className="app-header__dropdown-item">
+                        <NavLink to="/settings"  className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}>Настройки профиля</NavLink>
+                    </div>
+                    <div className="app-header__dropdown-divider"></div>
+                    <div className="app-header__dropdown-item">
+                        <Link
+                            to={'/'}
+                            className="app-header__dropdown-text exit"
+                            tabIndex={0}
+                            onClick={logout}
+                            onKeyDown={(e) => {
+                                if (e.key === ' ' || e.key === "Enter") {
+                                    logout();
+                                }
+                            }}
+                        >
+                            Выйти из аккаунта
+                        </Link>
                     </div>
                 </div>
-                <div className="app-header__group">
-                    <div className="app-header__icons">
-                        <a href="notifications">
-                            <img src={notifications} alt="notifications" />
-                        </a>
-                        <a href="search">
-                            <img src={search} alt="search" />
-                        </a>
-                    </div>
-                    <div className="app-header__profile" ref={container} tabIndex={0} 
-                        onClick={handleDropdownClick}
-                        onKeyDown={(e) => {
-                            if (e.key === ' ' || e.key === "Enter") {
-                                setNavBarDisplay((dropdownDisplay) => !dropdownDisplay);
-                            }
-                        }}
-                    >
-                        <div className="app-header__profile-data">
-                            <div className="app-header__profile-name">{firstName} {lastName}</div>
-                        </div>
-                        <img
-                            className="app-header__profile-photo"
-                            src={imageUserResource ? `${enviroments.apiBase}${imageUserResource}` : photo}
-                            alt=""
-                        />
-                        <div className={dropDown} tabIndex="-1">
-                            <div className="app-header__dropdown-item">
-                                <NavLink end to="/"  className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}>Главная страница</NavLink>
-                            </div>
-                            <div className="app-header__dropdown-item">
-                                <NavLink to="/settings"  className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}>Настройки профиля</NavLink>
-                            </div>
-                            <div className="app-header__dropdown-divider"></div>
-                            <div className="app-header__dropdown-item">
-                                <div className="app-header__dropdown-text exit"
-                                    tabIndex={0}
-                                    onClick={logout}
-                                    onKeyDown={(e) => {
-                                        if (e.key === ' ' || e.key === "Enter") {
-                                            logout();
-                                        }
-                                    }}
-                                >
-                                    Выйти из аккаунта
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <Outlet/>
-        </>
+            </div>
+        </div>
     )
 })
+
+const UnloggedDisplay = () => {
+    return (
+        <div className="app-header__group">
+            <Link to={"/authorization/signin"} className="button white">Войти</Link>
+            <Link to={"/authorization/signup"} className="button">Зарегистрироваться</Link>
+        </div>
+    )
+}
 
 export default AppHeader;

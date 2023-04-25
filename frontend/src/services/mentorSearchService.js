@@ -6,22 +6,19 @@ const useMentorSearchService = () => {
     const {request, loading, response, setResponse, error, clearResponse} = useRequest();
 
     const _apiBase = enviroments.apiBase;
-    const userId = localStorage.getItem('logged');
 
-    const getMentors = async (url, offset) => { 
-        const res = await request(`${_apiBase}/api/list/mentors${url}`, 'get');
-
+    const getMentors = async (dto) => {
+        const params = new URLSearchParams(dto);
+        const res = await request(`${_apiBase}/api/list/mentors/page_sort_filter?${params.toString()}`, 'get',);
+        
         if (res?.status !== 201) {
             setResponse("Что-то пошло не так");
         }
 
-        return res?.data?.filter(mentor => +mentor.id !== +userId)
-            ?.map(mentor => {
-                return {
-                    ...mentor,
-                    rating: mentor.reting || (Math.random() * (4.9 - 3.8) + 3.8).toFixed(1)
-                }
-            })
+        return {
+            mentors: res?.data?.content,
+            total: res?.data?.totalElement
+        }
     }
 
     return {loading, response, error, clearResponse, getMentors}

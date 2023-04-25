@@ -1,5 +1,6 @@
-package ru.tinkoff.edu.backend.dto;
+package ru.tinkoff.edu.backend.dto.profile.settings;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,5 +28,11 @@ public class UserEditMentorDTO {
             = "Mentor specialization must have at least one element!")
     private Set<MentorSpecialization> mentorSpecializations;
     @Valid
+    @NotNull
     private Set<EducationDTO> educations;
+    @Valid
+    @NotNull
+    private Set<WorkExperienceDTO> workExperiences;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Set<String> certificatesResource;
 }

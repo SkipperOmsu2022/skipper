@@ -23,7 +23,6 @@
             <artifactId>frontend</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
-            <!-- we add optional to work with the backend package without building the frontend -->
             <optional>true</optional>
         </dependency>
         <!-- Стартер для создания веб-приложений, в том числе RESTful, с использованием Spring MVC.
@@ -37,13 +36,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <!--Это библиотека для сокращения кода в классах и расширения функциональности языка
-        Java(в том числе аспектное логирование).-->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
         <!--Framework авторизации и аутентификации-->
@@ -110,6 +102,13 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
+        <!--Это библиотека для сокращения кода в классах и расширения функциональности языка
+        Java(в том числе аспектное логирование).-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
@@ -157,6 +156,29 @@
                                     <outputDirectory>${project.build.directory}/classes/static</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--Для копирования git-hooks в папку ./git/hooks-->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-hooks</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>../.git/hooks</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>git-hooks</directory>
+                                </resource>
+                            </resources>
                         </configuration>
                     </execution>
                 </executions>

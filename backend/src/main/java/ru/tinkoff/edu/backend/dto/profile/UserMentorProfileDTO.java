@@ -1,11 +1,14 @@
-package ru.tinkoff.edu.backend.dto;
+package ru.tinkoff.edu.backend.dto.profile;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.tinkoff.edu.backend.dto.profile.settings.EducationDTO;
+import ru.tinkoff.edu.backend.dto.profile.settings.WorkExperienceDTO;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @Builder
@@ -20,9 +23,11 @@ public class UserMentorProfileDTO {
     private String imageUserResource;
     private LocalDate dateOfRegistration;
     private String mentorSpecializations;
+    private Set<EducationDTO> educations;
+    private Set<WorkExperienceDTO> workExperiences;
+    private Set<String> certificatesResource;
     private String linkVk;
     private String linkSkype;
     private String linkDiscord;
     private String linkTelegram;
-    private Double rating;
 }

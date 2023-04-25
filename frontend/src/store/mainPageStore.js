@@ -6,7 +6,7 @@ class mainPageStore {
     }
 
     mentors = []
-    currentMentors = []
+    displayStart = 0
     filter = []
     ratingFilter = [
         {value: '5', label: '5', checked: false},
@@ -15,64 +15,35 @@ class mainPageStore {
         {value: '2', label: '2',checked: false},
         {value: '1', label: '1',checked: false},
     ]
-    currentfilter = []
     search = ""
     
     offset = 0;
     pageCount = 0;
     totalMentors = 0;
-
-    setMentors = (mentors) => {
-        this.offset = 0;
-        this.mentors = mentors;
-        this.totalMentors = mentors.length
-        this.pageCount = Math.ceil( this.mentors.length / 6);
-        this.currentMentors = this.mentors
+    onlyWithPhoto = false;
+    
+    setMentors = (data, offset, newdisplayStart) => {
+        if (data?.mentors !== undefined) {
+            this.mentors = data.mentors;
+            this.offset = offset;
+            this.displayStart = newdisplayStart;
+            
+            this.totalMentors = data.total;
+            this.pageCount = Math.ceil( data.total / 6);
+        }
     }
 
-    updateCurrentMentors = () => {
-        this.currentfilter = this.filter.filter((item) => item.checked).map((item) => item.label);
-        this.offset = 0;
-        let res = this.mentors;
-
-        const rating = this.ratingFilter.filter((item) => item.checked).map((item) => +item.label);
-        if (rating.length !== 0) {
-            res = res.filter((item) => rating.some(r=> Math.round(+item.rating) === r))
-        }
-
-        if (this.currentfilter.length !== 0) {
-            res = res.filter((item) => this.currentfilter.some(r=> item.mentorSpecializations.includes(r)))
-        }
-
-        if (this.search.length !== 0) {
-            res = res.filter((item) => {
-                const str = (item.aboutMeAsMentor + item.mentorSpecializations + item.firstName +
-                    item.lastName).toLowerCase();
-                    
-                let searchLine = this.search.toLowerCase().trim().split(/[\s:,]/).filter(e => e.length > 1)
-                if(searchLine.length === 0) {
-                    searchLine = this.search.toLowerCase().trim().split(/[\s:,]/)
-                } 
-                if (searchLine.length > 0) {
-                    console.log(str)
-                    return searchLine.some(r=> str.includes(r))
-                } else {
-                    return true;
-                }
-            })
-        }
-
-        this.totalMentors = res.length
-        this.pageCount = Math.ceil( res.length / 6);
-        this.currentMentors = res
-    }
-
-    updateOffset = (newOffset) => {
-        this.offset = newOffset;
+    updateDisplayStart = (displayStart) => {
+        this.displayStart = displayStart;
     }
 
     changeFavorite = (mentor) => {
         mentor.favorite =  !mentor.favorite;
+    }
+    
+    changeOnlyWithPhoto = () => {
+        this.onlyWithPhoto = !this.onlyWithPhoto;
+        console.log(this.onlyWithPhoto)
     }
 
     setSearch = (search) => {
@@ -83,14 +54,14 @@ class mainPageStore {
         this.filter = filter;
     }
 
-    resetFilter = () => {
+    reset = () => {
         this.filter = this.filter.map((item) => {
             return {...item, checked: false}
         })
         this.ratingFilter = this.ratingFilter.map((item) => {
             return {...item, checked: false}
         })
-        this.currentfilter = [];
+        this.search = ""
     }
 
     changeChecked(specialization) {

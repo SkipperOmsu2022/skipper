@@ -1,0 +1,10 @@
+drop table if exists certificate_resources cascade;
+drop table if exists educations cascade;
+drop table if exists mentor_specializations cascade;
+drop table if exists mentors cascade;
+drop table if exists messages cascade;
+drop table if exists qualifications cascade;
+drop table if exists users cascade;
+drop table if exists users_contacts cascade;
+drop table if exists users_main_info cascade;
+drop table if exists work_experiences cascade;

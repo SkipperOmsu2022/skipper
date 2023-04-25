@@ -3,7 +3,6 @@
     user-select: none;
     &-icon {
         cursor: pointer;
-        filter: grayscale(100%) invert(1) brightness(150%);
     }
     &-input {
         opacity: 0;
@@ -11,6 +10,6 @@
         height: 0;
     }
     &-input:checked + &-icon {
-        filter: brightness(110%);
+        filter: invert(0.5);
     }
 }
