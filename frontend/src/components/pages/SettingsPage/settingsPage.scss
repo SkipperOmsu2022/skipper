@@ -409,12 +409,16 @@
         flex-direction: column;
         gap: 0.625rem;
         width: 31.25rem;
+        padding-top: 1rem;
         &__group {
             display: flex;
             flex-direction: row;
             gap: 0.625rem;
             flex-wrap: wrap;
             padding-bottom: 0.3125rem;
+            &:not(:has(.certificates__group-item)) {
+                display: none;
+            }
             &-item {
                 width: 10rem;
                 height: 6.625rem;
@@ -454,7 +458,6 @@
                     width: fit-content;
                 }
             }
-
         }
         .button {
             background-color: $additional;

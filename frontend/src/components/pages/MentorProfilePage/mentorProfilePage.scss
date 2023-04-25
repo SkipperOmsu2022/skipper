@@ -7,7 +7,7 @@
 .profile{
     &.mentor {
         min-width: auto;
-        max-width: 1380px;
+        max-width: 1280px;
     }
     &.additional-info {
         display: flex;
@@ -81,10 +81,11 @@
         padding-top: 1.25rem;
 
         &-row {
-            width: 100%;
+            padding: 0 4.5625rem;
+            min-width: fit-content;
             display: flex;
             flex-direction: row;
-            gap: 6.6875rem;
+            gap: 4.375rem;
             justify-content: space-around;
         }
         &-column {
@@ -93,10 +94,11 @@
             gap: 1.25rem;
             justify-content: flex-start;
 
-            width: 10rem;
+            width: 13.75rem;
             &-text {
                 color: $main-text;
                 text-align: center;
+                line-height: 1.25rem;
             }
             &-wrapper {
                 margin-left: auto;

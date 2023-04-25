@@ -1,9 +1,14 @@
 import  {makeAutoObservable} from 'mobx';
-import axios from "axios";
+
+import {getEducationsList} from '../services/api'
 
 import enviroments from '../config/enviroments';
 
-class mainPageStore {
+async function getBlobFromUrl(url) {
+    return await fetch(url).then(r => r.blob());
+}
+
+class mentorSettingsStore {
     constructor() {
         makeAutoObservable(this, { deep: true })
     }
@@ -15,7 +20,10 @@ class mainPageStore {
     mentor = false;
     aboutMentor = "";
     mentorsSpecializations = [];
-    education = []
+    educations = []
+    workExperiences = []
+    certificates = []
+    certificatesErr = false
     dirty = false;
 
     setSpecializationOptions = (arr) => {
@@ -23,10 +31,9 @@ class mainPageStore {
     }
 
     asyncGetQualificationOptions = (e, i) => {
-        const url = enviroments.apiBase + '/api/user/profile/settings/mentor/edu';
         if (e.length >= 3) {
-            this.education[i].noOptionsMessage = 'Значений не найдено'
-            return axios.request({url, method: 'get', params: {query: e}})
+            this.educations[i].noOptionsMessage = 'Значений не найдено'
+            return getEducationsList(e)
                 .then(res => {
                     return(res.data.map((item) => {
                         return {
@@ -37,7 +44,7 @@ class mainPageStore {
                     }))
                 })
         } else {
-            this.education[i].noOptionsMessage = 'Введите минимум 3 символа'
+            this.educations[i].noOptionsMessage = 'Введите минимум 3 символа'
             return new Promise((resolve) => resolve([]));
         }
     }
@@ -50,11 +57,17 @@ class mainPageStore {
         res?.data?.educations.forEach((item) => {
             this.addEducation(item)
         });
+        
+        res?.data?.workExperiences.forEach((item) => {
+            this.addExperience(item)
+        });
+        
+        this.certificates = res?.data?.certificatesResource?.map(item => enviroments.apiBase+item);
     }
 
     addEducation = (item) => {
         const {qualificationId, yearStart, yearEnd, qualificationNameWithCode, educationalInstitution} = item;
-        this.education.push({
+        this.educations.push({
             id: this.id,
             yearStart: yearStart || null,
             yearEnd: +yearEnd || null,
@@ -68,20 +81,54 @@ class mainPageStore {
         this.id++;
     }
     removeEducation = (i) => {
-        this.education.splice(i, 1);
+        this.educations.splice(i, 1);
     }
     setEducation = (e, i, valueName) => {
         if (valueName === 'qualification') {
-            this.education[i].qualificationId = e.id;
-            this.education[i].label = e.label;
-            this.education[i].error[1] = false;
-        } else if (valueName === 'yearStart' && +this.education[i].yearEnd < +e.value) {
-            this.education[i].yearEnd = null;
-            this.education[i].error[0] = false;
+            this.educations[i].qualificationId = e.id;
+            this.educations[i].label = e.label;
+            this.educations[i].error[1] = false;
+        } else if (valueName === 'yearStart' && +this.educations[i].yearEnd < +e.value) {
+            this.educations[i].yearEnd = null;
+            this.educations[i].error[0] = false;
         } else if (valueName === 'educationalInstitution') {
-            this.education[i].error[2] = false;
+            this.educations[i].error[2] = false;
         } 
-        this.education[i][valueName] = e.value
+        this.educations[i][valueName] = e.value
+    }
+
+    addExperience = (item) => {
+        const {yearStart, yearEnd, placeOfWork} = item;
+        this.workExperiences.push({
+            id: this.id,
+            yearStart: yearStart || null,
+            yearEnd: +yearEnd || null,
+            placeOfWork: placeOfWork,
+            error: [false, false]
+        })
+        this.id++;
+    }
+    setExperience = (e, i, valueName) => {
+        if (valueName === 'yearStart' && +this.workExperiences[i].yearEnd < +e.value) {
+            this.workExperiences[i].yearEnd = null;
+            this.workExperiences[i].error[0] = false;
+        } else if (valueName === 'placeOfWork') {
+            this.workExperiences[i].error[1] = false;
+        }
+        this.workExperiences[i][valueName] = e.value
+    }
+    removeExperience = (i) => {
+        this.workExperiences.splice(i, 1);
+    }
+    
+    addCertificate = (item) => {
+        this.certificates.push(item);
+    }
+    removeCertificate = (i) => {
+        this.certificates.splice(i, 1);
+    }
+    setCertificatesErr = (error) => {
+        this.certificatesErr = error;
     }
 
     handleSwitchChange = () => {
@@ -106,8 +153,8 @@ class mainPageStore {
         }
     }
 
-    getEducation = () => {
-        return this.education.map((item) => {
+    getEducations = () => {
+        return this.educations.map((item) => {
             return {
                 yearStart: +item.yearStart,
                 yearEnd: item.yearEnd,
@@ -116,11 +163,51 @@ class mainPageStore {
             }
         })
     }
+    getWorkExperiences = () => {
+        return this.workExperiences.map((item) => {
+            return {
+                yearStart: +item.yearStart,
+                yearEnd: item.yearEnd,
+                placeOfWork: item.placeOfWork
+            }
+        })
+    }
+    getCertificates = async () => {
+        return await Promise.all(this.certificates.map(async (item) => getBlobFromUrl(item)))
+    }
+
+    formPostData = async () => {
+        const info = {
+            isEnabledMentorStatus: this.mentor,
+            aboutMeAsMentor: this.aboutMentor,
+            mentorSpecializations: this.mentorsSpecializations
+                .map((item) => item.value),
+            educations: this.getEducations(),
+            workExperiences: this.getWorkExperiences()
+        }
+        
+        let form_data = new FormData();
+
+        const json = JSON.stringify(info);
+        const jsonBlob = new Blob([json], {
+            type: 'application/json'
+        });
+        form_data.append('info', jsonBlob);
+        
+        const filesBlob = await this.getCertificates();
+        filesBlob.forEach(file => {
+            form_data.append('certificates', file, "image.jpg");
+        });
+        if (filesBlob.length === 0) {
+            form_data.append('certificates', new Blob());
+        }
+
+        return form_data;
+    }
 
     validate = () => {
         let complete = true;
-        console.log(this.education)
-        this.education.forEach((item) => {
+        this.educations.forEach((item) => {
             if (!(item.yearStart && item.qualificationId && item.educationalInstitution)) {
                 complete = false
             }
@@ -132,6 +219,17 @@ class mainPageStore {
             }
             if (!item.educationalInstitution) {
                 item.error[2] = true
+            }
+        })
+        this.workExperiences.forEach((item) => {
+            if (!(item.yearStart && item.placeOfWork)) {
+                complete = false
+            }
+            if (!item.yearStart) {
+                item.error[0] = true
+            }
+            if (!item.placeOfWork) {
+                item.error[1] = true
             }
         })
         this.dirty = true;
@@ -146,8 +244,12 @@ class mainPageStore {
         this.mentor = false;
         this.aboutMentor = "";
         this.mentorsSpecializations = [];
-        this.education = []
+        this.educations = []
+        this.workExperiences = []
+        this.certificates = []
+        this.certificatesErr = false
+        this.dirty = false;
     }
 }
 
-export default new mainPageStore();
+export default new mentorSettingsStore();

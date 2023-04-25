@@ -20,13 +20,12 @@ const useProfileService = () => {
     }
     
     const setUserData = async (data, url, headers) => {
-        console.log(data)
         const res = await request(`${_apiBase}/api/${url}${userId}`, 'put', data, headers);
 
         if (res?.status === 200) {
             setResponse("Изменения сохранены");
         } else {
-            console.log(res?.message)
+            console.log(res?.data?.message)
             setResponse("Что-то пошло не так");
             return res;
         }

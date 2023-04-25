@@ -1,15 +1,15 @@
-import enviroments from "../../../config/enviroments";
-
 import { useEffect, useState, useRef } from "react"
+import { observer } from "mobx-react-lite";
+
+import mentorProfileStore from '../../../store/mentorProfileStore';
+
 import CommunicationContent from "../ProfilePage/CommunicationContent";
 
 import photo from "../../../resources/profile-photo.jpg"
 import bookmark from "../../../resources/icons/bookmark.svg";
 import "../../../shared/bookmark.scss"
 
-const MainInfo = ({props}) => {
-    const {firstName, lastName, mentorSpecializations, aboutAsMentor, communication, imageUserResource} = props;
-
+const MainInfo = observer(() => {
     useEffect(() => {
         document.addEventListener("click", handleClickOutside);
         
@@ -37,17 +37,17 @@ const MainInfo = ({props}) => {
                 <div className="profile__section-row">
                     <img
                         className="profile__photo"
-                        src={imageUserResource ? `${enviroments.apiBase}${imageUserResource}` : photo}
+                        src={mentorProfileStore.imageUserResource || photo}
                         alt="user-avatar"
                     />
                     <div className="profile__main-info">
-                        <div className="name">{firstName} {lastName}</div>
-                        <div className="specialty">{mentorSpecializations}</div>
+                        <div className="name">{mentorProfileStore.firstName} {mentorProfileStore.lastName}</div>
+                        <div className="specialty">{mentorProfileStore.mentorSpecializations}</div>
                     </div>
-                    {/*<label className="profile__bookmark" htmlFor="switch">
+                    <label className="profile__bookmark" htmlFor="switch">
                         <input type="checkbox" className="bookmark-input" id="switch"/>
                         <img className="bookmark-icon bookmark" src={bookmark} alt="" />
-                    </label>*/}
+                    </label>
                 </div>
                 <div className="complain-btn" ref={container} onClick={handleDropdownClick}
                     onKeyDown={(e) => {
@@ -64,18 +64,18 @@ const MainInfo = ({props}) => {
                 </div>
             </div>
             <div className="profile__section-label">О себе</div>
-            {aboutAsMentor ? 
+            {mentorProfileStore.aboutAsMentor ? 
             <div className="profile__section-content">
-                {aboutAsMentor}
+                {mentorProfileStore.aboutAsMentor}
             </div> :
             <div className="profile__no-info">
                 Пользователь не предоставил информацию о себе
             </div>}
             <div className="profile__section">
-                <CommunicationContent communication={communication}/>
+                <CommunicationContent communication={mentorProfileStore.communication}/>
             </div>
         </div>
     )
-}
+})
 
 export default MainInfo;
