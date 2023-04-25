@@ -23,12 +23,14 @@ class mainPageStore {
     onlyWithPhoto = false;
     
     setMentors = (data, offset, newdisplayStart) => {
-        this.mentors = data.mentors;
-        this.offset = offset;
-        this.displayStart = newdisplayStart;
-        
-        this.totalMentors = data.total;
-        this.pageCount = Math.ceil( data.total / 6);
+        if (data?.mentors !== undefined) {
+            this.mentors = data.mentors;
+            this.offset = offset;
+            this.displayStart = newdisplayStart;
+            
+            this.totalMentors = data.total;
+            this.pageCount = Math.ceil( data.total / 6);
+        }
     }
 
     updateDisplayStart = (displayStart) => {

@@ -34,9 +34,7 @@ const AppHeader = () => {
                         auth ?
                         <div className="app-header__icons">
                             <NavLink to="/messages"><img src={messages} alt="messages" /></NavLink>
-                            <a href="favorites">
-                                <img src={bookmark} alt="favorites" className="bookmark"/>
-                            </a>
+                            <NavLink to="/favorites"><img src={bookmark} alt="favorites" className="bookmark-icon"/></NavLink>
                         </div> : null
                     }
                 </div>
@@ -163,7 +161,7 @@ const LoggedDisplay = observer(() => {
 const UnloggedDisplay = () => {
     return (
         <div className="app-header__group">
-            <Link to={"/authorization/signin"} className="button pale">Войти</Link>
+            <Link to={"/authorization/signin"} className="button white">Войти</Link>
             <Link to={"/authorization/signup"} className="button">Зарегистрироваться</Link>
         </div>
     )

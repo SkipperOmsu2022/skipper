@@ -8,6 +8,7 @@
     background: $button;
     border-radius: 0.625rem!important;
     border-style: none;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
 
     font-family: 'Montserrat';
     font-style: normal;
@@ -30,5 +31,13 @@
     
     &.pale {
         background-color: #FFF5C2;
+    }
+    
+    &.white {
+        background-color: #FFFFFF;
+        border: 1px solid $main;
+        &:hover, &:focus {
+            filter: brightness(98%);
+        }
     }
 }
