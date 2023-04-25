@@ -1,9 +1,15 @@
-import  {makeAutoObservable, runInAction} from 'mobx';
+import  {makeAutoObservable} from 'mobx';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import axios from "axios";
 import enviroments from '../config/enviroments';
 import photo from "../resources/profile-photo.jpg"
+
+const comparator = (a, b) => {
+    if (a?.id > b?.id) return 1;
+    if (a?.id === b?.id) return 0;
+    if (a?.id < b?.id) return -1;
+}
 
 class messagesStore {
     constructor() {
@@ -42,7 +48,9 @@ class messagesStore {
     }
 
     addNewMessage = (dialogId, senderId, recevierId, ) => {
-        const msgId = -this.interlocutors[dialogId].messages.length
+        console.log(1)
+        console.log(this.interlocutors[dialogId].messages[this.interlocutors[dialogId].messages.length - 1])
+        const msgId = this.interlocutors[dialogId].messages.slice().sort(comparator)[this.interlocutors[dialogId].messages.length - 1]?.id + 1;
 
         this.sendMessage()
         
@@ -94,7 +102,7 @@ class messagesStore {
                         messages: [],
                         mentorSpecializations: res.data?.mentorSpecializations
                     })
-                    const msgId = -this.interlocutors[dialogId].messages.length;
+                    const msgId = this.interlocutors[dialogId].messages.slice().sort(comparator)[this.interlocutors[dialogId].messages.length - 1]?.id + 1;
                     
                     this.interlocutors[dialogId].messages.push({
                         id: msgId,
@@ -105,7 +113,8 @@ class messagesStore {
                     });
                 })
         } else {
-            const msgId = -this.interlocutors[dialogId].messages.length;
+            console.log(this.interlocutors[dialogId].messages[this.interlocutors[dialogId].messages.length - 1])
+            const msgId = this.interlocutors[dialogId].messages.slice().sort(comparator)[this.interlocutors[dialogId].messages.length - 1]?.id + 1;
 
             this.interlocutors[dialogId].messages.push({
                 id: msgId,

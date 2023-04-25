@@ -29,9 +29,9 @@ const Message = ({item, i}) => {
         <div className="chat-body__date">
             {`${date.getDate()} ${months[date.getMonth()]}`}
         </div>
-
+    console.log(item)
     const newBlock = date.getTime() - previousDate.getTime() > 600000 ||
-        item.userFrom !== messagesStore.activeInterlocutor.messages[i-1]?.userFrom
+        item.userFrom !== messagesStore.activeInterlocutor.messages?.slice().sort(comparator)[i-1]?.userFrom
 
     return (
         <>
@@ -91,7 +91,6 @@ const Dialog = observer(() => {
     });
 
     const clearDialog = (e) => {
-        console.log(e)
         if (e.key === "Escape") {
             messagesStore.setActiveDialog(null);
             messagesStore.setInput('')
@@ -99,7 +98,6 @@ const Dialog = observer(() => {
     }
     
     const sendMessage = (e) => {
-        console.log(e);
         if (e.key === "Enter" || e.type === 'click') {
             if (messagesStore.input) {
                 messagesStore.addNewMessage(messagesStore.activeDialog, 
@@ -155,7 +153,7 @@ const Dialog = observer(() => {
                 </div>
             </div>
             <div className='chat-body'>
-                {messagesStore.activeInterlocutor.messages.map((item, i) => 
+                {messagesStore.activeInterlocutor.messages.slice().sort(comparator).map((item, i) => 
                     <Message 
                         item={item}
                         i={i}
@@ -186,5 +184,11 @@ const Dialog = observer(() => {
         </>
     )
 })
+
+const comparator = (a, b) => {
+    if (a?.id > b?.id) return 1;
+    if (a?.id === b?.id) return 0;
+    if (a?.id < b?.id) return -1;
+}
 
 export default Dialog;
