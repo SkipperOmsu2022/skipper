@@ -28,30 +28,7 @@ const Mentor = observer(() => {
         e.preventDefault();
         clearResponse();
         if (mentorSettingsStore.validate()) {
-            const info = {
-                isEnabledMentorStatus: mentorSettingsStore.mentor,
-                aboutMeAsMentor: mentorSettingsStore.aboutMentor,
-                mentorSpecializations: mentorSettingsStore.mentorsSpecializations
-                    .map((item) => item.value),
-                educations: mentorSettingsStore.getEducations(),
-                workExperiences: mentorSettingsStore.getWorkExperiences()
-            }
-            
-            let form_data = new FormData();
-
-            const json = JSON.stringify(info);
-            const jsonBlob = new Blob([json], {
-                type: 'application/json'
-            });
-            form_data.append('info', jsonBlob);
-            
-            const filesBlob = await mentorSettingsStore.getCertificates();
-            filesBlob.forEach(file => {
-                form_data.append('certificates', file, "image.jpg");
-            });
-            if (filesBlob.length === 0) {
-                form_data.append('certificates', new Blob());
-            }
+            const form_data = await mentorSettingsStore.formPostData();
 
             setUserData(
                 form_data,

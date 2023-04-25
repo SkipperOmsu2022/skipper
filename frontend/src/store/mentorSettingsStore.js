@@ -176,6 +176,35 @@ class mentorSettingsStore {
         return await Promise.all(this.certificates.map(async (item) => getBlobFromUrl(item)))
     }
 
+    formPostData = async () => {
+        const info = {
+            isEnabledMentorStatus: this.mentor,
+            aboutMeAsMentor: this.aboutMentor,
+            mentorSpecializations: this.mentorsSpecializations
+                .map((item) => item.value),
+            educations: this.getEducations(),
+            workExperiences: this.getWorkExperiences()
+        }
+        
+        let form_data = new FormData();
+
+        const json = JSON.stringify(info);
+        const jsonBlob = new Blob([json], {
+            type: 'application/json'
+        });
+        form_data.append('info', jsonBlob);
+        
+        const filesBlob = await this.getCertificates();
+        filesBlob.forEach(file => {
+            form_data.append('certificates', file, "image.jpg");
+        });
+        if (filesBlob.length === 0) {
+            form_data.append('certificates', new Blob());
+        }
+
+        return form_data;
+    }
+
     validate = () => {
         let complete = true;
         this.educations.forEach((item) => {
