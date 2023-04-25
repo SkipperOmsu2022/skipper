@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "work_experiences")
@@ -17,8 +16,8 @@ import java.time.LocalDate;
 public class WorkExperience {
     @EmbeddedId
     private WorkExperiencePK id = new WorkExperiencePK();
-    @Column(columnDefinition = "DATE")
-    private LocalDate dateEnd;
+    @Column(name = "year_end")
+    private Integer yearEnd;
 
     @ManyToOne
     @MapsId("userId")

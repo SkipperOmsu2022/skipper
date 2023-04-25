@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.backend.dto.profile.settings;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,4 +33,6 @@ public class UserEditMentorDTO {
     @Valid
     @NotNull
     private Set<WorkExperienceDTO> workExperiences;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Set<String> certificatesResource;
 }

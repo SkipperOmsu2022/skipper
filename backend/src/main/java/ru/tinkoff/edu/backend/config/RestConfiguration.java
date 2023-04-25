@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ru.tinkoff.edu.backend.enums.FileStorageLocation;
 import ru.tinkoff.edu.backend.properties.StorageProperties;
 
 import java.nio.file.Path;
@@ -14,16 +15,19 @@ import java.nio.file.Paths;
 @Log4j2
 public class RestConfiguration implements WebMvcConfigurer {
     private final Path rootLocation;
-    private final String apiUserImage;
 
     public RestConfiguration(StorageProperties properties) {
         this.rootLocation = Paths.get(properties.getLocation());
-        this.apiUserImage = properties.getApiUserImage();
     }
 
     @Override
     public void addResourceHandlers(final @NonNull ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(apiUserImage + "/**")
-                .addResourceLocations("file:" + rootLocation + "/");
+        for(FileStorageLocation fileStorageLocation : FileStorageLocation.values()) {
+            registry.addResourceHandler( fileStorageLocation.getApi() + "/**")
+                    .addResourceLocations("file:" + rootLocation
+                            .resolve(fileStorageLocation.getPath())
+                            .normalize()
+                            .toAbsolutePath() + "/");
+        }
     }
 }

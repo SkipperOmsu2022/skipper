@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.tinkoff.edu.backend.dto.profile.settings.EducationDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.WorkExperienceDTO;
-import ru.tinkoff.edu.backend.entities.Education;
-import ru.tinkoff.edu.backend.entities.WorkExperience;
 
-import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -28,6 +25,7 @@ public class UserMentorProfileDTO {
     private String mentorSpecializations;
     private Set<EducationDTO> educations;
     private Set<WorkExperienceDTO> workExperiences;
+    private Set<String> certificatesResource;
     private String linkVk;
     private String linkSkype;
     private String linkDiscord;

@@ -2,26 +2,30 @@ package ru.tinkoff.edu.backend.services.implementation;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.tinkoff.edu.backend.dto.profile.UserMentorProfileDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.EducationDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMentorDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.WorkExperienceDTO;
 import ru.tinkoff.edu.backend.entities.*;
-import ru.tinkoff.edu.backend.exception.IncorrectDateTimeException;
+import ru.tinkoff.edu.backend.enums.FileStorageLocation;
 import ru.tinkoff.edu.backend.repositories.EducationRepository;
 import ru.tinkoff.edu.backend.repositories.QualificationRepository;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
 import ru.tinkoff.edu.backend.repositories.WorkExperienceRepository;
+import ru.tinkoff.edu.backend.services.FileStorageService;
 import ru.tinkoff.edu.backend.services.MentorProfileService;
 
 import javax.persistence.EntityNotFoundException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.time.Year;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static ru.tinkoff.edu.backend.mappers.EducationMapper.educationDTOToEducation;
+import static ru.tinkoff.edu.backend.mappers.EducationMapper.educationDTOToEducations;
+import static ru.tinkoff.edu.backend.mappers.UserMapper.userToUserEditMentorDTO;
+import static ru.tinkoff.edu.backend.mappers.WorkExperienceMapper.workExperienceDTOToWorkExperiences;
+import static ru.tinkoff.edu.backend.mappers.WorkExperienceMapper.workExperienceToWorkExperienceDTOs;
 
 @Service
 public class MentorProfileServiceImpl implements MentorProfileService {
@@ -29,94 +33,70 @@ public class MentorProfileServiceImpl implements MentorProfileService {
     private final QualificationRepository qualificationRepository;
     private final EducationRepository educationRepository;
     private final WorkExperienceRepository workExperienceRepository;
+    private final FileStorageService fileStorageService;
 
     public MentorProfileServiceImpl(UserRepository userRepository, QualificationRepository qualificationRepository,
                                     EducationRepository educationRepository,
-                                    WorkExperienceRepository workExperienceRepository) {
+                                    WorkExperienceRepository workExperienceRepository,
+                                    FileStorageService fileStorageService) {
         this.userRepository = userRepository;
         this.qualificationRepository = qualificationRepository;
         this.educationRepository = educationRepository;
         this.workExperienceRepository = workExperienceRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     @Override
     public UserEditMentorDTO getMentorInfo(Long id) {
-        User userFromDB = userRepository.getReferenceById(id);
-        UserEditMentorDTO user = new UserEditMentorDTO();
-        user.setAboutMeAsMentor(userFromDB.getAboutAsMentor());
-        user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
-        user.setMentorSpecializations(userFromDB.getMentorSpecializations());
+        return userToUserEditMentorDTO(userRepository.getReferenceById(id));
+    }
 
-        Set<EducationDTO> educations = userFromDB
-                .getEducation()
-                .stream()
-                .map(e -> EducationDTO.builder()
-                        .yearStart(e.getYearStart())
-                        .yearEnd(e.getYearEnd())
-                        .educationalInstitution(e.getEducationalInstitution())
-                        .qualificationNameWithCode(e.getQualification().getNameWithCode())
-                        .build())
-                .collect(Collectors.toSet());
+    private Qualification getQualificationById(Long id) {
+        return qualificationRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Qualification not found"));
+    }
 
-        Set<WorkExperienceDTO> workExperiences = userFromDB
-                .getWorkExperiences()
-                .stream()
-                .map(e -> WorkExperienceDTO.builder()
-                    .dateStart(e.getId().getDateStart())
-                    .dateEnd(e.getDateEnd())
-                    .placeOfWork(e.getId().getPlaceOfWork())
-                    .build())
-                .collect(Collectors.toSet());
+    private void deleteCertificateResources(Set<String> certificateResources) {
+        certificateResources.forEach(
+                e -> fileStorageService
+                        .deleteFromFileStorageLocation(FileStorageLocation.USER_CERTIFICATES, e)
+        );
+    }
 
-        user.setEducations(educations);
-        user.setWorkExperiences(workExperiences);
-        return user;
+    private Set<String> getCertificateResourcesSet(MultipartFile[] certificates, Long id) {
+        if (certificates == null) {
+            return Collections.emptySet();
+        }
+
+        Set<String> certificateResourcesSet = new HashSet<>(certificates.length * 2);
+        IntStream.range(0, certificates.length)
+                .forEach(i -> {
+                    String certificateResource = fileStorageService
+                            .save(FileStorageLocation.USER_CERTIFICATES, certificates[i], id + "_" + i);
+                    if (!certificateResource.isEmpty()) {
+                        certificateResourcesSet.add(certificateResource);
+                    }
+                });
+        return certificateResourcesSet;
     }
 
     @Transactional
     @Override
-    public void updateMentorInfo(Long id, UserEditMentorDTO user) {
+    public void updateMentorInfo(Long id, UserEditMentorDTO user, MultipartFile[] certificates) {
         User userFromDB = userRepository.getReferenceById(id);
         userFromDB.setAboutAsMentor(user.getAboutMeAsMentor());
         userFromDB.setIsEnabledMentorStatus(user.getIsEnabledMentorStatus());
         userFromDB.setMentorSpecializations(user.getMentorSpecializations());
 
-        Set<Education> educations = Optional.ofNullable(user.getEducations())
-                .orElse(Collections.emptySet())
-                .stream()
-                .map(e -> {
-                    Qualification qualification = qualificationRepository
-                            .findById(e.getQualificationId())
-                            .orElseThrow(() -> new EntityNotFoundException("Qualification not found"));
-                    if(!Objects.isNull(e.getYearEnd()) && e.getYearStart() > e.getYearEnd()) {
-                        throw new IncorrectDateTimeException("The start year cannot be less");
-                    }
-                    if(e.getYearStart() > Year.now().getValue()) {
-                        throw new IncorrectDateTimeException("The beginning of the education cannot be in the " +
-                                "future time");
-                    }
-                            return Education.builder()
-                                    .yearStart(e.getYearStart())
-                                    .yearEnd(e.getYearEnd())
-                                    .educationalInstitution(e.getEducationalInstitution())
-                                    .id(new EducationPK(userFromDB.getId(), qualification.getId()))
-                                    .qualification(qualification)
-                                    .user(userFromDB)
-                                    .build();
-                        }
-                )
-                .collect(Collectors.toSet());
+        Set<Education> educations =
+                educationDTOToEducations(user.getEducations(), userFromDB, this::getQualificationById);
 
-        Set<WorkExperience> workExperiences = Optional.ofNullable(user.getWorkExperiences())
-                .orElse(Collections.emptySet())
-                .stream()
-                .map(e -> WorkExperience.builder()
-                        .id(new WorkExperiencePK(userFromDB.getId(), e.getPlaceOfWork(), e.getDateStart()))
-                        .user(userFromDB)
-                        .dateEnd(e.getDateEnd())
-                        .build()
-                )
-                .collect(Collectors.toSet());
+        Set<WorkExperience> workExperiences =
+                workExperienceDTOToWorkExperiences(user.getWorkExperiences(), userFromDB);
+
+        deleteCertificateResources(userFromDB.getCertificateResources());
+        userFromDB.setCertificateResources(getCertificateResourcesSet(certificates, id));
 
         educationRepository.deleteEducationsByUser(userFromDB);
         educationRepository.saveAll(educations);
@@ -126,6 +106,7 @@ public class MentorProfileServiceImpl implements MentorProfileService {
 
         userRepository.save(userFromDB);
     }
+
     @Override
     public UserMentorProfileDTO getUserMentorProfile(Long id) {
         User userFromDB = userRepository.getReferenceById(id);
@@ -150,15 +131,15 @@ public class MentorProfileServiceImpl implements MentorProfileService {
                 .getWorkExperiences()
                 .stream()
                 .map(e -> WorkExperienceDTO.builder()
-                        .dateStart(e.getId().getDateStart())
-                        .dateEnd(e.getDateEnd())
+                        .yearStart(e.getId().getYearStart())
+                        .yearEnd(e.getYearEnd())
                         .placeOfWork(e.getId().getPlaceOfWork())
                         .build())
                 .collect(Collectors.toSet());
 
         user.setEducations(educations);
         user.setWorkExperiences(workExperiences);
-
+        user.setCertificatesResource(userFromDB.getCertificateResources());
         user.setImageUserResource(userFromDB.getImageUserResource());
         user.setDateOfRegistration(userFromDB.getDateOfRegistration());
         user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
