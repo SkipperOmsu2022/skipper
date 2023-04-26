@@ -29,7 +29,6 @@ const Message = ({item, i}) => {
         <div className="chat-body__date">
             {`${date.getDate()} ${months[date.getMonth()]}`}
         </div>
-    console.log(item)
     const newBlock = date.getTime() - previousDate.getTime() > 600000 ||
         item.userFrom !== messagesStore.activeInterlocutor.messages?.slice().sort(comparator)[i-1]?.userFrom
 

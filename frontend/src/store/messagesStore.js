@@ -48,8 +48,6 @@ class messagesStore {
     }
 
     addNewMessage = (dialogId, senderId, recevierId, ) => {
-        console.log(1)
-        console.log(this.interlocutors[dialogId].messages[this.interlocutors[dialogId].messages.length - 1])
         const msgId = this.interlocutors[dialogId].messages.slice().sort(comparator)[this.interlocutors[dialogId].messages.length - 1]?.id + 1;
 
         this.sendMessage()
@@ -113,7 +111,6 @@ class messagesStore {
                     });
                 })
         } else {
-            console.log(this.interlocutors[dialogId].messages[this.interlocutors[dialogId].messages.length - 1])
             const msgId = this.interlocutors[dialogId].messages.slice().sort(comparator)[this.interlocutors[dialogId].messages.length - 1]?.id + 1;
 
             this.interlocutors[dialogId].messages.push({
