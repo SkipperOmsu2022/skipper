@@ -9,6 +9,7 @@ import ru.tinkoff.edu.backend.enums.UserGender;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @Entity
@@ -46,23 +47,23 @@ public class User {
     @Column(name = "date_registration")
     private LocalDate dateOfRegistration;
 
-    @Column(name="date_birth", table = "USERS_MAIN_INFO")
+    @Column(name = "date_birth", table = "USERS_MAIN_INFO")
     private LocalDate dateBirth;
-    @Column(name="gender", table = "USERS_MAIN_INFO")
+    @Column(name = "gender", table = "USERS_MAIN_INFO")
     @Enumerated(EnumType.STRING)
     private UserGender userGender;
-    @Column(name="about", table = "USERS_MAIN_INFO", length = 400)
+    @Column(name = "about", table = "USERS_MAIN_INFO", length = 400)
     private String about;
     @Column(name = "image_user_resource", table = "USERS_MAIN_INFO")
     private String imageUserResource;
 
-    @Column(name="link_vk", table = "USERS_CONTACTS")
+    @Column(name = "link_vk", table = "USERS_CONTACTS")
     private String linkVk;
-    @Column(name="link_skype", table = "USERS_CONTACTS")
+    @Column(name = "link_skype", table = "USERS_CONTACTS")
     private String linkSkype;
-    @Column(name="link_discord", table = "USERS_CONTACTS")
+    @Column(name = "link_discord", table = "USERS_CONTACTS")
     private String linkDiscord;
-    @Column(name="link_telegram", table = "USERS_CONTACTS")
+    @Column(name = "link_telegram", table = "USERS_CONTACTS")
     private String linkTelegram;
 
     @Column(name = "is_enabled_mentor_status", table = "MENTORS")
@@ -87,6 +88,14 @@ public class User {
     @CollectionTable(name = "certificate_resources", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "certificate_resource")
     private Set<String> certificateResources;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "favorite_users",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "favorite_user_id")
+    )
+    private Set<User> favoriteUsers;
 
     public String getInlineMentorSpecializations() {
         return mentorSpecializations.stream()

@@ -28,4 +28,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
             String query,
             Boolean onlyWithPhoto
     );
+
+    @Query("SELECT uf FROM User u JOIN u.favoriteUsers uf " +
+            "WHERE u.id = :id ORDER BY uf.id ASC"
+    )
+    Page<User> getAllUsersFavoritesById(Pageable pageable, Long id);
 }
