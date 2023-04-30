@@ -8,8 +8,8 @@ import ru.tinkoff.edu.backend.enums.UserGender;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @Entity
@@ -95,7 +95,8 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "favorite_user_id")
     )
-    private Set<User> favoriteUsers;
+    @OrderColumn(name = "favorite_user_order")
+    private List<User> favoriteUsers;
 
     public String getInlineMentorSpecializations() {
         return mentorSpecializations.stream()

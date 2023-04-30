@@ -30,7 +30,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     );
 
     @Query("SELECT uf FROM User u JOIN u.favoriteUsers uf " +
-            "WHERE u.id = :id ORDER BY uf.id ASC"
+            "WHERE u.id = :id " +
+            "ORDER BY INDEX(uf)"
     )
     Page<User> getAllUsersFavoritesById(Pageable pageable, Long id);
 }
