@@ -111,7 +111,8 @@ class MentorListServiceTest {
                 pageable,
                 dto.getMentorSpecializations(),
                 dto.getQuery(),
-                dto.getOnlyWithPhoto())
+                dto.getOnlyWithPhoto(),
+                null)
         ).thenReturn(pageUser);
 
         MentorListPageSortDTO mentorListPageSortDTO_Actual = mentorListService.getMentorListPageSortFilter(dto);

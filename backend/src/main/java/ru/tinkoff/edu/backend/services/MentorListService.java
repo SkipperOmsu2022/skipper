@@ -15,6 +15,14 @@ import java.util.Map;
 public interface MentorListService {
     List<MentorListItemDTO> getMentorList();
 
+    /**
+     * Возвращает страницу менторов.<br>
+     * Сложность алгоритма n+nk -> n*k, где<br>
+     * k - избранные менторы для конкретного пользователя (0 >= k <= n),<br>
+     * n - количество менторов на возвращаемой странице.
+     * @param dto параметры для запроса
+     * @return список менторов
+     */
     MentorListPageSortDTO getMentorListPageSortFilter(FilterSortPaginationMentorListDTO dto);
 
     List<Qualification> getSpecializationMentorList(String query);

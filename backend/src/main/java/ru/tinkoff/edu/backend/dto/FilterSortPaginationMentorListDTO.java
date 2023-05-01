@@ -29,4 +29,5 @@ public class FilterSortPaginationMentorListDTO {
     private String query = "";
     @Builder.Default
     private Boolean onlyWithPhoto = false;
+    private Long userId;
 }

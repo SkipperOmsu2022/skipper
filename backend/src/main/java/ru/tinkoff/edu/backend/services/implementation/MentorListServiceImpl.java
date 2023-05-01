@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.backend.services.implementation;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -8,13 +9,16 @@ import ru.tinkoff.edu.backend.dto.FilterSortPaginationMentorListDTO;
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
 import ru.tinkoff.edu.backend.dto.MentorListPageSortDTO;
 import ru.tinkoff.edu.backend.entities.Qualification;
+import ru.tinkoff.edu.backend.entities.User;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.repositories.QualificationRepository;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
 import ru.tinkoff.edu.backend.services.MentorListService;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import static ru.tinkoff.edu.backend.mappers.PageUsersMapper.listMentorListItemDTOToMentorListPageSortDTO;
 import static ru.tinkoff.edu.backend.mappers.PageUsersMapper.pageUsersToMentorListPageSortDTO;
 import static ru.tinkoff.edu.backend.mappers.UserMapper.userToMentorListItemDTOs;
 
@@ -35,6 +39,14 @@ public class MentorListServiceImpl implements MentorListService {
 
     @Override
     public MentorListPageSortDTO getMentorListPageSortFilter(FilterSortPaginationMentorListDTO dto) {
+        if (dto.getUserId() == null) {
+            return getMentorListFromFilterDTO(dto);
+        } else {
+            return getMentorListWithFavoritesFromFilterDTO(dto);
+        }
+    }
+
+    private MentorListPageSortDTO getMentorListFromFilterDTO(FilterSortPaginationMentorListDTO dto) {
         return pageUsersToMentorListPageSortDTO(
                 userRepository
                         .getAllMentorsWithPageSortAndFilter(
@@ -42,8 +54,34 @@ public class MentorListServiceImpl implements MentorListService {
                                         .withSort(Sort.Direction.ASC, dto.getSortFiled()),
                                 dto.getMentorSpecializations(),
                                 dto.getQuery(),
-                                dto.getOnlyWithPhoto()
+                                dto.getOnlyWithPhoto(),
+                                null
                         )
+        );
+    }
+
+    private MentorListPageSortDTO getMentorListWithFavoritesFromFilterDTO(FilterSortPaginationMentorListDTO dto) {
+        Page<User> pages = userRepository.getAllMentorsWithPageSortAndFilter(
+                PageRequest.of(dto.getOffset(), dto.getLimit())
+                        .withSort(Sort.Direction.ASC, dto.getSortFiled()),
+                dto.getMentorSpecializations(),
+                dto.getQuery(),
+                dto.getOnlyWithPhoto(),
+                dto.getUserId()
+        );
+        List<MentorListItemDTO> listFavorite = userToMentorListItemDTOs(
+                userRepository.getAllUsersFavoritesById(
+                        PageRequest.of(dto.getOffset(), dto.getLimit()),
+                        dto.getUserId()
+                ).getContent()
+        );
+
+        return listMentorListItemDTOToMentorListPageSortDTO(
+                userToMentorListItemDTOs(pages.getContent())
+                        .stream()
+                        .map(e -> listFavorite.contains(e) ? e.setIsFavoriteTrueAndReturn() : e)
+                        .collect(Collectors.toList()),
+                pages.getTotalElements()
         );
     }
 
@@ -59,21 +97,17 @@ public class MentorListServiceImpl implements MentorListService {
 
     @Override
     public MentorListPageSortDTO getFavoritesMentorListPage(FavoritesPaginationMentorListDTO dto) {
-        return pageUsersToMentorListPageSortDTO(
-                userRepository.getAllUsersFavoritesById(
-                        PageRequest.of(dto.getOffset(), dto.getLimit()),
-                        dto.getUserId()
-                )
+        Page<User> pages = userRepository.getAllUsersFavoritesById(
+                PageRequest.of(dto.getOffset(), dto.getLimit()),
+                dto.getUserId()
+        );
+
+        return listMentorListItemDTOToMentorListPageSortDTO(
+                userToMentorListItemDTOs(pages.getContent())
+                        .stream()
+                        .map(MentorListItemDTO::setIsFavoriteTrueAndReturn)
+                        .collect(Collectors.toList()),
+                pages.getTotalElements()
         );
     }
-    /**
-     * TODO
-     *  1) Написать тесты на возврат значений
-     *  2) Написать фичу для добавления избранного
-     *  3) Написать фичу для удаления избанного
-     *  4) Написать тесты
-     *  5) Добавить булеву переменную, для возврата true, если является избранным и false - иначе
-     *   идея: можно сделать два запроса одновременно(возврат списка и возврат избранных) и потом
-     *   идти и сравнивать
-     */
 }

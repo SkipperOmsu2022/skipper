@@ -86,8 +86,8 @@ class MentorsListControllerTest {
     @Test
     void get_mentorsList_thenReturnObjectsWithStatus200() throws Exception {
         List<MentorListItemDTO> list = Lists.list(
-                new MentorListItemDTO(1L, "Ivan", "Ivanov", "Шахматист", "Усатый романтик", null, 4.5),
-                new MentorListItemDTO(2L, "Сидр", "Павлов", "Друг шахматиста", "Помощник на передовой", null, 5.0)
+                new MentorListItemDTO(1L, "Ivan", "Ivanov", "Шахматист", "Усатый романтик", null, 4.5, false),
+                new MentorListItemDTO(2L, "Сидр", "Павлов", "Друг шахматиста", "Помощник на передовой", null, 5.0, false)
         );
 
         when(mentorListService.getMentorList()).thenReturn(list);
@@ -113,8 +113,8 @@ class MentorsListControllerTest {
 
         List<MentorListItemDTO> list =
                 Lists.list(
-                new MentorListItemDTO(1L, "Ivan", "Ivanov", "DEV_OPS", "Усатый романтик", null, 4.5),
-                new MentorListItemDTO(2L, "Сидр", "Павлов", "DEV_OPS", "Помощник на передовой", null, 5.0)
+                new MentorListItemDTO(1L, "Ivan", "Ivanov", "DEV_OPS", "Усатый романтик", null, 4.5, false),
+                new MentorListItemDTO(2L, "Сидр", "Павлов", "DEV_OPS", "Помощник на передовой", null, 5.0, false)
         );
         MentorListPageSortDTO mentorListPageSortDTO = MentorListPageSortDTO.builder()
                 .content(list)
