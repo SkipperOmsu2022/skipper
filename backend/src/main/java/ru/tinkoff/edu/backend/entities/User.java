@@ -98,6 +98,14 @@ public class User {
     @OrderColumn(name = "favorite_user_order")
     private List<User> favoriteUsers;
 
+    public void addFavoriteUser(User favoriteUser) {
+        favoriteUsers.add(favoriteUser);
+    }
+
+    public void deleteFavoriteUser(User favoriteUser) {
+        favoriteUsers.remove(favoriteUser);
+    }
+
     public String getInlineMentorSpecializations() {
         return mentorSpecializations.stream()
                 .map(MentorSpecialization::getStringMentorSpecialization)
