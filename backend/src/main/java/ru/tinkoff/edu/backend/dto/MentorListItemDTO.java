@@ -19,7 +19,7 @@ public class MentorListItemDTO {
     private Double rating;
     private boolean isFavorite;
 
-    public MentorListItemDTO setIsFavoriteTrueAndReturn() {
+    public MentorListItemDTO favorite() {
         isFavorite = true;
         return this;
     }

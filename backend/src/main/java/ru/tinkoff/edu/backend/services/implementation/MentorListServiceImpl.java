@@ -79,7 +79,7 @@ public class MentorListServiceImpl implements MentorListService {
         return listMentorListItemDTOToMentorListPageSortDTO(
                 userToMentorListItemDTOs(pages.getContent())
                         .stream()
-                        .map(e -> listFavorite.contains(e) ? e.setIsFavoriteTrueAndReturn() : e)
+                        .map(e -> listFavorite.contains(e) ? e.favorite() : e)
                         .collect(Collectors.toList()),
                 pages.getTotalElements()
         );
@@ -105,7 +105,7 @@ public class MentorListServiceImpl implements MentorListService {
         return listMentorListItemDTOToMentorListPageSortDTO(
                 userToMentorListItemDTOs(pages.getContent())
                         .stream()
-                        .map(MentorListItemDTO::setIsFavoriteTrueAndReturn)
+                        .map(MentorListItemDTO::favorite)
                         .collect(Collectors.toList()),
                 pages.getTotalElements()
         );
