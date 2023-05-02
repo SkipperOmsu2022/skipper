@@ -5,21 +5,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.tinkoff.edu.backend.entities.Messages;
+import ru.tinkoff.edu.backend.entities.Message;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserConversationDTO {
+public class ConversationDTO {
     private Long userId;
     private String firstName;
     private String lastName;
     private String imageUserResource;
     private String mentorSpecializations;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Set<Messages> messages;
+    private List<MessageDTO> messages;
 }

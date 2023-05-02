@@ -11,15 +11,14 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.edu.backend.dto.MessageDTO;
-import ru.tinkoff.edu.backend.dto.UserConversationDTO;
+import ru.tinkoff.edu.backend.dto.ConversationDTO;
 import ru.tinkoff.edu.backend.services.MessageService;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @Validated
-@Tag(name="Messages Controller", description="Отправка и принятие сообщений через WebSocket.")
+@Tag(name="Message Controller", description="Отправка и принятие сообщений через WebSocket.")
 @RequestMapping(value = "/api/chat")
 @CrossOrigin
 @Log4j2
@@ -47,13 +46,13 @@ public class MessageController {
     @Operation(summary = "Получение списка сообщений.",
             description = "Возвращает все сообщения пользователя с указанным id.")
     @GetMapping("/list-messages/{id}")
-    public ResponseEntity<Set<UserConversationDTO>> getMessages(@PathVariable Long id) {
+    public ResponseEntity<List<ConversationDTO>> getMessages(@PathVariable Long id) {
         return ResponseEntity.ok(messageService.getListMessages(id));
     }
 
     @Operation(summary = "Получение информации о пользователе в диалоге.")
     @GetMapping("/user-info/{id}")
-    public ResponseEntity<UserConversationDTO> getUserInfoForConversation(@PathVariable Long id) {
+    public ResponseEntity<ConversationDTO> getUserInfoForConversation(@PathVariable Long id) {
         return ResponseEntity.ok(messageService.getUserInfoForConversation(id));
     }
 }

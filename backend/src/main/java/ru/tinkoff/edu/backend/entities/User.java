@@ -8,6 +8,7 @@ import ru.tinkoff.edu.backend.enums.UserGender;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -87,6 +88,9 @@ public class User {
     @CollectionTable(name = "certificate_resources", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "certificate_resource")
     private Set<String> certificateResources;
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Conversation> conversations;
 
     public String getInlineMentorSpecializations() {
         return mentorSpecializations.stream()

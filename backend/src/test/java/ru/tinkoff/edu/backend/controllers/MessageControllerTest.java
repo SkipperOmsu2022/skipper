@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.backend.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.util.Lists;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.tinkoff.edu.backend.dto.UserConversationDTO;
-import ru.tinkoff.edu.backend.entities.Messages;
+import ru.tinkoff.edu.backend.dto.ConversationDTO;
+import ru.tinkoff.edu.backend.entities.Conversation;
+import ru.tinkoff.edu.backend.entities.Message;
 import ru.tinkoff.edu.backend.entities.User;
 import ru.tinkoff.edu.backend.services.MessageService;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import static org.mockito.Mockito.when;
@@ -25,6 +28,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.tinkoff.edu.backend.mappers.MessageMapper.messageToMessageDTO;
+import static ru.tinkoff.edu.backend.mappers.MessageMapper.messageToMessageDTOs;
 
 @WebMvcTest(value = MessageController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @Import(ControllerTestConfiguration.class)
@@ -41,20 +46,20 @@ class MessageControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    Set<Messages> messages = Sets.set(
-            new Messages(1L, User.builder().id(1L).build(), User.builder().id(2L).build(),
-                    "Hello!", LocalDateTime.now()),
-            new Messages(2L, User.builder().id(2L).build(), User.builder().id(1L).build(),
-                    "Hello too!", LocalDateTime.now())
+    List<Message> messages = Lists.list(
+            new Message(1L, User.builder().id(1L).build(),
+                    "Hello!", LocalDateTime.now(), new Conversation()),
+            new Message(2L, User.builder().id(2L).build(),
+                    "Hello too!", LocalDateTime.now(), new Conversation())
     );
 
     Long id = 1L;
 
     @Test
     void get_messagesList_thenReturn200() throws Exception {
-        Set<UserConversationDTO> listMessages = Sets.set(
-                new UserConversationDTO(id, "Ivan", "Ivanov", null, "Геймер", messages),
-                new UserConversationDTO(2L, "Ivan", "Ivanov", null, "Геймер", messages)
+        List<ConversationDTO> listMessages = Lists.list(
+                new ConversationDTO(id, "Ivan", "Ivanov", null, "Геймер", messageToMessageDTOs(messages)),
+                new ConversationDTO(2L, "Ivan", "Ivanov", null, "Геймер", messageToMessageDTOs(messages))
         );
 
         when(messageService.getListMessages(id)).thenReturn(listMessages);
@@ -77,7 +82,7 @@ class MessageControllerTest {
 
     @Test
     void get_userInfoForConversation_thenReturn200() throws Exception {
-        UserConversationDTO user = new UserConversationDTO(id, "Иван", "Иванов", null, "Танкист на пенсии", messages);
+        ConversationDTO user = new ConversationDTO(id, "Иван", "Иванов", null, "Танкист на пенсии", messageToMessageDTOs(messages));
 
         when(messageService.getUserInfoForConversation(id)).thenReturn(user);
 
