@@ -17,4 +17,10 @@ public class MentorListItemDTO {
     private String aboutMeAsMentor;
     private String imageUserResource;
     private Double rating;
+    private boolean isFavorite;
+
+    public MentorListItemDTO favorite() {
+        isFavorite = true;
+        return this;
+    }
 }

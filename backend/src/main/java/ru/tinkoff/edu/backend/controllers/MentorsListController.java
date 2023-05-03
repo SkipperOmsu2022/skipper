@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.tinkoff.edu.backend.dto.FavoritesPaginationMentorListDTO;
 import ru.tinkoff.edu.backend.dto.FilterSortPaginationMentorListDTO;
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
 import ru.tinkoff.edu.backend.dto.MentorListPageSortDTO;
@@ -17,8 +18,8 @@ import java.util.Map;
 
 @RestController
 @Validated
-@Tag(name="Mentors List Controller",
-        description="Получение списка всех менторов, карту специализаций и список образовательных специальностей.")
+@Tag(name = "Mentors List Controller",
+        description = "Получение списка всех менторов, карту специализаций и список образовательных специальностей.")
 @RequestMapping(value = "/api")
 @CrossOrigin
 public class MentorsListController {
@@ -44,7 +45,7 @@ public class MentorsListController {
     @GetMapping("/list/mentors/page_sort_filter")
     public ResponseEntity<MentorListPageSortDTO> getMentorsListWithPageableAndSort(
             FilterSortPaginationMentorListDTO dto
-            ) {
+    ) {
         return ResponseEntity.ok(mentorListService.getMentorListPageSortFilter(dto));
     }
 
@@ -53,5 +54,14 @@ public class MentorsListController {
     @GetMapping("/list/edu")
     public ResponseEntity<List<Qualification>> getEducationRU(@RequestParam String query) {
         return ResponseEntity.ok(mentorListService.getSpecializationMentorList(query));
+    }
+
+    @Operation(summary = "Получение списка избранных менторов пользователя.",
+            description = "Возвращает избранных менторов для указанного пользователя по id.")
+    @GetMapping("/list/mentors/favorites/")
+    public ResponseEntity<MentorListPageSortDTO> getFavoritesMentorsListWithPageableAndSort(
+            FavoritesPaginationMentorListDTO dto
+    ) {
+        return ResponseEntity.ok(mentorListService.getFavoritesMentorListPage(dto));
     }
 }

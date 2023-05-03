@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
+import ru.tinkoff.edu.backend.dto.FavoritesPaginationMentorListDTO;
 import ru.tinkoff.edu.backend.dto.FilterSortPaginationMentorListDTO;
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
 import ru.tinkoff.edu.backend.dto.MentorListPageSortDTO;
@@ -110,7 +111,8 @@ class MentorListServiceTest {
                 pageable,
                 dto.getMentorSpecializations(),
                 dto.getQuery(),
-                dto.getOnlyWithPhoto())
+                dto.getOnlyWithPhoto(),
+                null)
         ).thenReturn(pageUser);
 
         MentorListPageSortDTO mentorListPageSortDTO_Actual = mentorListService.getMentorListPageSortFilter(dto);
@@ -145,5 +147,14 @@ class MentorListServiceTest {
                 MentorSpecialization.getMapMentorSpecialization(),
                 mentorListService.getMapMentorSpecialization()
         );
+    }
+
+    @Test
+    void getFavoritesMentorListPage() {
+        Long id = 1L;
+        FavoritesPaginationMentorListDTO dto = new FavoritesPaginationMentorListDTO(id, 0, 30);
+
+
+        mentorListService.getFavoritesMentorListPage(dto);
     }
 }
