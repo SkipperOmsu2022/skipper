@@ -4,16 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FilterSortPaginationMentorListDTO {
+public class FavoritesPaginationMentorListDTO {
+    @Positive
+    private Long userId;
     @Min(0)
     @Builder.Default
     private Integer offset = 0;
@@ -21,13 +23,4 @@ public class FilterSortPaginationMentorListDTO {
     @Max(100)
     @Builder.Default
     private Integer limit = 30;
-    @Builder.Default
-    private String sortFiled = "id";
-    @Builder.Default
-    private MentorSpecialization[] mentorSpecializations = MentorSpecialization.values();
-    @Builder.Default
-    private String query = "";
-    @Builder.Default
-    private Boolean onlyWithPhoto = false;
-    private Long userId;
 }
