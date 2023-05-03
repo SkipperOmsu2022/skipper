@@ -20,12 +20,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE u.isEnabledMentorStatus=TRUE " +
             "AND ms IN :mentorSpecializations " +
             "AND UPPER(u.aboutAsMentor) LIKE UPPER(CONCAT('%', :query, '%')) " +
-            "AND (:onlyWithPhoto = FALSE OR u.imageUserResource IS NOT NULL)"
+            "AND (:onlyWithPhoto = FALSE OR u.imageUserResource IS NOT NULL) " +
+            "AND (:userId IS NULL OR u.id != :userId)"
     )
     Page<User> getAllMentorsWithPageSortAndFilter(
             Pageable pageable,
             MentorSpecialization[] mentorSpecializations,
             String query,
-            Boolean onlyWithPhoto
+            Boolean onlyWithPhoto,
+            Long userId
     );
+
+    @Query("SELECT uf FROM User u JOIN u.favoriteUsers uf " +
+            "WHERE u.id = :id " +
+            "ORDER BY INDEX(uf)"
+    )
+    Page<User> getAllUsersFavoritesById(Pageable pageable, Long id);
 }
