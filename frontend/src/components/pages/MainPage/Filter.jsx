@@ -2,7 +2,7 @@ import useSpecializationService from "../../../services/SpecializationService";
 import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-import mainPageStore from "../../../store/mainPageStore";
+import mentorsFilterStore from "../../../store/mentorsFilterStore";
 
 const Filter =  observer(({updateMentors}) => {
     const {getSpecializationsList} = useSpecializationService();
@@ -10,8 +10,10 @@ const Filter =  observer(({updateMentors}) => {
     useEffect(() => {
         getSpecializationsList()
             .then(res => {
-                mainPageStore.setFilter(res)
+                mentorsFilterStore.setSpecializations(res)
             })
+
+        return () => mentorsFilterStore.reset();
     }, []);
 
     return (
@@ -68,8 +70,8 @@ const Filter =  observer(({updateMentors}) => {
                             type="checkbox"
                             className="checkbox"
                             id="photo"
-                            checked={mainPageStore.onlyWithPhoto}
-                            onChange={() => mainPageStore.changeOnlyWithPhoto()}
+                            checked={mentorsFilterStore.onlyWithPhoto}
+                            onChange={() => mentorsFilterStore.changeOnlyWithPhoto()}
                         />
                         <label htmlFor="photo" className="checkbox-name">
                             Только с фото   
@@ -91,7 +93,7 @@ const Filter =  observer(({updateMentors}) => {
                             left: 0,
                             behavior: 'smooth'
                         });
-
+                        
                         updateMentors(0, 0)
                     }}
                     className="button"
@@ -106,8 +108,8 @@ const Filter =  observer(({updateMentors}) => {
                             behavior: 'smooth'
                         });
                         
-                        mainPageStore.reset()
-                        mainPageStore.setSearch('')
+                        mentorsFilterStore.reset()
+                        mentorsFilterStore.setSearch('')
                         updateMentors(0, 0)
                     }}
                     className="button pale"
@@ -122,14 +124,14 @@ const Filter =  observer(({updateMentors}) => {
 const Specializations = observer(() => {
     return (
         <>
-            {mainPageStore.filter?.map((item, i) => (
+            {mentorsFilterStore.specializations?.map((item, i) => (
                 <div className="filter__section-list-item" key={i}>
                     <input
                         type="checkbox"
                         className="checkbox"
                         id={item.value}
                         checked={item.label.checked}
-                        onChange={() => mainPageStore.changeChecked(item)}
+                        onChange={() => mentorsFilterStore.changeChecked(item)}
                     />
                     <label htmlFor={item.value} className="checkbox-name">{item.label}</label>
                 </div>
@@ -141,14 +143,14 @@ const Specializations = observer(() => {
 const Rating = observer(() => {
     return (
         <>
-            {mainPageStore.ratingFilter.map((item, i) => (
+            {mentorsFilterStore.ratingFilter.map((item, i) => (
                 <div className="filter__section-list-item" key={`${item.value}star`}>
                     <input
                         type="checkbox"
                         className="checkbox"
                         id={`${item.value}star`}
                         checked={item.checked}
-                        onChange={() => mainPageStore.changeChecked(item)}
+                        onChange={() => mentorsFilterStore.changeChecked(item)}
                     />
                     <label htmlFor={`${item.value}star`} className="checkbox-name">
                         {item.value} <span className="stars">{'★ '.repeat(item.value)}</span>

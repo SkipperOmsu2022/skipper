@@ -8,25 +8,16 @@ import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
 import useMentorSearchService from "../../../services/mentorSearchService";
-import mainPageStore from "../../../store/mainPageStore";
+import mentorsListStore from "../../../store/mentorsListStore";
+import mentorsFilterStore from "../../../store/mentorsFilterStore";
 
 import PaginatedItems from "../../PaginatedItems/PaginatedItems";
-import MentorCard from "../../MentorCard/MentorCard";
+import MentorsList from "../../MentorsList/MentorsList";
 import Filter from "./Filter";
 import Spinner from "../../../shared/spinner/Spinner";
 
 const userId = +localStorage.getItem('logged');
-
-const MentorsList = observer(({displayStart}) => {
-    return mainPageStore.mentors.slice(displayStart, displayStart + 6).map((item) => {
-        return (
-            <MentorCard
-                mentor={item}
-                onChangeFavorite={mainPageStore.onChangeFavorite}
-            />
-        )
-    })
-})
+const itemsPerPage = 6;
 
 const MainPage = observer(() => {
     const {getMentors, loading, response, error} = useMentorSearchService();
@@ -34,36 +25,36 @@ const MainPage = observer(() => {
     useEffect(() => {
         updateMentors(0, 0);
 
-        return () => mainPageStore.reset();
+        return () => mentorsListStore.resetStore()
     }, []);
 
     const updateMentors = async (offset, displayStart) => {
-        const mentorSpecializations = mainPageStore.filter.filter(item => item.checked).map(item => item.value)
+        const mentorSpecializations = mentorsFilterStore.specializations.filter(item => item.checked).map(item => item.value)
         let dto = {
             offset: offset,
             limit: 30,
             sortFiled: "id",
-            query: mainPageStore.search,
-            onlyWithPhoto: mainPageStore.onlyWithPhoto,
+            query: mentorsFilterStore.search,
+            onlyWithPhoto: mentorsFilterStore.onlyWithPhoto,
             userId: userId
         }
         if (mentorSpecializations.length) {
             dto.mentorSpecializations = mentorSpecializations
         }
-        const data = await getMentors(dto);
+        const data = await getMentors(dto, 'page_sort_filter');
 
-        if (data) mainPageStore.setMentors(data, offset, displayStart);
+        if (data) mentorsListStore.setMentors(data, offset, displayStart, itemsPerPage);
     }
 
     const errorMessage = error ? <span className="search-result__error">{response}</span> : null;
     const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error) ? <MentorsList displayStart={mainPageStore.displayStart}/> : null;
+    const content = !(loading || error) ? <MentorsList displayStart={mentorsListStore.displayStart}/> : null;
 
     return (
         <div className="page-content">
             <div className="app-section-header justify">
                 <span>Поиск ментора</span>
-                <span>{mainPageStore.totalMentors} специалистов найдено</span>
+                <span>{mentorsListStore.totalMentors} специалистов найдено</span>
             </div>  
             <div className="search-wrapper">
                 <Filter updateMentors={updateMentors}/>
@@ -72,8 +63,8 @@ const MainPage = observer(() => {
                         <input
                             className="search-line__text"
                             placeholder="Подача отчёта налоговой"
-                            value={mainPageStore.search}
-                            onChange={(e) => mainPageStore.setSearch(e.target.value)}
+                            value={mentorsFilterStore.search}
+                            onChange={(e) => mentorsFilterStore.setSearch(e.target.value)}
                             onKeyDown={(e) => {
                                 if (e.key === "Enter") {
                                     updateMentors(0, 0);
@@ -99,11 +90,11 @@ const MainPage = observer(() => {
                     {content}
                     <PaginatedItems 
                         updateItems={updateMentors}
-                        offset={mainPageStore.offset}
-                        updateDisplayStart={mainPageStore.updateDisplayStart}
-                        length={mainPageStore.mentors.length}
-                        displayStart={mainPageStore.displayStart}
-                        pageCount={mainPageStore.pageCount}
+                        offset={mentorsListStore.offset}
+                        updateDisplayStart={mentorsListStore.updateDisplayStart}
+                        length={mentorsListStore.mentors.length}
+                        displayStart={mentorsListStore.displayStart}
+                        pageCount={mentorsListStore.pageCount}
                     />
                 </div>
             </div>

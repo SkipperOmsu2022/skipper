@@ -1,16 +1,29 @@
 import { Link } from 'react-router-dom';
 import { observer } from "mobx-react-lite";
 import enviroments from '../../config/enviroments';
+import mentorsListStore from '../../store/mentorsListStore';
 
 import photo from "../../resources/profile-photo.jpg"
 import bookmark from "../../resources/icons/bookmark.svg";
 
-const MentorCard = observer(({mentor, onChangeFavorite}) => {
+const MentorsList = observer(({displayStart, maxWidth}) => {
+    return mentorsListStore.mentors.slice(displayStart, displayStart + 6).map((item) => {
+        return (
+            <MentorCard
+                mentor={item}
+                onChangeFavorite={mentorsListStore.onChangeFavorite}
+                maxWidth={maxWidth}
+            />
+        )
+    })
+})
+
+const MentorCard = observer(({mentor, onChangeFavorite, maxWidth}) => {
     const userId = +localStorage.getItem('logged');
     const imageUserResource = mentor.imageUserResource ? `${enviroments.apiBase}${mentor.imageUserResource}` : photo;
 
     return (
-        <div className="mentor" key={mentor.id}>
+        <div className={`mentor ${maxWidth ? 'max-width' : ''}`} key={mentor.id}>
             <div className="mentor__photo">
                 <img className="mentor__photo-img" src={imageUserResource} alt="user-avatar"/>
                 <div className="rating">
@@ -63,4 +76,4 @@ const MentorCard = observer(({mentor, onChangeFavorite}) => {
     )
 })
 
-export default MentorCard;
+export default MentorsList;
