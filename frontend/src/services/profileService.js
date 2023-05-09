@@ -1,12 +1,13 @@
 import enviroments from "../config/enviroments";
 
 import {useRequest} from "../hooks/useRequest"
+import useAuthContext from "../hooks/useAuthContext";
 
 const useProfileService = () => {
+    const { auth: userId } = useAuthContext();
     const {request, loading, response, setResponse, error, clearResponse} = useRequest();
 
     const _apiBase = enviroments.apiBase;
-    const userId = localStorage.getItem('logged');
 
     const getUserData = async (url, id) => {
         const res = await request(`${_apiBase}/api/${url}${id || userId}`, 'get');

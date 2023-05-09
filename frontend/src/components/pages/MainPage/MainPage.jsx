@@ -15,11 +15,12 @@ import PaginatedItems from "../../PaginatedItems/PaginatedItems";
 import MentorsList from "../../MentorsList/MentorsList";
 import Filter from "./Filter";
 import Spinner from "../../../shared/spinner/Spinner";
+import useAuthContext from "../../../hooks/useAuthContext";
 
-const userId = +localStorage.getItem('logged');
 const itemsPerPage = 6;
 
 const MainPage = observer(() => {
+    const { auth: userId } = useAuthContext();
     const {getMentors, loading, response, error} = useMentorSearchService();
 
     useEffect(() => {

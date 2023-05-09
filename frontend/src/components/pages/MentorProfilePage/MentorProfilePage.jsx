@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 
 import "./mentorProfilePage.scss"
 import "../ProfilePage/profilePage.scss"
+import useAuthContext from '../../../hooks/useAuthContext';
 import useProfileService from "../../../services/profileService";
 import MainInfo from "./MainInfo"
 import AdditionalInfo from "./AdditionalInfo"
@@ -16,13 +17,14 @@ import mentorProfileStore from '../../../store/mentorProfileStore';
 const MentorProfilePage = observer(() => {
     const {getUserData} = useProfileService();
     const {userId} = useParams();
+    const { auth: currentUserId } = useAuthContext();
 
     useEffect(() => {
         getUserData('user/profile/mentor/', userId)
             .then(res => mentorProfileStore.setMentorData(res))
     }, []);
 
-    const isOwner = userId === localStorage.getItem('logged');
+    const isOwner = userId === currentUserId;
 
     return (
         <div className="page-content">
