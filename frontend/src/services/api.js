@@ -7,6 +7,20 @@ const getEducationsList = async (e) =>  {
     return res;
 }
 
+const addFavoriteMentor = async (mentorId, userId) =>  {
+    const url = enviroments.apiBase + `/api/user/favorite/${userId}/${mentorId}`;
+    const res = await axios.request({url, method: 'post'})
+    return res;
+}
+
+const deleteFavoriteMentor = async (mentorId, userId) =>  {
+    const url = enviroments.apiBase + `/api/user/favorite/${userId}/${mentorId}`;
+    const res = await axios.request({url, method: 'delete'})
+    return res;
+}
+
 export {
-    getEducationsList
+    getEducationsList,
+    addFavoriteMentor,
+    deleteFavoriteMentor
 }

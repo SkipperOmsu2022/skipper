@@ -1,4 +1,5 @@
 import  {makeAutoObservable} from 'mobx';
+import {addFavoriteMentor, deleteFavoriteMentor} from '../services/api';
 
 class mainPageStore {
     constructor() {
@@ -24,7 +25,7 @@ class mainPageStore {
     
     setMentors = (data, offset, newdisplayStart) => {
         if (data?.mentors !== undefined) {
-            this.mentors = data.mentors;
+            this.mentors = data.mentors.map(item => { return {...item, loading: false}});
             this.offset = offset;
             this.displayStart = newdisplayStart;
             
@@ -37,8 +38,21 @@ class mainPageStore {
         this.displayStart = displayStart;
     }
 
+    onChangeFavorite = async (mentor, userId) => {
+        if (!mentor?.loading) {
+            mentor.loading = true;
+            let res;
+            if (mentor?.favorite) {
+                res = await deleteFavoriteMentor(mentor?.id, userId)
+            } else {
+                res = await addFavoriteMentor(mentor?.id, userId)
+            }
+            if (+res?.status === 200) this.changeFavorite(mentor);
+            mentor.loading = false;
+        }
+    }
     changeFavorite = (mentor) => {
-        mentor.favorite =  !mentor.favorite;
+        mentor.favorite = !mentor.favorite;
     }
     
     changeOnlyWithPhoto = () => {
@@ -62,6 +76,7 @@ class mainPageStore {
             return {...item, checked: false}
         })
         this.search = ""
+        this.onlyWithPhoto = false
     }
 
     changeChecked(specialization) {

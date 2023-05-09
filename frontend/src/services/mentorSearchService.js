@@ -14,7 +14,7 @@ const useMentorSearchService = () => {
         if (res?.status !== 201) {
             setResponse("Что-то пошло не так");
         }
-
+        console.log(res)
         return {
             mentors: res?.data?.content,
             total: res?.data?.totalElement
