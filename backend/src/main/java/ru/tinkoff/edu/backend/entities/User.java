@@ -93,7 +93,10 @@ public class User {
     @JoinTable(
             name = "favorite_users",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "favorite_user_id")
+            inverseJoinColumns = @JoinColumn(name = "favorite_user_id"),
+            uniqueConstraints = @UniqueConstraint(
+                    name = "unique_favorites", columnNames = {"user_id", "favorite_user_id"}
+            )
     )
     @OrderColumn(name = "favorite_user_order")
     private List<User> favoriteUsers;

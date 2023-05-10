@@ -30,4 +30,5 @@ public class UserMentorProfileDTO {
     private String linkSkype;
     private String linkDiscord;
     private String linkTelegram;
+    private boolean isFavorite;
 }

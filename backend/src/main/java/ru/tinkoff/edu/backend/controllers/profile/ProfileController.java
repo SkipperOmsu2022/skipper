@@ -38,10 +38,15 @@ public class ProfileController {
         return ResponseEntity.ok(user);
     }
 
-    @Operation(summary = "Получение информации для страницы ментора.")
-    @GetMapping("/mentor/{id}")
-    public ResponseEntity<UserMentorProfileDTO> getMainMentorInfo(@PathVariable Long id) {
-        UserMentorProfileDTO user = mentorProfileService.getUserMentorProfile(id);
+    @Operation(summary = "Получение информации для страницы ментора.",
+            description = "mentorId - id пользователя, чью страницу нужно открыть." +
+                    "(Необязательно) userId - id пользователя, который хочет посмотреть страницу страницу ментора" +
+                    "Нужно, чтобы отобразить, является ли ментор mentorId избранным для userId"
+    )
+    @GetMapping("/mentor/{mentorId}")
+    public ResponseEntity<UserMentorProfileDTO> getMainMentorInfo(@PathVariable Long mentorId,
+                                                                  @RequestParam(required = false) Long userId) {
+        UserMentorProfileDTO user = mentorProfileService.getUserMentorProfile(mentorId, userId);
         return ResponseEntity.ok(user);
     }
 }
