@@ -36,11 +36,13 @@ const MainPage = observer(() => {
             limit: 30,
             sortFiled: "id",
             query: mentorsFilterStore.search,
-            onlyWithPhoto: mentorsFilterStore.onlyWithPhoto,
-            userId: userId
+            onlyWithPhoto: mentorsFilterStore.onlyWithPhoto
         }
         if (mentorSpecializations.length) {
             dto.mentorSpecializations = mentorSpecializations
+        }
+        if (userId) {
+            dto.userId = userId
         }
         const data = await getMentors(dto, 'page_sort_filter');
 

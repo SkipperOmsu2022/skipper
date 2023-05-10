@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import { observer } from "mobx-react-lite";
+
 import enviroments from '../../config/enviroments';
 import mentorsListStore from '../../store/mentorsListStore';
+import useAuthContext from '../../hooks/useAuthContext';
+import { useRequireAuth } from '../Auth/RequireAuth'
 
 import photo from "../../resources/profile-photo.jpg"
 import bookmark from "../../resources/icons/bookmark.svg";
@@ -19,9 +22,10 @@ const MentorsList = observer(({displayStart, maxWidth}) => {
 })
 
 const MentorCard = observer(({mentor, onChangeFavorite, maxWidth}) => {
-    const userId = +localStorage.getItem('logged');
-    const imageUserResource = mentor.imageUserResource ? `${enviroments.apiBase}${mentor.imageUserResource}` : photo;
+    const { auth: userId } = useAuthContext();
+    const onChangeFav = useRequireAuth(() => onChangeFavorite(mentor, userId));
 
+    const imageUserResource = mentor.imageUserResource ? `${enviroments.apiBase}${mentor.imageUserResource}` : photo;
     return (
         <div className={`mentor ${maxWidth ? 'max-width' : ''}`} key={mentor.id}>
             <div className="mentor__photo">
@@ -47,7 +51,7 @@ const MentorCard = observer(({mentor, onChangeFavorite, maxWidth}) => {
                             className="bookmark-input"
                             id={`switch${mentor.id}`}
                             checked={mentor.favorite}
-                            onChange={() => onChangeFavorite(mentor, userId)}
+                            onChange={onChangeFav}
                         />
                         <img className="bookmark-icon" src={bookmark} alt="" />
                     </label>
