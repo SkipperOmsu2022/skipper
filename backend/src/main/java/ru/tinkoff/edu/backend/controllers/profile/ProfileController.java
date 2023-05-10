@@ -33,18 +33,18 @@ public class ProfileController {
 
     @Operation(summary = "Получение информации для страницы обычного пользователя.")
     @GetMapping("/{id}")
-    public ResponseEntity<UserProfileDTO> getMainInfo(@PathVariable Long id) {
+    public ResponseEntity<UserProfileDTO> getUserProfile(@PathVariable Long id) {
         UserProfileDTO user = profileService.getUserProfile(id);
         return ResponseEntity.ok(user);
     }
 
     @Operation(summary = "Получение информации для страницы ментора.",
-            description = "mentorId - id пользователя, чью страницу нужно открыть." +
-                    "(Необязательно) userId - id пользователя, который хочет посмотреть страницу страницу ментора" +
-                    "Нужно, чтобы отобразить, является ли ментор mentorId избранным для userId"
+            description = "Возвращает 4 последних отзыва. mentorId - id пользователя, чью страницу нужно открыть." +
+                    "(Необязательно) userId - id пользователя, который хочет посмотреть страницу страницу ментора (" +
+                    "нужно, чтобы отобразить, является ли mentorId избранным для userId)"
     )
     @GetMapping("/mentor/{mentorId}")
-    public ResponseEntity<UserMentorProfileDTO> getMainMentorInfo(@PathVariable Long mentorId,
+    public ResponseEntity<UserMentorProfileDTO> getMentorProfile(@PathVariable Long mentorId,
                                                                   @RequestParam(required = false) Long userId) {
         UserMentorProfileDTO user = mentorProfileService.getUserMentorProfile(mentorId, userId);
         return ResponseEntity.ok(user);
