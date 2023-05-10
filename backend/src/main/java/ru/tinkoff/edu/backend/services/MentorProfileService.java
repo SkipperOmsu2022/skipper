@@ -6,18 +6,17 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.tinkoff.edu.backend.dto.profile.UserMentorProfileDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMentorDTO;
 
-import javax.validation.constraints.Size;
 
 @Service
 public interface MentorProfileService {
     /**
      * Возвращает UserMentorProfileDTO объект для отрисовки на странице профиля ментора.
      *
-     * @param id идентификатор пользователя.
+     * @param mentorId идентификатор пользователя.
      * @return объект для вставки данных на странице профиля ментора.
      * @see UserMentorProfileDTO
      */
-    UserMentorProfileDTO getUserMentorProfile(Long id);
+    UserMentorProfileDTO getUserMentorProfile(Long mentorId, @Nullable Long userId);
 
     /**
      * Изменяет менторскую информацию пользователя.<br>

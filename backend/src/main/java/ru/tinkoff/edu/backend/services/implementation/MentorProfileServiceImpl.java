@@ -4,9 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.tinkoff.edu.backend.dto.profile.UserMentorProfileDTO;
-import ru.tinkoff.edu.backend.dto.profile.settings.EducationDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMentorDTO;
-import ru.tinkoff.edu.backend.dto.profile.settings.WorkExperienceDTO;
 import ru.tinkoff.edu.backend.entities.*;
 import ru.tinkoff.edu.backend.enums.FileStorageLocation;
 import ru.tinkoff.edu.backend.repositories.EducationRepository;
@@ -18,14 +16,12 @@ import ru.tinkoff.edu.backend.services.MentorProfileService;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static ru.tinkoff.edu.backend.mappers.EducationMapper.educationDTOToEducation;
 import static ru.tinkoff.edu.backend.mappers.EducationMapper.educationDTOToEducations;
 import static ru.tinkoff.edu.backend.mappers.UserMapper.userToUserEditMentorDTO;
+import static ru.tinkoff.edu.backend.mappers.UserMapper.userToUserMentorProfileDTO;
 import static ru.tinkoff.edu.backend.mappers.WorkExperienceMapper.workExperienceDTOToWorkExperiences;
-import static ru.tinkoff.edu.backend.mappers.WorkExperienceMapper.workExperienceToWorkExperienceDTOs;
 
 @Service
 public class MentorProfileServiceImpl implements MentorProfileService {
@@ -108,46 +104,10 @@ public class MentorProfileServiceImpl implements MentorProfileService {
     }
 
     @Override
-    public UserMentorProfileDTO getUserMentorProfile(Long id) {
-        User userFromDB = userRepository.getReferenceById(id);
-        UserMentorProfileDTO user = new UserMentorProfileDTO();
-        user.setFirstName(userFromDB.getFirstName());
-        user.setLastName(userFromDB.getLastName());
-        user.setPatronymic(userFromDB.getPatronymic());
-        user.setAboutAsMentor(userFromDB.getAboutAsMentor());
-
-        Set<EducationDTO> educations = userFromDB
-                .getEducation()
-                .stream()
-                .map(e -> EducationDTO.builder()
-                        .yearStart(e.getYearStart())
-                        .yearEnd(e.getYearEnd())
-                        .educationalInstitution(e.getEducationalInstitution())
-                        .qualificationNameWithCode(e.getQualification().getNameWithCode())
-                        .build())
-                .collect(Collectors.toSet());
-
-        Set<WorkExperienceDTO> workExperiences = userFromDB
-                .getWorkExperiences()
-                .stream()
-                .map(e -> WorkExperienceDTO.builder()
-                        .yearStart(e.getId().getYearStart())
-                        .yearEnd(e.getYearEnd())
-                        .placeOfWork(e.getId().getPlaceOfWork())
-                        .build())
-                .collect(Collectors.toSet());
-
-        user.setEducations(educations);
-        user.setWorkExperiences(workExperiences);
-        user.setCertificatesResource(userFromDB.getCertificateResources());
-        user.setImageUserResource(userFromDB.getImageUserResource());
-        user.setDateOfRegistration(userFromDB.getDateOfRegistration());
-        user.setIsEnabledMentorStatus(userFromDB.getIsEnabledMentorStatus());
-        user.setMentorSpecializations(userFromDB.getInlineMentorSpecializations());
-        user.setLinkVk(userFromDB.getLinkVk());
-        user.setLinkSkype(userFromDB.getLinkSkype());
-        user.setLinkDiscord(userFromDB.getLinkDiscord());
-        user.setLinkTelegram(userFromDB.getLinkTelegram());
-        return user;
+    public UserMentorProfileDTO getUserMentorProfile(Long mentorId, Long userId) {
+        return userToUserMentorProfileDTO(
+                userRepository.getReferenceById(mentorId),
+                userRepository.hasUserInListOfFavoritesById(userId, mentorId)
+        );
     }
 }
