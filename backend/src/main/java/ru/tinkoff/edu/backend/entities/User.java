@@ -98,6 +98,9 @@ public class User {
     @OrderColumn(name = "favorite_user_order")
     private List<User> favoriteUsers;
 
+    @OneToMany(mappedBy = "userId")
+    private List<Feedback> feedbacks;
+
     public void addFavoriteUser(User favoriteUser) {
         favoriteUsers.add(favoriteUser);
     }
