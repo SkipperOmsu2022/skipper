@@ -6,7 +6,7 @@ import mentorProfileStore from '../../../store/mentorProfileStore';
 
 import "../../../shared/submitButton/button.scss"
 
-const AdditionalInfo = observer(({isOwner, userId}) => {
+const AdditionalInfo = observer(({isOwner, mentorId}) => {
 
     let filledStars = null, hollowStars = null;
     if (mentorProfileStore.rating) {
@@ -43,7 +43,7 @@ const AdditionalInfo = observer(({isOwner, userId}) => {
                 </button>
                 <Link
                     to={`/messages`}
-                    state={{ activeDialog: userId }}
+                    state={{ activeDialog: mentorId }}
                     className="button"
                 >
                     Написать сообщение

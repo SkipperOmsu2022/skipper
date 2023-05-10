@@ -16,23 +16,23 @@ import mentorProfileStore from '../../../store/mentorProfileStore';
 
 const MentorProfilePage = observer(() => {
     const {getUserData} = useProfileService();
-    const {userId} = useParams();
+    const {userId: mentorId} = useParams();
     const { auth: currentUserId } = useAuthContext();
 
     useEffect(() => {
-        getUserData('user/profile/mentor/', userId)
-            .then(res => mentorProfileStore.setMentorData(res, userId))
+        getUserData('user/profile/mentor/', mentorId, {mentorId: mentorId, userId: currentUserId})
+            .then(res => mentorProfileStore.setMentorData(res, mentorId))
 
         return mentorProfileStore.resetStore;
     }, []);
 
-    const isOwner = userId === currentUserId;
+    const isOwner = mentorId === currentUserId;
 
     return (
         <div className="page-content">
             <div className="app-section-header"> 
                 <Link 
-                    to={`/profile/${userId}`}
+                    to={`/profile/${mentorId}`}
                     className="inactive"
                 >
                     Профиль |&nbsp;
@@ -40,8 +40,8 @@ const MentorProfilePage = observer(() => {
                 Профиль ментора
             </div>
             <div className="profile-wrapper">
-                <MainInfo userId={userId} currentUserId={currentUserId}/>
-                <AdditionalInfo isOwner={isOwner} userId={userId}/>
+                <MainInfo mentorId={mentorId} currentUserId={currentUserId}/>
+                <AdditionalInfo isOwner={isOwner} mentorId={mentorId}/>
                 <Resume/>
                 <Reviews/>
                 <Lessons/>

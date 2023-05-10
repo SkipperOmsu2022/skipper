@@ -11,8 +11,8 @@ import "../../../shared/bookmark.scss"
 
 
 
-const MainInfo = observer(({userId, currentUserId}) => {
-    const onChangeFav = useRequireAuth(() => mentorProfileStore.onChangeFavorite(userId, currentUserId));
+const MainInfo = observer(({mentorId, currentUserId}) => {
+    const onChangeFav = useRequireAuth(() => mentorProfileStore.onChangeFavorite(mentorId, currentUserId));
     const [dropdownDisplay, setDropdownDisplay] = useState(false);
     const container = useRef();
     
@@ -48,8 +48,9 @@ const MainInfo = observer(({userId, currentUserId}) => {
                         <div className="name">{mentorProfileStore.firstName} {mentorProfileStore.lastName}</div>
                         <div className="specialty">{mentorProfileStore.mentorSpecializations}</div>
                     </div>
+                    {currentUserId !== mentorId ? 
                     <label className="profile__bookmark" htmlFor="switch">
-                        <input 
+                        <input
                             type="checkbox"
                             className="bookmark-input"
                             id="switch"
@@ -57,7 +58,8 @@ const MainInfo = observer(({userId, currentUserId}) => {
                             onChange={onChangeFav}
                         />
                         <img className="bookmark-icon bookmark" src={bookmark} alt="" />
-                    </label>
+                    </label> : null
+                    }
                 </div>
                 <div className="complain-btn" ref={container} onClick={handleDropdownClick}
                     onKeyDown={(e) => {

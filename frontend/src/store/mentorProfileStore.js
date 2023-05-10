@@ -27,7 +27,7 @@ class mentorProfileStore {
     loading = false;
     
     setMentorData = (res, userId) => {
-        console.log(res)
+        console.log(res?.data?.favorite)
         this.id = userId
         this.firstName = res?.data?.firstName
         this.lastName = res?.data?.lastName
@@ -48,6 +48,7 @@ class mentorProfileStore {
         this.certificatesResource = res?.data?.certificatesResource.map(item => enviroments.apiBase + item);
         this.educations = res?.data?.educations;
         this.workExperiences = res?.data?.workExperiences;
+        this.favorite = res?.data?.favorite;
     }
 
     onChangeFavorite = async (userId, currentUserId) => {
@@ -68,15 +69,23 @@ class mentorProfileStore {
     }
 
     resetStore = () => {
+        this.id = null;
         this.firstName = "";
         this.lastName = "";
         this.aboutAsMentor = "";
         this.mentorStatus = false;
-        this.imageUserResource = "";
-        this.rating = 4.9;
+        this.favorite = false;
+        this.imageUserResource = null;
+        this.rating = null;
         this.dateOfRegistration = [];
         this.mentorSpecializations = "";
         this.communication = [];
+    
+        this.certificatesResource = [];
+        this.educations = [];
+        this.workExperiences = [];
+    
+        this.loading = false;
     }
 }
 

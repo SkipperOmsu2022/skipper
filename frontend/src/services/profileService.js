@@ -9,8 +9,12 @@ const useProfileService = () => {
 
     const _apiBase = enviroments.apiBase;
 
-    const getUserData = async (url, id) => {
-        const res = await request(`${_apiBase}/api/${url}${id || userId}`, 'get');
+    const getUserData = async (url, id, dto) => {
+        let params = '';
+        if (dto) {
+            params = new URLSearchParams({dto}).toString();
+        }
+        const res = await request(`${_apiBase}/api/${url}${id || userId}?${params}`, 'get');
         
         if (res?.status === 200) {
             return res;
