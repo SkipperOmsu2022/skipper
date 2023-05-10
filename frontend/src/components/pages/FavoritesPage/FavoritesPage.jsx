@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
+import { Link } from 'react-router-dom';
 
 import PaginatedItems from "../../PaginatedItems/PaginatedItems";
 import MentorsList from "../../MentorsList/MentorsList";
@@ -46,6 +47,18 @@ const FavoritesPage = observer(() => {
                     {errorMessage}
                     {spinner}
                     {content}
+                    {mentorsListStore.totalMentors === 0 ? 
+                    <div className="no-mentors-found">
+                        <div className="no-mentors-found__message">
+                            Избранных менторов еще нет
+                        </div>
+                        <Link
+                            to={`/mentors`}
+                            className="no-mentors-found__button button"
+                        >
+                            Перейти к выбору ментора
+                        </Link>
+                    </div> : null}
                     <PaginatedItems 
                         updateItems={updateMentors}
                         offset={mentorsListStore.offset}

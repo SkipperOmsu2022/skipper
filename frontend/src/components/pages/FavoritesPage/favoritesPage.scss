@@ -1,7 +1,35 @@
+@import '../../../shared/variables.scss';
+
 .favorites-list {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
     width: 100%;
     box-sizing: border-box;
+}
+
+.no-mentors-found {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+
+    padding-top: 20vh;
+    margin: 0 auto;
+
+    &__message {
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 24px;
+        
+        color: $main-text;
+    }
+    
+    &__button {
+        box-sizing: border-box;
+        width: 245px;
+        height: 42px;
+        text-align: center;
+        padding: 12px 20px;
+    }
 }
