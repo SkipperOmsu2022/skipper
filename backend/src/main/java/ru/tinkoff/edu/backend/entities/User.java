@@ -3,6 +3,7 @@ package ru.tinkoff.edu.backend.entities;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import ru.tinkoff.edu.backend.entities.feedback.Feedback;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.enums.UserGender;
 
@@ -101,7 +102,8 @@ public class User {
     @OrderColumn(name = "favorite_user_order")
     private List<User> favoriteUsers;
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "feedback_order")
     private List<Feedback> feedbacks;
 
     public void addFavoriteUser(User favoriteUser) {
@@ -110,6 +112,15 @@ public class User {
 
     public void deleteFavoriteUser(User favoriteUser) {
         favoriteUsers.remove(favoriteUser);
+    }
+
+    public User addFeedback(Feedback feedback) {
+        feedbacks.add(feedback);
+        return this;
+    }
+
+    public void deleteFeedback(Feedback feedback) {
+        feedbacks.remove(feedback);
     }
 
     public String getInlineMentorSpecializations() {
