@@ -119,10 +119,6 @@ public class User {
         return this;
     }
 
-    public void deleteFeedback(Feedback feedback) {
-        feedbacks.remove(feedback);
-    }
-
     public String getInlineMentorSpecializations() {
         return mentorSpecializations.stream()
                 .map(MentorSpecialization::getStringMentorSpecialization)

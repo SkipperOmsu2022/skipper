@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.tinkoff.edu.backend.dto.feedback.FeedbackDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.EducationDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.WorkExperienceDTO;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -31,4 +33,5 @@ public class UserMentorProfileDTO {
     private String linkDiscord;
     private String linkTelegram;
     private boolean isFavorite;
+    private List<FeedbackDTO> feedbacks;
 }

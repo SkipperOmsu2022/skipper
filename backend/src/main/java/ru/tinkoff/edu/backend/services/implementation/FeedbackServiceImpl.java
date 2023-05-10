@@ -1,7 +1,12 @@
 package ru.tinkoff.edu.backend.services.implementation;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.edu.backend.dto.FeedbackDTO;
+import ru.tinkoff.edu.backend.dto.feedback.FeedbackDTO;
+import ru.tinkoff.edu.backend.dto.feedback.FeedbackListPageDTO;
+import ru.tinkoff.edu.backend.dto.feedback.FeedbackParamsDTO;
+import ru.tinkoff.edu.backend.entities.feedback.Feedback;
 import ru.tinkoff.edu.backend.entities.feedback.FeedbackPK;
 import ru.tinkoff.edu.backend.entities.User;
 import ru.tinkoff.edu.backend.exception.AddingFeedbackException;
@@ -10,6 +15,7 @@ import ru.tinkoff.edu.backend.repositories.UserRepository;
 import ru.tinkoff.edu.backend.services.FeedbackService;
 
 import static ru.tinkoff.edu.backend.mappers.FeedbackMapper.feedbackDTOToFeedback;
+import static ru.tinkoff.edu.backend.mappers.FeedbackMapper.feedbackToFeedbackDTOs;
 
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
@@ -44,5 +50,17 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public void deleteFeedback(Long mentorId, Long userAuthorId) {
         feedbackRepository.deleteById(new FeedbackPK(mentorId, userAuthorId));
+    }
+
+    @Override
+    public FeedbackListPageDTO getFeedbackWithPage(FeedbackParamsDTO dto) {
+        Page<Feedback> page = feedbackRepository.getFeedbacksByMentor(
+                userRepository.getReferenceById(dto.getUserId()),
+                PageRequest.of(dto.getOffset(), dto.getLimit())
+        );
+        return FeedbackListPageDTO.builder()
+                .content(feedbackToFeedbackDTOs(page.getContent()))
+                .totalElement(page.getTotalElements())
+                .build();
     }
 }
