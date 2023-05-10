@@ -21,7 +21,7 @@ const MentorProfilePage = observer(() => {
 
     useEffect(() => {
         getUserData('user/profile/mentor/', userId)
-            .then(res => mentorProfileStore.setMentorData(res))
+            .then(res => mentorProfileStore.setMentorData(res, userId))
 
         return mentorProfileStore.resetStore;
     }, []);
@@ -40,7 +40,7 @@ const MentorProfilePage = observer(() => {
                 Профиль ментора
             </div>
             <div className="profile-wrapper">
-                <MainInfo/>
+                <MainInfo userId={userId} currentUserId={currentUserId}/>
                 <AdditionalInfo isOwner={isOwner} userId={userId}/>
                 <Resume/>
                 <Reviews/>
