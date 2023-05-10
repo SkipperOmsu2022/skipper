@@ -22,6 +22,8 @@ const MentorProfilePage = observer(() => {
     useEffect(() => {
         getUserData('user/profile/mentor/', userId)
             .then(res => mentorProfileStore.setMentorData(res))
+
+        return mentorProfileStore.resetStore;
     }, []);
 
     const isOwner = userId === currentUserId;
