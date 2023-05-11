@@ -23,4 +23,9 @@ public class MentorListItemDTO {
         isFavorite = true;
         return this;
     }
+
+    public MentorListItemDTO setRating(Double rating) {
+        this.rating = rating;
+        return this;
+    }
 }

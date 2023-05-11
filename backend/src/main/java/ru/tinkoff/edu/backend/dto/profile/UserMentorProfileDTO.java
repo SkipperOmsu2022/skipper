@@ -34,4 +34,5 @@ public class UserMentorProfileDTO {
     private String linkTelegram;
     private boolean isFavorite;
     private List<FeedbackDTO> feedbacks;
+    private Double rating;
 }

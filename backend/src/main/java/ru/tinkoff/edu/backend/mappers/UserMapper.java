@@ -32,7 +32,6 @@ public class UserMapper {
                 .mentorSpecializations(user.getInlineMentorSpecializations())
                 .aboutMeAsMentor(user.getAboutAsMentor())
                 .imageUserResource(user.getImageUserResource())
-                .rating(user.getRating())
                 .build();
     }
 
@@ -63,7 +62,7 @@ public class UserMapper {
     }
 
     public static UserMentorProfileDTO userToUserMentorProfileDTO(User user, boolean isFavorite,
-                                                                  List<Feedback> feedbacks) {
+                                                                  List<Feedback> feedbacks, Double rating) {
         if (user == null) {
             return null;
         }
@@ -91,6 +90,7 @@ public class UserMapper {
                 .isFavorite(isFavorite)
 
                 .feedbacks(feedbackToFeedbackDTOs(feedbacks))
+                .rating(rating)
                 .build();
     }
 }

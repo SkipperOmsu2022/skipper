@@ -1,7 +1,5 @@
 package ru.tinkoff.edu.backend.services.implementation;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +8,7 @@ import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMentorDTO;
 import ru.tinkoff.edu.backend.entities.*;
 import ru.tinkoff.edu.backend.enums.FileStorageLocation;
 import ru.tinkoff.edu.backend.repositories.*;
+import ru.tinkoff.edu.backend.services.FeedbackService;
 import ru.tinkoff.edu.backend.services.FileStorageService;
 import ru.tinkoff.edu.backend.services.MentorProfileService;
 
@@ -29,18 +28,19 @@ public class MentorProfileServiceImpl implements MentorProfileService {
     private final EducationRepository educationRepository;
     private final WorkExperienceRepository workExperienceRepository;
     private final FileStorageService fileStorageService;
-    private final FeedbackRepository feedbackRepository;
+    private final FeedbackService feedbackService;
 
     public MentorProfileServiceImpl(UserRepository userRepository, QualificationRepository qualificationRepository,
                                     EducationRepository educationRepository,
                                     WorkExperienceRepository workExperienceRepository,
-                                    FileStorageService fileStorageService, FeedbackRepository feedbackRepository) {
+                                    FileStorageService fileStorageService,
+                                    FeedbackService feedbackService) {
         this.userRepository = userRepository;
         this.qualificationRepository = qualificationRepository;
         this.educationRepository = educationRepository;
         this.workExperienceRepository = workExperienceRepository;
         this.fileStorageService = fileStorageService;
-        this.feedbackRepository = feedbackRepository;
+        this.feedbackService = feedbackService;
     }
 
     @Override
@@ -110,9 +110,8 @@ public class MentorProfileServiceImpl implements MentorProfileService {
         return userToUserMentorProfileDTO(
                 mentor,
                 userRepository.hasUserInListOfFavoritesById(userId, mentorId),
-                feedbackRepository.getFeedbacksByMentor(mentor, PageRequest
-                        .of(0, 4, Sort.by(Sort.Direction.DESC, "dateTime"))
-                ).getContent()
+                feedbackService.getLastFeedback(mentor),
+                feedbackService.getTotalRatingUser(mentor.getId())
         );
     }
 }

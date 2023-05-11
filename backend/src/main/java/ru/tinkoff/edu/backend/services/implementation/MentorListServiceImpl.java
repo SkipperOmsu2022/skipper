@@ -13,23 +13,25 @@ import ru.tinkoff.edu.backend.entities.User;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.repositories.QualificationRepository;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
+import ru.tinkoff.edu.backend.services.FeedbackService;
 import ru.tinkoff.edu.backend.services.MentorListService;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static ru.tinkoff.edu.backend.mappers.PageUsersMapper.listMentorListItemDTOToMentorListPageSortDTO;
-import static ru.tinkoff.edu.backend.mappers.PageUsersMapper.pageUsersToMentorListPageSortDTO;
 import static ru.tinkoff.edu.backend.mappers.UserMapper.userToMentorListItemDTOs;
 
 @Service
 public class MentorListServiceImpl implements MentorListService {
     private final UserRepository userRepository;
     private final QualificationRepository qualificationRepository;
+    private final FeedbackService feedbackService;
 
-    public MentorListServiceImpl(UserRepository userRepository, QualificationRepository qualificationRepository) {
+    public MentorListServiceImpl(UserRepository userRepository, QualificationRepository qualificationRepository, FeedbackService feedbackService) {
         this.userRepository = userRepository;
         this.qualificationRepository = qualificationRepository;
+        this.feedbackService = feedbackService;
     }
 
     @Override
@@ -47,23 +49,28 @@ public class MentorListServiceImpl implements MentorListService {
     }
 
     private MentorListPageSortDTO getMentorListFromFilterDTO(FilterSortPaginationMentorListDTO dto) {
-        return pageUsersToMentorListPageSortDTO(
-                userRepository
-                        .getAllMentorsWithPageSortAndFilter(
-                                PageRequest.of(dto.getOffset(), dto.getLimit())
-                                        .withSort(Sort.Direction.ASC, dto.getSortFiled()),
-                                dto.getMentorSpecializations(),
-                                dto.getQuery(),
-                                dto.getOnlyWithPhoto(),
-                                null
-                        )
+        Page<User> pages = userRepository
+                .getAllMentorsWithPageSortAndFilter(
+                        PageRequest.of(dto.getOffset(), dto.getLimit())
+                                .withSort(Sort.Direction.ASC, dto.getSortField()),
+                        dto.getMentorSpecializations(),
+                        dto.getQuery(),
+                        dto.getOnlyWithPhoto(),
+                        null
+                );
+        return listMentorListItemDTOToMentorListPageSortDTO(
+                userToMentorListItemDTOs(pages.getContent())
+                        .stream()
+                        .map(this::setRatingAndReturn)
+                        .collect(Collectors.toList()),
+                pages.getTotalElements()
         );
     }
 
     private MentorListPageSortDTO getMentorListWithFavoritesFromFilterDTO(FilterSortPaginationMentorListDTO dto) {
         Page<User> pages = userRepository.getAllMentorsWithPageSortAndFilter(
                 PageRequest.of(dto.getOffset(), dto.getLimit())
-                        .withSort(Sort.Direction.ASC, dto.getSortFiled()),
+                        .withSort(Sort.Direction.ASC, dto.getSortField()),
                 dto.getMentorSpecializations(),
                 dto.getQuery(),
                 dto.getOnlyWithPhoto(),
@@ -75,12 +82,14 @@ public class MentorListServiceImpl implements MentorListService {
                         dto.getUserId()
                 ).getContent()
         );
+        List<MentorListItemDTO> listWithFavorite = userToMentorListItemDTOs(pages.getContent())
+                .stream()
+                .map(e -> listFavorite.contains(e) ? e.favorite() : e)
+                .map(this::setRatingAndReturn)
+                .collect(Collectors.toList());
 
         return listMentorListItemDTOToMentorListPageSortDTO(
-                userToMentorListItemDTOs(pages.getContent())
-                        .stream()
-                        .map(e -> listFavorite.contains(e) ? e.favorite() : e)
-                        .collect(Collectors.toList()),
+                listWithFavorite,
                 pages.getTotalElements()
         );
     }
@@ -106,8 +115,15 @@ public class MentorListServiceImpl implements MentorListService {
                 userToMentorListItemDTOs(pages.getContent())
                         .stream()
                         .map(MentorListItemDTO::favorite)
+                        .map(this::setRatingAndReturn)
                         .collect(Collectors.toList()),
                 pages.getTotalElements()
+        );
+    }
+
+    private MentorListItemDTO setRatingAndReturn(MentorListItemDTO mentor) {
+        return mentor.setRating(
+                feedbackService.getTotalRatingUser(mentor.getId())
         );
     }
 }

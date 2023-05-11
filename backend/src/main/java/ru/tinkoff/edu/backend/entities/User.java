@@ -76,8 +76,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "mentor_specialization")
     private Set<MentorSpecialization> mentorSpecializations;
-    @Column(name = "rating", table = "MENTORS")
-    private Double rating;
 
     @OneToMany(mappedBy = "user")
     private Set<Education> education;

@@ -2,6 +2,7 @@ package ru.tinkoff.edu.backend.services.implementation;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.backend.dto.feedback.FeedbackDTO;
 import ru.tinkoff.edu.backend.dto.feedback.FeedbackListPageDTO;
@@ -13,6 +14,8 @@ import ru.tinkoff.edu.backend.exception.AddingFeedbackException;
 import ru.tinkoff.edu.backend.repositories.FeedbackRepository;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
 import ru.tinkoff.edu.backend.services.FeedbackService;
+
+import java.util.List;
 
 import static ru.tinkoff.edu.backend.mappers.FeedbackMapper.feedbackDTOToFeedback;
 import static ru.tinkoff.edu.backend.mappers.FeedbackMapper.feedbackToFeedbackDTOs;
@@ -29,7 +32,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public void addFeedback(FeedbackDTO feedback) {
-        if(feedback.getMentorId().equals(feedback.getUserAuthorId())) {
+        if (feedback.getMentorId().equals(feedback.getUserAuthorId())) {
             throw new AddingFeedbackException("Невозможно добавить отзыв на самого себя!");
         }
 
@@ -62,5 +65,15 @@ public class FeedbackServiceImpl implements FeedbackService {
                 .content(feedbackToFeedbackDTOs(page.getContent()))
                 .totalElement(page.getTotalElements())
                 .build();
+    }
+
+    public List<Feedback> getLastFeedback(User mentor) {
+        return feedbackRepository.getFeedbacksByMentor(mentor, PageRequest
+                .of(0, 4, Sort.by(Sort.Direction.DESC, "dateTime"))
+        ).getContent();
+    }
+
+    public Double getTotalRatingUser(Long userId) {
+        return feedbackRepository.getTotalRatingUser(userId);
     }
 }

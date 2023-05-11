@@ -4,11 +4,21 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.backend.dto.feedback.FeedbackDTO;
 import ru.tinkoff.edu.backend.dto.feedback.FeedbackListPageDTO;
 import ru.tinkoff.edu.backend.dto.feedback.FeedbackParamsDTO;
+import ru.tinkoff.edu.backend.entities.User;
+import ru.tinkoff.edu.backend.entities.feedback.Feedback;
+
+import java.util.List;
 
 
 @Service
 public interface FeedbackService {
     void addFeedback(FeedbackDTO feedback);
+
     void deleteFeedback(Long mentorId, Long userAuthorId);
+
     FeedbackListPageDTO getFeedbackWithPage(FeedbackParamsDTO dto);
+
+    List<Feedback> getLastFeedback(User mentor);
+
+    Double getTotalRatingUser(Long userId);
 }
