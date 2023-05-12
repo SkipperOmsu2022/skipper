@@ -106,7 +106,7 @@ class MentorsListControllerTest {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.set("offset", String.valueOf(dto.getOffset()));
         params.set("limit", String.valueOf(dto.getLimit()));
-        params.set("sortFiled", dto.getSortFiled());
+        params.set("sortFiled", dto.getSortField());
         params.set("mentorSpecializations", String.valueOf(dto.getMentorSpecializations()[0]));
         params.set("query", dto.getQuery());
         params.set("onlyWithPhoto", String.valueOf(dto.getOnlyWithPhoto()));

@@ -10,7 +10,7 @@ import ru.tinkoff.edu.backend.entities.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "FEEDBACKS")
@@ -29,7 +29,7 @@ public class Feedback {
     @CreatedDate
     @NotNull
     @Column(name = "datetime")
-    private LocalDateTime dateTime;
+    private LocalDate createAt;
 
     @ManyToOne
     @MapsId("mentorId")
