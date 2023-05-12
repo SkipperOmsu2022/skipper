@@ -9,6 +9,12 @@ const PaginatedItems = observer(({updateItems, updateDisplayStart, offset, displ
         const itemsEnd = offset * 30 + length;
         const newDisplayStart = event.selected * itemsPerPage % 30;
 
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
+        
         if (event.selected * itemsPerPage < itemsStart) {
             await updateItems(offset - 1, newDisplayStart)
         } else if (event.selected * itemsPerPage >= itemsEnd) {
@@ -16,12 +22,6 @@ const PaginatedItems = observer(({updateItems, updateDisplayStart, offset, displ
         } else {
             updateDisplayStart(newDisplayStart);
         }
-
-        window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: 'smooth'
-        });
     };
 
     return (
