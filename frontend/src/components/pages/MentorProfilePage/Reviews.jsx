@@ -10,7 +10,7 @@ import filledStar from "../../../resources/icons/filled-star.svg"
 import emptyStar from "../../../resources/icons/empty-star.svg"
 import arrow from "../../../resources/icons/arrow.svg"
 import "../../../shared/submitButton/button.scss"
-import "../../../shared/close-icon.scss"
+import "../../../shared/arrow-icon.scss"
 
 
 const Reviews = observer(() => {
