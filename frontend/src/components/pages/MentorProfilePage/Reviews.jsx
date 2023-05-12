@@ -1,3 +1,4 @@
+import { useRef, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
 import mentorReviewsStore from '../../../store/mentorReviewsStore';
@@ -13,7 +14,7 @@ const Reviews = observer(() => {
     return (
         <div className="app-section profile huge-column">
             <ReviewsModal/>
-            <div className="main-block">
+            <div className="main-block btm-gradient">
                 <div className="profile__header">
                     Отзывы
                     <div className="reviews-amount">10 отзывов</div>
@@ -34,13 +35,13 @@ const Reviews = observer(() => {
                                     <img className="star-icon" src={emptyStar} alt="" />
                                 </div>
                                 <div className="review__user-additional-info-date">
-                                    11 декабря 2023
+                                    11 Дек 2023
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="review__content">
-                        Сергей действительно разбирается в своей области. Всем рекомендую и...
+                        Сергей действительно разбирается в своей области. Всем рекомендую и Сергей действительно разбирается в своей области.
                     </div>
                 </div>
                 <div className="review">
@@ -50,13 +51,22 @@ const Reviews = observer(() => {
                             <div className="review__user-name">
                                 Азамат Имаев
                             </div>
-                            <div className="review__user-lessons">
-                                4 урока
+                            <div className="review__user-additional-info">
+                                <div className="stars-rating">
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={emptyStar} alt="" />
+                                </div>
+                                <div className="review__user-additional-info-date">
+                                    11 Дек 2023
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="review__content">
-                        Сергей действительно разбирается в своей области. Всем рекомендую и...
+                        Сергей действительно разбирается в своей области. Всем рекомендую и Сергей действительно разбирается в своей области.
                     </div>
                 </div>
                 <div className="review">
@@ -66,13 +76,22 @@ const Reviews = observer(() => {
                             <div className="review__user-name">
                                 Азамат Имаев
                             </div>
-                            <div className="review__user-lessons">
-                                4 урока
+                            <div className="review__user-additional-info">
+                                <div className="stars-rating">
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={emptyStar} alt="" />
+                                </div>
+                                <div className="review__user-additional-info-date">
+                                    11 Дек 2023
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="review__content">
-                        Сергей действительно разбирается в своей области. Всем рекомендую и...
+                        Сергей действительно разбирается в своей области. Всем рекомендую и Сергей действительно разбирается в своей области.
                     </div>
                 </div>
                 <div className="review">
@@ -82,16 +101,78 @@ const Reviews = observer(() => {
                             <div className="review__user-name">
                                 Азамат Имаев
                             </div>
-                            <div className="review__user-lessons">
-                                4 урока
+                            <div className="review__user-additional-info">
+                                <div className="stars-rating">
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={emptyStar} alt="" />
+                                </div>
+                                <div className="review__user-additional-info-date">
+                                    11 Дек 2023
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="review__content">
-                        Сергей действительно разбирается в своей области. Всем рекомендую и...
+                        Сергей действительно разбирается в своей области. Всем рекомендую и Сергей действительно разбирается в своей области.
+                    </div>
+                </div>
+                <div className="review">
+                    <div className="review__user">
+                        <img className="review__user-photo" src={photo} alt="" />
+                        <div className="review__user-info">
+                            <div className="review__user-name">
+                                Азамат Имаев
+                            </div>
+                            <div className="review__user-additional-info">
+                                <div className="stars-rating">
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={emptyStar} alt="" />
+                                </div>
+                                <div className="review__user-additional-info-date">
+                                    11 Дек 2023
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="review__content">
+                        Сергей действительно разбирается в своей области. Всем рекомендую и Сергей действительно разбирается в своей области.
+                    </div>
+                </div>
+                <div className="review">
+                    <div className="review__user">
+                        <img className="review__user-photo" src={photo} alt="" />
+                        <div className="review__user-info">
+                            <div className="review__user-name">
+                                Азамат Имаев
+                            </div>
+                            <div className="review__user-additional-info">
+                                <div className="stars-rating">
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={filledStar} alt="" />
+                                    <img className="star-icon" src={emptyStar} alt="" />
+                                </div>
+                                <div className="review__user-additional-info-date">
+                                    11 Дек 2023
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="review__content">
+                        Сергей действительно разбирается в своей области. Всем рекомендую и Сергей действительно разбирается в своей области.
                     </div>
                 </div>
             </div>
+                {/* <div className="no-reviews">
+                    Отзывов нет
+                </div> */}
             <div className="profile__btn-block full-width">
                 <button 
                     className="button"
@@ -110,13 +191,28 @@ const Reviews = observer(() => {
 })
 
 const ReviewsModal = observer(() => {
+    const ref = useRef(null);
     
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside, true);
+        
+        return () => {
+            document.removeEventListener('click', handleClickOutside, true);
+        };
+    }, []);
+    
+    const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+            mentorReviewsStore.setModal(false);
+        }
+    };
+
     return (
         <Modal
 			showModal={mentorReviewsStore.modal}
 			onModalClose={() => mentorReviewsStore.setModal(false)}
 		>
-			<div className="app-section review-modal">
+			<div className="app-section review-modal" ref={ref}>
 
             </div>
 		</Modal>

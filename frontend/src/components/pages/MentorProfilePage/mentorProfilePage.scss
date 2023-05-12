@@ -15,11 +15,18 @@
         justify-content: space-between;
         min-height: 28.75rem;
     }
+    .no-reviews {
+        font-size: 18px;
+        text-align: center;
+    }
     .main-block {
+        position: relative;
         display: flex;
         flex-direction: column;
         gap: 2.5rem;
-
+        flex: 1 1 1px;
+        overflow: hidden;
+        min-height: 0;
         font-size: 1.25rem;
         color: $main-text;
         &__section {
@@ -80,9 +87,22 @@
                 }
             }
             &__content {
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
                 color: $main-text;
                 font-size: 1rem;
             }
+        }
+        &.btm-gradient::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(180deg, transparent, white 90%);
         }
     }
     &__btn-block {
