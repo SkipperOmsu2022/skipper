@@ -33,7 +33,7 @@ const Educations = ({educations}) => {
         return item.substring(item.indexOf(' ') + 1)
     }
 
-    return educations.map((item, i) => (
+    return educations?.map((item, i) => (
         <div className="profile__resume-column-text" key={i}>
             {getDateRange(item)} <br/> {getQualification(item.qualificationNameWithCode)}, <br/> {item.educationalInstitution}
         </div>
@@ -41,7 +41,7 @@ const Educations = ({educations}) => {
 }
 
 const Experiences = ({experiences}) => {
-    return experiences.map((item, i) => (
+    return experiences?.map((item, i) => (
         <div className="profile__resume-column-text" key={i}>
             {getDateRange(item)} <br/> {item.placeOfWork}
         </div>
@@ -49,7 +49,7 @@ const Experiences = ({experiences}) => {
 }
 
 const Certificates = ({certificates}) => {
-    return certificates.map((item, i) => (
+    return certificates?.map((item, i) => (
         <div className="profile__resume-column-wrapper" key={i}>
             <img className="profile__resume-column-image" src={item} alt="certificate" />
         </div>
