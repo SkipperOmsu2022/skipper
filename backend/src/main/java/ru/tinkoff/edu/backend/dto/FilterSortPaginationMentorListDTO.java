@@ -30,7 +30,4 @@ public class FilterSortPaginationMentorListDTO {
     @Builder.Default
     private Boolean onlyWithPhoto = false;
     private Long userId;
-    @Min(value = 1,message = "Минимальное число рейтинга = 1")
-    @Max(value = 5, message = "Максимальное число рейтинга = 5")
-    private Integer rating;
 }

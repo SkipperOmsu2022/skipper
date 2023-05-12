@@ -89,14 +89,14 @@ class MentorListServiceTest {
         FilterSortPaginationMentorListDTO dto = FilterSortPaginationMentorListDTO.builder()
                 .offset(0)
                 .limit(1)
-                .sortFiled("id")
+                .sortField("id")
                 .mentorSpecializations(MentorSpecialization.values())
                 .query("")
                 .onlyWithPhoto(false)
                 .build();
         Pageable pageable = PageRequest
                 .of(dto.getOffset(), dto.getLimit())
-                .withSort(Sort.Direction.ASC, dto.getSortFiled());
+                .withSort(Sort.Direction.ASC, dto.getSortField());
         Page<User> pageUser = new PageImpl<>(
                 Lists.list(listUser.get(indexElementShouldBeReturn)),
                 pageable,

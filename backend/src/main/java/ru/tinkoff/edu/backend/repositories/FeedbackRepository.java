@@ -14,6 +14,6 @@ public interface FeedbackRepository extends JpaRepository<Feedback, FeedbackPK> 
     Page<Feedback> getFeedbacksByMentor(User mentor, Pageable pageable);
 
     @Query("SELECT AVG(f.rating) FROM Feedback f " +
-            "where f.mentor = :userId")
+            "where f.id.mentorId = :userId")
     Double getTotalRatingUser(Long userId);
 }
