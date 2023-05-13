@@ -1,6 +1,6 @@
 import  {makeAutoObservable} from 'mobx';
 
-class mentorReviewsStore {
+class mentorReviewsListStore {
     constructor() {
         makeAutoObservable(this, { deep: true })
     }
@@ -10,6 +10,10 @@ class mentorReviewsStore {
     setModal = (state) => {
         this.modal = state;
     }
+
+    resetStore = () => {
+        
+    }
 }
 
-export default new mentorReviewsStore();
+export default new mentorReviewsListStore();

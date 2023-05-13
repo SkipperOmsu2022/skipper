@@ -149,17 +149,16 @@
                         display: flex;
                         flex-direction: column;
                         gap: 10px;
-    
-                        .name {
-                            color: $header;
-                            font-size: 20px;
-                        }
-    
-                        .specialty {
-                            color: $additional-text;
-                            font-size: 16px;
-                            max-width: 270px;
-                        }
+                    }
+                    &__name {
+                        text-decoration: none;
+                        color: $header;
+                        font-size: 20px;
+                    }
+                    &__specialty {
+                        color: $additional-text;
+                        font-size: 16px;
+                        max-width: 270px;
                     }
                     &__interaction {
                         margin-left: auto;
@@ -240,6 +239,15 @@
                             display: flex;
                             flex-direction: column;
                             gap: 10px;
+                            .name {
+                                text-decoration: none;
+                                color: $header;
+                                min-width: 10rem;
+
+                                &:hover {
+                                    text-decoration: underline;
+                                }
+                            }
                         }
                         &-header {
                             display: flex;

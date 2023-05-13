@@ -1,0 +1,109 @@
+@import '../../shared/variables.scss';
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+
+    padding: 40px 60px;
+    min-width: 400px;
+    width: 1000px;
+    min-height: auto;
+
+    box-sizing: border-box;
+
+    &-body {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        padding-top: 24px;
+    }
+    &__mentor {
+        display: flex;
+        flex-direction: row;
+        gap: 34px;
+
+        &-photo {
+            width: 3.75rem;
+            min-width: 3.75rem;
+            height: 3.75rem;
+            min-height: 3.75rem;
+        }
+        &-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 4px 0;
+            .name {
+                color: $header;
+                font-family: Montserrat;
+                font-size: 20px;
+                line-height: 24px;
+            }
+            .specialty {
+                color: $additional-text;
+                font-family: Montserrat;
+                font-size: 16px;
+                line-height: 20px;
+            }
+        }
+    }
+    &__rate {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        &-title {
+            color: $main-text;
+            font-family: Montserrat;
+            font-size: 20px;
+            line-height: 24px;
+        }
+        .star-icon {
+            height: 35px;
+            min-height: 35px;    
+            width: 35px;
+            min-width: 35px;
+        }
+    }
+    &__feedback {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        &-title {
+            color: $main-text;
+            font-size: 20px;
+            line-height: 24px;
+        }
+        &-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 30px 40px 10px 40px;
+            box-sizing: border-box;
+            resize: none;
+
+            font-family: Montserrat;
+            font-size: 16px;
+            line-height: 20px;
+            letter-spacing: 0px;
+            text-align: left;
+
+            &::placeholder {
+                color: $additional-text;
+
+            }
+        }
+    }
+    &__footer {
+        display: flex;
+        flex-direction: row;
+        gap: 64px;
+        justify-content: center;
+        &-button {
+            color: $header;
+            font-size: 14px;
+            letter-spacing: 0px;
+            box-sizing: border-box;
+            width: 208px;
+            height: 42px;
+        }
+    }
+}

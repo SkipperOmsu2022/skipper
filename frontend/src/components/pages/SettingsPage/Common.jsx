@@ -188,8 +188,8 @@ const Common = () => {
                             </div>    
                             <div className="settings__photo">
                                 <div className="img-wrapper">
-                                    <img className="settings__photo-img" src={image || photo} alt="" />
-                                    <div alt="certificate" className="settings__photo-cross" onClick={onDeletePhoto}>
+                                    <img className="settings__photo-img user-photo" src={image || photo} alt="" />
+                                    <div alt="delete" className="settings__photo-cross" onClick={onDeletePhoto}>
                                         <span className="transform">Х</span>
                                     </div>
                                 </div>

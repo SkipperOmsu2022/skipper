@@ -17,7 +17,6 @@
         max-width: 1400px;
         overflow: hidden !important;
         
-        
         backdrop-filter: blur(2px);
         border-radius: 10px;
     }
@@ -38,6 +37,32 @@
         &-btn {
             height: auto;
             width: 10rem;
+        }
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: row;
+        gap: 40px;
+        
+        &-divider {
+            border: 1px solid #FFDD2D;
+            height: 0;
+            flex-grow: 1;
+            margin: auto;
+        }
+        &-text {
+            width: fit-content;
+            white-space: nowrap;
+            font-size: 20px;
+            line-height: 24px;
+        }
+        .arrow-icon {
+            width: 25px;
+            min-width: 25px;
+        }
+        &.padding-right {
+            padding-right: 40px;
         }
     }
 }
