@@ -13,7 +13,6 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaginationListMessageDTO {
-    private Long conversationId;
     @Min(0)
     @Builder.Default
     private Integer offset = 0;

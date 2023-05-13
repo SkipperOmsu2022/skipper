@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.edu.backend.dto.conversations.MessageDTO;
 import ru.tinkoff.edu.backend.dto.conversations.ConversationDTO;
 import ru.tinkoff.edu.backend.dto.conversations.PaginationListConversationDTO;
+import ru.tinkoff.edu.backend.dto.conversations.PaginationListMessageDTO;
 import ru.tinkoff.edu.backend.services.MessageService;
 
 import javax.validation.Valid;
@@ -45,7 +46,7 @@ public class MessageController {
                 messageService.save(idTo, idFrom, message));
     }
 
-    @Operation(summary = "Получение списка сообщений.",
+    @Operation(summary = "Получение списка диалогов.",
             description = "Возвращает все сообщения пользователя с указанным id с пагинацией." +
                     "Каждый диалог содержит указанное количество последних сообщений в хронологическом порядке." +
                     "Порядок диалогов: дата последнего сообщения.")
@@ -53,6 +54,14 @@ public class MessageController {
     public ResponseEntity<List<ConversationDTO>> getMessages(@PathVariable Long userId,
                                                              @Valid PaginationListConversationDTO dto) {
         return ResponseEntity.ok(messageService.getListConversations(userId, dto));
+    }
+
+    @Operation(summary = "Получение списка сообщений для диалога.")
+    @GetMapping("/list-messages/{userId1}/{userId2}")
+    public ResponseEntity<List<MessageDTO>> getMessagesForConversation(@PathVariable Long userId1,
+                                                                       @PathVariable Long userId2,
+                                                                       @Valid PaginationListMessageDTO dto) {
+        return ResponseEntity.ok(messageService.getListMessagesForConversation(userId1, userId2, dto));
     }
 
     @Operation(summary = "Получение информации о пользователе в диалоге.")

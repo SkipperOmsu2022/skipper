@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.backend.dto.conversations.MessageDTO;
 import ru.tinkoff.edu.backend.dto.conversations.ConversationDTO;
 import ru.tinkoff.edu.backend.dto.conversations.PaginationListConversationDTO;
+import ru.tinkoff.edu.backend.dto.conversations.PaginationListMessageDTO;
 import ru.tinkoff.edu.backend.entities.Conversation;
 import ru.tinkoff.edu.backend.entities.Message;
 import ru.tinkoff.edu.backend.entities.User;
@@ -66,20 +67,6 @@ public class MessageServiceImpl implements MessageService {
                 );
     }
 
-    /**
-     * Возвращает Conversation по id пользователей, которые участвуют в диалоге. Иначе возвращает новый объект.
-     *
-     * @return диалог, если он есть, иначе новый.
-     */
-    protected Conversation getConversation(User user1, User user2) {
-        return conversationRepository
-                .getConversationByUsersIn(2L, user1, user2)
-                .orElseGet(() -> Conversation.builder()
-                        .users(new HashSet<>(Arrays.asList(user1, user2)))
-                        .build()
-                );
-    }
-
     @Override
     public List<ConversationDTO> getListConversations(Long userId, PaginationListConversationDTO dto) {
         return conversationRepository.getConversationsByUserId(
@@ -98,6 +85,30 @@ public class MessageServiceImpl implements MessageService {
                         )
                 )
                 .collect(Collectors.toList());
+    }
+
+    public List<MessageDTO> getListMessagesForConversation(Long userId1, Long userId2, PaginationListMessageDTO dto) {
+        return getListMessagesForConversation(
+                getConversation(
+                        userRepository.getReferenceById(userId1),
+                        userRepository.getReferenceById(userId2)
+                ).getId(),
+                PageRequest.of(dto.getOffset(), dto.getLimit())
+        );
+    }
+
+    /**
+     * Возвращает Conversation по id пользователей, которые участвуют в диалоге. Иначе возвращает новый объект.
+     *
+     * @return диалог, если он есть, иначе новый.
+     */
+    protected Conversation getConversation(User user1, User user2) {
+        return conversationRepository
+                .getConversationByUsersIn(user1, user2)
+                .orElseGet(() -> Conversation.builder()
+                        .users(new HashSet<>(Arrays.asList(user1, user2)))
+                        .build()
+                );
     }
 
     /**

@@ -15,8 +15,9 @@ import java.util.Optional;
 public interface ConversationRepository extends JpaRepository<Conversation, Long> {
     @Query("SELECT c FROM Conversation c JOIN c.users cu " +
             "WHERE cu IN :users " +
-            "GROUP BY c HAVING COUNT(DISTINCT cu) = :userCount")
-    Optional<Conversation> getConversationByUsersIn(Long userCount, User... users);
+            "GROUP BY c " +
+            "HAVING COUNT(DISTINCT cu) = 2")
+    Optional<Conversation> getConversationByUsersIn(User... users);
 
     @Query("select c from Conversation c JOIN c.users cu " +
             "where cu.id = :userId")
