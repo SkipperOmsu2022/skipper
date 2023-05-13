@@ -1,10 +1,10 @@
 package ru.tinkoff.edu.backend.mappers;
 
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
+import ru.tinkoff.edu.backend.dto.profile.UserMentorProfileDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMentorDTO;
 import ru.tinkoff.edu.backend.entities.User;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,6 +55,35 @@ public class UserMapper {
                 .educations(educationToEducationDTOs(user.getEducation()))
                 .workExperiences(workExperienceToWorkExperienceDTOs(user.getWorkExperiences()))
                 .certificatesResource(user.getCertificateResources())
+                .build();
+    }
+
+    public static UserMentorProfileDTO userToUserMentorProfileDTO(User user, boolean isFavorite) {
+        if (user == null) {
+            return null;
+        }
+
+        return UserMentorProfileDTO.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .patronymic(user.getPatronymic())
+                .aboutAsMentor(user.getAboutAsMentor())
+                .isEnabledMentorStatus(user.getIsEnabledMentorStatus())
+
+                .mentorSpecializations(user.getInlineMentorSpecializations())
+                .educations(educationToEducationDTOs(user.getEducation()))
+                .workExperiences(workExperienceToWorkExperienceDTOs(user.getWorkExperiences()))
+                .certificatesResource(user.getCertificateResources())
+
+                .imageUserResource(user.getImageUserResource())
+                .dateOfRegistration(user.getDateOfRegistration())
+
+                .linkVk(user.getLinkVk())
+                .linkSkype(user.getLinkSkype())
+                .linkDiscord(user.getLinkDiscord())
+                .linkTelegram(user.getLinkTelegram())
+
+                .isFavorite(isFavorite)
                 .build();
     }
 }

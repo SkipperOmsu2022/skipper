@@ -36,4 +36,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "ORDER BY INDEX(uf)"
     )
     Page<User> getAllUsersFavoritesById(Pageable pageable, Long id);
+
+    @Query("SELECT count(uf)>0 FROM User u JOIN u.favoriteUsers uf " +
+            "WHERE (u.id = :userId AND uf.id = :mentorId)")
+    boolean hasUserInListOfFavoritesById(Long userId, Long mentorId);
 }

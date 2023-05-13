@@ -75,7 +75,7 @@ class ProfileControllerTest {
                 .linkDiscord("#dis")
                 .build();
 
-        when(mentorProfileService.getUserMentorProfile(id)).thenReturn(userMentorProfileDTO);
+        when(mentorProfileService.getUserMentorProfile(id, null)).thenReturn(userMentorProfileDTO);
 
         mockMvc.perform(get("/api/user/profile/mentor/" + id))
                 .andDo(print())
