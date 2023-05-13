@@ -1,11 +1,10 @@
-package ru.tinkoff.edu.backend.dto;
+package ru.tinkoff.edu.backend.dto.conversations;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.tinkoff.edu.backend.entities.Message;
 
 import java.util.List;
 

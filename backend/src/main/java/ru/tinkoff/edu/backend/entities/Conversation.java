@@ -36,9 +36,9 @@ public class Conversation {
         return messages.get(messages.size() - 1);
     }
 
-    public User getAnotherUserFromConversation(User user) {
+    public User getAnotherUserFromConversation(Long userId) {
         return users.stream()
-                .filter(u -> !u.getId().equals(user.getId()))
+                .filter(u -> !u.getId().equals(userId))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("User not found!"));
     }

@@ -10,15 +10,17 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.tinkoff.edu.backend.dto.MessageDTO;
-import ru.tinkoff.edu.backend.dto.ConversationDTO;
+import ru.tinkoff.edu.backend.dto.conversations.MessageDTO;
+import ru.tinkoff.edu.backend.dto.conversations.ConversationDTO;
+import ru.tinkoff.edu.backend.dto.conversations.PaginationListConversationDTO;
 import ru.tinkoff.edu.backend.services.MessageService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @Validated
-@Tag(name="Message Controller", description="Отправка и принятие сообщений через WebSocket.")
+@Tag(name = "Message Controller", description = "Отправка и принятие сообщений через WebSocket.")
 @RequestMapping(value = "/api/chat")
 @CrossOrigin
 @Log4j2
@@ -36,18 +38,21 @@ public class MessageController {
      * Отправка сообщения от одного пользователя - другому.
      * MessageMapping - api для принятия сообщения.
      */
-    @MessageMapping("/chat/{id_from}/{id_to}")
-    public void sendMessage(@DestinationVariable Long id_from, @DestinationVariable Long id_to,
+    @MessageMapping("/chat/{idFrom}/{idTo}")
+    public void sendMessage(@DestinationVariable Long idFrom, @DestinationVariable Long idTo,
                             @Payload MessageDTO message) {
-        simpMessagingTemplate.convertAndSend("/topic/messages/" + id_to,
-                messageService.save(id_to, id_from, message));
+        simpMessagingTemplate.convertAndSend("/topic/messages/" + idTo,
+                messageService.save(idTo, idFrom, message));
     }
 
     @Operation(summary = "Получение списка сообщений.",
-            description = "Возвращает все сообщения пользователя с указанным id.")
-    @GetMapping("/list-messages/{id}")
-    public ResponseEntity<List<ConversationDTO>> getMessages(@PathVariable Long id) {
-        return ResponseEntity.ok(messageService.getListMessages(id));
+            description = "Возвращает все сообщения пользователя с указанным id с пагинацией." +
+                    "Каждый диалог содержит указанное количество последних сообщений в хронологическом порядке." +
+                    "Порядок диалогов: дата последнего сообщения.")
+    @GetMapping("/list-messages/{userId}")
+    public ResponseEntity<List<ConversationDTO>> getMessages(@PathVariable Long userId,
+                                                             @Valid PaginationListConversationDTO dto) {
+        return ResponseEntity.ok(messageService.getListConversations(userId, dto));
     }
 
     @Operation(summary = "Получение информации о пользователе в диалоге.")

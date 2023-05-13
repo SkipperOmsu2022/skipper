@@ -1,16 +1,18 @@
 package ru.tinkoff.edu.backend.mappers;
 
-import ru.tinkoff.edu.backend.dto.ConversationDTO;
+import ru.tinkoff.edu.backend.dto.conversations.ConversationDTO;
+import ru.tinkoff.edu.backend.dto.conversations.MessageDTO;
 import ru.tinkoff.edu.backend.entities.Conversation;
 import ru.tinkoff.edu.backend.entities.User;
 
-import static ru.tinkoff.edu.backend.mappers.MessageMapper.messageToMessageDTOs;
+import java.util.List;
 
 public class ConversationToConversationDTOMapper {
     private ConversationToConversationDTOMapper() {
     }
 
-    public static ConversationDTO conversationToConversationDTO(Conversation conversation, User user) {
+    public static ConversationDTO conversationToConversationDTO(Conversation conversation, User user,
+                                                                List<MessageDTO> messages) {
         if(conversation == null) {
             return null;
         }
@@ -21,7 +23,8 @@ public class ConversationToConversationDTOMapper {
                 .lastName(user.getLastName())
                 .imageUserResource(user.getImageUserResource())
                 .mentorSpecializations(user.getInlineMentorSpecializations())
-                .messages(messageToMessageDTOs(conversation.getMessages()))
+                .messages(messages)
                 .build();
     }
+
 }

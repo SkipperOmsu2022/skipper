@@ -2,7 +2,6 @@ package ru.tinkoff.edu.backend.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
-import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -12,7 +11,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.tinkoff.edu.backend.dto.ConversationDTO;
+import ru.tinkoff.edu.backend.dto.conversations.ConversationDTO;
+import ru.tinkoff.edu.backend.dto.conversations.PaginationListConversationDTO;
 import ru.tinkoff.edu.backend.entities.Conversation;
 import ru.tinkoff.edu.backend.entities.Message;
 import ru.tinkoff.edu.backend.entities.User;
@@ -21,14 +21,12 @@ import ru.tinkoff.edu.backend.services.MessageService;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.tinkoff.edu.backend.mappers.MessageMapper.messageToMessageDTO;
 import static ru.tinkoff.edu.backend.mappers.MessageMapper.messageToMessageDTOs;
 
 @WebMvcTest(value = MessageController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
@@ -62,7 +60,8 @@ class MessageControllerTest {
                 new ConversationDTO(2L, "Ivan", "Ivanov", null, "Геймер", messageToMessageDTOs(messages))
         );
 
-        when(messageService.getListMessages(id)).thenReturn(listMessages);
+        when(messageService.getListConversations(id, PaginationListConversationDTO.builder().build()))
+                .thenReturn(listMessages);
 
         mockMvc.perform(get("/api/chat/list-messages/" + id))
                 .andDo(print())
@@ -73,7 +72,8 @@ class MessageControllerTest {
 
     @Test
     void get_messagesList_withEntityNotFoundException_thenReturn400() throws Exception {
-        when(messageService.getListMessages(id)).thenThrow(new EntityNotFoundException("Entity not found!"));
+        when(messageService.getListConversations(id, PaginationListConversationDTO.builder().build()))
+                .thenThrow(new EntityNotFoundException("Entity not found!"));
 
         mockMvc.perform(get("/api/chat/list-messages/" + id))
                 .andDo(print())

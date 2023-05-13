@@ -1,6 +1,6 @@
 package ru.tinkoff.edu.backend.mappers;
 
-import ru.tinkoff.edu.backend.dto.MessageDTO;
+import ru.tinkoff.edu.backend.dto.conversations.MessageDTO;
 import ru.tinkoff.edu.backend.entities.Message;
 
 import java.util.Collections;

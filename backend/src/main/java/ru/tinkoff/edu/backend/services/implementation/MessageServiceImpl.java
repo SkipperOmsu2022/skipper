@@ -1,9 +1,12 @@
 package ru.tinkoff.edu.backend.services.implementation;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.edu.backend.dto.MessageDTO;
-import ru.tinkoff.edu.backend.dto.ConversationDTO;
+import ru.tinkoff.edu.backend.dto.conversations.MessageDTO;
+import ru.tinkoff.edu.backend.dto.conversations.ConversationDTO;
+import ru.tinkoff.edu.backend.dto.conversations.PaginationListConversationDTO;
 import ru.tinkoff.edu.backend.entities.Conversation;
 import ru.tinkoff.edu.backend.entities.Message;
 import ru.tinkoff.edu.backend.entities.User;
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
 
 import static ru.tinkoff.edu.backend.mappers.ConversationToConversationDTOMapper.conversationToConversationDTO;
 import static ru.tinkoff.edu.backend.mappers.MessageMapper.messageToMessageDTO;
+import static ru.tinkoff.edu.backend.mappers.MessageMapper.messageToMessageDTOs;
 
 
 /**
@@ -77,16 +81,35 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<ConversationDTO> getListMessages(Long id) {
-        User user = userRepository.getReferenceById(id);
-        return user.getConversations()
+    public List<ConversationDTO> getListConversations(Long userId, PaginationListConversationDTO dto) {
+        return conversationRepository.getConversationsByUserId(
+                        PageRequest.of(dto.getOffsetConversations(), dto.getLimitConversations()),
+                        userId
+                )
                 .stream()
                 .map(conversation ->
                         conversationToConversationDTO(
                                 conversation,
-                                conversation.getAnotherUserFromConversation(user)
+                                conversation.getAnotherUserFromConversation(userId),
+                                getListMessagesForConversation(
+                                        conversation.getId(),
+                                        PageRequest.of(0, dto.getLimitMessages())
+                                )
                         )
                 )
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Возвращает постранично сообщения с конца в хронологическом порядке.
+     */
+    private List<MessageDTO> getListMessagesForConversation(Long conversationId, Pageable pageable) {
+        return messageToMessageDTOs(conversationRepository.getMessagesForConversation(
+                pageable,
+                conversationId
+        ))
+                .stream()
+                .sorted(Comparator.comparing(MessageDTO::getId))
                 .collect(Collectors.toList());
     }
 
