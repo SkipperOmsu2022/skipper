@@ -114,7 +114,7 @@ public class MessageServiceImpl implements MessageService {
     /**
      * Возвращает постранично сообщения с конца в хронологическом порядке.
      */
-    private List<MessageDTO> getListMessagesForConversation(Long conversationId, Pageable pageable) {
+    protected List<MessageDTO> getListMessagesForConversation(Long conversationId, Pageable pageable) {
         return messageToMessageDTOs(conversationRepository.getMessagesForConversation(
                 pageable,
                 conversationId

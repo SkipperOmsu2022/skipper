@@ -48,8 +48,8 @@ public class MessageController {
 
     @Operation(summary = "Получение списка диалогов.",
             description = "Возвращает все сообщения пользователя с указанным id с пагинацией." +
-                    "Каждый диалог содержит указанное количество последних сообщений в хронологическом порядке." +
-                    "Порядок диалогов: дата последнего сообщения.")
+                    "Каждый диалог содержит указанное количество последних сообщений в хронологическом порядке."
+    )
     @GetMapping("/list-messages/{userId}")
     public ResponseEntity<List<ConversationDTO>> getMessages(@PathVariable Long userId,
                                                              @Valid PaginationListConversationDTO dto) {
