@@ -17,8 +17,7 @@ import ru.tinkoff.edu.backend.services.FeedbackService;
 
 import java.util.List;
 
-import static ru.tinkoff.edu.backend.mappers.FeedbackMapper.feedbackDTOToFeedback;
-import static ru.tinkoff.edu.backend.mappers.FeedbackMapper.feedbackToFeedbackDTOs;
+import static ru.tinkoff.edu.backend.mappers.FeedbackMapper.*;
 
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
@@ -56,23 +55,24 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public FeedbackListPageDTO getFeedbackWithPage(FeedbackParamsDTO dto) {
-        Page<Feedback> page = feedbackRepository.getFeedbacksByMentor(
-                userRepository.getReferenceById(dto.getUserId()),
-                PageRequest.of(dto.getOffset(), dto.getLimit())
+    public FeedbackListPageDTO getPaginationListFeedback(FeedbackParamsDTO dto) {
+        return mapperToFeedbackListPageDTO(
+                feedbackRepository.getFeedbacksByMentor(
+                        PageRequest.of(dto.getOffset(), dto.getLimit()),
+                        userRepository.getReferenceById(dto.getUserId())
+                )
         );
-        return FeedbackListPageDTO.builder()
-                .content(feedbackToFeedbackDTOs(page.getContent()))
-                .totalElement(page.getTotalElements())
-                .build();
     }
 
-    public List<Feedback> getLastFeedback(User mentor) {
-        return feedbackRepository.getFeedbacksByMentor(mentor, PageRequest
-                .of(0, 4, Sort.by(Sort.Direction.DESC, "dateTime"))
+    @Override
+    public List<Feedback> getLast4Feedback(User mentor) {
+        return feedbackRepository.getFeedbacksByMentor(
+                PageRequest.of(0, 4, Sort.by(Sort.Direction.DESC, "createAt")),
+                mentor
         ).getContent();
     }
 
+    @Override
     public Double getTotalRatingUser(Long userId) {
         return feedbackRepository.getTotalRatingUser(userId);
     }

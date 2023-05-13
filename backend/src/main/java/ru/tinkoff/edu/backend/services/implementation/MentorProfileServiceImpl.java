@@ -48,20 +48,44 @@ public class MentorProfileServiceImpl implements MentorProfileService {
         return userToUserEditMentorDTO(userRepository.getReferenceById(id));
     }
 
-    private Qualification getQualificationById(Long id) {
+    @Transactional
+    @Override
+    public void updateMentorInfo(Long id, UserEditMentorDTO user, MultipartFile[] certificates) {
+        User userFromDB = userRepository.getReferenceById(id);
+        userFromDB.setAboutAsMentor(user.getAboutMeAsMentor());
+        userFromDB.setIsEnabledMentorStatus(user.getIsEnabledMentorStatus());
+        userFromDB.setMentorSpecializations(user.getMentorSpecializations());
+
+        educationRepository.deleteEducationsByUser(userFromDB);
+        educationRepository.saveAll(
+                educationDTOToEducations(user.getEducations(), userFromDB, this::getQualificationById)
+        );
+
+        workExperienceRepository.deleteWorkExperiencesByUser(userFromDB);
+        workExperienceRepository.saveAll(
+                workExperienceDTOToWorkExperiences(user.getWorkExperiences(), userFromDB)
+        );
+
+        deleteCertificateResources(userFromDB.getCertificateResources());
+        userFromDB.setCertificateResources(getCertificateResourcesSet(certificates, id));
+
+        userRepository.save(userFromDB);
+    }
+
+    protected Qualification getQualificationById(Long id) {
         return qualificationRepository
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Qualification not found"));
     }
 
-    private void deleteCertificateResources(Set<String> certificateResources) {
+    protected void deleteCertificateResources(Set<String> certificateResources) {
         certificateResources.forEach(
                 e -> fileStorageService
                         .deleteFromFileStorageLocation(FileStorageLocation.USER_CERTIFICATES, e)
         );
     }
 
-    private Set<String> getCertificateResourcesSet(MultipartFile[] certificates, Long id) {
+    protected Set<String> getCertificateResourcesSet(MultipartFile[] certificates, Long id) {
         if (certificates == null) {
             return Collections.emptySet();
         }
@@ -78,39 +102,13 @@ public class MentorProfileServiceImpl implements MentorProfileService {
         return certificateResourcesSet;
     }
 
-    @Transactional
-    @Override
-    public void updateMentorInfo(Long id, UserEditMentorDTO user, MultipartFile[] certificates) {
-        User userFromDB = userRepository.getReferenceById(id);
-        userFromDB.setAboutAsMentor(user.getAboutMeAsMentor());
-        userFromDB.setIsEnabledMentorStatus(user.getIsEnabledMentorStatus());
-        userFromDB.setMentorSpecializations(user.getMentorSpecializations());
-
-        Set<Education> educations =
-                educationDTOToEducations(user.getEducations(), userFromDB, this::getQualificationById);
-
-        Set<WorkExperience> workExperiences =
-                workExperienceDTOToWorkExperiences(user.getWorkExperiences(), userFromDB);
-
-        deleteCertificateResources(userFromDB.getCertificateResources());
-        userFromDB.setCertificateResources(getCertificateResourcesSet(certificates, id));
-
-        educationRepository.deleteEducationsByUser(userFromDB);
-        educationRepository.saveAll(educations);
-
-        workExperienceRepository.deleteWorkExperiencesByUser(userFromDB);
-        workExperienceRepository.saveAll(workExperiences);
-
-        userRepository.save(userFromDB);
-    }
-
     @Override
     public UserMentorProfileDTO getUserMentorProfile(Long mentorId, Long userId) {
         User mentor = userRepository.getReferenceById(mentorId);
         return userToUserMentorProfileDTO(
                 mentor,
                 userRepository.hasUserInListOfFavoritesById(userId, mentorId),
-                feedbackService.getLastFeedback(mentor),
+                feedbackService.getLast4Feedback(mentor),
                 feedbackService.getTotalRatingUser(mentor.getId())
         );
     }

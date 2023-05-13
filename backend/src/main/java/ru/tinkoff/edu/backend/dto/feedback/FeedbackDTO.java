@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -22,7 +22,7 @@ public class FeedbackDTO {
     @Max(value = 5, message = "Максимальное число рейтинга = 5")
     private int rating;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDateTime dateTime;
-    @Length(min = 10, max = 400, message = "Минимальная длина отзыва = 10, Максимальная отзыва длина = 400")
+    private LocalDate createAt;
+    @Length(max = 400, message = "Максимальная отзыва длина = 400")
     private String text;
 }

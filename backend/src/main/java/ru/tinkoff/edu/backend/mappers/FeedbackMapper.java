@@ -1,6 +1,8 @@
 package ru.tinkoff.edu.backend.mappers;
 
+import org.springframework.data.domain.Page;
 import ru.tinkoff.edu.backend.dto.feedback.FeedbackDTO;
+import ru.tinkoff.edu.backend.dto.feedback.FeedbackListPageDTO;
 import ru.tinkoff.edu.backend.entities.feedback.Feedback;
 import ru.tinkoff.edu.backend.entities.feedback.FeedbackPK;
 import ru.tinkoff.edu.backend.entities.User;
@@ -14,7 +16,7 @@ public class FeedbackMapper {
     }
 
     public static Feedback feedbackDTOToFeedback(User mentor, User userAuthor, FeedbackDTO feedback) {
-        if (feedback == null) {
+        if (feedback == null || userAuthor == null || mentor == null) {
             return null;
         }
 
@@ -35,7 +37,7 @@ public class FeedbackMapper {
         return FeedbackDTO.builder()
                 .mentorId(feedback.getMentor().getId())
                 .userAuthorId(feedback.getUserAuthor().getId())
-                .dateTime(feedback.getDateTime())
+                .createAt(feedback.getCreateAt())
                 .rating(feedback.getRating())
                 .text(feedback.getText())
                 .build();
@@ -49,5 +51,16 @@ public class FeedbackMapper {
         return feedbacks.stream()
                 .map(FeedbackMapper::feedbackToFeedbackDTO)
                 .collect(Collectors.toList());
+    }
+
+    public static FeedbackListPageDTO mapperToFeedbackListPageDTO(Page<Feedback> pages) {
+        if(pages == null) {
+            return null;
+        }
+
+        return FeedbackListPageDTO.builder()
+                .content(feedbackToFeedbackDTOs(pages.getContent()))
+                .totalElement(pages.getTotalElements())
+                .build();
     }
 }

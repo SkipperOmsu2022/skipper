@@ -11,7 +11,7 @@ import ru.tinkoff.edu.backend.entities.feedback.FeedbackPK;
 
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, FeedbackPK> {
-    Page<Feedback> getFeedbacksByMentor(User mentor, Pageable pageable);
+    Page<Feedback> getFeedbacksByMentor(Pageable pageable, User mentor);
 
     @Query("SELECT AVG(f.rating) FROM Feedback f " +
             "where f.id.mentorId = :userId")

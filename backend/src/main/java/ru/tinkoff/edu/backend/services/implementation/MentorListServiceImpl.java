@@ -48,7 +48,7 @@ public class MentorListServiceImpl implements MentorListService {
         }
     }
 
-    private MentorListPageSortDTO getMentorListFromFilterDTO(FilterSortPaginationMentorListDTO dto) {
+    protected MentorListPageSortDTO getMentorListFromFilterDTO(FilterSortPaginationMentorListDTO dto) {
         Page<User> pages = userRepository
                 .getAllMentorsWithPageSortAndFilter(
                         PageRequest.of(dto.getOffset(), dto.getLimit())
@@ -67,7 +67,7 @@ public class MentorListServiceImpl implements MentorListService {
         );
     }
 
-    private MentorListPageSortDTO getMentorListWithFavoritesFromFilterDTO(FilterSortPaginationMentorListDTO dto) {
+    protected MentorListPageSortDTO getMentorListWithFavoritesFromFilterDTO(FilterSortPaginationMentorListDTO dto) {
         Page<User> pages = userRepository.getAllMentorsWithPageSortAndFilter(
                 PageRequest.of(dto.getOffset(), dto.getLimit())
                         .withSort(Sort.Direction.ASC, dto.getSortField()),
@@ -121,7 +121,7 @@ public class MentorListServiceImpl implements MentorListService {
         );
     }
 
-    private MentorListItemDTO setRatingAndReturn(MentorListItemDTO mentor) {
+    protected MentorListItemDTO setRatingAndReturn(MentorListItemDTO mentor) {
         return mentor.setRating(
                 feedbackService.getTotalRatingUser(mentor.getId())
         );

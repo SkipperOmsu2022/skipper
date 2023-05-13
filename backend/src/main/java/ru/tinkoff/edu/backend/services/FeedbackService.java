@@ -16,9 +16,9 @@ public interface FeedbackService {
 
     void deleteFeedback(Long mentorId, Long userAuthorId);
 
-    FeedbackListPageDTO getFeedbackWithPage(FeedbackParamsDTO dto);
+    FeedbackListPageDTO getPaginationListFeedback(FeedbackParamsDTO dto);
 
-    List<Feedback> getLastFeedback(User mentor);
+    List<Feedback> getLast4Feedback(User mentor);
 
     Double getTotalRatingUser(Long userId);
 }

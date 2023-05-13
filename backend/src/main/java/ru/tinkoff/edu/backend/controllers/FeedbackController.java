@@ -43,7 +43,7 @@ public class FeedbackController {
     @GetMapping("/")
     public ResponseEntity<FeedbackListPageDTO> deleteFeedback(FeedbackParamsDTO dto) {
         return ResponseEntity.ok(
-                feedbackService.getFeedbackWithPage(dto)
+                feedbackService.getPaginationListFeedback(dto)
         );
     }
 }
