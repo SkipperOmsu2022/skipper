@@ -12,6 +12,7 @@
     box-sizing: border-box;
 
     &-body {
+        position: relative;
         display: flex;
         flex-direction: column;
         gap: 40px;
@@ -73,22 +74,41 @@
             font-size: 20px;
             line-height: 24px;
         }
-        &-textarea {
-            width: 100%;
-            min-height: 100px;
-            padding: 30px 40px 10px 40px;
-            box-sizing: border-box;
-            resize: none;
+        .textarea {
+            position: relative;
+            padding: 4px;
+            &-input {
+                border: none;
+                &:focus {
+                    outline: none;
+                }
+                width: 100%;
+                min-height: 100px;
+                height: fit-content;
+                padding: 16px 72px 16px 26px;
+                box-sizing: border-box;
+                resize: none;
 
-            font-family: Montserrat;
-            font-size: 16px;
-            line-height: 20px;
-            letter-spacing: 0px;
-            text-align: left;
+                font-family: Montserrat;
+                font-size: 16px;
+                line-height: 20px;
+                letter-spacing: 0px;
+                text-align: left;
+                &::placeholder {
+                    color: $additional-text;
+                }
+            }
+            &-counter {
+                user-select: none;
+                position: absolute;
+                width: fit-content;
+                height: fit-content;
+                right: 16px;
+                bottom: 12px;
 
-            &::placeholder {
                 color: $additional-text;
-
+                font-size: 14px;
+                letter-spacing: 0px;
             }
         }
     }
@@ -96,6 +116,7 @@
         display: flex;
         flex-direction: row;
         gap: 64px;
+        height: 42px;
         justify-content: center;
         &-button {
             color: $header;
@@ -104,6 +125,30 @@
             box-sizing: border-box;
             width: 208px;
             height: 42px;
+        }
+    }
+    &__error {
+        cursor: default;
+        position: absolute;
+        right: 0%;
+        top: 18%;
+        padding: 30px;
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        border: 1px solid $error;
+        border-radius: 10px;
+
+        &-msg {
+            color: $error;
+            width: 220px;
+        }
+        &-sign {
+            user-select: none;
+            color: $error;
+            font-family: Montserrat;
+            font-size: 40px;
+            font-weight: 400;
         }
     }
 }

@@ -23,6 +23,7 @@ class reviewFormStore {
 
     resetStore = () => {
         this.rating = 0;
+        this.feedback = ""
     }
 }
 

@@ -1,19 +1,22 @@
-.modal {
+.modal-backdrop {
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 100;
-    
+    z-index: 101;
     background-color: rgba(0,0,0,0.3);
+}
+
+.modal {
     &__content {
+        z-index: 102;
         position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         min-height: 30vh;
-        min-width: 800px;
+        
         max-width: 1400px;
         overflow: hidden !important;
         
@@ -23,6 +26,7 @@
 
     &__image-wrapper {
         position: relative;
+        min-width: 800px;
         min-height: 30rem;
         max-height: 50rem;
     }

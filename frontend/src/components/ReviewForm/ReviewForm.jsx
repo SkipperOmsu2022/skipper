@@ -3,14 +3,13 @@ import { observer } from "mobx-react-lite";
 import Modal from "../Modal/Modal";
 import reviewFormStore from "../../store/reviewFormStore";
 import { StarsRatingInput } from "../StarsRating/StarsRating";
+import Spinner from "../../shared/spinner/Spinner"
 
 import photo from "../../resources/profile-photo.jpg"
 import arrow from "../../resources/icons/arrow.svg"
 import "./reviewForm.scss"
 
 const ReviewForm = observer(() => {
-    
-
     return (
         <Modal
             showModal={reviewFormStore.modal}
@@ -49,30 +48,54 @@ const ReviewForm = observer(() => {
                         <div className="review-form__feedback-title">
                             Оставьте отзыв о менторе:
                         </div>
-                        <textarea
-                            className="input review-form__feedback-textarea"
-                            placeholder="Расскажите, что вам больше всего понравилось или не понравилось"
-                            id="aboutMe"
-                            maxLength='400'
-                            value={reviewFormStore.feedback}
-                            onChange={(e) => reviewFormStore.setFeedback(e.target.value)}
-                        />
+                        <div className="input textarea">
+                            <textarea
+                                className="textarea-input"
+                                placeholder="Расскажите, что вам больше всего понравилось или не понравилось"
+                                id="aboutMe"
+                                maxLength='400'
+                                value={reviewFormStore.feedback}
+                                onChange={(e) => reviewFormStore.setFeedback(e.target.value)}
+                            />
+                            <div className="textarea-counter">
+                                {reviewFormStore.feedback.length}/400
+                            </div>
+                        </div>
                     </div>
                     <div className="review-form__footer">
-                        <button
-                            className="review-form__footer-button button pale"
-                            onClick={() => {reviewFormStore.setModal(false); reviewFormStore.resetStore()}}
-                        >
-                            Отменить
-                        </button>
-                        <button className="review-form__footer-button button">
-                            Отправить
-                        </button>
+                        {false ? <Spinner className='no-margin'/> : 
+                            <>
+                                <button
+                                    className="review-form__footer-button button pale"
+                                    onClick={() => {reviewFormStore.setModal(false); reviewFormStore.resetStore()}}
+                                >
+                                    Отменить
+                                </button>
+                                <button className="review-form__footer-button button">
+                                    Отправить
+                                </button>
+                            </>
+                        }
                     </div>
+                    <ErrorMsg error={false}/>
                 </div>
             </div>
         </Modal>
     )
 })
+
+const ErrorMsg = ({error}) => {
+    if (error)
+    return (
+        <div className="review-form__error">
+            <div className="review-form__error-msg">
+                Не получилось отправить, попробуйте еще раз через некоторое время
+            </div>
+            <div className="review-form__error-sign">
+                !
+            </div>
+        </div>
+    )
+}
 
 export default ReviewForm;
