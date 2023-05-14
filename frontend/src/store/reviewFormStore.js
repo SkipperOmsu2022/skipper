@@ -6,6 +6,7 @@ class reviewFormStore {
     }
 
     modal = false;
+    success = true;
     rating = 0;
     feedback = ""
 
@@ -21,9 +22,15 @@ class reviewFormStore {
         this.feedback = text;
     }
 
+    submit = () => {
+        this.success = true;
+    }
+
     resetStore = () => {
+        this.modal = false;
         this.rating = 0;
         this.feedback = ""
+        this.success = false
     }
 }
 

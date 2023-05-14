@@ -7,9 +7,11 @@ import Spinner from "../../shared/spinner/Spinner"
 
 import photo from "../../resources/profile-photo.jpg"
 import arrow from "../../resources/icons/arrow.svg"
+import close from "../../resources/icons/close.svg"
 import "./reviewForm.scss"
 
 const ReviewForm = observer(() => {
+    if (reviewFormStore.success) return (<SuccessMessage/>)
     return (
         <Modal
             showModal={reviewFormStore.modal}
@@ -67,24 +69,53 @@ const ReviewForm = observer(() => {
                             <>
                                 <button
                                     className="review-form__footer-button button pale"
-                                    onClick={() => {reviewFormStore.setModal(false); reviewFormStore.resetStore()}}
+                                    onClick={() => reviewFormStore.resetStore()}
                                 >
                                     Отменить
                                 </button>
-                                <button className="review-form__footer-button button">
+                                <button
+                                    className="review-form__footer-button button"
+                                    onClick={() => reviewFormStore.submit()}
+                                >
                                     Отправить
                                 </button>
                             </>
                         }
                     </div>
-                    <ErrorMsg error={false}/>
+                    <ErrorMessage error={false}/>
                 </div>
             </div>
         </Modal>
     )
 })
 
-const ErrorMsg = ({error}) => {
+const SuccessMessage = observer(() => {
+    return (
+        <Modal
+            showModal={reviewFormStore.modal}
+            onModalClose={() => reviewFormStore.resetStore()}
+        >
+            <div className="app-section success-message">
+                <img
+                    className="success-message__close-icon"
+                    src={close}
+                    alt="close"
+                    onClick={() => reviewFormStore.resetStore()}
+                />
+                <div className="success-message__header">Спасибо!</div>
+                <div className="success-message__content">Отзыв скоро будет опубликован</div>
+                <button 
+                    className="success-message__button button"
+                    onClick={() => reviewFormStore.resetStore()}
+                >
+                    Закрыть
+                </button>
+            </div>
+        </Modal>
+    )
+})
+
+const ErrorMessage = ({error}) => {
     if (error)
     return (
         <div className="review-form__error">
