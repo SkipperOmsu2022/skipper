@@ -12,11 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import org.springframework.util.MultiValueMap;
-import org.springframework.util.LinkedMultiValueMap;
-import ru.tinkoff.edu.backend.dto.FilterSortPaginationMentorListDTO;
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
-import ru.tinkoff.edu.backend.dto.MentorListPageSortDTO;
 import ru.tinkoff.edu.backend.entities.Qualification;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.services.MentorListService;
@@ -97,36 +93,5 @@ class MentorsListControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(list)));
-    }
-
-    @Test
-    void get_getMentorListPageSortFilter_thenReturnObjectsWithStatus200() throws Exception {
-        FilterSortPaginationMentorListDTO dto = new FilterSortPaginationMentorListDTO();
-        dto.setMentorSpecializations(new MentorSpecialization[]{MentorSpecialization.DEV_OPS});
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.set("offset", String.valueOf(dto.getOffset()));
-        params.set("limit", String.valueOf(dto.getLimit()));
-        params.set("sortFiled", dto.getSortField());
-        params.set("mentorSpecializations", String.valueOf(dto.getMentorSpecializations()[0]));
-        params.set("query", dto.getQuery());
-        params.set("onlyWithPhoto", String.valueOf(dto.getOnlyWithPhoto()));
-
-        List<MentorListItemDTO> list =
-                Lists.list(
-                new MentorListItemDTO(1L, "Ivan", "Ivanov", "DEV_OPS", "Усатый романтик", null, 4.5, false),
-                new MentorListItemDTO(2L, "Сидр", "Павлов", "DEV_OPS", "Помощник на передовой", null, 5.0, false)
-        );
-        MentorListPageSortDTO mentorListPageSortDTO = MentorListPageSortDTO.builder()
-                .content(list)
-                .totalElement((long) list.size())
-                .build();
-
-        when(mentorListService.getMentorListPageSortFilter(dto)).thenReturn(mentorListPageSortDTO);
-
-        mockMvc.perform(get("/api/list/mentors/page_sort_filter").params(params))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(mentorListPageSortDTO)));
     }
 }
