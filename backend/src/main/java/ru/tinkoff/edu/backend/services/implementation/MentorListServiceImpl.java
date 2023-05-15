@@ -7,6 +7,7 @@ import ru.tinkoff.edu.backend.dto.FilterSortPaginationMentorListDTO;
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
 import ru.tinkoff.edu.backend.dto.MentorListPageSortDTO;
 import ru.tinkoff.edu.backend.entities.Qualification;
+import ru.tinkoff.edu.backend.entities.User;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.repositories.QualificationRepository;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
@@ -36,34 +37,32 @@ public class MentorListServiceImpl implements MentorListService {
     @Override
     public MentorListPageSortDTO getMentorListPageSortFilter(FilterSortPaginationMentorListDTO dto) {
         MentorListPageSortDTO mentors = mapperToMentorListPageSortDTO(
-                userRepository.getAllMentorsWithPageSortAndFilterOrderByRating(
-                        PageRequest.of(dto.getOffset(), dto.getLimit()),
-                        dto.getMentorSpecializations(),
-                        dto.getQuery(),
-                        dto.getOnlyWithPhoto(),
-                        dto.getUserId(),
-                        dto.getSortField().getNameField()
-                )
+                userRepository.getPageableMentors(dto)
         );
         return dto.getUserId() == null
                 ? mentors
                 : getMentorsWithFavorites(mentors, dto);
     }
 
+    /**
+     * Запрашивает с БД список избранных пользователей, проходиться по списку mentors и устанавливает флаг
+     * favorite, если id ментора есть в списке избранных.
+     */
     protected MentorListPageSortDTO getMentorsWithFavorites(MentorListPageSortDTO mentors,
                                                             FilterSortPaginationMentorListDTO dto
     ) {
-        List<MentorListItemDTO> listFavorite = mapperToMentorListPageSortDTO(
-                userRepository.getAllUsersFavoritesById(
+        Set<Long> listIdFavorite = userRepository.getAllUsersFavoritesById(
                         PageRequest.of(dto.getOffset(), dto.getLimit()),
                         dto.getUserId()
                 )
-        ).getContent();
+                .stream()
+                .map(User::getId)
+                .collect(Collectors.toSet());
 
         return mentors.setContent(
                 mentors.getContent()
                         .stream()
-                        .map(e -> listFavorite.contains(e) ? e.favorite() : e)
+                        .map(e -> listIdFavorite.contains(e.getId()) ? e.favorite() : e)
                         .collect(Collectors.toList())
         );
     }

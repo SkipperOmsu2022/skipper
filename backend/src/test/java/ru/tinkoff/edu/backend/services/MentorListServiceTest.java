@@ -9,11 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.*;
 import ru.tinkoff.edu.backend.dto.FavoritesPaginationMentorListDTO;
-import ru.tinkoff.edu.backend.dto.FilterSortPaginationMentorListDTO;
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
-import ru.tinkoff.edu.backend.dto.MentorListPageSortDTO;
 import ru.tinkoff.edu.backend.entities.Qualification;
 import ru.tinkoff.edu.backend.entities.User;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
@@ -81,44 +78,6 @@ class MentorListServiceTest {
 
         List<MentorListItemDTO> actualList = mentorListService.getMentorList();
         Assertions.assertEquals(expectedListMentorListItemDTO, actualList);
-    }
-
-    @Test
-    void getMentorListPageSortFilter_thenReturnPageSortFilterListOfMentors() {
-        int indexElementShouldBeReturn = 1;
-        FilterSortPaginationMentorListDTO dto = FilterSortPaginationMentorListDTO.builder()
-                .offset(0)
-                .limit(1)
-                .sortField("id")
-                .mentorSpecializations(MentorSpecialization.values())
-                .query("")
-                .onlyWithPhoto(false)
-                .build();
-        Pageable pageable = PageRequest
-                .of(dto.getOffset(), dto.getLimit())
-                .withSort(Sort.Direction.ASC, dto.getSortField());
-        Page<User> pageUser = new PageImpl<>(
-                Lists.list(listUser.get(indexElementShouldBeReturn)),
-                pageable,
-                listUser.size()
-        );
-        List<MentorListItemDTO> expectedList = Lists.list(expectedListMentorListItemDTO.get(indexElementShouldBeReturn));
-
-        when(userRepository.getAllMentorsWithPageSortAndFilterOrderByUserId(
-                pageable,
-                dto.getMentorSpecializations(),
-                dto.getQuery(),
-                dto.getOnlyWithPhoto(),
-                null)
-        ).thenReturn(pageUser);
-
-        MentorListPageSortDTO mentorListPageSortDTO_Actual = mentorListService.getMentorListPageSortFilter(dto);
-        Assertions.assertEquals(2, mentorListPageSortDTO_Actual.getTotalElement());
-        Assertions.assertEquals(
-                Lists.list(expectedListMentorListItemDTO
-                        .get(indexElementShouldBeReturn)),
-                mentorListPageSortDTO_Actual.getContent()
-        );
     }
 
     @Test

@@ -133,7 +133,7 @@ public class User {
         this.certificateResources = new HashSet<>(user.getCertificateResources());
         this.favoriteUsers = new ArrayList<>(user.getFavoriteUsers());
         this.feedbacks = new ArrayList<>(user.getFeedbacks());
-        this.rating = (double)rating;
+        this.rating = rating.doubleValue() == 0.0 ? null : rating.doubleValue();
     }
 
     public void addFavoriteUser(User favoriteUser) {
