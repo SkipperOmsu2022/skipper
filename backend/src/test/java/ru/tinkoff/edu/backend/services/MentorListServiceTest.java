@@ -104,7 +104,7 @@ class MentorListServiceTest {
         );
         List<MentorListItemDTO> expectedList = Lists.list(expectedListMentorListItemDTO.get(indexElementShouldBeReturn));
 
-        when(userRepository.getAllMentorsWithPageSortAndFilter(
+        when(userRepository.getAllMentorsWithPageSortAndFilterOrderByUserId(
                 pageable,
                 dto.getMentorSpecializations(),
                 dto.getQuery(),

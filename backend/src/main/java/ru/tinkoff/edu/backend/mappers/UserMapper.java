@@ -32,6 +32,7 @@ public class UserMapper {
                 .mentorSpecializations(user.getInlineMentorSpecializations())
                 .aboutMeAsMentor(user.getAboutAsMentor())
                 .imageUserResource(user.getImageUserResource())
+                .rating(user.getRating())
                 .build();
     }
 

@@ -21,14 +21,41 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "AND ms IN :mentorSpecializations " +
             "AND UPPER(u.aboutAsMentor) LIKE UPPER(CONCAT('%', :query, '%')) " +
             "AND (:onlyWithPhoto = FALSE OR u.imageUserResource IS NOT NULL) " +
-            "AND (:userId IS NULL OR u.id != :userId)"
+            "AND (:userId IS NULL OR u.id != :userId) " +
+            "ORDER BY u.id"
     )
-    Page<User> getAllMentorsWithPageSortAndFilter(
+    Page<User> getAllMentorsWithPageSortAndFilterOrderByUserId(
             Pageable pageable,
             MentorSpecialization[] mentorSpecializations,
             String query,
             Boolean onlyWithPhoto,
             Long userId
+    );
+
+    @Query("SELECT new User(u, COALESCE(AVG(uf.rating), 0.0)) " +
+            "FROM User u JOIN u.mentorSpecializations ms LEFT OUTER JOIN u.feedbacks uf " +
+                    "WHERE u.isEnabledMentorStatus=TRUE " +
+                        "AND ms IN :mentorSpecializations " +
+                        "AND UPPER(u.aboutAsMentor) LIKE UPPER(CONCAT('%', :query, '%')) " +
+                        "AND (:onlyWithPhoto = FALSE OR u.imageUserResource IS NOT NULL) " +
+                        "AND (:userId IS NULL OR u.id != :userId) " +
+                    "GROUP BY u.id, u.firstName, u.lastName, u.aboutAsMentor, u.imageUserResource, " +
+                        "u.dateBirth, u.about, u.userGender, u.isEnabledMentorStatus, " +
+                        "u.linkDiscord, u.linkSkype, u.linkTelegram, u.linkVk " +
+                    "ORDER BY CASE :sort " +
+                                    "WHEN 'id' THEN u.id " +
+                                "END ASC, " +
+                                "CASE :sort " +
+                                    "WHEN 'rating' THEN COALESCE(AVG(uf.rating), 0.0) " +
+                                "END DESC"
+    )
+    Page<User> getAllMentorsWithPageSortAndFilterOrderByRating(
+            Pageable pageable,
+            MentorSpecialization[] mentorSpecializations,
+            String query,
+            Boolean onlyWithPhoto,
+            Long userId,
+            String sort
     );
 
     @Query("SELECT uf FROM User u JOIN u.favoriteUsers uf " +

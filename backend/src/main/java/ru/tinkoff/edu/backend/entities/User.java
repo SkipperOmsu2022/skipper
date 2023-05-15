@@ -9,6 +9,8 @@ import ru.tinkoff.edu.backend.enums.UserGender;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -103,6 +105,36 @@ public class User {
     @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "feedback_order")
     private List<Feedback> feedbacks;
+
+    @Transient
+    private Double rating;
+
+    public User(User user, Number rating) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.patronymic = user.getPatronymic();
+        this.dateOfRegistration = user.getDateOfRegistration();
+        this.dateBirth = user.getDateBirth();
+        this.userGender = user.getUserGender();
+        this.about = user.getAbout();
+        this.imageUserResource = user.getImageUserResource();
+        this.linkVk = user.getLinkVk();
+        this.linkSkype = user.getLinkSkype();
+        this.linkDiscord = user.getLinkDiscord();
+        this.linkTelegram = user.getLinkTelegram();
+        this.isEnabledMentorStatus = user.getIsEnabledMentorStatus();
+        this.aboutAsMentor = user.getAboutAsMentor();
+        this.mentorSpecializations = new HashSet<>(user.getMentorSpecializations());
+        this.education = new HashSet<>(user.getEducation());
+        this.workExperiences = new HashSet<>(user.getWorkExperiences());
+        this.certificateResources = new HashSet<>(user.getCertificateResources());
+        this.favoriteUsers = new ArrayList<>(user.getFavoriteUsers());
+        this.feedbacks = new ArrayList<>(user.getFeedbacks());
+        this.rating = (double)rating;
+    }
 
     public void addFavoriteUser(User favoriteUser) {
         favoriteUsers.add(favoriteUser);
