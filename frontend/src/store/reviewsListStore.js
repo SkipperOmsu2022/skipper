@@ -6,8 +6,13 @@ class reviewsListStore {
     }
 
     totalElement = 0
-    reviews = []
+    offset = 0
+    displayStart = 0
     firstReviews = []
+    reviews = []
+    itemsPerPage = 6;
+    limitPerRequest = 18;
+    pageCount = 1;
     modal = false;
 
     setFirstReviews = (res) => {
@@ -15,12 +20,32 @@ class reviewsListStore {
         this.totalElement = res?.data?.totalElement
     }
 
+    setReviews = (res, offset, newdisplayStart) => {
+        if (res?.data?.content !== undefined) {
+            this.reviews = res?.data?.content;
+            this.offset = offset;
+            this.displayStart = newdisplayStart;
+            
+            this.totalElement = res?.data?.totalElement;
+            this.pageCount = Math.ceil( res?.data?.totalElement / this.itemsPerPage);
+        }
+    }
+
+    updateDisplayStart = (displayStart) => {
+        this.displayStart = displayStart;
+    }
+
     setModal = (state) => {
         this.modal = state;
     }
 
     resetStore = () => {
-        
+        this.totalElement = 0
+        this.offset = 0
+        this.reviews = []
+        this.itemsPerPage = 6;
+        this.pageCount = 1;
+        this.modal = false;
     }
 }
 
