@@ -15,7 +15,7 @@ const StarsRating = ({rating}) => {
     )
 }
 
-const StarsRatingInput = ({rating, setRating}) => {
+const StarsRatingInput = ({rating, setRating, error}) => {
     let filledStars = null, hollowStars = null;
 
     const roundedRating = Math.round(+rating)
@@ -35,7 +35,7 @@ const StarsRatingInput = ({rating, setRating}) => {
         />);
     
     return (
-        <div className="stars-rating rating-input">
+        <div className={`stars-rating rating-input ${error ? "choose-rating" : ""}`}>
             {hollowStars}
             {filledStars}
         </div>

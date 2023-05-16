@@ -1,10 +1,13 @@
 import { useEffect } from "react"
+import { useParams } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { observer } from "mobx-react-lite";
 
-import mentorReviewsListStore from '../../../store/mentorReviewsListStore';
+import useFeedbackService from "../../../services/feedbackService";
+import reviewsListStore from '../../../store/reviewsListStore';
 import Modal from "../../Modal/Modal";
 import StarsRating from '../../StarsRating/StarsRating';
+import { getMonthShort } from '../../../utils/getDate'
 
 import photo from "../../../resources/profile-photo.jpg"
 import arrow from "../../../resources/icons/arrow.svg"
@@ -12,37 +15,46 @@ import "../../../shared/submitButton/button.scss"
 import "../../../shared/arrow-icon.scss"
 
 const Reviews = observer(() => {
+    const {loading, error, clearResponse, getFeedback} = useFeedbackService();
+    const {userId} = useParams();
+
     useEffect(() => {
-        return () => mentorReviewsListStore.resetStore();
+        updateReviews();
+
+        return () => reviewsListStore.resetStore();
     }, []);
+
+    const updateReviews = async () => {
+        let dto = {
+            userId: userId,
+            offset: 0,
+            limit: 15
+        }
+        await getFeedback(dto)
+            .then(res => reviewsListStore.setFirstReviews(res))
+    }
+
     return (
         <div className="app-section profile huge-column">
             <ReviewsModal/>
             <div className="main-block btm-gradient">
                 <div className="profile__header">
                     Отзывы
-                    <div className="reviews-amount">10 отзывов</div>
+                    <div className="reviews-amount">{reviewsListStore.totalElement} отзывов</div>
                 </div>
-                <ReviewShort/>
-                <ReviewShort/>
-                <ReviewShort/>
-                <ReviewShort/>
-                <ReviewShort/>
-                <ReviewShort/>
-                <ReviewShort/>
-                <ReviewShort/>
-                <ReviewShort/>
+                <ReviewsShort/>
             </div>
-                {/* <div className="no-reviews">
+                { reviewsListStore.totalElement === 0 ?
+                <div className="no-reviews">
                     Отзывов нет
-                </div> */}
+                </div> : null }
             <div className="profile__btn-block full-width">
                 <button 
                     className="button"
-                    onClick={() => mentorReviewsListStore.setModal(true)}
+                    onClick={() => reviewsListStore.setModal(true)}
                     onKeyDown={(e) => {
                         if (e.key === ' ' || e.key === "Enter") {
-                            mentorReviewsListStore.setModal(true);
+                            reviewsListStore.setModal(true);
                         }
                     }}
                 >
@@ -53,9 +65,15 @@ const Reviews = observer(() => {
     )
 })
 
-const ReviewShort = () => {
-    return (
-        <div className="review">
+const ReviewsShort = observer(() => {
+    return reviewsListStore.firstReviews.map((item, i) => {
+        const date = item.createAt?.split('-')
+        const month = getMonthShort(date[1]);
+        const day = +date[2]
+        const year = date[0]
+
+        return (
+        <div className="review" key={item.userAuthorId}>
             <div className="review__user">
                 <img className="review__user-photo user-photo" src={photo} alt="" />
                 <div className="review__user-info">
@@ -63,25 +81,25 @@ const ReviewShort = () => {
                         Азамат Имаев
                     </div>
                     <div className="review__user-additional-info">
-                        <StarsRating rating={4}/>
+                        <StarsRating rating={item.rating}/>
                         <div className="review__user-additional-info-date">
-                            11 Дек 2023
+                            {`${day} ${month} ${year}`}
                         </div>
                     </div>
                 </div>
             </div>
             <div className="review__content">
-                Сергей действительно разбирается в своей области. Всем рекомендую и Сергей действительно разбирается в своей области.
+                {item.text}
             </div>
         </div>
-    )
-}
+    )})
+})
 
 const ReviewsModal = observer(() => {
     return (
         <Modal
-			showModal={mentorReviewsListStore.modal}
-			onModalClose={() => mentorReviewsListStore.setModal(false)}
+			showModal={reviewsListStore.modal}
+			onModalClose={() => reviewsListStore.setModal(false)}
 		>
 			<div className="app-section review-modal">
                 <div className="modal__header padding-right">
@@ -89,7 +107,7 @@ const ReviewsModal = observer(() => {
                         src={arrow}
                         alt="arrow"
                         className="arrow-icon"
-                        onClick={() => mentorReviewsListStore.setModal(false)}
+                        onClick={() => reviewsListStore.setModal(false)}
                     />
                     <div className="modal__header-divider"></div>
                     <div className="modal__header-text">ВСЕ ОТЗЫВЫ</div>

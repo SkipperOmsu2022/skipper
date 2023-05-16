@@ -20,13 +20,17 @@ const ReviewForm = observer(() => {
 
     useEffect(() => {
         clearResponse();
+        reviewFormStore.setError("")
+        
         if (reviewFormStore.success) {
             reviewFormStore.resetStore()
         }
+        return clearResponse;
     }, [])
 
     const onSubmit = async () => {
         clearResponse();
+
         if (reviewFormStore.rating !== 0) {
             const data = {
                 mentorId: messagesStore.activeInterlocutor.userId,
@@ -34,16 +38,14 @@ const ReviewForm = observer(() => {
                 rating: reviewFormStore.rating,
                 text: reviewFormStore.feedback
             }
-            await postFeedback(data)
+            const res = await postFeedback(data)
 
-            console.log(data)
-            console.log(error)
-
-            if (!error) {
+            if (res === 200) {
+                clearResponse();
                 reviewFormStore.setSuccess()
             }
         } else {
-            reviewFormStore.error = "Выберите оценку"
+            reviewFormStore.setError("Выберите оценку");
         }
     }
     
@@ -80,6 +82,7 @@ const ReviewForm = observer(() => {
                         <StarsRatingInput
                             rating={reviewFormStore.rating}
                             setRating={reviewFormStore.setRating}
+                            error={reviewFormStore.error === "Выберите оценку"}
                         />
                     </div>
                     <div className="review-form__feedback">
@@ -118,7 +121,7 @@ const ReviewForm = observer(() => {
                             </>
                         }
                     </div>
-                    <ErrorMessage error={error} errorText={reviewFormStore.error}/>
+                    <ErrorMessage error={error}/>
                 </div>
             </div>
         </Modal>
@@ -129,20 +132,20 @@ const SuccessMessage = observer(() => {
     return (
         <Modal
             showModal={reviewFormStore.modal}
-            onModalClose={() => reviewFormStore.resetStore()}
+            onModalClose={reviewFormStore.resetStore}
         >
             <div className="app-section success-message">
                 <img
                     className="success-message__close-icon"
                     src={close}
                     alt="close"
-                    onClick={() => reviewFormStore.resetStore()}
+                    onClick={reviewFormStore.resetStore}
                 />
                 <div className="success-message__header">Спасибо!</div>
                 <div className="success-message__content">Отзыв скоро будет опубликован</div>
                 <button 
                     className="success-message__button button"
-                    onClick={() => reviewFormStore.resetStore()}
+                    onClick={reviewFormStore.resetStore}
                 >
                     Закрыть
                 </button>
@@ -151,12 +154,12 @@ const SuccessMessage = observer(() => {
     )
 })
 
-const ErrorMessage = ({error, errorText}) => {
-    if (error || errorText)
+const ErrorMessage = observer(({error}) => {
+    if (error || reviewFormStore.error)
     return (
-        <div className={`review-form__error ${errorText === "Выберите оценку" ? "choose-rating" : ""}`}>
+        <div className="review-form__error">
             <div className="review-form__error-msg">
-                {errorText ||
+                {reviewFormStore.error ||
                 <span> 
                     Не получилось отправить,<br/>
                     попробуйте еще раз<br/>
@@ -169,6 +172,6 @@ const ErrorMessage = ({error, errorText}) => {
             </div>
         </div>
     )
-}
+})
 
 export default ReviewForm;

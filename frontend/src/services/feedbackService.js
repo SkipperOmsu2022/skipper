@@ -13,7 +13,14 @@ const useFeedbackService = () => {
         return res?.status;
     }
 
-    return {loading, response, error, clearResponse, setResponse, postFeedback}
+    const getFeedback = async (dto) => {
+        const params = new URLSearchParams(dto);
+        const res = await request(`${_apiBase}/api/feedback/?${params.toString()}`, 'get');
+        
+        return res;
+    }
+
+    return {loading, response, error, clearResponse, setResponse, postFeedback, getFeedback}
 }
 
 export default useFeedbackService;
