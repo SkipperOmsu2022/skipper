@@ -15,7 +15,7 @@ public class FeedbackMapper {
     private FeedbackMapper() {
     }
 
-    public static Feedback feedbackDTOToFeedback(User mentor, User userAuthor, FeedbackDTO feedback) {
+    public static Feedback mapperToFeedback(User mentor, User userAuthor, FeedbackDTO feedback) {
         if (feedback == null || userAuthor == null || mentor == null) {
             return null;
         }
@@ -29,7 +29,7 @@ public class FeedbackMapper {
                 .build();
     }
 
-    public static FeedbackDTO feedbackToFeedbackDTO(Feedback feedback) {
+    public static FeedbackDTO mapperToFeedbackDTO(Feedback feedback) {
         if (feedback == null) {
             return null;
         }
@@ -43,13 +43,13 @@ public class FeedbackMapper {
                 .build();
     }
 
-    public static List<FeedbackDTO> feedbackToFeedbackDTOs(List<Feedback> feedbacks) {
+    public static List<FeedbackDTO> mapperToFeedbackDTOs(List<Feedback> feedbacks) {
         if (feedbacks == null) {
             return Collections.emptyList();
         }
 
         return feedbacks.stream()
-                .map(FeedbackMapper::feedbackToFeedbackDTO)
+                .map(FeedbackMapper::mapperToFeedbackDTO)
                 .collect(Collectors.toList());
     }
 
@@ -59,7 +59,7 @@ public class FeedbackMapper {
         }
 
         return FeedbackListPageDTO.builder()
-                .content(feedbackToFeedbackDTOs(pages.getContent()))
+                .content(mapperToFeedbackDTOs(pages.getContent()))
                 .totalElement(pages.getTotalElements())
                 .build();
     }

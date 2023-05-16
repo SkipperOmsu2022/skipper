@@ -39,9 +39,17 @@ public class FeedbackController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Отзыв ментора от конкретного пользователя.")
+    @GetMapping("/{mentorId}/{userAuthorId}")
+    public ResponseEntity<FeedbackDTO> getFeedback(@PathVariable Long mentorId, @PathVariable Long userAuthorId) {
+        return ResponseEntity.ok(
+                feedbackService.getFeedback(mentorId, userAuthorId)
+        );
+    }
+
     @Operation(summary = "Отзывы ментора.")
     @GetMapping("/")
-    public ResponseEntity<FeedbackListPageDTO> deleteFeedback(FeedbackParamsDTO dto) {
+    public ResponseEntity<FeedbackListPageDTO> getFeedbacks(FeedbackParamsDTO dto) {
         return ResponseEntity.ok(
                 feedbackService.getPaginationListFeedback(dto)
         );

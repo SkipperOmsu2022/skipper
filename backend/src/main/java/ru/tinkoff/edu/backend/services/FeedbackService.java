@@ -20,5 +20,7 @@ public interface FeedbackService {
 
     List<Feedback> getLast4Feedback(User mentor);
 
+    FeedbackDTO getFeedback(Long mentorId, Long userAuthorId);
+
     Double getTotalRatingUser(Long userId);
 }

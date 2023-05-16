@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static ru.tinkoff.edu.backend.mappers.EducationMapper.educationToEducationDTOs;
-import static ru.tinkoff.edu.backend.mappers.FeedbackMapper.feedbackToFeedbackDTOs;
+import static ru.tinkoff.edu.backend.mappers.FeedbackMapper.mapperToFeedbackDTOs;
 import static ru.tinkoff.edu.backend.mappers.WorkExperienceMapper.workExperienceToWorkExperienceDTOs;
 
 @Slf4j
@@ -90,7 +90,7 @@ public class UserMapper {
 
                 .isFavorite(isFavorite)
 
-                .feedbacks(feedbackToFeedbackDTOs(feedbacks))
+                .feedbacks(mapperToFeedbackDTOs(feedbacks))
                 .rating(rating)
                 .build();
     }

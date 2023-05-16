@@ -39,7 +39,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         userRepository.save(
                 mentor.addFeedback(
-                        feedbackDTOToFeedback(
+                        mapperToFeedback(
                                 mentor,
                                 userAuthor,
                                 feedback
@@ -69,6 +69,13 @@ public class FeedbackServiceImpl implements FeedbackService {
                 PageRequest.of(0, 4, Sort.by(Sort.Direction.DESC, "createAt")),
                 mentor
         ).getContent();
+    }
+
+    @Override
+    public FeedbackDTO getFeedback(Long mentorId, Long userAuthorId) {
+        return mapperToFeedbackDTO(feedbackRepository.getReferenceById(
+                new FeedbackPK(mentorId, userAuthorId)
+        ));
     }
 
     @Override
