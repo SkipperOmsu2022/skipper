@@ -1,8 +1,12 @@
+import { useEffect } from "react"
 import { observer } from "mobx-react-lite";
 
 import Modal from "../Modal/Modal";
 import reviewFormStore from "../../store/reviewFormStore";
+import messagesStore from "../../store/messagesStore";
 import { StarsRatingInput } from "../StarsRating/StarsRating";
+import useFeedbackService from "../../services/feedbackService";
+import useAuthContext from '../../hooks/useAuthContext';
 import Spinner from "../../shared/spinner/Spinner"
 
 import photo from "../../resources/profile-photo.jpg"
@@ -11,6 +15,38 @@ import close from "../../resources/icons/close.svg"
 import "./reviewForm.scss"
 
 const ReviewForm = observer(() => {
+    const {loading, error, clearResponse, postFeedback} = useFeedbackService();
+    const { auth: userId } = useAuthContext();
+
+    useEffect(() => {
+        clearResponse();
+        if (reviewFormStore.success) {
+            reviewFormStore.resetStore()
+        }
+    }, [])
+
+    const onSubmit = async () => {
+        clearResponse();
+        if (reviewFormStore.rating !== 0) {
+            const data = {
+                mentorId: messagesStore.activeInterlocutor.userId,
+                userAuthorId: userId,
+                rating: reviewFormStore.rating,
+                text: reviewFormStore.feedback
+            }
+            await postFeedback(data)
+
+            console.log(data)
+            console.log(error)
+
+            if (!error) {
+                reviewFormStore.setSuccess()
+            }
+        } else {
+            reviewFormStore.error = "Выберите оценку"
+        }
+    }
+    
     if (reviewFormStore.success) return (<SuccessMessage/>)
     return (
         <Modal
@@ -31,10 +67,10 @@ const ReviewForm = observer(() => {
                 </div>
                 <div className="review-form-body">
                     <div className="review-form__mentor">
-                        <img src={photo} alt="user" className="review-form__mentor-photo user-photo"/>
+                        <img src={messagesStore.activeInterlocutor.imageUserResource} alt="user" className="review-form__mentor-photo user-photo"/>
                         <div className="review-form__mentor-info">
-                            <div className="name">Имя Фамилия</div>
-                            <div className="specialty">Специальность</div>
+                            <div className="name">{messagesStore.activeInterlocutor.firstName} {messagesStore.activeInterlocutor.lastName}</div>
+                            <div className="specialty">{messagesStore.activeInterlocutor.mentorSpecializations}</div>
                         </div>
                     </div>
                     <div className="review-form__rate">
@@ -65,24 +101,24 @@ const ReviewForm = observer(() => {
                         </div>
                     </div>
                     <div className="review-form__footer">
-                        {false ? <Spinner className='no-margin'/> : 
+                        {loading ? <Spinner className='no-margin'/> : 
                             <>
                                 <button
                                     className="review-form__footer-button button pale"
-                                    onClick={() => reviewFormStore.resetStore()}
+                                    onClick={reviewFormStore.resetStore}
                                 >
                                     Отменить
                                 </button>
                                 <button
                                     className="review-form__footer-button button"
-                                    onClick={() => reviewFormStore.submit()}
+                                    onClick={onSubmit}
                                 >
                                     Отправить
                                 </button>
                             </>
                         }
                     </div>
-                    <ErrorMessage error={false}/>
+                    <ErrorMessage error={error} errorText={reviewFormStore.error}/>
                 </div>
             </div>
         </Modal>
@@ -115,12 +151,18 @@ const SuccessMessage = observer(() => {
     )
 })
 
-const ErrorMessage = ({error}) => {
-    if (error)
+const ErrorMessage = ({error, errorText}) => {
+    if (error || errorText)
     return (
-        <div className="review-form__error">
+        <div className={`review-form__error ${errorText === "Выберите оценку" ? "choose-rating" : ""}`}>
             <div className="review-form__error-msg">
-                Не получилось отправить, попробуйте еще раз через некоторое время
+                {errorText ||
+                <span> 
+                    Не получилось отправить,<br/>
+                    попробуйте еще раз<br/>
+                    через некоторое время
+                </span>
+                }
             </div>
             <div className="review-form__error-sign">
                 !
