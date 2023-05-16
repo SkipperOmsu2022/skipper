@@ -6,7 +6,7 @@ class reviewFormStore {
     }
 
     modal = false;
-    success = true;
+    success = false;
     rating = 0;
     feedback = ""
 
@@ -22,7 +22,7 @@ class reviewFormStore {
         this.feedback = text;
     }
 
-    submit = () => {
+    setSuccess = () => {
         this.success = true;
     }
 

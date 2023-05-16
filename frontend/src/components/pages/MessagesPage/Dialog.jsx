@@ -84,7 +84,7 @@ const Dialog = observer(() => {
     useEffect(() => {
         document.addEventListener("click", handleClickOutside);
         document.addEventListener("keydown", clearDialog);
-
+        
         return () => {
             messagesStore.setActiveDialog(null);
             messagesStore.setInput('')

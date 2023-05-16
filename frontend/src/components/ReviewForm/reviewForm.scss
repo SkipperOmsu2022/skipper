@@ -132,7 +132,7 @@
         position: absolute;
         right: 0%;
         top: 18%;
-        padding: 30px;
+        padding: 25px;
         display: flex;
         flex-direction: row;
         gap: 20px;
@@ -141,7 +141,8 @@
 
         &-msg {
             color: $error;
-            width: 220px;
+            height: fit-content;
+            margin: auto 0;
         }
         &-sign {
             user-select: none;
