@@ -18,7 +18,10 @@ import java.time.LocalDate;
 public class FeedbackDTO {
     private Long mentorId;
     private Long userAuthorId;
-    @Min(value = 1,message = "Минимальное число рейтинга = 1")
+    private String firstName;
+    private String lastName;
+    private String imageUserResource;
+    @Min(value = 1, message = "Минимальное число рейтинга = 1")
     @Max(value = 5, message = "Максимальное число рейтинга = 5")
     private int rating;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

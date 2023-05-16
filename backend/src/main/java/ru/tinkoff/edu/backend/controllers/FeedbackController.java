@@ -49,7 +49,7 @@ public class FeedbackController {
 
     @Operation(summary = "Отзывы ментора.")
     @GetMapping("/")
-    public ResponseEntity<FeedbackListPageDTO> getFeedbacks(FeedbackParamsDTO dto) {
+    public ResponseEntity<FeedbackListPageDTO> getFeedbacks(@Valid FeedbackParamsDTO dto) {
         return ResponseEntity.ok(
                 feedbackService.getPaginationListFeedback(dto)
         );
