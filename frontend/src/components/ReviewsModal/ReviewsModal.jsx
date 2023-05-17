@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState, useRef } from "react"
 import { observer } from "mobx-react-lite";
 
 import useFeedbackService from "../../services/feedbackService";
@@ -117,14 +117,7 @@ const ReviewsList = observer(({userId, hide}) => {
                         <div className="review-header__date">
                             {day} {month} {year}
                         </div>
-                        {+userId === +item.userAuthorId ?
-                            <img
-                                src={menu}
-                                alt="menu"
-                                className="review-header__menu-icon"
-                                onClick={() => {}}
-                            /> : null
-                        }
+                        <MenuButton userAuthorId={+item.userAuthorId} userId={+userId}/>
                     </div>
                     <div className="review-content">
                         {item.text}
@@ -133,6 +126,41 @@ const ReviewsList = observer(({userId, hide}) => {
                 <div className={`divider ${hide}`} key={`div${item.userAuthorId}`}></div>
             </>
         )}
+    )
+})
+
+const MenuButton = observer(({userAuthorId, userId}) => {
+    if (userAuthorId !== userId) return null;
+
+    const [dropdownDisplay, setDropdownDisplay] = useState(false);
+    const container = useRef();
+    useEffect(() => {
+        document.addEventListener("click", handleClickOutside);
+        
+        return () => document.removeEventListener("click",  handleClickOutside);
+    }, []);
+
+    const handleDropdownClick = () => setDropdownDisplay((dropdownDisplay) => !dropdownDisplay);
+
+    const handleClickOutside = (e) => {
+        if (container.current && !container.current.contains(e.target)) {
+            setDropdownDisplay(false);
+        }
+    };
+
+    return (
+        <div className="menu-button" ref={container}>
+            <img
+                src={menu}
+                alt="menu"
+                className="menu-button__icon"
+                onClick={handleDropdownClick}
+            />
+            <div className={`menu-button__dropdown ${dropdownDisplay ? "" : 'hide'}`}>
+                <div className="menu-button__dropdown-item">Удалить</div>
+                <div className="menu-button__dropdown-item">Редактировать</div>
+            </div>
+        </div>
     )
 })
 
