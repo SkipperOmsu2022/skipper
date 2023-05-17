@@ -1,3 +1,5 @@
+@import '../../shared/variables.scss';
+
 .modal-backdrop {
     position: fixed;
     top: 0;
@@ -71,6 +73,69 @@
         }
         &.padding-right {
             padding-right: 40px;
+        }
+    }
+}
+
+.modal-alert {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    height: 200px;
+    width: 460px;
+    min-height: 0;
+    box-sizing: border-box;
+    padding: 40px 30px 30px 30px;
+
+    &__close-icon {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+
+        &:hover {
+            cursor: pointer;
+            filter: brightness(90%);
+        }
+    }
+
+    &__header {
+        color: $header;
+        text-align: center;
+        font-size: 20px;
+        line-height: 24px;
+
+        &.pdg-top-16px {
+            padding-top: 16px;
+        }
+    }
+    &__content {
+        color: $additional-text;
+        text-align: center;
+        font-size: 20px;
+        line-height: 24px;
+    }
+    &__bottom-buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+    }
+    &__button {
+        color: $header;
+        box-sizing:border-box;
+        margin-top: 20px;
+        padding: 12px;
+        box-sizing: border-box;
+        width: 150px;
+        
+        font-size: 14px;
+        line-height: 17px;
+        text-align: center;
+
+        &.narrow {
+            width: 120px;
         }
     }
 }

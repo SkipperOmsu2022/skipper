@@ -143,17 +143,17 @@ const SuccessMessage = observer(() => {
             showModal={reviewFormStore.modal}
             onModalClose={() => reviewFormStore.setModal(false)}
         >
-            <div className="app-section success-message">
+            <div className="app-section modal-alert">
                 <img
-                    className="success-message__close-icon"
+                    className="modal-alert__close-icon"
                     src={close}
                     alt="close"
                     onClick={() => reviewFormStore.setModal(false)}
                 />
-                <div className="success-message__header">Спасибо!</div>
-                <div className="success-message__content">Отзыв скоро будет опубликован</div>
+                <div className="modal-alert__header">Спасибо!</div>
+                <div className="modal-alert__content">Отзыв скоро будет опубликован</div>
                 <button 
-                    className="success-message__button button"
+                    className="modal-alert__button button"
                     onClick={() => reviewFormStore.setModal(false)}
                 >
                     Закрыть

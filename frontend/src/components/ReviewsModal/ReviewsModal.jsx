@@ -15,6 +15,7 @@ import Spinner from "../../shared/spinner/Spinner";
 import photo from "../../resources/profile-photo.jpg"
 import arrow from "../../resources/icons/arrow.svg"
 import menu from "../../resources/icons/menu.svg"
+import close from "../../resources/icons/close.svg"
 
 import './reviewsModal.scss'
 
@@ -163,5 +164,40 @@ const MenuButton = observer(({userAuthorId, userId}) => {
         </div>
     )
 })
+
+const DeleteAlert = () => {
+    return (
+        <Modal
+            showModal={/* reviewFormStore.modal */ true}
+            onModalClose={() => {}}
+        >
+            <div className="app-section modal-alert">
+                <img
+                    className="modal-alert__close-icon"
+                    src={close}
+                    alt="close"
+                    onClick={() => {}}
+                />
+                <div className="modal-alert__header pdg-top-16px">
+                    Вы точно хотите удалить отзыв?
+                </div>
+                <div className="modal-alert__bottom-buttons">
+                    <button 
+                        className="modal-alert__button narrow button pale"
+                        onClick={() => {}}
+                    >
+                        Отмена
+                    </button>
+                    <button 
+                        className="modal-alert__button narrow button"
+                        onClick={() => {}}
+                    >
+                        Удалить
+                    </button>
+                </div>
+            </div>
+        </Modal>
+    )
+}
 
 export default ReviewsModal;
