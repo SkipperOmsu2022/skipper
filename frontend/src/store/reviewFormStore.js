@@ -6,6 +6,7 @@ class reviewFormStore {
     }
 
     modal = false;
+    alreadyLeftAReview = false;
     success = false;
     rating = 0;
     feedback = ""
@@ -14,6 +15,23 @@ class reviewFormStore {
     setModal = (state) => {
         this.error = "";
         this.modal = state;
+        this.success = false;
+    }
+    
+    onCancel = () => {
+        if (!this.alreadyLeftAReview) {
+            this.resetStore();
+        } else {
+            this.error = "";
+            this.modal = false;
+            this.success = false;
+        }
+    }
+
+    setReview = (res) => {
+        this.rating = res?.rating || 0;
+        this.feedback = res?.text || "";
+        this.alreadyLeftAReview = res?.text && true;
     }
 
     setRating = (newRating) => {
@@ -27,20 +45,20 @@ class reviewFormStore {
 
     setError = (text) => {
         this.error = text;
-        console.log(this.error)
     }
 
     setSuccess = () => {
         this.success = true;
-        this.rating = 0;
-        this.feedback = ""
+        this.alreadyLeftAReview = true;
     }
 
     resetStore = () => {
+        this.alreadyLeftAReview = false;
         this.modal = false;
         this.rating = 0;
-        this.feedback = ""
-        this.success = false
+        this.error = false
+        this.feedback = "";
+        this.success = false;
     }
 }
 

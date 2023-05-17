@@ -19,8 +19,24 @@ const useFeedbackService = () => {
         
         return res;
     }
+    
+    const getUserFeedback = async (mentorId , userAuthorId) => {
+        const res = await request(`${_apiBase}/api/feedback/${mentorId}/${userAuthorId}`, 'get');
+        if (res?.data?.message === `Unable to find ru.tinkoff.edu.backend.entities.feedback.Feedback with id FeedbackPK(mentorId=${mentorId}, userAuthorId=${userAuthorId})!`)
+            clearResponse()
+        else {
+            setResponse('Что-то пошло не так, попробуйте еще раз через некоторое время')
+        }
+        return res?.data;
+    }
+    
+    const deleteUserFeedback = async (mentorId , userAuthorId) => {
+        const res = await request(`${_apiBase}/api/feedback/${mentorId}/${userAuthorId}`, 'delete');
+        
+        return res?.data;
+    }
 
-    return {loading, response, error, clearResponse, setResponse, postFeedback, getFeedback}
+    return {loading, response, error, clearResponse, setResponse, postFeedback, getFeedback, getUserFeedback, deleteUserFeedback}
 }
 
 export default useFeedbackService;

@@ -35,6 +35,7 @@
             justify-content: space-between;
             padding: 4px 0;
             .name {
+                text-decoration: none;
                 color: $header;
                 font-family: Montserrat;
                 font-size: 20px;
@@ -109,6 +110,9 @@
                 color: $additional-text;
                 font-size: 14px;
                 letter-spacing: 0px;
+                &:hover {
+                    filter: brightness(85%);
+                }
             }
         }
     }
@@ -128,7 +132,9 @@
         }
     }
     &__error {
+        box-sizing: border-box;
         cursor: default;
+        max-width: 389px;
         position: absolute;
         right: 0%;
         top: 18%;

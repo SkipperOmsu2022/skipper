@@ -18,11 +18,13 @@
     .star-icon {
         &:hover {
             cursor: pointer;
+            filter: brightness(97%);
         }
     }
     .star-icon:hover,
     .star-icon:hover ~ .star-icon {
         background-image: url('../../resources/icons/filled-star.svg');
+        filter: brightness(97%);
     }
 }
 
