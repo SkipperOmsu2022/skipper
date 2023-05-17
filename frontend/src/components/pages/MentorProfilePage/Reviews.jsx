@@ -1,6 +1,5 @@
 import { useEffect } from "react"
 import { useParams } from 'react-router-dom';
-import ReactPaginate from 'react-paginate';
 import { observer } from "mobx-react-lite";
 import { Link } from 'react-router-dom';
 
@@ -12,14 +11,16 @@ import { getMonthShort, getMonth } from '../../../utils/getDate'
 import enviroments from "../../../config/enviroments";
 import Spinner from "../../../shared/spinner/Spinner";
 import PaginatedItems from "../../PaginatedItems/PaginatedItems";
+import useAuthContext from '../../../hooks/useAuthContext';
 
 import photo from "../../../resources/profile-photo.jpg"
 import arrow from "../../../resources/icons/arrow.svg"
+import menu from "../../../resources/icons/menu.svg"
 import "../../../shared/submitButton/button.scss"
 import "../../../shared/arrow-icon.scss"
 
 const Reviews = observer(() => {
-    const {loading, error, clearResponse, getFeedback} = useFeedbackService();
+    const {loading, getFeedback} = useFeedbackService();
     const {userId} = useParams();
 
     useEffect(() => {
@@ -71,7 +72,7 @@ const Reviews = observer(() => {
 })
 
 const ReviewsShort = observer(() => {
-    return reviewsListStore.firstReviews.map((item, i) => {
+    return reviewsListStore.firstReviews.map((item) => {
         const imageUserResource = item.imageUserResource ? `${enviroments.apiBase}${item.imageUserResource}` : photo;
 
         const date = item.createAt?.split('-')
@@ -112,7 +113,8 @@ const ReviewsShort = observer(() => {
 
 const ReviewsModal = observer(() => {
     const {loading, error, clearResponse, getFeedback} = useFeedbackService();
-    const {userId} = useParams();
+    const {userId : mentorId} = useParams();
+    const {auth: userId} = useAuthContext();
 
     useEffect(() => {
         updateReviews(0, 0);
@@ -125,7 +127,7 @@ const ReviewsModal = observer(() => {
 
     const updateReviews = async (offset, displayStart) => {
         let dto = {
-            userId: userId,
+            userId: mentorId,
             offset: offset,
             limit: reviewsListStore.limitPerRequest
         }
@@ -151,8 +153,13 @@ const ReviewsModal = observer(() => {
                     <div className="modal__header-divider"></div>
                 </div>
                 <div className="review-modal-body-wrapper">
-                    <div className="review-modal-body">
-                        {loading ? <Spinner className="reviews-margin"/> : <ReviewsList/>}
+                    <div className="review-modal-body" id="review-modal-body">
+                        {loading &&
+                        <div className="spinner-wrapper">
+                            <Spinner className="reviews-margin"/>
+                        </div>
+                        }
+                        <ReviewsList userId={userId} hide={loading ? 'hide' : ""}/>
                     </div>
                 </div>
                 <div className='pagination-wrapper'>
@@ -165,6 +172,7 @@ const ReviewsModal = observer(() => {
                         pageCount={reviewsListStore.pageCount}
                         itemsPerPage={reviewsListStore.itemsPerPage}
                         limitPerRequest={reviewsListStore.limitPerRequest}
+                        parentId="review-modal-body"
                     />
                 </div>
             </div>
@@ -172,7 +180,7 @@ const ReviewsModal = observer(() => {
     )
 })
 
-const ReviewsList = observer(() => {
+const ReviewsList = observer(({userId, hide}) => {
     return reviewsListStore.reviews.slice(reviewsListStore.displayStart, reviewsListStore.displayStart + 6).map((item) => {
         const imageUserResource = item.imageUserResource ? `${enviroments.apiBase}${item.imageUserResource}` : photo;
     
@@ -183,7 +191,7 @@ const ReviewsList = observer(() => {
         
         return (
             <>
-                <div className="review" key={`mod${item.userAuthorId}`}>
+                <div className={`review ${hide}`} key={`mod${item.userAuthorId}`}>
                     <div className="review-header">
                         <Link
                             className="review-header__photo"
@@ -203,12 +211,20 @@ const ReviewsList = observer(() => {
                         <div className="review-header__date">
                             {day} {month} {year}
                         </div>
+                        {+userId === +item.userAuthorId ?
+                            <img
+                                src={menu}
+                                alt="menu"
+                                className="review-header__menu-icon"
+                                onClick={() => {}}
+                            /> : null
+                        }
                     </div>
                     <div className="review-content">
                         {item.text}
                     </div>
                 </div>
-                <div className="divider" key={`div${item.userAuthorId}`}></div>
+                <div className={`divider ${hide}`} key={`div${item.userAuthorId}`}></div>
             </>
         )}
     )

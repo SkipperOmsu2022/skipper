@@ -1,23 +1,27 @@
 import ReactPaginate from 'react-paginate';
 import { observer } from "mobx-react-lite";
 
-const PaginatedItems = observer(({updateItems, updateDisplayStart, offset, displayStart, length, pageCount, itemsPerPage, limitPerRequest}) => {
+const PaginatedItems = observer(({updateItems, updateDisplayStart, offset, displayStart, length, pageCount, itemsPerPage, limitPerRequest, parentId}) => {
     
     const handlePageClick = async (event) => {
         const itemsStart = offset * limitPerRequest;
         const itemsEnd = offset * limitPerRequest + length;
         const newDisplayStart = event.selected * itemsPerPage % limitPerRequest;
-        console.log('itemsStart' + itemsStart)
-        console.log('itemsEnd' + itemsEnd)
-        console.log('newDisplayStart' + newDisplayStart)
-        console.log('event.selected * itemsPerPage >= itemsEnd')
-        console.log(event.selected +'*'+ itemsPerPage +'>='+ itemsEnd)
-        console.log(event.selected * itemsPerPage >= itemsEnd)
-        window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: 'smooth'
-        });
+        
+        if (parentId) {
+            document.getElementById(parentId).scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
+            })
+        } else {
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
+            })
+        }
+
         
         if (event.selected * itemsPerPage < itemsStart) {
             await updateItems(offset - 1, newDisplayStart)
@@ -27,7 +31,7 @@ const PaginatedItems = observer(({updateItems, updateDisplayStart, offset, displ
             updateDisplayStart(newDisplayStart);
         }
     };
-    console.log((offset * limitPerRequest + displayStart) / 6)
+    
     return (
         <>
             <ReactPaginate
