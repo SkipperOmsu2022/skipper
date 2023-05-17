@@ -14,7 +14,7 @@ import arrow from "../../resources/icons/arrow.svg"
 import close from "../../resources/icons/close.svg"
 import "./reviewForm.scss"
 
-const ReviewForm = observer(() => {
+const ReviewForm = observer(({mentor}) => {
     const {loading, error, clearResponse, postFeedback} = useFeedbackService();
     const { auth: userId } = useAuthContext();
 
@@ -33,7 +33,7 @@ const ReviewForm = observer(() => {
 
         if (reviewFormStore.rating !== 0) {
             const data = {
-                mentorId: messagesStore.activeInterlocutor.userId,
+                mentorId: mentor.userId,
                 userAuthorId: userId,
                 rating: reviewFormStore.rating,
                 text: reviewFormStore.feedback
@@ -69,10 +69,10 @@ const ReviewForm = observer(() => {
                 </div>
                 <div className="review-form-body">
                     <div className="review-form__mentor">
-                        <img src={messagesStore.activeInterlocutor.imageUserResource} alt="user" className="review-form__mentor-photo user-photo"/>
+                        <img src={mentor.imageUserResource} alt="user" className="review-form__mentor-photo user-photo"/>
                         <div className="review-form__mentor-info">
-                            <div className="name">{messagesStore.activeInterlocutor.firstName} {messagesStore.activeInterlocutor.lastName}</div>
-                            <div className="specialty">{messagesStore.activeInterlocutor.mentorSpecializations}</div>
+                            <div className="name">{mentor.firstName} {mentor.lastName}</div>
+                            <div className="specialty">{mentor.mentorSpecializations}</div>
                         </div>
                     </div>
                     <div className="review-form__rate">

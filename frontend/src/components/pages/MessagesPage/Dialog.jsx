@@ -1,7 +1,7 @@
 import addBtn from "../../../resources/icons/add-btn.svg"
 import sendBtn from "../../../resources/icons/send-btn.svg"
 
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react"
+import React, { useState, useEffect, useRef, useLayoutEffect, useMemo } from "react"
 import { Link } from 'react-router-dom';
 
 import { observer } from "mobx-react-lite";
@@ -131,7 +131,7 @@ const Dialog = observer(() => {
 
     return (
         <>
-            <ReviewForm/>
+            <ReviewForm mentor={messagesStore.activeInterlocutor}/>
             <div className="chat-header">
                 <Link
                     to={`/profile/${messagesStore.activeInterlocutor.userId}`}
