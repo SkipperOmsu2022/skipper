@@ -3,14 +3,17 @@ import { observer } from "mobx-react-lite";
 
 import useFeedbackService from "../../services/feedbackService";
 import reviewsListStore from '../../store/reviewsListStore';
+import reviewFormStore from "../../store/reviewFormStore";
 import PaginatedItems from "../PaginatedItems/PaginatedItems";
 import useAuthContext from '../../hooks/useAuthContext';
 import Modal from "../Modal/Modal";
+import StarsRating from '../StarsRating/StarsRating';
+import Spinner from "../../shared/spinner/Spinner";
+import ReviewForm from "../ReviewForm/ReviewForm";
+
 import { getMonth } from '../../utils/getDate'
 import enviroments from "../../config/enviroments";
 import { Link } from 'react-router-dom';
-import StarsRating from '../StarsRating/StarsRating';
-import Spinner from "../../shared/spinner/Spinner";
 
 import photo from "../../resources/profile-photo.jpg"
 import arrow from "../../resources/icons/arrow.svg"
@@ -19,7 +22,7 @@ import close from "../../resources/icons/close.svg"
 
 import './reviewsModal.scss'
 
-const ReviewsModal = observer(({mentorId}) => {
+const ReviewsModal = observer(({mentor}) => {
     const {loading, error, clearResponse, getFeedback} = useFeedbackService();
     const {auth: userId} = useAuthContext();
 
@@ -34,7 +37,7 @@ const ReviewsModal = observer(({mentorId}) => {
 
     const updateReviews = async (offset, displayStart) => {
         let dto = {
-            userId: mentorId,
+            userId: mentor.userId,
             offset: offset,
             limit: reviewsListStore.limitPerRequest
         }
@@ -67,6 +70,12 @@ const ReviewsModal = observer(({mentorId}) => {
                         </div>
                         }
                         <ReviewsList userId={userId} hide={loading ? 'hide' : ""}/>
+                        <DeleteFeedbackAlert
+                            onModalClose={() => reviewsListStore.setReviewIdToDelete(null)}
+                            userAuthorId={reviewsListStore.reviewIdToDelete}
+                            mentorId={mentor.userId}
+                        />
+                        <ReviewForm mentor={mentor} deep={"deep"}/>
                     </div>
                 </div>
                 <div className='pagination-wrapper'>
@@ -149,6 +158,11 @@ const MenuButton = observer(({userAuthorId, userId}) => {
         }
     };
 
+    const onDelete = () => {
+        reviewsListStore.setReviewIdToDelete(userAuthorId)
+        handleDropdownClick()
+    }
+
     return (
         <div className="menu-button" ref={container}>
             <img
@@ -158,43 +172,65 @@ const MenuButton = observer(({userAuthorId, userId}) => {
                 onClick={handleDropdownClick}
             />
             <div className={`menu-button__dropdown ${dropdownDisplay ? "" : 'hide'}`}>
-                <div className="menu-button__dropdown-item">Удалить</div>
-                <div className="menu-button__dropdown-item">Редактировать</div>
+                <div
+                    className="menu-button__dropdown-item"
+                    onClick={onDelete}
+                >
+                    Удалить
+                </div>
+                <div className="menu-button__dropdown-item"
+                    onClick={() => reviewFormStore.setModal(true)}
+                >
+                    Редактировать
+                </div>
             </div>
         </div>
     )
 })
 
-const DeleteAlert = () => {
+const DeleteFeedbackAlert = ({onModalClose, userAuthorId, mentorId}) => {
+    const {loading, error, clearResponse, deleteUserFeedback} = useFeedbackService();
+
+    useEffect(() => {
+        clearResponse();
+    })
+
+    const onDelete = async () => {
+        const res = await deleteUserFeedback(mentorId, userAuthorId)
+        if (res === 200) onModalClose();
+    }
+
     return (
         <Modal
-            showModal={/* reviewFormStore.modal */ true}
-            onModalClose={() => {}}
+            showModal={userAuthorId}
+            onModalClose={onModalClose}
+            deep="deep"
         >
             <div className="app-section modal-alert">
                 <img
                     className="modal-alert__close-icon"
                     src={close}
                     alt="close"
-                    onClick={() => {}}
+                    onClick={onModalClose}
                 />
                 <div className="modal-alert__header pdg-top-16px">
                     Вы точно хотите удалить отзыв?
                 </div>
+                {loading ? <Spinner/> :
                 <div className="modal-alert__bottom-buttons">
                     <button 
                         className="modal-alert__button narrow button pale"
-                        onClick={() => {}}
+                        onClick={onModalClose}
                     >
                         Отмена
                     </button>
                     <button 
                         className="modal-alert__button narrow button"
-                        onClick={() => {}}
+                        onClick={onDelete}
                     >
                         Удалить
                     </button>
-                </div>
+                </div>}
             </div>
         </Modal>
     )

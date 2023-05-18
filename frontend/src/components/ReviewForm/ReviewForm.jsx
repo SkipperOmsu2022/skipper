@@ -13,7 +13,7 @@ import arrow from "../../resources/icons/arrow.svg"
 import close from "../../resources/icons/close.svg"
 import "./reviewForm.scss"
 
-const ReviewForm = observer(({mentor}) => {
+const ReviewForm = observer(({mentor, deep}) => {
     const {loading, error, response, clearResponse, postFeedback, getUserFeedback, deleteUserFeedback} = useFeedbackService();
     const { auth: userId } = useAuthContext();
 
@@ -36,27 +36,30 @@ const ReviewForm = observer(({mentor}) => {
                 rating: reviewFormStore.rating,
                 text: reviewFormStore.feedback
             }
-
+            
+            let deleteRes = 200
             if (reviewFormStore.alreadyLeftAReview)
-                await deleteUserFeedback(mentor.userId, userId)
-
-            postFeedback(data)
-                .then(res => {
-                    if (res === 200) {
-                        clearResponse();
-                        reviewFormStore.setSuccess()
-                    }
-                })
+                deleteRes = await deleteUserFeedback(mentor.userId, userId)
+            
+            if (deleteRes === 200)
+                postFeedback(data)
+                    .then(res => {
+                        if (res === 200) {
+                            clearResponse();
+                            reviewFormStore.setSuccess()
+                        }
+                    })
         } else {
             reviewFormStore.setError("Выберите оценку");
         }
     }
-    console.log(reviewFormStore)
-    if (reviewFormStore.success) return (<SuccessMessage/>)
+    
+    if (reviewFormStore.success) return (<SuccessMessage deep={deep}/>)
     return (
         <Modal
             showModal={reviewFormStore.modal}
             onModalClose={() => reviewFormStore.setModal(false)}
+            deep={deep}
         >
             <div className="app-section review-form">
                 <div className="modal__header">
@@ -137,11 +140,12 @@ const ReviewForm = observer(({mentor}) => {
     )
 })
 
-const SuccessMessage = observer(() => {
+const SuccessMessage = observer(({deep}) => {
     return (
         <Modal
             showModal={reviewFormStore.modal}
             onModalClose={() => reviewFormStore.setModal(false)}
+            deep={deep}
         >
             <div className="app-section modal-alert">
                 <img

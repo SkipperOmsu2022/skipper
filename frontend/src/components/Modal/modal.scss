@@ -8,6 +8,10 @@
     left: 0;
     z-index: 101;
     background-color: rgba(0,0,0,0.3);
+
+    &.deep {
+        z-index: 102;
+    }
 }
 
 .modal {
@@ -24,6 +28,10 @@
         
         backdrop-filter: blur(2px);
         border-radius: 10px;
+
+        &:has(.modal-alert) {
+            min-height: 0;
+        }
     }
 
     &__image-wrapper {

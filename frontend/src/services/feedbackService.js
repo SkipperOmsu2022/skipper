@@ -33,7 +33,7 @@ const useFeedbackService = () => {
     const deleteUserFeedback = async (mentorId , userAuthorId) => {
         const res = await request(`${_apiBase}/api/feedback/${mentorId}/${userAuthorId}`, 'delete');
         
-        return res?.data;
+        return res?.status;
     }
 
     return {loading, response, error, clearResponse, setResponse, postFeedback, getFeedback, getUserFeedback, deleteUserFeedback}

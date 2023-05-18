@@ -7,26 +7,29 @@ const hideYScroll = () => {
     document.body.style.height = '100%';
     document.body.style.overflowY = 'hidden';
 }
-const showYScroll = () => {
-    document.body.style.height = '%';
-    document.body.style.overflowY = '';
+const showYScroll = (deep) => {
+    if (!deep) {
+        document.body.style.height = '%';
+        document.body.style.overflowY = '';
+    }
 }
 
-const Modal = ({ children, onModalClose, showModal }) => {
+const Modal = ({ children, onModalClose, showModal, deep }) => {
     useEffect(() => {
         if (showModal) {
             hideYScroll()
         } else {
-            showYScroll()
+            showYScroll(deep)
         }
-        return showYScroll;
+
+        return () => showYScroll(deep);
     }, [showModal])
     
     if (showModal) {
         return createPortal(
             <>
                 <div
-                    className="modal-backdrop"
+                    className={`modal-backdrop ${deep || ""}`}
                     onClick={onModalClose}
                 />
                 <div className="modal__content">

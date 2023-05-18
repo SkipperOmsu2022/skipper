@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import useFeedbackService from "../../../services/feedbackService";
 import reviewsListStore from '../../../store/reviewsListStore';
+import mentorProfileStore from "../../../store/mentorProfileStore";
 import ReviewsModal from "../../ReviewsModal/ReviewsModal";
 import StarsRating from '../../StarsRating/StarsRating';
 import { getMonthShort } from '../../../utils/getDate'
@@ -35,9 +36,17 @@ const Reviews = observer(() => {
             .then(res => reviewsListStore.setFirstReviews(res))
     }
 
+    const mentor = {
+        userId: mentorId,
+        firstName: mentorProfileStore.firstName,
+        lastName: mentorProfileStore.lastName,
+        mentorSpecializations: mentorProfileStore.mentorSpecializations,
+        imageUserResource: mentorProfileStore.imageUserResource
+    }
+
     return (
         <div className="app-section profile huge-column">
-            <ReviewsModal mentorId={mentorId}/>
+            <ReviewsModal mentor={mentor}/>
             <div className="main-block btm-gradient">
                 <div className="profile__header">
                     Отзывы
