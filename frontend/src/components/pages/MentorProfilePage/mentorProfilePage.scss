@@ -15,6 +15,10 @@
         justify-content: space-between;
         min-height: 28.75rem;
     }
+    &.resume {
+        box-sizing: border-box;
+        min-height: 304px;
+    }
     .main-block {
         display: flex;
         flex-direction: column;
@@ -77,7 +81,7 @@
         display: flex;
         flex-direction: column;
         gap: 1.25rem;
-
+        height: 100%;
         padding-top: 1.25rem;
 
         &-row {
@@ -87,6 +91,10 @@
             flex-direction: row;
             gap: 4.375rem;
             justify-content: space-around;
+
+            &.resume-content {
+                margin: auto 0;
+            }
         }
         &-column {
             display: flex;
@@ -99,6 +107,9 @@
                 color: $main-text;
                 text-align: center;
                 line-height: 1.25rem;
+                &.empty {
+                    margin: auto 0;
+                }
             }
             &-wrapper {
                 margin-left: auto;
