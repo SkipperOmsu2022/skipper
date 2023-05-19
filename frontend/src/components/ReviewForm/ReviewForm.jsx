@@ -11,6 +11,7 @@ import Spinner from "../../shared/spinner/Spinner"
 
 import arrow from "../../resources/icons/arrow.svg"
 import close from "../../resources/icons/close.svg"
+import garbageBin from "../../resources/icons/garbage-bin.svg"
 import "./reviewForm.scss"
 
 const ReviewForm = observer(({mentor, deep}) => {
@@ -22,7 +23,7 @@ const ReviewForm = observer(({mentor, deep}) => {
         reviewFormStore.setError("")
         
         getUserFeedback(mentor.userId, userId)
-            .then(res => reviewFormStore.setReview(res))
+            .then(res => {reviewFormStore.setReview(res); console.log(res)})
         return clearResponse;
     }, [])
 
@@ -86,6 +87,14 @@ const ReviewForm = observer(({mentor, deep}) => {
                             </Link>
                             <div className="specialty">{mentor.mentorSpecializations}</div>
                         </div>
+                        {reviewFormStore.alreadyLeftAReview &&
+                            <img 
+                                src={garbageBin}
+                                alt=""
+                                className="garbage-bin menu-button"
+                                onClick={() => reviewFormStore.setReviewIdToDelete(userId)}
+                            />
+                        }
                     </div>
                     <div className="review-form__rate">
                         <div className="review-form__rate-title">
@@ -134,11 +143,87 @@ const ReviewForm = observer(({mentor, deep}) => {
                         }
                     </div>
                     <ErrorMessage error={error} response={response}/>
+                    <DeleteFeedbackAlert
+                        onModalClose={() => reviewFormStore.setReviewIdToDelete(null)}
+                        onSuccess={reviewFormStore.resetStore}
+                        userAuthorId={reviewFormStore.reviewIdToDelete}
+                        mentorId={mentor.userId}
+                    />
                 </div>
             </div>
         </Modal>
     )
 })
+
+const DeleteFeedbackAlert = ({onModalClose, onSuccess, userAuthorId, mentorId}) => {
+    const {loading, error, clearResponse, deleteUserFeedback} = useFeedbackService();
+    
+    useEffect(() => {
+        clearResponse();
+    })
+
+    const onDelete = async () => {
+        const res = await deleteUserFeedback(mentorId, userAuthorId)
+        if (res === 200) {
+            onSuccess();
+            onModalClose();
+        }
+    }
+
+    const content = error ?
+    <>
+        <div className="modal-alert__header pdg-top-16px error">
+            Произошла ошибка. Повторите попытку позже
+        </div>
+        {loading ? <Spinner/> :
+        <div className="modal-alert__bottom-buttons">
+            <button 
+                className="modal-alert__button button"
+                onClick={onModalClose}
+            >
+                Закрыть
+            </button>
+        </div>}
+    </> :
+    <>
+        <div className="modal-alert__header pdg-top-16px">
+            Вы точно хотите удалить отзыв?
+        </div>
+        {loading ? <Spinner/> :
+        <div className="modal-alert__bottom-buttons">
+            <button 
+                className="modal-alert__button narrow button pale"
+                onClick={onModalClose}
+            >
+                Отмена
+            </button>
+            <button 
+                className="modal-alert__button narrow button"
+                onClick={onDelete}
+            >
+                Удалить
+            </button>
+        </div>}
+    </>
+
+    return (
+        <Modal
+            showModal={userAuthorId}
+            onModalClose={onModalClose}
+            deep="deep"
+        >
+            <div className="app-section modal-alert">
+                <img
+                    className="modal-alert__close-icon"
+                    src={close}
+                    alt="close"
+                    onClick={onModalClose}
+                />
+                {content}
+            </div>
+        </Modal>
+    )
+}
 
 const SuccessMessage = observer(({deep}) => {
     return (
@@ -187,3 +272,4 @@ const ErrorMessage = observer(({error, response}) => {
 })
 
 export default ReviewForm;
+export { DeleteFeedbackAlert }

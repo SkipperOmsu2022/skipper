@@ -48,6 +48,11 @@
                 line-height: 20px;
             }
         }
+        .garbage-bin {
+            cursor: pointer;
+            width: 26px;
+            height: 26px;
+        }
     }
     &__rate {
         display: flex;
@@ -137,7 +142,7 @@
         max-width: 389px;
         position: absolute;
         right: 0%;
-        top: 18%;
+        top: 25%;
         padding: 25px;
         display: flex;
         flex-direction: row;

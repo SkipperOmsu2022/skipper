@@ -9,7 +9,7 @@ import useAuthContext from '../../hooks/useAuthContext';
 import Modal from "../Modal/Modal";
 import StarsRating from '../StarsRating/StarsRating';
 import Spinner from "../../shared/spinner/Spinner";
-import ReviewForm from "../ReviewForm/ReviewForm";
+import ReviewForm, { DeleteFeedbackAlert } from "../ReviewForm/ReviewForm";
 
 import { getMonth } from '../../utils/getDate'
 import enviroments from "../../config/enviroments";
@@ -18,7 +18,6 @@ import { Link } from 'react-router-dom';
 import photo from "../../resources/profile-photo.jpg"
 import arrow from "../../resources/icons/arrow.svg"
 import menu from "../../resources/icons/menu.svg"
-import close from "../../resources/icons/close.svg"
 
 import './reviewsModal.scss'
 
@@ -71,8 +70,9 @@ const ReviewsModal = observer(({mentor}) => {
                         }
                         <ReviewsList userId={userId} hide={loading ? 'hide' : ""}/>
                         <DeleteFeedbackAlert
-                            onModalClose={() => reviewsListStore.setReviewIdToDelete(null)}
-                            userAuthorId={reviewsListStore.reviewIdToDelete}
+                            onModalClose={() => reviewFormStore.setReviewIdToDelete(null)}
+                            onSuccess={() => {}}
+                            userAuthorId={reviewFormStore.reviewIdToDelete}
                             mentorId={mentor.userId}
                         />
                         <ReviewForm mentor={mentor} deep={"deep"}/>
@@ -159,7 +159,12 @@ const MenuButton = observer(({userAuthorId, userId}) => {
     };
 
     const onDelete = () => {
-        reviewsListStore.setReviewIdToDelete(userAuthorId)
+        reviewFormStore.setReviewIdToDelete(userAuthorId)
+        handleDropdownClick()
+    }
+
+    const onEdit = () => {
+        reviewFormStore.setModal(true)
         handleDropdownClick()
     }
 
@@ -179,7 +184,7 @@ const MenuButton = observer(({userAuthorId, userId}) => {
                     Удалить
                 </div>
                 <div className="menu-button__dropdown-item"
-                    onClick={() => reviewFormStore.setModal(true)}
+                    onClick={onEdit}
                 >
                     Редактировать
                 </div>
@@ -187,53 +192,5 @@ const MenuButton = observer(({userAuthorId, userId}) => {
         </div>
     )
 })
-
-const DeleteFeedbackAlert = ({onModalClose, userAuthorId, mentorId}) => {
-    const {loading, error, clearResponse, deleteUserFeedback} = useFeedbackService();
-
-    useEffect(() => {
-        clearResponse();
-    })
-
-    const onDelete = async () => {
-        const res = await deleteUserFeedback(mentorId, userAuthorId)
-        if (res === 200) onModalClose();
-    }
-
-    return (
-        <Modal
-            showModal={userAuthorId}
-            onModalClose={onModalClose}
-            deep="deep"
-        >
-            <div className="app-section modal-alert">
-                <img
-                    className="modal-alert__close-icon"
-                    src={close}
-                    alt="close"
-                    onClick={onModalClose}
-                />
-                <div className="modal-alert__header pdg-top-16px">
-                    Вы точно хотите удалить отзыв?
-                </div>
-                {loading ? <Spinner/> :
-                <div className="modal-alert__bottom-buttons">
-                    <button 
-                        className="modal-alert__button narrow button pale"
-                        onClick={onModalClose}
-                    >
-                        Отмена
-                    </button>
-                    <button 
-                        className="modal-alert__button narrow button"
-                        onClick={onDelete}
-                    >
-                        Удалить
-                    </button>
-                </div>}
-            </div>
-        </Modal>
-    )
-}
 
 export default ReviewsModal;

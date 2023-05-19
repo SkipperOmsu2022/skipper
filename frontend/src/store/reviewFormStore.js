@@ -11,6 +11,7 @@ class reviewFormStore {
     rating = 0;
     feedback = ""
     error = ""
+    reviewIdToDelete = null;
 
     setModal = (state) => {
         this.error = "";
@@ -42,6 +43,10 @@ class reviewFormStore {
     setFeedback = (text) => {
         this.feedback = text;
     }
+    
+    setReviewIdToDelete = (id) => {
+        this.reviewIdToDelete = id;
+    }
 
     setError = (text) => {
         this.error = text;
@@ -59,6 +64,7 @@ class reviewFormStore {
         this.error = false
         this.feedback = "";
         this.success = false;
+        this.reviewIdToDelete = null;
     }
 }
 

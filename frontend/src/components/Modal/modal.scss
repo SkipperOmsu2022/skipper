@@ -12,6 +12,9 @@
     &.deep {
         z-index: 102;
     }
+    &.deep1 {
+        z-index: 103;
+    }
 }
 
 .modal {
@@ -117,6 +120,10 @@
 
         &.pdg-top-16px {
             padding-top: 16px;
+        }
+
+        &.error {
+            color: $error;
         }
     }
     &__content {

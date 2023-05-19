@@ -14,7 +14,6 @@ class reviewsListStore {
     limitPerRequest = 18;
     pageCount = 1;
     modal = false;
-    reviewIdToDelete = null;
 
     setFirstReviews = (res) => {
         this.firstReviews = res?.data?.content
@@ -38,9 +37,6 @@ class reviewsListStore {
 
     setModal = (state) => {
         this.modal = state;
-    }
-    setReviewIdToDelete = (id) => {
-        this.reviewIdToDelete = id;
     }
 
     resetStore = () => {
