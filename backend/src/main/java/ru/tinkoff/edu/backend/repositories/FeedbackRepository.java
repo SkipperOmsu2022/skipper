@@ -16,4 +16,8 @@ public interface FeedbackRepository extends JpaRepository<Feedback, FeedbackPK> 
     @Query("SELECT AVG(f.rating) FROM Feedback f " +
             "where f.id.mentorId = :userId")
     Double getTotalRatingUser(Long userId);
+
+    @Query("SELECT COUNT(f) FROM Feedback f " +
+            "WHERE f.mentor.id = :userId")
+    int getRatingUserById(Long userId);
 }

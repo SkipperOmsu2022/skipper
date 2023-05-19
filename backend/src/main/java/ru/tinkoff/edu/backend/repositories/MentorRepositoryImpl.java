@@ -40,18 +40,37 @@ public class MentorRepositoryImpl implements MentorRepository {
         query.setParameter("mentorSpecializations", new HashSet<>(Arrays.asList(dto.getMentorSpecializations())));
         query.setParameter("query", dto.getQuery());
         query.setParameter("onlyWithPhoto", dto.getOnlyWithPhoto());
-        query.setParameter("userId",dto.getUserId());
+        query.setParameter("userId", dto.getUserId());
 
+        return getPageableUser(query, dto.getOffset(), dto.getLimit());
+    }
+
+    @Override
+    public Page<User> getPageableFavoriteMentorsForUserId(Long userId, int offset, int limit) {
+        String jpql = "SELECT new User(fus, COALESCE(AVG(fs.rating), 0.0)) FROM User u " +
+                    "JOIN u.favoriteUsers fus " +
+                    "LEFT OUTER JOIN fus.feedbacks fs " +
+                "where u.id = :userId " +
+                "GROUP BY fus.id, INDEX(fus)" +
+                "ORDER BY INDEX(fus)";
+
+        TypedQuery<User> query = entityManager.createQuery(jpql, User.class);
+        query.setParameter("userId", userId);
+
+        return getPageableUser(query, offset, limit);
+    }
+
+    protected Page<User> getPageableUser(TypedQuery<User> query, int offset, int limit) {
         int totalResults = query.getResultList().size();
 
-        query.setFirstResult(dto.getOffset() * dto.getLimit());
-        query.setMaxResults(dto.getLimit());
+        query.setFirstResult(offset * limit);
+        query.setMaxResults(limit);
 
         List<User> resultList = query.getResultList();
 
         return new PageImpl<>(
                 resultList,
-                PageRequest.of(dto.getOffset(), dto.getLimit()),
+                PageRequest.of(offset, limit),
                 totalResults
         );
     }

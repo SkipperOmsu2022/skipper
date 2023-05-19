@@ -7,4 +7,6 @@ import ru.tinkoff.edu.backend.entities.User;
 
 public interface MentorRepository {
     Page<User> getPageableMentors(FilterSortPaginationMentorListDTO dto);
+
+    Page<User> getPageableFavoriteMentorsForUserId(Long userId, int offset, int limit);
 }
