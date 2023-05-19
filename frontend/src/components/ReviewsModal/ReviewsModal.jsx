@@ -75,7 +75,7 @@ const ReviewsModal = observer(({mentor}) => {
                             userAuthorId={reviewFormStore.reviewIdToDelete}
                             mentorId={mentor.userId}
                         />
-                        <ReviewForm mentor={mentor} deep={"deep"}/>
+                        <ReviewForm mentor={mentor}/>
                     </div>
                 </div>
                 <div className='pagination-wrapper'>
