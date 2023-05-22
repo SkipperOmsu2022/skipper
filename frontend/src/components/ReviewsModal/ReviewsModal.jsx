@@ -11,11 +11,10 @@ import StarsRating from '../StarsRating/StarsRating';
 import Spinner from "../../shared/spinner/Spinner";
 import ReviewForm, { DeleteFeedbackAlert } from "../ReviewForm/ReviewForm";
 
-import { getMonth } from '../../utils/getDate'
-import enviroments from "../../config/enviroments";
+import { getDate } from '../../utils/getDate'
+import { getImageUserResource } from '../../utils/getImageSource'
 import { Link } from 'react-router-dom';
 
-import photo from "../../resources/profile-photo.jpg"
 import arrow from "../../resources/icons/arrow.svg"
 import menu from "../../resources/icons/menu.svg"
 
@@ -98,12 +97,8 @@ const ReviewsModal = observer(({mentor}) => {
 
 const ReviewsList = observer(({userId, hide}) => {
     return reviewsListStore.reviews.slice(reviewsListStore.displayStart, reviewsListStore.displayStart + 6).map((item) => {
-        const imageUserResource = item.imageUserResource ? `${enviroments.apiBase}${item.imageUserResource}` : photo;
-    
-        const date = item.createAt?.split('-')
-        const month = getMonth(date[1]);
-        const day = +date[2]
-        const year = date[0]
+        const imageUserResource = getImageUserResource(item.imageUserResource);
+        const date = getDate(item.createAt)
         
         return (
             <>
@@ -125,7 +120,7 @@ const ReviewsList = observer(({userId, hide}) => {
                             <StarsRating rating={item.rating}/>
                         </div>
                         <div className="review-header__date">
-                            {day} {month} {year}
+                            {date}
                         </div>
                         <MenuButton userAuthorId={+item.userAuthorId} userId={+userId}/>
                     </div>

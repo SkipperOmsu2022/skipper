@@ -40,7 +40,8 @@ const ReviewForm = observer(({mentor}) => {
             
             let deleteRes = 200
             if (reviewFormStore.alreadyLeftAReview)
-                deleteRes = await deleteUserFeedback(mentor.userId, userId)
+                deleteUserFeedback(mentor.userId, userId)
+                    .then(res => {deleteRes = res})
             
             if (deleteRes === 200)
                 postFeedback(data)
@@ -253,22 +254,25 @@ const SuccessMessage = observer(({deep}) => {
 })
 
 const ErrorMessage = observer(({error, response}) => {
-    if (error || reviewFormStore.error)
-    return (
-        <div className="review-form__error">
-            <div className="review-form__error-msg">
-                {reviewFormStore.error || response ||
-                <span> 
-                    Не удалось отправить, попробуйте<br/>
-                    еще раз через некоторое время
-                </span>
-                }
+    if (error || reviewFormStore.error) {
+        return (
+            <div className="review-form__error">
+                <div className="review-form__error-msg">
+                    {reviewFormStore.error || response ||
+                    <span> 
+                        Не удалось отправить, попробуйте<br/>
+                        еще раз через некоторое время
+                    </span>
+                    }
+                </div>
+                <div className="review-form__error-sign">
+                    !
+                </div>
             </div>
-            <div className="review-form__error-sign">
-                !
-            </div>
-        </div>
-    )
+        )
+    } else {
+        return null;
+    }
 })
 
 export default ReviewForm;

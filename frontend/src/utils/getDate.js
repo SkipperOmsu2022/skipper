@@ -33,7 +33,18 @@ const getMonthShort = (month) => {
     return getMonth(month).slice(0, 3)
 }
 
+const getDate = (stringDate) => {
+    const date = stringDate?.split('-')
+    const month = getMonth(date[1]);
+    const day = +date[2]
+    const year = date[0]
+
+
+    return `${day} ${month} ${year}`
+}
+
 export {
     getMonth,
-    getMonthShort
+    getMonthShort,
+    getDate
 }
