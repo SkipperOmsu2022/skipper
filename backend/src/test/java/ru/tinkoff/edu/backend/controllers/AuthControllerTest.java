@@ -79,7 +79,7 @@ class AuthControllerTest {
                         .param("password", userLoginDTO_1.getPassword())
                         .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
 
