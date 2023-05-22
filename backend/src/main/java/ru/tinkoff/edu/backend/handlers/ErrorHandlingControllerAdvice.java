@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.tinkoff.edu.backend.dto.ApiErrorMessage;
 
+import javax.persistence.EntityNotFoundException;
+
 @RestControllerAdvice
 public class ErrorHandlingControllerAdvice {
     @ExceptionHandler(Exception.class)
@@ -24,5 +26,11 @@ public class ErrorHandlingControllerAdvice {
         return ResponseEntity
                 .badRequest()
                 .body(new ApiErrorMessage(e.getLocalizedMessage() + "!"));
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrorMessage onNoHandlerFoundException(EntityNotFoundException e) {
+        return new ApiErrorMessage(e.getLocalizedMessage());
     }
 }
