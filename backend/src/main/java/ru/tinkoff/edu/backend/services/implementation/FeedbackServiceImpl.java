@@ -36,16 +36,23 @@ public class FeedbackServiceImpl implements FeedbackService {
 
         User mentor = userRepository.getReferenceById(feedback.getMentorId());
         User userAuthor = userRepository.getReferenceById(feedback.getUserAuthorId());
+        Feedback feedbackFromDB = findOrCreate(mentor, userAuthor, feedback)
+                .setText(feedback.getText());
 
         userRepository.save(
                 mentor.addFeedback(
-                        mapperToFeedback(
-                                mentor,
-                                userAuthor,
-                                feedback
-                        )
+                        feedbackFromDB
                 )
         );
+    }
+
+    protected Feedback findOrCreate(User mentor, User userAuthor, FeedbackDTO feedback) {
+        return feedbackRepository.getFeedbackById(feedback.getMentorId(), feedback.getUserAuthorId())
+                .orElseGet(() -> mapperToFeedbackWithoutText(
+                        mentor,
+                        userAuthor,
+                        feedback
+                ));
     }
 
     @Override

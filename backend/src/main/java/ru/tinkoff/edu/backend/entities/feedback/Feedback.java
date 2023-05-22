@@ -39,4 +39,9 @@ public class Feedback {
     @MapsId("userAuthorId")
     @JoinColumn(name = "user_author_id")
     private User userAuthor;
+
+    public Feedback setText(String text) {
+        this.text = text;
+        return this;
+    }
 }

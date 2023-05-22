@@ -15,7 +15,7 @@ public class FeedbackMapper {
     private FeedbackMapper() {
     }
 
-    public static Feedback mapperToFeedback(User mentor, User userAuthor, FeedbackDTO feedback) {
+    public static Feedback mapperToFeedbackWithoutText(User mentor, User userAuthor, FeedbackDTO feedback) {
         if (feedback == null || userAuthor == null || mentor == null) {
             return null;
         }
@@ -25,7 +25,6 @@ public class FeedbackMapper {
                 .mentor(mentor)
                 .userAuthor(userAuthor)
                 .rating(feedback.getRating())
-                .text(feedback.getText())
                 .build();
     }
 

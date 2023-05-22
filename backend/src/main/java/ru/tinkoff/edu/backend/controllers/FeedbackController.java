@@ -25,7 +25,7 @@ public class FeedbackController {
         this.feedbackService = feedbackService;
     }
 
-    @Operation(summary = "Добавление отзыва.")
+    @Operation(summary = "Добавление отзыва.", description = "Перезаписывает отзыв, если он существует.")
     @PostMapping("/")
     public ResponseEntity<Void> addFeedback(@Valid @RequestBody FeedbackDTO feedback) {
         feedbackService.addFeedback(feedback);
