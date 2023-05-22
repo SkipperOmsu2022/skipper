@@ -22,7 +22,7 @@ const useFeedbackService = () => {
     
     const getUserFeedback = async (mentorId , userAuthorId) => {
         const res = await request(`${_apiBase}/api/feedback/${mentorId}/${userAuthorId}`, 'get');
-        if (res?.data?.message === `Unable to find ru.tinkoff.edu.backend.entities.feedback.Feedback with id FeedbackPK(mentorId=${mentorId}, userAuthorId=${userAuthorId})!`)
+        if (+res?.status === 404)
             clearResponse()
         else {
             setResponse('Что-то пошло не так, попробуйте еще раз через некоторое время')

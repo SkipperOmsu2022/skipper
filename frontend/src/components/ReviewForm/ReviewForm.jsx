@@ -23,7 +23,7 @@ const ReviewForm = observer(({mentor}) => {
         reviewFormStore.setError("")
         
         getUserFeedback(mentor.userId, userId)
-            .then(res => {reviewFormStore.setReview(res); console.log(res)})
+            .then(res => reviewFormStore.setReview(res))
         return clearResponse;
     }, [])
 
@@ -38,19 +38,13 @@ const ReviewForm = observer(({mentor}) => {
                 text: reviewFormStore.feedback
             }
             
-            let deleteRes = 200
-            if (reviewFormStore.alreadyLeftAReview)
-                deleteUserFeedback(mentor.userId, userId)
-                    .then(res => {deleteRes = res})
-            
-            if (deleteRes === 200)
-                postFeedback(data)
-                    .then(res => {
-                        if (res === 200) {
-                            clearResponse();
-                            reviewFormStore.setSuccess()
-                        }
-                    })
+            postFeedback(data)
+                .then(res => {
+                    if (res === 200) {
+                        clearResponse();
+                        reviewFormStore.setSuccess()
+                    }
+                })
         } else {
             reviewFormStore.setError("Выберите оценку");
         }
