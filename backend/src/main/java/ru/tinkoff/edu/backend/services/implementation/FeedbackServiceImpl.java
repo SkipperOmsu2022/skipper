@@ -37,7 +37,8 @@ public class FeedbackServiceImpl implements FeedbackService {
         User mentor = userRepository.getReferenceById(feedback.getMentorId());
         User userAuthor = userRepository.getReferenceById(feedback.getUserAuthorId());
         Feedback feedbackFromDB = findOrCreate(mentor, userAuthor, feedback)
-                .setText(feedback.getText());
+                .setText(feedback.getText())
+                .setRating(feedback.getRating());
 
         userRepository.save(
                 mentor.addFeedback(
@@ -48,7 +49,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     protected Feedback findOrCreate(User mentor, User userAuthor, FeedbackDTO feedback) {
         return feedbackRepository.getFeedbackById(feedback.getMentorId(), feedback.getUserAuthorId())
-                .orElseGet(() -> mapperToFeedbackWithoutText(
+                .orElseGet(() -> mapperToFeedbackWithoutTextAndRating(
                         mentor,
                         userAuthor,
                         feedback

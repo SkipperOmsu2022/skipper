@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import ru.tinkoff.edu.backend.entities.User;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 @Table(name = "FEEDBACKS")
 @Data
 @Builder
+@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -39,9 +41,4 @@ public class Feedback {
     @MapsId("userAuthorId")
     @JoinColumn(name = "user_author_id")
     private User userAuthor;
-
-    public Feedback setText(String text) {
-        this.text = text;
-        return this;
-    }
 }
