@@ -6,6 +6,7 @@ import "./mentorProfilePage.scss"
 import "../ProfilePage/profilePage.scss"
 import useAuthContext from '../../../hooks/useAuthContext';
 import useProfileService from "../../../services/profileService";
+import { api } from '../../../services/api';
 import MainInfo from "./MainInfo"
 import AdditionalInfo from "./AdditionalInfo"
 import Resume from "./Resume"
@@ -20,7 +21,7 @@ const MentorProfilePage = observer(() => {
     const { auth: currentUserId } = useAuthContext();
 
     useEffect(() => {
-        getUserData('user/profile/mentor/', mentorId, {mentorId: mentorId, userId: currentUserId})
+        getUserData(api.mentorProfile, mentorId, {mentorId: mentorId, userId: currentUserId})
             .then(res => mentorProfileStore.setMentorData(res, mentorId))
 
         return mentorProfileStore.resetStore;

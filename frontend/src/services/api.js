@@ -19,8 +19,18 @@ const deleteFavoriteMentor = async (mentorId, userId) =>  {
     return res;
 }
 
+const api = {
+    userProfile: 'user/profile/',
+    mentorProfile: 'user/profile/mentor/',
+    userSettings: 'user/profile/settings/',
+    userAccount: 'user/profile/settings/account/',
+    userContacts: 'user/profile/settings/contacts/',
+    mentorSettings: 'user/profile/settings/mentor/'
+}
+
 export {
     getEducationsList,
     addFavoriteMentor,
-    deleteFavoriteMentor
+    deleteFavoriteMentor,
+    api
 }
