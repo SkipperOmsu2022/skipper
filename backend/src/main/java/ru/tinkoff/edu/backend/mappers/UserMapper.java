@@ -1,17 +1,21 @@
 package ru.tinkoff.edu.backend.mappers;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
 import ru.tinkoff.edu.backend.dto.profile.UserMentorProfileDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMentorDTO;
 import ru.tinkoff.edu.backend.entities.User;
+import ru.tinkoff.edu.backend.entities.feedback.Feedback;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static ru.tinkoff.edu.backend.mappers.EducationMapper.educationToEducationDTOs;
+import static ru.tinkoff.edu.backend.mappers.FeedbackMapper.mapperToFeedbackDTOs;
 import static ru.tinkoff.edu.backend.mappers.WorkExperienceMapper.workExperienceToWorkExperienceDTOs;
 
+@Slf4j
 public class UserMapper {
     private UserMapper() {
     }
@@ -29,6 +33,7 @@ public class UserMapper {
                 .aboutMeAsMentor(user.getAboutAsMentor())
                 .imageUserResource(user.getImageUserResource())
                 .rating(user.getRating())
+                .numberFeedbacks(user.getNumberOfFeedbacks())
                 .build();
     }
 
@@ -58,7 +63,8 @@ public class UserMapper {
                 .build();
     }
 
-    public static UserMentorProfileDTO userToUserMentorProfileDTO(User user, boolean isFavorite) {
+    public static UserMentorProfileDTO userToUserMentorProfileDTO(User user, boolean isFavorite,
+                                                                  List<Feedback> feedbacks) {
         if (user == null) {
             return null;
         }
@@ -84,6 +90,11 @@ public class UserMapper {
                 .linkTelegram(user.getLinkTelegram())
 
                 .isFavorite(isFavorite)
+
+                .feedbacks(mapperToFeedbackDTOs(feedbacks))
+                .rating(user.getRating())
+                .numberFeedbacks(user.getNumberOfFeedbacks())
+
                 .build();
     }
 }

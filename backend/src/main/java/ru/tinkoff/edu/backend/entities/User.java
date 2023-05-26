@@ -3,6 +3,7 @@ package ru.tinkoff.edu.backend.entities;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import ru.tinkoff.edu.backend.entities.feedback.Feedback;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.enums.UserGender;
 
@@ -75,8 +76,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "mentor_specialization")
     private Set<MentorSpecialization> mentorSpecializations;
-    @Column(name = "rating", table = "MENTORS")
-    private Double rating;
 
     @OneToMany(mappedBy = "user")
     private Set<Education> education;
@@ -105,12 +104,55 @@ public class User {
     @OrderColumn(name = "favorite_user_order")
     private List<User> favoriteUsers;
 
+    @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "feedback_order")
+    private List<Feedback> feedbacks;
+
+    @Transient
+    private Double rating;
+
+    @Transient
+    private Integer numberOfFeedbacks;
+
+    public User(User user, Double rating, Integer numberOfFeedbacks) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.patronymic = user.getPatronymic();
+        this.dateOfRegistration = user.getDateOfRegistration();
+        this.dateBirth = user.getDateBirth();
+        this.userGender = user.getUserGender();
+        this.about = user.getAbout();
+        this.imageUserResource = user.getImageUserResource();
+        this.linkVk = user.getLinkVk();
+        this.linkSkype = user.getLinkSkype();
+        this.linkDiscord = user.getLinkDiscord();
+        this.linkTelegram = user.getLinkTelegram();
+        this.isEnabledMentorStatus = user.getIsEnabledMentorStatus();
+        this.aboutAsMentor = user.getAboutAsMentor();
+        this.mentorSpecializations = user.getMentorSpecializations();
+        this.education = user.getEducation();
+        this.workExperiences = user.getWorkExperiences();
+        this.certificateResources = user.getCertificateResources();
+        this.favoriteUsers = user.getFavoriteUsers();
+        this.feedbacks = user.getFeedbacks();
+        this.rating = rating;
+        this.numberOfFeedbacks = numberOfFeedbacks;
+    }
+
     public void addFavoriteUser(User favoriteUser) {
         favoriteUsers.add(favoriteUser);
     }
 
     public void deleteFavoriteUser(User favoriteUser) {
         favoriteUsers.remove(favoriteUser);
+    }
+
+    public User addFeedback(Feedback feedback) {
+        feedbacks.add(feedback);
+        return this;
     }
 
     public String getInlineMentorSpecializations() {

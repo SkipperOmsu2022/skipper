@@ -77,7 +77,7 @@ class MessageControllerTest {
 
         mockMvc.perform(get("/api/chat/list-messages/" + id))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -99,6 +99,6 @@ class MessageControllerTest {
 
         mockMvc.perform(get("/api/chat/user-info/" + id))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 }

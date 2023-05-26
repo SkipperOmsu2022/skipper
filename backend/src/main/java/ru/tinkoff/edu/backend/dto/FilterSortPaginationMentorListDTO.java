@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
+import ru.tinkoff.edu.backend.enums.SortField;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -22,7 +23,7 @@ public class FilterSortPaginationMentorListDTO {
     @Builder.Default
     private Integer limit = 30;
     @Builder.Default
-    private String sortFiled = "id";
+    private SortField sortField = SortField.DEFAULT;
     @Builder.Default
     private MentorSpecialization[] mentorSpecializations = MentorSpecialization.values();
     @Builder.Default

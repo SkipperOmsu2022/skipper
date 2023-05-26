@@ -1,20 +1,17 @@
-package ru.tinkoff.edu.backend.dto;
-
+package ru.tinkoff.edu.backend.dto.feedback;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.util.List;
 
-@Accessors(chain = true)
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MentorListPageSortDTO {
-    private List<MentorListItemDTO> content;
+public class FeedbackListPageDTO {
+    private List<FeedbackDTO> content;
     private Long totalElement;
 }

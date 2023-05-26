@@ -18,9 +18,15 @@ public class MentorListItemDTO {
     private String imageUserResource;
     private Double rating;
     private boolean isFavorite;
+    private int numberFeedbacks;
 
     public MentorListItemDTO favorite() {
         isFavorite = true;
+        return this;
+    }
+
+    public MentorListItemDTO setRating(Double rating) {
+        this.rating = rating;
         return this;
     }
 }
