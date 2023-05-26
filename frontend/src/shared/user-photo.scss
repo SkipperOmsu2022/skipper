@@ -1,0 +1,6 @@
+@import '../shared/variables.scss';
+
+.user-photo {
+    border-radius: 50%;
+    border: 0.0625rem solid $additional-text;
+}

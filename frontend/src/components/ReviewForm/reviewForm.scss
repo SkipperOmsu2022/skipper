@@ -1,0 +1,166 @@
+@import '../../shared/variables.scss';
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+
+    padding: 40px 60px;
+    min-width: 400px;
+    width: 1000px;
+    min-height: auto;
+
+    box-sizing: border-box;
+
+    &-body {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        padding-top: 24px;
+    }
+    &__mentor {
+        display: flex;
+        flex-direction: row;
+        gap: 34px;
+
+        &-photo {
+            width: 3.75rem;
+            min-width: 3.75rem;
+            height: 3.75rem;
+            min-height: 3.75rem;
+        }
+        &-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 4px 0;
+            .name {
+                text-decoration: none;
+                color: $header;
+                font-family: Montserrat;
+                font-size: 20px;
+                line-height: 24px;
+            }
+            .specialty {
+                color: $additional-text;
+                font-family: Montserrat;
+                font-size: 16px;
+                line-height: 20px;
+            }
+        }
+        .garbage-bin {
+            cursor: pointer;
+            width: 26px;
+            height: 26px;
+        }
+    }
+    &__rate {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        &-title {
+            color: $main-text;
+            font-family: Montserrat;
+            font-size: 20px;
+            line-height: 24px;
+        }
+        .star-icon {
+            height: 35px;
+            min-height: 35px;    
+            width: 35px;
+            min-width: 35px;
+        }
+    }
+    &__feedback {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        &-title {
+            color: $main-text;
+            font-size: 20px;
+            line-height: 24px;
+        }
+        .textarea {
+            position: relative;
+            padding: 4px;
+            &-input {
+                border: none;
+                &:focus {
+                    outline: none;
+                }
+                width: 100%;
+                min-height: 100px;
+                height: fit-content;
+                padding: 16px 72px 16px 26px;
+                box-sizing: border-box;
+                resize: none;
+
+                font-family: Montserrat;
+                font-size: 16px;
+                line-height: 20px;
+                letter-spacing: 0px;
+                text-align: left;
+                &::placeholder {
+                    color: $additional-text;
+                }
+            }
+            &-counter {
+                user-select: none;
+                position: absolute;
+                width: fit-content;
+                height: fit-content;
+                right: 16px;
+                bottom: 12px;
+
+                color: $additional-text;
+                font-size: 14px;
+                letter-spacing: 0px;
+                &:hover {
+                    filter: brightness(85%);
+                }
+            }
+        }
+    }
+    &__footer {
+        display: flex;
+        flex-direction: row;
+        gap: 64px;
+        height: 42px;
+        justify-content: center;
+        &-button {
+            color: $header;
+            font-size: 14px;
+            letter-spacing: 0px;
+            box-sizing: border-box;
+            width: 208px;
+            height: 42px;
+        }
+    }
+    &__error {
+        box-sizing: border-box;
+        cursor: default;
+        max-width: 389px;
+        position: absolute;
+        right: 0%;
+        top: 25%;
+        padding: 25px;
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        border: 1px solid $error;
+        border-radius: 10px;
+
+        &-msg {
+            color: $error;
+            height: fit-content;
+            margin: auto 0;
+        }
+        &-sign {
+            user-select: none;
+            color: $error;
+            font-family: Montserrat;
+            font-size: 40px;
+            font-weight: 400;
+        }
+    }
+}

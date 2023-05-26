@@ -29,7 +29,7 @@ const Mentors = observer(({displayStart}) => {
                         <img className="mentor__photo-img" src={imageUserResource || photo} alt="user-avatar"/>
                         <div className="rating">
                             <span className="rating-star">&#9733;</span>
-                            <span className="rating-value">{item.rating || '-'}</span>
+                            <span className="rating-value">{item?.rating?.toFixed(1) || '-'}</span>
                         </div>
                     </div>
                     <div className="mentor__main-info">
@@ -61,7 +61,7 @@ const Mentors = observer(({displayStart}) => {
                     <div className="mentor__interaction">
                         <div className="mentor__interaction-info">
                             <span>От 1200 ₽</span>
-                            <span>20 отзывов</span>
+                            <span>{item.numberFeedbacks} отзывов</span>
                         </div>
                         <div className="mentor__interaction-btn-block">
                             {isOwner ? null : <button className="button">Забронировать</button>}

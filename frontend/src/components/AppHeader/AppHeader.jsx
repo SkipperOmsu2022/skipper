@@ -17,6 +17,7 @@ import { observer } from "mobx-react-lite";
 import messagesStore from "../../store/messagesStore";
 
 import "./appHeader.scss"
+import "../../shared/user-photo.scss"
 
 const AppHeader = () => {
     const { auth } = useAuthContext();
@@ -128,9 +129,9 @@ const LoggedDisplay = observer(() => {
                     <div className="app-header__profile-name">{firstName} {lastName}</div>
                 </div>
                 <img
-                    className="app-header__profile-photo"
+                    className="app-header__profile-photo user-photo"
                     src={imageUserResource ? `${enviroments.apiBase}${imageUserResource}` : photo}
-                    alt=""
+                    alt="user"
                 />
                 <div className={dropDown} tabIndex="-1">
                     <div className="app-header__dropdown-item">
