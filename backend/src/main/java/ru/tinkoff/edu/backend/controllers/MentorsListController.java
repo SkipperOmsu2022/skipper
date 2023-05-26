@@ -7,7 +7,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.edu.backend.dto.FavoritesPaginationMentorListDTO;
 import ru.tinkoff.edu.backend.dto.FilterSortPaginationMentorListDTO;
-import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
 import ru.tinkoff.edu.backend.dto.MentorListPageSortDTO;
 import ru.tinkoff.edu.backend.entities.Qualification;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
@@ -33,12 +32,6 @@ public class MentorsListController {
     @GetMapping("/list/specializations")
     public ResponseEntity<Map<MentorSpecialization, String>> getMapMentorSpecialization() {
         return ResponseEntity.ok(mentorListService.getMapMentorSpecialization());
-    }
-
-    @Operation(summary = "Получение списка менторов.")
-    @GetMapping("/list/mentors")
-    public ResponseEntity<List<MentorListItemDTO>> getMentorsList() {
-        return ResponseEntity.ok(mentorListService.getMentorList());
     }
 
     @Operation(summary = "Получение списка менторов с использованием пагинации и сортировки.")

@@ -2,7 +2,6 @@ package ru.tinkoff.edu.backend.controllers;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -12,7 +11,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import ru.tinkoff.edu.backend.dto.MentorListItemDTO;
 import ru.tinkoff.edu.backend.entities.Qualification;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.services.MentorListService;
@@ -77,21 +75,5 @@ class MentorsListControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(mapMentorSpecialization)));
-    }
-
-    @Test
-    void get_mentorsList_thenReturnObjectsWithStatus200() throws Exception {
-        List<MentorListItemDTO> list = Lists.list(
-                new MentorListItemDTO(1L, "Ivan", "Ivanov", "Шахматист", "Усатый романтик", null, 4.5, false, 0),
-                new MentorListItemDTO(2L, "Сидр", "Павлов", "Друг шахматиста", "Помощник на передовой", null, 5.0, false, 0)
-        );
-
-        when(mentorListService.getMentorList()).thenReturn(list);
-
-        mockMvc.perform(get("/api/list/mentors"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(list)));
     }
 }

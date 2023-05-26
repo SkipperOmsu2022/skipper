@@ -73,14 +73,6 @@ class MentorListServiceTest {
     );
 
     @Test
-    void getMentorList_thenReturnListOfMentors() {
-        when(userRepository.findAllByIsEnabledMentorStatusTrue()).thenReturn(listUser);
-
-        List<MentorListItemDTO> actualList = mentorListService.getMentorList();
-        Assertions.assertEquals(expectedListMentorListItemDTO, actualList);
-    }
-
-    @Test
     void getSpecializationMentorList_thenReturnMentorList() {
         String nameSpecializationMentor = "Комп";
         List<Qualification> qualificationsListExpected = Lists.list(

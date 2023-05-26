@@ -17,7 +17,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static ru.tinkoff.edu.backend.mappers.PageUsersMapper.mapperToMentorListPageSortDTO;
-import static ru.tinkoff.edu.backend.mappers.UserMapper.userToMentorListItemDTOs;
 
 @Service
 public class MentorListServiceImpl implements MentorListService {
@@ -27,11 +26,6 @@ public class MentorListServiceImpl implements MentorListService {
     public MentorListServiceImpl(UserRepository userRepository, QualificationRepository qualificationRepository) {
         this.userRepository = userRepository;
         this.qualificationRepository = qualificationRepository;
-    }
-
-    @Override
-    public List<MentorListItemDTO> getMentorList() {
-        return userToMentorListItemDTOs(userRepository.findAllByIsEnabledMentorStatusTrue());
     }
 
     @Override
@@ -49,7 +43,7 @@ public class MentorListServiceImpl implements MentorListService {
      * favorite, если id ментора есть в списке избранных.
      */
     private MentorListPageSortDTO getMentorsWithFavorites(MentorListPageSortDTO mentors,
-                                                            FilterSortPaginationMentorListDTO dto
+                                                          FilterSortPaginationMentorListDTO dto
     ) {
         Set<Long> listIdFavorite = userRepository.getPageableFavoriteMentorsForUserId(
                         dto.getUserId(),
