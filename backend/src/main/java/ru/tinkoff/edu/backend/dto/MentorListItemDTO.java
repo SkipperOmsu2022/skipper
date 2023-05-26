@@ -29,9 +29,4 @@ public class MentorListItemDTO {
         this.rating = rating;
         return this;
     }
-
-    public MentorListItemDTO setNumberFeedbacks(int numberFeedbacks) {
-        this.numberFeedbacks = numberFeedbacks;
-        return this;
-    }
 }

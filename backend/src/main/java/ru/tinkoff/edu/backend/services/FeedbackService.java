@@ -18,9 +18,7 @@ public interface FeedbackService {
 
     FeedbackListPageDTO getPaginationListFeedback(FeedbackParamsDTO dto);
 
-    List<Feedback> getLast4Feedback(User mentor);
+    List<Feedback> getLastFeedbacks(User mentor, Integer limit);
 
     FeedbackDTO getFeedback(Long mentorId, Long userAuthorId);
-
-    Double getTotalRatingUser(Long userId);
 }

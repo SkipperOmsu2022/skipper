@@ -9,7 +9,6 @@ import ru.tinkoff.edu.backend.dto.MentorListPageSortDTO;
 import ru.tinkoff.edu.backend.entities.Qualification;
 import ru.tinkoff.edu.backend.entities.User;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
-import ru.tinkoff.edu.backend.repositories.FeedbackRepository;
 import ru.tinkoff.edu.backend.repositories.QualificationRepository;
 import ru.tinkoff.edu.backend.repositories.UserRepository;
 import ru.tinkoff.edu.backend.services.MentorListService;
@@ -24,13 +23,10 @@ import static ru.tinkoff.edu.backend.mappers.UserMapper.userToMentorListItemDTOs
 public class MentorListServiceImpl implements MentorListService {
     private final UserRepository userRepository;
     private final QualificationRepository qualificationRepository;
-    private final FeedbackRepository feedbackRepository;
 
-    public MentorListServiceImpl(UserRepository userRepository, QualificationRepository qualificationRepository,
-                                 FeedbackRepository feedbackRepository) {
+    public MentorListServiceImpl(UserRepository userRepository, QualificationRepository qualificationRepository) {
         this.userRepository = userRepository;
         this.qualificationRepository = qualificationRepository;
-        this.feedbackRepository = feedbackRepository;
     }
 
     @Override
@@ -52,7 +48,7 @@ public class MentorListServiceImpl implements MentorListService {
      * Запрашивает с БД список избранных пользователей, проходиться по списку mentors и устанавливает флаг
      * favorite, если id ментора есть в списке избранных.
      */
-    protected MentorListPageSortDTO getMentorsWithFavorites(MentorListPageSortDTO mentors,
+    private MentorListPageSortDTO getMentorsWithFavorites(MentorListPageSortDTO mentors,
                                                             FilterSortPaginationMentorListDTO dto
     ) {
         Set<Long> listIdFavorite = userRepository.getPageableFavoriteMentorsForUserId(
@@ -90,17 +86,8 @@ public class MentorListServiceImpl implements MentorListService {
         );
     }
 
-    protected MentorListPageSortDTO getMentorsWithNumberFeedBacks(Page<User> pages) {
-        MentorListPageSortDTO mentors = mapperToMentorListPageSortDTO(pages);
-
-        return mentors.setContent(
-                mentors.getContent()
-                        .stream()
-                        .map(mentor -> mentor.setNumberFeedbacks(
-                                feedbackRepository.getRatingUserById(mentor.getId())
-                        ))
-                        .collect(Collectors.toList())
-        );
+    private MentorListPageSortDTO getMentorsWithNumberFeedBacks(Page<User> pages) {
+        return mapperToMentorListPageSortDTO(pages);
     }
 
     @Override

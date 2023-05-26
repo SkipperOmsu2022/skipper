@@ -5,7 +5,7 @@ package ru.tinkoff.edu.backend.enums;
  */
 public enum SortField {
     DEFAULT("u.id ASC"),
-    RATING("COALESCE(AVG(uf.rating), 0.0) DESC");
+    RATING("AVG(uf.rating) DESC NULLS LAST");
 
     private final String nameSortField;
     SortField(String nameSortField) {

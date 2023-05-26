@@ -9,8 +9,6 @@ import ru.tinkoff.edu.backend.enums.UserGender;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -113,7 +111,10 @@ public class User {
     @Transient
     private Double rating;
 
-    public User(User user, Number rating) {
+    @Transient
+    private Integer numberOfFeedbacks;
+
+    public User(User user, Double rating, Integer numberOfFeedbacks) {
         this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
@@ -131,13 +132,14 @@ public class User {
         this.linkTelegram = user.getLinkTelegram();
         this.isEnabledMentorStatus = user.getIsEnabledMentorStatus();
         this.aboutAsMentor = user.getAboutAsMentor();
-        this.mentorSpecializations = new HashSet<>(user.getMentorSpecializations());
-        this.education = new HashSet<>(user.getEducation());
-        this.workExperiences = new HashSet<>(user.getWorkExperiences());
-        this.certificateResources = new HashSet<>(user.getCertificateResources());
-        this.favoriteUsers = new ArrayList<>(user.getFavoriteUsers());
-        this.feedbacks = new ArrayList<>(user.getFeedbacks());
-        this.rating = rating.doubleValue() == 0.0 ? null : rating.doubleValue();
+        this.mentorSpecializations = user.getMentorSpecializations();
+        this.education = user.getEducation();
+        this.workExperiences = user.getWorkExperiences();
+        this.certificateResources = user.getCertificateResources();
+        this.favoriteUsers = user.getFavoriteUsers();
+        this.feedbacks = user.getFeedbacks();
+        this.rating = rating;
+        this.numberOfFeedbacks = numberOfFeedbacks;
     }
 
     public void addFavoriteUser(User favoriteUser) {

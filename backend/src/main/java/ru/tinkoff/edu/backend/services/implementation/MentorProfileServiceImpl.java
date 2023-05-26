@@ -104,12 +104,11 @@ public class MentorProfileServiceImpl implements MentorProfileService {
 
     @Override
     public UserMentorProfileDTO getUserMentorProfile(Long mentorId, Long userId) {
-        User mentor = userRepository.getReferenceById(mentorId);
+        User mentor = userRepository.getMentorById(mentorId);
         return userToUserMentorProfileDTO(
                 mentor,
                 userRepository.hasUserInListOfFavoritesById(userId, mentorId),
-                feedbackService.getLast4Feedback(mentor),
-                feedbackService.getTotalRatingUser(mentor.getId())
+                feedbackService.getLastFeedbacks(mentor, 4)
         );
     }
 }

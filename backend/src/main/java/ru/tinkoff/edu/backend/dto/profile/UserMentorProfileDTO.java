@@ -35,4 +35,5 @@ public class UserMentorProfileDTO {
     private boolean isFavorite;
     private List<FeedbackDTO> feedbacks;
     private Double rating;
+    private int numberFeedbacks;
 }

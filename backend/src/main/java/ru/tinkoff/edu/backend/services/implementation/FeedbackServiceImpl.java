@@ -47,7 +47,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         );
     }
 
-    protected Feedback findOrCreate(User mentor, User userAuthor, FeedbackDTO feedback) {
+    private Feedback findOrCreate(User mentor, User userAuthor, FeedbackDTO feedback) {
         return feedbackRepository.getFeedbackById(feedback.getMentorId(), feedback.getUserAuthorId())
                 .orElseGet(() -> mapperToFeedbackWithoutTextAndRating(
                         mentor,
@@ -72,9 +72,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<Feedback> getLast4Feedback(User mentor) {
+    public List<Feedback> getLastFeedbacks(User mentor, Integer limit) {
         return feedbackRepository.getFeedbacksByMentor(
-                PageRequest.of(0, 4, Sort.by(Sort.Direction.DESC, "createAt")),
+                PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "createAt")),
                 mentor
         ).getContent();
     }
@@ -84,10 +84,5 @@ public class FeedbackServiceImpl implements FeedbackService {
         return mapperToFeedbackDTO(feedbackRepository.getReferenceById(
                 new FeedbackPK(mentorId, userAuthorId)
         ));
-    }
-
-    @Override
-    public Double getTotalRatingUser(Long userId) {
-        return feedbackRepository.getTotalRatingUser(userId);
     }
 }
