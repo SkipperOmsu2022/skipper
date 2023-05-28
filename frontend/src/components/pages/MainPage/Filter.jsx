@@ -122,43 +122,35 @@ const Filter =  observer(({updateMentors}) => {
 })
 
 const Specializations = observer(() => {
-    return (
-        <>
-            {mentorsFilterStore.specializations?.map((item, i) => (
-                <div className="filter__section-list-item" key={i}>
-                    <input
-                        type="checkbox"
-                        className="checkbox"
-                        id={item.value}
-                        checked={item.label.checked}
-                        onChange={() => mentorsFilterStore.changeChecked(item)}
-                    />
-                    <label htmlFor={item.value} className="checkbox-name">{item.label}</label>
-                </div>
-            ))}
-        </>
-    );
+    return mentorsFilterStore.specializations?.map((item, i) => (
+        <div className="filter__section-list-item" key={i}>
+            <input
+                type="checkbox"
+                className="checkbox"
+                id={item.value}
+                checked={item.checked}
+                onChange={() => mentorsFilterStore.changeChecked(item)}
+            />
+            <label htmlFor={item.value} className="checkbox-name">{item.label}</label>
+        </div>
+    ))
 })
 
 const Rating = observer(() => {
-    return (
-        <>
-            {mentorsFilterStore.ratingFilter.map((item, i) => (
-                <div className="filter__section-list-item" key={`${item.value}star`}>
-                    <input
-                        type="checkbox"
-                        className="checkbox"
-                        id={`${item.value}star`}
-                        checked={item.checked}
-                        onChange={() => mentorsFilterStore.changeChecked(item)}
-                    />
-                    <label htmlFor={`${item.value}star`} className="checkbox-name">
-                        {item.value} <span className="stars">{'★ '.repeat(item.value)}</span>
-                    </label>
-                </div>
-            ))}
-        </>
-    );
+    return mentorsFilterStore.ratingFilter.map((item, i) => (
+        <div className="filter__section-list-item" key={`${item.value}star`}>
+            <input
+                type="checkbox"
+                className="checkbox"
+                id={`${item.value}star`}
+                checked={item.checked}
+                onChange={() => mentorsFilterStore.changeChecked(item)}
+            />
+            <label htmlFor={`${item.value}star`} className="checkbox-name">
+                {item.value} <span className="stars">{'★ '.repeat(item.value)}</span>
+            </label>
+        </div>
+    ))
 })
 
 export default Filter;
