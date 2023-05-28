@@ -21,7 +21,6 @@ const PaginatedItems = observer(({updateItems, updateDisplayStart, offset, displ
                 behavior: 'smooth'
             })
         }
-
         
         if (event.selected * itemsPerPage < itemsStart) {
             await updateItems(offset - 1, newDisplayStart)
@@ -31,7 +30,7 @@ const PaginatedItems = observer(({updateItems, updateDisplayStart, offset, displ
             updateDisplayStart(newDisplayStart);
         }
     };
-    
+
     return (
         <>
             <ReactPaginate

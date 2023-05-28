@@ -1,13 +1,11 @@
 import  {makeAutoObservable} from 'mobx';
 
-class mainPageStore {
+class mentorsFilterStore {
     constructor() {
         makeAutoObservable(this, { deep: true })
     }
 
-    mentors = []
-    displayStart = 0
-    filter = []
+    specializations = []
     ratingFilter = [
         {value: '5', label: '5', checked: false},
         {value: '4', label: '4',checked: false},
@@ -16,52 +14,29 @@ class mainPageStore {
         {value: '1', label: '1',checked: false},
     ]
     search = ""
-    
-    offset = 0;
-    pageCount = 0;
-    totalMentors = 0;
     onlyWithPhoto = false;
-    
-    setMentors = (data, offset, newdisplayStart) => {
-        if (data?.mentors !== undefined) {
-            this.mentors = data.mentors;
-            this.offset = offset;
-            this.displayStart = newdisplayStart;
-            
-            this.totalMentors = data.total;
-            this.pageCount = Math.ceil( data.total / 6);
-        }
-    }
-
-    updateDisplayStart = (displayStart) => {
-        this.displayStart = displayStart;
-    }
-
-    changeFavorite = (mentor) => {
-        mentor.favorite =  !mentor.favorite;
-    }
     
     changeOnlyWithPhoto = () => {
         this.onlyWithPhoto = !this.onlyWithPhoto;
-        console.log(this.onlyWithPhoto)
     }
 
     setSearch = (search) => {
         this.search = search;
     }
 
-    setFilter = (filter) => {
-        this.filter = filter;
+    setSpecializations = (specializations) => {
+        this.specializations = specializations;
     }
 
     reset = () => {
-        this.filter = this.filter.map((item) => {
+        this.specializations = this.specializations.map((item) => {
             return {...item, checked: false}
         })
         this.ratingFilter = this.ratingFilter.map((item) => {
             return {...item, checked: false}
         })
         this.search = ""
+        this.onlyWithPhoto = false
     }
 
     changeChecked(specialization) {
@@ -69,4 +44,4 @@ class mainPageStore {
     }
 }
 
-export default new mainPageStore();
+export default new mentorsFilterStore();

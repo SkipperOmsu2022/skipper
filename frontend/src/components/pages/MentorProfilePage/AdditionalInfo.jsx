@@ -3,27 +3,16 @@ import { observer } from "mobx-react-lite";
 
 import DateOfRegistration from "../ProfilePage/DateOfRegistration";
 import mentorProfileStore from '../../../store/mentorProfileStore';
+import StarsRating from '../../StarsRating/StarsRating';
 
 import "../../../shared/submitButton/button.scss"
 
-const AdditionalInfo = observer(({isOwner, userId}) => {
-
-    let filledStars = null, hollowStars = null;
-    if (mentorProfileStore.rating) {
-        const roundedRating = Math.round(+mentorProfileStore.rating)
-        
-        filledStars = Array.from({length: roundedRating}, (_, i) => <div className="star" key={i}>&#9733;</div>);
-        hollowStars = Array.from({length: 5 - roundedRating}, (_, i) => <div className="star" key={i}>&#9734;</div>);
-    }
+const AdditionalInfo = observer(({isOwner, mentorId}) => {
     
     return (
         <div className="app-section profile additional-info">
             <div className="main-block">
-                <div className="stars-rating">
-                    {filledStars}
-                    {hollowStars}
-                    <span className="grade" >{(mentorProfileStore.rating + '').slice(0, 3)}</span>
-                </div>
+                <StarsRating rating={mentorProfileStore.rating} summary/>
                 <div className="main-block__section">
                     <span>45 студентов</span>
                     <span>248 занятий</span>
@@ -38,12 +27,12 @@ const AdditionalInfo = observer(({isOwner, userId}) => {
                 <button
                     disabled={!mentorProfileStore.mentorStatus}
                     className={`button${mentorProfileStore.mentorStatus ? '' : ' inactive'}`}
-                    >
+                >
                     Забронировать
                 </button>
                 <Link
                     to={`/messages`}
-                    state={{ activeDialog: userId }}
+                    state={{ activeDialog: mentorId }}
                     className="button"
                 >
                     Написать сообщение

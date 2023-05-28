@@ -60,6 +60,7 @@
                 gap: 20px;
                 padding-bottom: 40px;
                 &-text {
+                    cursor: default;
                     color: $header;
                     font-weight: 400;
                     font-size: 20px;
@@ -202,6 +203,7 @@
             width: 30px;
         }
         &-value {
+            cursor: default;
             font-size: 20px;
             color: $main-text;
             align-items: center;
@@ -224,16 +226,19 @@
                 flex-direction: column;
                 gap: 5px;
                 &-name {
+                    text-decoration: none;
                     color: $header;
                     font-size: 20px;
                 }
                 &-specialty {
+                    cursor: default;
                     color: $additional-text;
                     font-size: 16px;
                 }
             }
         }
         .description {
+            cursor: default;
             color: $main-text;
             font-size: 16px;
         }
@@ -251,6 +256,7 @@
 
         min-width: 180px;
         &-info {
+            cursor: default;
             margin: auto;
             display: flex;
             flex-direction: column;

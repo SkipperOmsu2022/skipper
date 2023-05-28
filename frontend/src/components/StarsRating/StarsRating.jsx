@@ -1,6 +1,6 @@
 import './starsRating.scss'
 
-const StarsRating = ({rating}) => {
+const StarsRating = ({rating, summary}) => {
     let filledStars = null, hollowStars = null;
     const roundedRating = Math.round(+rating)
         
@@ -11,6 +11,7 @@ const StarsRating = ({rating}) => {
         <div className="stars-rating">
             {filledStars}
             {hollowStars}
+            {summary ? <span className="grade" >{rating?.toFixed(1) || '–'}</span> : null}
         </div>
     )
 }

@@ -11,6 +11,7 @@ import "../../../shared/radio.scss"
 import "../../../shared/submitButton/button.scss"
 
 import TextInput from "../../../shared/TextInput/TextInput";
+import { api } from "../../../services/api";
 
 async function getBlobFromUrl(url) {
     return await fetch(url).then(r => r.blob());
@@ -37,7 +38,7 @@ const Common = () => {
     });
 
     useEffect(() => {
-        getUserData('user/profile/settings/')
+        getUserData(api.userSettings)
             .then(res => {
                 let date = res?.data?.dateOfBirth?.split('-');
                 if (date === undefined) date = ['', '', ''];
@@ -146,7 +147,7 @@ const Common = () => {
             form_data.append(key, data[key]);
         }
         
-        setUserData(form_data, 'user/profile/settings/', {"Content-Type": 'multipart/form-data'});
+        setUserData(form_data, api.userSettings, {"Content-Type": 'multipart/form-data'});
     }
     
     return (

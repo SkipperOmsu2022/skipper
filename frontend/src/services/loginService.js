@@ -14,8 +14,8 @@ const useLoginService = () => {
         
         if (res?.status === 201) {
             localStorage.removeItem('logged');
-            localStorage.setItem('logged', res.headers.location);
-            setAuth(true);
+            localStorage.setItem('logged', res?.headers?.location);
+            setAuth(res.headers.location);
         } else if (res?.status === 400) {
             console.log(res?.message)
             setResponse("Такой пользователь уже существует");
@@ -34,8 +34,8 @@ const useLoginService = () => {
         const res = await request(`${_apiBase}/api/auth/login`, 'post', form_data, {"Content-Type": 'multipart/form-data'});
         if (res?.status === 200) {
             localStorage.removeItem('logged');
-            localStorage.setItem('logged', res.headers.location);
-            setAuth(true);
+            localStorage.setItem('logged', res?.headers?.location);
+            setAuth(res.headers.location);
         } else if (res?.status === 400 || res?.status === 404) {
             console.log(res?.message)
             setResponse("Неверный логин или пароль");

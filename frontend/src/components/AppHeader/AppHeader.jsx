@@ -12,6 +12,7 @@ import useAuthContext from "../../hooks/useAuthContext";
 import useLoginService from "../../services/loginService"
 import useProfileService from "../../services/profileService";
 import useMessageService from "../../services/messageService"
+import { api } from "../../services/api"
 
 import { observer } from "mobx-react-lite";
 import messagesStore from "../../store/messagesStore";
@@ -35,10 +36,7 @@ const AppHeader = () => {
                         auth ?
                         <div className="app-header__icons">
                             <NavLink to="/messages"><img src={messages} alt="messages" /></NavLink>
-                            <div>
-                                <img src={bookmark} alt="favorites" className="bookmark-icon"/>
-                            </div>
-                            {/* <NavLink to="/favorites"><img src={bookmark} alt="favorites" className="bookmark-icon"/></NavLink> */}
+                            <NavLink to="/favorites"><img src={bookmark} alt="favorites" className="bookmark-icon"/></NavLink>
                         </div> : null
                     }
                 </div>
@@ -64,7 +62,7 @@ const LoggedDisplay = observer(() => {
     const location = useLocation();
     
     useEffect(() => {
-        getUserData('user/profile/')
+        getUserData(api.userProfile)
             .then(res => {
                 if(res) {
                     setFirstName(res?.data?.firstName)

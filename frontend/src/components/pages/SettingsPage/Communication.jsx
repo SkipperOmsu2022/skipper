@@ -2,6 +2,7 @@ import { useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import TextInput from "../../../shared/TextInput/TextInput";
+import { api } from "../../../services/api";
 
 const Communication = () => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
@@ -13,7 +14,7 @@ const Communication = () => {
     });
 
     useEffect(() => {
-        getUserData('user/profile/settings/contacts/')
+        getUserData(api.userContacts)
             .then(res => {
                 setInitial({
                     linkVk: res?.data?.linkVk || '',
@@ -30,7 +31,7 @@ const Communication = () => {
             enableReinitialize
             initialValues = {initial}
             onSubmit = {(data) => {
-                setUserData({...data}, 'user/profile/settings/contacts/');
+                setUserData({...data}, api.userContacts);
             }}>
             <Form id="contact-form">
                 <div className="settings__column">
