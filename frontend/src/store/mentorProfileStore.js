@@ -22,7 +22,6 @@ class mentorProfileStore {
     workExperiences = [];
     
     setMentorData = (res) => {
-        console.log(res)
         this.firstName = res?.data?.firstName
         this.lastName = res?.data?.lastName
         this.aboutAsMentor = res?.data?.aboutAsMentor

@@ -90,6 +90,10 @@ public class User {
     @Column(name = "certificate_resource")
     private Set<String> certificateResources;
 
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Conversation> conversations;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "favorite_users",
