@@ -163,7 +163,7 @@ const LoggedDisplay = observer(() => {
 const UnloggedDisplay = () => {
     return (
         <div className="app-header__group">
-            <Link to={"/authorization/signin"} className="button white">Войти</Link>
+            <Link to={"/authorization"} className="button white">Войти</Link>
             <Link to={"/authorization/signup"} className="button">Зарегистрироваться</Link>
         </div>
     )

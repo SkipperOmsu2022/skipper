@@ -31,6 +31,7 @@ const MentorCard = observer(({mentor, onChangeFavorite, maxWidth}) => {
                 <Link
                     className=""
                     to={`/profile/${mentor.id}`}
+                    relative={false}
                 >
                     <img src={imageUserResource} alt="user-avatar" className="mentor__photo-img user-photo"/>
                 </Link>

@@ -10,6 +10,8 @@
         display: flex;
         flex-direction: row;
         &__title {
+            color: $main-text;
+            text-decoration: none;
             font-size: 3.625rem;
             font-weight: 400;
             letter-spacing: 0.25rem;
@@ -114,6 +116,7 @@
             line-height: 1.438rem;
         }
         &__footer {
+            cursor: default;
             color: $additional-text;
     
             text-align: center;
