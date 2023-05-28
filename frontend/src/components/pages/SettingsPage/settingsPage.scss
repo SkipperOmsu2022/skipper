@@ -51,6 +51,11 @@
                 &::before {
                     filter: brightness(90%);
                 }
+                &.active {
+                    &::before {
+                        filter: brightness(96%);
+                    }
+                }
             }
             &::before {
                 z-index: 2;

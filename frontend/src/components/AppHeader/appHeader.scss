@@ -115,14 +115,14 @@
             color: $additional-text;
             text-decoration: none;
             cursor: pointer;
-            :hover {
-                filter: brightness(10%);
-            }
             &.active {
                 color: $main-text;
             }
             &.exit {
-                color: $error;
+                &:hover {
+                    color: $error;
+                    filter: brightness(100%);
+                }
             }
             &:hover {
                 filter: brightness(85%);

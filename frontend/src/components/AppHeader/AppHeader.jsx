@@ -50,6 +50,7 @@ const AppHeader = () => {
 const LoggedDisplay = observer(() => {
     const {getUserData} = useProfileService();
     const { getMessagesList } = useMessageService();
+    const { auth: userId } = useAuthContext();
     
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -133,10 +134,29 @@ const LoggedDisplay = observer(() => {
                 />
                 <div className={dropDown} tabIndex="-1">
                     <div className="app-header__dropdown-item">
-                        <NavLink end to="/"  className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}>Главная страница</NavLink>
+                        <NavLink
+                            end
+                            to="/mentors" 
+                            className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}
+                        >
+                            Главная страница
+                        </NavLink>
                     </div>
                     <div className="app-header__dropdown-item">
-                        <NavLink to="/settings"  className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}>Настройки профиля</NavLink>
+                        <NavLink
+                            to={`/profile/${userId}`} 
+                            className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}
+                        >
+                            Мой профиль
+                        </NavLink>
+                    </div>
+                    <div className="app-header__dropdown-item">
+                        <NavLink
+                            to="/settings"
+                            className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}
+                        >
+                            Настройки профиля
+                        </NavLink>
                     </div>
                     <div className="app-header__dropdown-divider"></div>
                     <div className="app-header__dropdown-item">
