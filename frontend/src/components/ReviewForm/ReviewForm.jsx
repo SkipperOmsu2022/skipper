@@ -14,8 +14,8 @@ import close from "../../resources/icons/close.svg"
 import garbageBin from "../../resources/icons/garbage-bin.svg"
 import "./reviewForm.scss"
 
-const ReviewForm = observer(({mentor}) => {
-    const {loading, error, response, clearResponse, postFeedback, getUserFeedback, deleteUserFeedback} = useFeedbackService();
+const ReviewForm = observer(({mentor, deep}) => {
+    const {loading, error, response, clearResponse, postFeedback, getUserFeedback} = useFeedbackService();
     const { auth: userId } = useAuthContext();
 
     useEffect(() => {
@@ -50,12 +50,12 @@ const ReviewForm = observer(({mentor}) => {
         }
     }
     
-    if (reviewFormStore.success) return (<SuccessMessage deep="deep"/>)
+    if (reviewFormStore.success) return (<SuccessMessage deep={deep}/>)
     return (
         <Modal
             showModal={reviewFormStore.modal}
             onModalClose={() => reviewFormStore.setModal(false)}
-            deep="deep"
+            deep={deep}
         >
             <div className="app-section review-form">
                 <div className="modal__header">
