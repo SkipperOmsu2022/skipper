@@ -12,7 +12,7 @@ const useProfileService = () => {
     const getUserData = async (url, id, dto) => {
         let params = '';
         if (dto) {
-            params = new URLSearchParams({dto}).toString();
+            params = new URLSearchParams(dto).toString();
         }
         const res = await request(`${_apiBase}/api/${url}${id || userId}?${params}`, 'get');
         
