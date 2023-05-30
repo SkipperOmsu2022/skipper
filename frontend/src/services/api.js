@@ -19,6 +19,15 @@ const deleteFavoriteMentor = async (mentorId, userId) =>  {
     return res;
 }
 
+const getChatUserInfo = async (userId) => {
+    const url = `${enviroments.apiBase}/api/chat/user-info/${userId}`
+    const res = await axios.request({
+        url : url,
+        method: 'get'
+    })
+    return res;
+}
+
 const api = {
     userProfile: 'user/profile/',
     mentorProfile: 'user/profile/mentor/',
@@ -32,5 +41,6 @@ export {
     getEducationsList,
     addFavoriteMentor,
     deleteFavoriteMentor,
+    getChatUserInfo,
     api
 }

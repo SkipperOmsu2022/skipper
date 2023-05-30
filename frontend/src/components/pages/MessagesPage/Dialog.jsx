@@ -1,7 +1,7 @@
 import addBtn from "../../../resources/icons/add-btn.svg"
 import sendBtn from "../../../resources/icons/send-btn.svg"
 
-import React, { useState, useEffect, useRef, useLayoutEffect, useMemo } from "react"
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react"
 import { Link } from 'react-router-dom';
 
 import { observer } from "mobx-react-lite";
@@ -33,7 +33,7 @@ const Message = ({item, i}) => {
             {`${date.getDate()} ${months[date.getMonth()]}`}
         </div>
     const newBlock = date.getTime() - previousDate.getTime() > 600000 ||
-        item.userFrom !== messages?.slice().sort(comparator)[i-1]?.userFrom
+        item.userFrom !== messages[i-1]?.userFrom
 
     return (
         <>
@@ -108,16 +108,6 @@ const Dialog = observer(() => {
             messagesStore.setInput('')
         }
     }
-    
-    const sendMessage = (e) => {
-        if (e.key === "Enter" || e.type === 'click') {
-            if (messagesStore.input) {
-                messagesStore.addNewMessage(messagesStore.activeDialog, 
-                    messagesStore.user.id, 
-                    messagesStore.activeInterlocutor.userId);
-            }
-        }
-    }
 
     const handleDropdownClick = () => setDropdownDisplay((dropdownDisplay) => !dropdownDisplay);
 
@@ -178,7 +168,7 @@ const Dialog = observer(() => {
                 </div>
             </div>
             <div className='chat-body'>
-                {messagesStore.activeInterlocutor.messages.slice().sort(comparator).map((item, i) => 
+                {messagesStore.activeInterlocutor.messages.map((item, i) => 
                     <Message 
                         item={item}
                         i={i}
@@ -196,24 +186,18 @@ const Dialog = observer(() => {
                     onChange={(e) => {
                         if (e.target.value !== "\n") messagesStore.setInput(e.target.value)
                     }}
-                    onKeyDown={sendMessage}
+                    onKeyDown={messagesStore.sendMessage}
                 />
                 <img 
                     src={sendBtn}
                     className='chat-input__button'
                     alt="send"
-                    onKeyDown={sendMessage}
-                    onClick={sendMessage}
+                    onKeyDown={messagesStore.sendMessage}
+                    onClick={messagesStore.sendMessage}
                 />
             </div>
         </>
     )
 })
-
-const comparator = (a, b) => {
-    if (a?.id > b?.id) return 1;
-    if (a?.id === b?.id) return 0;
-    if (a?.id < b?.id) return -1;
-}
 
 export default Dialog;

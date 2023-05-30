@@ -63,20 +63,25 @@ const LoggedDisplay = observer(() => {
     const location = useLocation();
     
     useEffect(() => {
-        getUserData(api.userProfile)
+        getUserData(api.userProfile, userId)
             .then(res => {
                 if(res) {
                     setFirstName(res?.data?.firstName)
                     setLastName(res?.data?.lastName)
                     setImageUserResource(res?.data?.imageUserResource)
-                    messagesStore.setUser(res)
+                    messagesStore.setUser(res, userId)
                 }
             })
-        messagesStore?.setLoading(true);
-        getMessagesList()
-            .then((res) => {
-                messagesStore.setInterlocutors(res)
+            .then(res => {
+                messagesStore?.setLoading(true);
+                return getMessagesList()
+            })
+            .then(res => {
+                messagesStore.setInitialInterlocutors(res)
                 messagesStore?.setLoading(false);
+            })
+            .then(res => {
+                messagesStore.setStompClient();
             })
             .then(() => {
                 if (location?.state?.activeDialog) {
@@ -84,7 +89,6 @@ const LoggedDisplay = observer(() => {
                 }
             })
 
-        messagesStore.setStompClient();
 
         document.addEventListener("click", handleClickOutside);
         

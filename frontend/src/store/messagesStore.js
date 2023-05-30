@@ -1,15 +1,9 @@
 import  {makeAutoObservable} from 'mobx';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
-import axios from "axios";
 import enviroments from '../config/enviroments';
-import photo from "../resources/profile-photo.jpg"
-
-const comparator = (a, b) => {
-    if (a?.id > b?.id) return 1;
-    if (a?.id === b?.id) return 0;
-    if (a?.id < b?.id) return -1;
-}
+import { getImageUserResource } from '../utils/getImageSource';
+import { getChatUserInfo } from '../services/api';
 
 class messagesStore {
     constructor() {
@@ -25,12 +19,8 @@ class messagesStore {
     interlocutors = []
     stompClient = null
 
-    setUser = (res) => {
-        const imageUserResource = res?.data?.imageUserResource ? 
-            `${enviroments.apiBase}${res?.data?.imageUserResource}` : 
-            photo;
-        const id = localStorage.getItem('logged')
-
+    setUser = (res, id) => {
+        const imageUserResource = getImageUserResource(res?.data?.imageUserResource)
         this.user = {
             id: id,
             firstName: res?.data?.firstName,
@@ -47,87 +37,64 @@ class messagesStore {
         this.loading = loading
     }
 
-    addNewMessage = (dialogId, senderId, recevierId, ) => {
-        const msgId = this.interlocutors[dialogId].messages.slice().sort(comparator)[this.interlocutors[dialogId].messages.length - 1]?.id + 1;
-
-        this.sendMessage()
-        
-        this.interlocutors[dialogId].messages.push({
-            id: msgId,
-            userFrom: senderId,
-            userTo: recevierId,
-            messageContent: this.input,
-            dateTimeSend: new Date()
-        });
-        
-        this.input = '';
+    getNewMessageId = (dialogId) => {
+        return this.interlocutors[dialogId].messages[this.interlocutors[dialogId].messages.length - 1]?.id + 1;
     }
 
-    sendMessage = () => {
-        this.stompClient.send(`/app/chat/${this.user.id}/${this.activeInterlocutor.userId}`, {}, JSON.stringify({
-            messageContent: this.input
-        }));
-    }
+    sendMessage = (e) => {
+        if (this.input.length && (e.key === "Enter" || e.type === 'click')) {
+            const msgId = this.getNewMessageId(this.activeDialog);
 
-    getMessage = (response) => {
-        let data = JSON.parse(response.body);
-
-        let dialogId;
-
-        this.interlocutors.forEach((item, i) => {
-            if (+item.userId === data?.userFrom) {
-                dialogId = i;
-            }
-        })
-        
-        if (dialogId === undefined) {
-            dialogId = this.interlocutors.length;
-
-            axios.request({
-                    url : `${enviroments.apiBase}/api/chat/user-info/${data?.userFrom}`,
-                    method: 'get'
-                })
-                .then(res => {
-                    const imageUserResource = res?.data?.imageUserResource ? 
-                        `${enviroments.apiBase}${res?.data?.imageUserResource}` : 
-                        photo;
-
-                    this.interlocutors.push({
-                        firstName: res.data?.firstName,
-                        lastName: res.data?.lastName,
-                        imageUserResource: imageUserResource,
-                        userId: res.data?.userId,
-                        messages: [],
-                        mentorSpecializations: res.data?.mentorSpecializations
-                    })
-                    const msgId = this.interlocutors[dialogId].messages.slice().sort(comparator)[this.interlocutors[dialogId].messages.length - 1]?.id + 1;
-                    
-                    this.interlocutors[dialogId].messages.push({
-                        id: msgId,
-                        userFrom: data?.userFrom,
-                        userTo: this.user.id,
-                        messageContent: data?.messageContent,
-                        dateTimeSend: data?.dateTimeSend
-                    });
-                })
-        } else {
-            const msgId = this.interlocutors[dialogId].messages.slice().sort(comparator)[this.interlocutors[dialogId].messages.length - 1]?.id + 1;
-
-            this.interlocutors[dialogId].messages.push({
+            this.stompClient.send(`/app/chat/${this.user.id}/${this.activeInterlocutor.userId}`, {}, JSON.stringify({
+                messageContent: this.input
+            }));
+            
+            this.interlocutors[this.activeDialog].messages.push({
                 id: msgId,
-                userFrom: data?.userFrom,
-                userTo: this.user.id,
-                messageContent: data?.messageContent,
-                dateTimeSend: data?.dateTimeSend
-            });  
+                userFrom: this.user.id,
+                userTo: this.activeInterlocutor.userId,
+                messageContent: this.input,
+                dateTimeSend: new Date()
+            });
+            
+            this.input = '';
+        } else {
+            return null
         }
     }
 
-    setInterlocutors = (res) => {
+    getDialogId = (userFrom) => {
+        let dialogId = null;
+        this.interlocutors.forEach((item, i) => {
+            if (+item.userId === +userFrom) {
+                dialogId = i;
+            }
+        })
+        return dialogId
+    }
+
+    getMessage = async (response) => {
+        let data = JSON.parse(response.body);
+        
+        let dialogId = this.getDialogId(data?.userFrom);
+
+        if (dialogId === null) {
+            dialogId = this.interlocutors.length;
+            await this.getInterlocutorData(data?.userFrom)
+        }
+        
+        this.interlocutors[dialogId].messages.push({
+            id: data?.id,
+            userFrom: data?.userFrom,
+            userTo: this.user.id,
+            messageContent: data?.messageContent,
+            dateTimeSend: data?.dateTimeSend
+        });  
+    }
+
+    setInitialInterlocutors = (res) => {
         for (let key in res) {
-            const imageUserResource = res[key]?.imageUserResource ? 
-                `${enviroments.apiBase}${res[key]?.imageUserResource}` : 
-                photo;
+            const imageUserResource = getImageUserResource(res[key]?.imageUserResource)
 
             this.interlocutors.push({
                 firstName: res[key]?.firstName,
@@ -139,6 +106,19 @@ class messagesStore {
             })
         }
     }
+    getInterlocutorData = async (userFrom) => {
+        const res = await getChatUserInfo(userFrom)
+        const imageUserResource = getImageUserResource(res?.data?.imageUserResource)
+
+        this.interlocutors.push({
+            firstName: res.data?.firstName,
+            lastName: res.data?.lastName,
+            imageUserResource: imageUserResource,
+            userId: res.data?.userId,
+            messages: [],
+            mentorSpecializations: res.data?.mentorSpecializations
+        })
+    }
 
     setActiveDialog = (id) => {
         if (id === null) {
@@ -149,18 +129,12 @@ class messagesStore {
         this.activeInterlocutor = this.interlocutors[id]
     }
     
-    openUserDialog = (id) => {
-        let dialogId;
-
+    openUserDialog = async (id) => {
         if (this.loading || this.stompClient === null) return;
         this.loading = true
-
-        this.interlocutors.forEach((item, i) => {
-            if (+item.userId === +id) {
-                dialogId = i;
-            }
-        })
-
+        
+        let dialogId = this.getDialogId(id);
+        
         if(dialogId !== undefined) {
             this.setActiveDialog(dialogId)
             this.loading = false;
@@ -168,33 +142,14 @@ class messagesStore {
             dialogId = this.interlocutors.length;
             this.loading = true;
 
-            axios.request({
-                url : `${enviroments.apiBase}/api/chat/user-info/${id}`,
-                method: 'get'
-            })
-            .then(res => {
-
-                const imageUserResource = res?.data?.imageUserResource ? 
-                    `${enviroments.apiBase}${res?.data?.imageUserResource}` : 
-                    photo;
-
-                this.interlocutors.push({
-                    firstName: res.data?.firstName,
-                    lastName: res.data?.lastName,
-                    imageUserResource: imageUserResource,
-                    userId: res.data?.userId,
-                    messages: [],
-                    mentorSpecializations: res.data?.mentorSpecializations
-                })
-                this.setActiveDialog(dialogId)
-            })
+            await this.getInterlocutorData(id)
+            this.setActiveDialog(dialogId)
             this.loading = false;
         }
     }
 
     setStompClient = () => {
-        const id = localStorage.getItem('logged')
-        if (id) {
+        if (this.user.id) {
             let socket = new SockJS(enviroments.apiBase + '/chat');
             this.stompClient = Stomp.over(socket)
 
@@ -214,8 +169,7 @@ class messagesStore {
     }
 
     disconnect = () => {
-        const id = localStorage.getItem('logged')
-        if (id) {
+        if (this.user.id) {
             this.stompClient.disconnect()
             this.stompClient = {}
         }
