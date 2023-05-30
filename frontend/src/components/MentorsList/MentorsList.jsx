@@ -29,7 +29,6 @@ const MentorCard = observer(({mentor, onChangeFavorite, maxWidth}) => {
         <div className={`mentor ${maxWidth ? 'max-width' : ''}`} key={mentor.id}>
             <div className="mentor__photo">
                 <Link
-                    className=""
                     to={`/profile-mentor/${mentor.id}`}
                     relative={false}
                 >
