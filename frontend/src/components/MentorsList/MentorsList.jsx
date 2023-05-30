@@ -15,6 +15,7 @@ const MentorsList = observer(({displayStart, maxWidth}) => {
                 mentor={item}
                 onChangeFavorite={mentorsListStore.onChangeFavorite}
                 maxWidth={maxWidth}
+                key={item.id}
             />
         )
     })
@@ -26,7 +27,7 @@ const MentorCard = observer(({mentor, onChangeFavorite, maxWidth}) => {
 
     const imageUserResource = getImageUserResource(mentor.imageUserResource);
     return (
-        <div className={`mentor ${maxWidth ? 'max-width' : ''}`} key={mentor.id}>
+        <div className={`mentor ${maxWidth ? 'max-width' : ''}`}>
             <div className="mentor__photo">
                 <Link
                     to={`/profile-mentor/${mentor.id}`}
