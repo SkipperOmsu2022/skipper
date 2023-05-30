@@ -64,7 +64,7 @@ class messagesStore {
     }
 
     getDialogId = (userFrom) => {
-        let dialogId = null;
+        let dialogId = undefined;
         this.interlocutors.forEach((item, i) => {
             if (+item.userId === +userFrom) {
                 dialogId = i;

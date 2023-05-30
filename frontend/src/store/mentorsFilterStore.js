@@ -6,18 +6,20 @@ class mentorsFilterStore {
     }
 
     specializations = []
-    ratingFilter = [
-        {value: '5', label: '5', checked: false},
-        {value: '4', label: '4',checked: false},
-        {value: '3', label: '3',checked: false},
-        {value: '2', label: '2',checked: false},
-        {value: '1', label: '1',checked: false},
+    sortOptions = [
+        {value: 'DEFAULT', label: 'По умолчанию'},
+        {value: 'RATING', label: 'По рейтингу'}
     ]
+    sortField = {value: 'DEFAULT', label: 'По умолчанию'}
     search = ""
     onlyWithPhoto = false;
     
     changeOnlyWithPhoto = () => {
         this.onlyWithPhoto = !this.onlyWithPhoto;
+    }
+
+    setSortField = (sortField) => {
+        this.sortField = sortField;
     }
 
     setSearch = (search) => {
@@ -30,9 +32,6 @@ class mentorsFilterStore {
 
     reset = () => {
         this.specializations = this.specializations.map((item) => {
-            return {...item, checked: false}
-        })
-        this.ratingFilter = this.ratingFilter.map((item) => {
             return {...item, checked: false}
         })
         this.search = ""

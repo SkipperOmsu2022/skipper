@@ -93,9 +93,9 @@ const LoggedDisplay = observer(() => {
         document.addEventListener("click", handleClickOutside);
         
         return () => {
+            messagesStore.disconnect();
             messagesStore.clearStore()
             document.removeEventListener("click",  handleClickOutside);
-            messagesStore.disconnect();
         }
     }, []);
 

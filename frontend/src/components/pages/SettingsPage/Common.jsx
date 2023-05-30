@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { useState, useRef, useEffect} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
-import FormikSelect from "../../../shared/customSelect/CustomSelect";
+import { FormikSelect } from "../../../shared/customSelect/CustomSelect";
 import ImageCropper from "../../ImageCropper/ImageCropper";
 
 import photo from "../../../resources/profile-photo.jpg"

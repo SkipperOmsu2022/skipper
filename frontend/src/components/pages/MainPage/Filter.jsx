@@ -1,4 +1,5 @@
 import useSpecializationService from "../../../services/SpecializationService";
+import CustomSelect from "../../../shared/customSelect/CustomSelect";
 import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
@@ -18,9 +19,18 @@ const Filter =  observer(({updateMentors}) => {
 
     return (
         <div className="app-section filter">
+                <CustomSelect
+                    options={mentorsFilterStore.sortOptions}
+                    value={mentorsFilterStore.sortField}
+                    onChange={mentorsFilterStore.setSortField}
+                    width='296px'
+                    placeholder="Сортировка"
+                    height='18px'
+                    isSearchable={false}
+                />
             <div className="filter__section">
                 <div className="filter__section-title">
-                    <div className="filter__section-title-text">Сфера обучения</div>
+                    <div className="filter__section-title-text">Специальность</div>
                     <div className="filter__section-divider"></div>
                 </div>
                 <div className="item-wrapper">
@@ -48,40 +58,6 @@ const Filter =  observer(({updateMentors}) => {
                     <div className="filter__section-list-item">
                         <input type="checkbox" className="checkbox" id="2000"/>
                         <label htmlFor="2000" className="checkbox-name">Более 2000 ₽</label>
-                    </div>
-                </div>
-            </div>
-            <div className="filter__section">
-                <div className="filter__section-title padding-btm">
-                    <div className="filter__section-title-text">Рейтинг</div>
-                    <div className="filter__section-divider"></div>
-                </div>
-                <div className="item-wrapper show rating">
-                    <Rating/>
-                </div>
-            </div>
-            <div className="filter__section">
-                <div className="filter__section-title padding-btm">
-                    <div className="filter__section-divider"></div>
-                </div>
-                <div className="item-wrapper show">
-                    <div className="filter__section-list-item">
-                        <input
-                            type="checkbox"
-                            className="checkbox"
-                            id="photo"
-                            checked={mentorsFilterStore.onlyWithPhoto}
-                            onChange={() => mentorsFilterStore.changeOnlyWithPhoto()}
-                        />
-                        <label htmlFor="photo" className="checkbox-name">
-                            Только с фото   
-                        </label>
-                    </div>
-                    <div className="filter__section-list-item">
-                        <input type="checkbox" className="checkbox" id="review"/>
-                        <label htmlFor="review" className="checkbox-name">
-                            Только с отзывами
-                        </label>
                     </div>
                 </div>
             </div>
@@ -132,23 +108,6 @@ const Specializations = observer(() => {
                 onChange={() => mentorsFilterStore.changeChecked(item)}
             />
             <label htmlFor={item.value} className="checkbox-name">{item.label}</label>
-        </div>
-    ))
-})
-
-const Rating = observer(() => {
-    return mentorsFilterStore.ratingFilter.map((item, i) => (
-        <div className="filter__section-list-item" key={`${item.value}star`}>
-            <input
-                type="checkbox"
-                className="checkbox"
-                id={`${item.value}star`}
-                checked={item.checked}
-                onChange={() => mentorsFilterStore.changeChecked(item)}
-            />
-            <label htmlFor={`${item.value}star`} className="checkbox-name">
-                {item.value} <span className="stars">{'★ '.repeat(item.value)}</span>
-            </label>
         </div>
     ))
 })

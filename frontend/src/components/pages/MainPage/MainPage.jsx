@@ -34,7 +34,7 @@ const MainPage = observer(() => {
         let dto = {
             offset: offset,
             limit: 30,
-            sortFiled: "id",
+            sortField: mentorsFilterStore.sortField.value,
             query: mentorsFilterStore.search,
             onlyWithPhoto: mentorsFilterStore.onlyWithPhoto
         }

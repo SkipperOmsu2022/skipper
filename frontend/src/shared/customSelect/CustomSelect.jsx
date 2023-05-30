@@ -210,9 +210,24 @@ const CustomAsyncSelect = ({placeholder, value, noOptionsMessage, onChange, widt
             error={error}
         />
     )
-} 
+}
 
+const CustomSelect = ({options, value, placeholder, onChange, width, height, isSearchable}) => {
+    return (
+        <Select
+            components={{ DropdownIndicator }}
+            classNamePrefix='custom-select filter'
+            styles={selectStyles}
+            options={options}
+            onChange={onChange}
+            placeholder={placeholder}
+            isSearchable={isSearchable}
+            value={value}
+            width={width}
+            height={height}
+        />
+    )
+}
 
-
-export default FormikSelect;
-export {MutableSelect, MultipleSelect, CustomAsyncSelect}
+export default CustomSelect;
+export {MutableSelect, MultipleSelect, CustomAsyncSelect, FormikSelect}
