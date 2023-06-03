@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.tinkoff.edu.backend.validation.FirstFieldLargeSecondField;
+import ru.tinkoff.edu.backend.validation.PastOrPresentYear;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,8 +14,12 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@FirstFieldLargeSecondField(
+        firstField = "yearEnd", secondField = "yearStart", message = "The start year cannot be less!"
+)
 public class WorkExperienceDTO {
     @NotNull(message = "Начало опыта работы обязательно!")
+    @PastOrPresentYear
     private Integer yearStart;
     private Integer yearEnd;
     @NotBlank

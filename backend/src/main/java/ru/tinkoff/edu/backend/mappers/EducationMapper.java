@@ -5,11 +5,8 @@ import ru.tinkoff.edu.backend.entities.Education;
 import ru.tinkoff.edu.backend.entities.EducationPK;
 import ru.tinkoff.edu.backend.entities.Qualification;
 import ru.tinkoff.edu.backend.entities.User;
-import ru.tinkoff.edu.backend.exception.IncorrectDateTimeException;
 
-import java.time.Year;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.LongFunction;
 import java.util.stream.Collectors;
@@ -66,38 +63,11 @@ public class EducationMapper {
 
         return educations
                 .stream()
-                .map(education -> {
-                    validateYearRange(education.getYearStart(), education.getYearEnd());
-                    validateYearStart(education.getYearStart());
-                    return educationDTOToEducation(
-                            education,
-                            user,
-                            qualificationFunction
-                                    .apply(education.getQualificationId()));
-                })
+                .map(education -> educationDTOToEducation(
+                        education,
+                        user,
+                        qualificationFunction
+                                .apply(education.getQualificationId())))
                 .collect(Collectors.toSet());
-    }
-
-    /**
-     * Проверяет правильность диапазона лет и генерирует исключение, если год начала меньше года окончания.
-     *
-     * @param yearStart дата начала.
-     * @param yearEnd   дата конца.
-     */
-    protected static void validateYearRange(Integer yearStart, Integer yearEnd) {
-        if (!Objects.isNull(yearEnd) && yearStart > yearEnd) {
-            throw new IncorrectDateTimeException("The start year cannot be less");
-        }
-    }
-
-    /**
-     * Проверяет правильность начального года и генерирует исключение, если он находится в будущем времени.
-     *
-     * @param yearStart год начала.
-     */
-    protected static void validateYearStart(Integer yearStart) {
-        if (yearStart > Year.now().getValue()) {
-            throw new IncorrectDateTimeException("The beginning cannot be in the future time");
-        }
     }
 }
