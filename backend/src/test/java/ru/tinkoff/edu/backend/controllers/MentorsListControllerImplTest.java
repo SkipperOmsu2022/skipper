@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import ru.tinkoff.edu.backend.controllers.mentorlist.MentorsListControllerImpl;
 import ru.tinkoff.edu.backend.entities.Qualification;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.services.MentorListService;
@@ -25,10 +26,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(
-    value = MentorsListController.class,
+    value = MentorsListControllerImpl.class,
     excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @Import(ControllerTestConfiguration.class)
-class MentorsListControllerTest {
+class MentorsListControllerImplTest {
 
   @Autowired private MockMvc mockMvc;
 

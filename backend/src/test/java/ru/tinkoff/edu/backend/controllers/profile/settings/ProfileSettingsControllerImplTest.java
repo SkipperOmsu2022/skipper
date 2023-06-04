@@ -42,10 +42,10 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @WebMvcTest(
-    value = ProfileSettingsController.class,
+    value = ProfileSettingsControllerImpl.class,
     excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @Import(ControllerTestConfiguration.class)
-class ProfileSettingsControllerTest {
+class ProfileSettingsControllerImplTest {
   @Autowired private MockMvc mockMvc;
 
   @MockBean private ProfileService profileService;

@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.http.MediaType;
 
+import ru.tinkoff.edu.backend.controllers.auth.AuthControllerImpl;
 import ru.tinkoff.edu.backend.dto.UserLoginDTO;
 import ru.tinkoff.edu.backend.dto.UserRegDTO;
 import ru.tinkoff.edu.backend.entities.User;
@@ -27,10 +28,10 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 @WebMvcTest(
-    value = AuthController.class,
+    value = AuthControllerImpl.class,
     excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @Import(ControllerTestConfiguration.class)
-class AuthControllerTest {
+class AuthControllerImplTest {
 
   @Autowired private MockMvc mockMvc;
 

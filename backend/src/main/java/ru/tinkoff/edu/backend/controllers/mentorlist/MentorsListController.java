@@ -1,7 +1,9 @@
-package ru.tinkoff.edu.backend.controllers;
+package ru.tinkoff.edu.backend.controllers.mentorlist;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +12,6 @@ import ru.tinkoff.edu.backend.dto.FilterSortPaginationMentorListDTO;
 import ru.tinkoff.edu.backend.dto.MentorListPageSortDTO;
 import ru.tinkoff.edu.backend.entities.Qualification;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
-import ru.tinkoff.edu.backend.services.MentorListService;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @Validated
@@ -23,42 +21,28 @@ import java.util.Map;
         "Получение списка всех менторов, карту специализаций и список образовательных специальностей.")
 @RequestMapping(value = "/api")
 @CrossOrigin
-public class MentorsListController {
-  private final MentorListService mentorListService;
-
-  public MentorsListController(MentorListService mentorListService) {
-    this.mentorListService = mentorListService;
-  }
-
+public interface MentorsListController {
   @Operation(
       summary =
           "Получение объекта/карты для сопоставления ключа и название специальности на кириллице.")
   @GetMapping("/list/specializations")
-  public ResponseEntity<Map<MentorSpecialization, String>> getMapMentorSpecialization() {
-    return ResponseEntity.ok(mentorListService.getMapMentorSpecialization());
-  }
+  ResponseEntity<Map<MentorSpecialization, String>> getMapMentorSpecialization();
 
   @Operation(summary = "Получение списка менторов с использованием пагинации и сортировки.")
   @GetMapping("/list/mentors/page_sort_filter")
-  public ResponseEntity<MentorListPageSortDTO> getMentorsListWithPageableAndSort(
-      FilterSortPaginationMentorListDTO dto) {
-    return ResponseEntity.ok(mentorListService.getMentorListPageSortFilter(dto));
-  }
+  ResponseEntity<MentorListPageSortDTO> getMentorsListWithPageableAndSort(
+      FilterSortPaginationMentorListDTO dto);
 
   @Operation(
       summary = "Список всех образовательных специальностей Российской Федерации.",
       description = "Основной документ - Приказ Росстандарта от 25.05.2017 №415-ст")
   @GetMapping("/list/edu")
-  public ResponseEntity<List<Qualification>> getEducationRU(@RequestParam String query) {
-    return ResponseEntity.ok(mentorListService.getSpecializationMentorList(query));
-  }
+  ResponseEntity<List<Qualification>> getEducationRU(@RequestParam String query) ;
 
   @Operation(
       summary = "Получение списка избранных менторов пользователя.",
       description = "Возвращает избранных менторов для указанного пользователя по id.")
   @GetMapping("/list/mentors/favorites/")
-  public ResponseEntity<MentorListPageSortDTO> getFavoritesMentorsListWithPageableAndSort(
-      FavoritesPaginationMentorListDTO dto) {
-    return ResponseEntity.ok(mentorListService.getFavoritesMentorListPage(dto));
-  }
+  ResponseEntity<MentorListPageSortDTO> getFavoritesMentorsListWithPageableAndSort(
+      FavoritesPaginationMentorListDTO dto);
 }

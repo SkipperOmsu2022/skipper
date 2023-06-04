@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.tinkoff.edu.backend.controllers.message.MessageControllerImpl;
 import ru.tinkoff.edu.backend.dto.conversations.ConversationDTO;
 import ru.tinkoff.edu.backend.dto.conversations.PaginationListConversationDTO;
 import ru.tinkoff.edu.backend.entities.Conversation;
@@ -30,10 +31,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.tinkoff.edu.backend.mappers.MessageMapper.messageToMessageDTOs;
 
 @WebMvcTest(
-    value = MessageController.class,
+    value = MessageControllerImpl.class,
     excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @Import(ControllerTestConfiguration.class)
-class MessageControllerTest {
+class MessageControllerImplTest {
   @Autowired private MockMvc mockMvc;
 
   @MockBean private SimpMessagingTemplate simpMessagingTemplate;

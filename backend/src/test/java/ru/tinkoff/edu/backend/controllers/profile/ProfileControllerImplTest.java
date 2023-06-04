@@ -24,10 +24,10 @@ import ru.tinkoff.edu.backend.services.MentorProfileService;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
 @WebMvcTest(
-    value = ProfileController.class,
+    value = ProfileControllerImpl.class,
     excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @Import(ControllerTestConfiguration.class)
-class ProfileControllerTest {
+class ProfileControllerImplTest {
 
   @Autowired private MockMvc mockMvc;
 

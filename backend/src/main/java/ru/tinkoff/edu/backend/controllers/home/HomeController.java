@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.backend.controllers;
+package ru.tinkoff.edu.backend.controllers.home;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.stereotype.Controller;

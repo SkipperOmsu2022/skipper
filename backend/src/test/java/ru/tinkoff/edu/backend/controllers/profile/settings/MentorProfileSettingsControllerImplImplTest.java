@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.tinkoff.edu.backend.controllers.ControllerTestConfiguration;
+import ru.tinkoff.edu.backend.controllers.profile.settings.mentor.MentorProfileSettingsControllerImpl;
 import ru.tinkoff.edu.backend.dto.profile.settings.EducationDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMentorDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.WorkExperienceDTO;
@@ -28,10 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(
-    value = MentorProfileSettingsController.class,
+    value = MentorProfileSettingsControllerImpl.class,
     excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @Import(ControllerTestConfiguration.class)
-class MentorProfileSettingsControllerTest {
+class MentorProfileSettingsControllerImplImplTest {
   @Autowired private MockMvc mockMvc;
 
   @MockBean private MentorProfileService mentorProfileService;

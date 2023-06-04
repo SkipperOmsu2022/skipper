@@ -7,8 +7,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.edu.backend.dto.profile.UserMentorProfileDTO;
 import ru.tinkoff.edu.backend.dto.profile.UserProfileDTO;
-import ru.tinkoff.edu.backend.services.MentorProfileService;
-import ru.tinkoff.edu.backend.services.ProfileService;
 
 /**
  * Данный контроллер отвечает за:
@@ -24,22 +22,10 @@ import ru.tinkoff.edu.backend.services.ProfileService;
     description = "Получение данных для страницы профиля пользователя.")
 @RequestMapping(value = "/api/user/profile")
 @CrossOrigin
-public class ProfileController {
-  private final ProfileService profileService;
-  private final MentorProfileService mentorProfileService;
-
-  public ProfileController(
-      ProfileService profileService, MentorProfileService mentorProfileService) {
-    this.profileService = profileService;
-    this.mentorProfileService = mentorProfileService;
-  }
-
+public interface ProfileController {
   @Operation(summary = "Получение информации для страницы обычного пользователя.")
   @GetMapping("/{id}")
-  public ResponseEntity<UserProfileDTO> getUserProfile(@PathVariable Long id) {
-    UserProfileDTO user = profileService.getUserProfile(id);
-    return ResponseEntity.ok(user);
-  }
+  ResponseEntity<UserProfileDTO> getUserProfile(@PathVariable Long id);
 
   @Operation(
       summary = "Получение информации для страницы ментора.",
@@ -48,9 +34,6 @@ public class ProfileController {
               + "(Необязательно) userId - id пользователя, который хочет посмотреть страницу страницу ментора ("
               + "нужно, чтобы отобразить, является ли mentorId избранным для userId)")
   @GetMapping("/mentor/{mentorId}")
-  public ResponseEntity<UserMentorProfileDTO> getMentorProfile(
-      @PathVariable Long mentorId, @RequestParam(required = false) Long userId) {
-    UserMentorProfileDTO user = mentorProfileService.getUserMentorProfile(mentorId, userId);
-    return ResponseEntity.ok(user);
-  }
+  ResponseEntity<UserMentorProfileDTO> getMentorProfile(
+      @PathVariable Long mentorId, @RequestParam(required = false) Long userId);
 }

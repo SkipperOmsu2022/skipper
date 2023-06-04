@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.backend.controllers;
+package ru.tinkoff.edu.backend.controllers.error;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
