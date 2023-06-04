@@ -39,11 +39,6 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User readById(Long id) {
-    return userRepository.getReferenceById(id);
-  }
-
-  @Override
   public User readByEmail(String email) {
     return userRepository.findByEmail(email);
   }
@@ -57,10 +52,5 @@ public class UserServiceImpl implements UserService {
       throw new EntityNotFoundException("User not exist!");
     }
     return userFromDB;
-  }
-
-  @Override
-  public boolean isExistById(Long id) {
-    return userRepository.existsById(id);
   }
 }

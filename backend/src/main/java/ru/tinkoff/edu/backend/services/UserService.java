@@ -15,20 +15,11 @@ public interface UserService {
   User create(UserRegDTO user);
 
   /**
-   * Поиск пользователя в базе данных по id.
-   *
-   * @param id id пользователя для поиска в БД.
-   */
-  User readById(Long id);
-
-  /**
    * Поиск пользователя в базе данных по email.
    *
    * @param email email пользователя для поиска в БД.
    */
   User readByEmail(String email);
-
-  boolean isExistById(Long id);
 
   User readByUserLoginDTO(UserLoginDTO user);
 }

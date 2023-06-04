@@ -10,8 +10,4 @@ public enum UserGender {
   UserGender(String gender) {
     this.gender = gender;
   }
-
-  public String getStringUserGender() {
-    return gender;
-  }
 }
