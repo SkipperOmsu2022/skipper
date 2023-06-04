@@ -14,13 +14,14 @@ import javax.validation.constraints.Positive;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FavoritesPaginationMentorListDTO {
-    @Positive
-    private Long userId;
-    @Min(0)
-    @Builder.Default
-    private Integer offset = 0;
-    @Min(1)
-    @Max(100)
-    @Builder.Default
-    private Integer limit = 30;
+  @Positive private Long userId;
+
+  @Min(0)
+  @Builder.Default
+  private Integer offset = 0;
+
+  @Min(1)
+  @Max(100)
+  @Builder.Default
+  private Integer limit = 30;
 }

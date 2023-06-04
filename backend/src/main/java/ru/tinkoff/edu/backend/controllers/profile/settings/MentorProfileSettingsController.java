@@ -21,40 +21,46 @@ import javax.validation.constraints.Size;
 
 /**
  * Данный контроллер отвечает за:
- *  <ul>
- *       <li> Изменения менторских данных пользователя.</li>
- *  </ul>
- * */
+ *
+ * <ul>
+ *   <li>Изменения менторских данных пользователя.
+ * </ul>
+ */
 @RestController
 @Validated
-@Tag(name="Mentor Profile Settings Controller", description="Изменение менторских данных в профиле пользователя.")
+@Tag(
+    name = "Mentor Profile Settings Controller",
+    description = "Изменение менторских данных в профиле пользователя.")
 @RequestMapping(value = "/api/user/profile/settings/mentor")
 @CrossOrigin
 @RequiredArgsConstructor
 @Log4j2
 public class MentorProfileSettingsController {
-    private final MentorProfileService mentorProfileService;
+  private final MentorProfileService mentorProfileService;
 
-    @Operation(summary = "Получение информации о менторских настройках пользователя.")
-    @GetMapping("/{id}")
-    public ResponseEntity<UserEditMentorDTO> getMentorSettings(@PathVariable Long id) {
-        UserEditMentorDTO user = mentorProfileService.getMentorInfo(id);
-        return ResponseEntity
-                .ok(user);
-    }
+  @Operation(summary = "Получение информации о менторских настройках пользователя.")
+  @GetMapping("/{id}")
+  public ResponseEntity<UserEditMentorDTO> getMentorSettings(@PathVariable Long id) {
+    UserEditMentorDTO user = mentorProfileService.getMentorInfo(id);
+    return ResponseEntity.ok(user);
+  }
 
-    @Operation(summary = "Изменение информации о менторских настройках пользователя.",
-            description = "Менторские специальности и менторское образование перезаписывается! В каждом запросе нужно" +
-            "отправлять всё что нужно сохранить! Вес одного сертификаты не более 3МБ. Совокупный вес всех" +
-            "сертификатов не более 9 МБ. Максимальное количество сертификатов: 3."
-    )
-    @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
-    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> editMentorSettings(@PathVariable Long id,
-                                                   @RequestPart("info") @Valid UserEditMentorDTO user,
-                                                   @Nullable @Size(message = "Максимальное количество файлов: 3", max = 3)
-                                                   @RequestPart("certificates") MultipartFile[] certificates) {
-        mentorProfileService.updateMentorInfo(id, user, certificates);
-        return ResponseEntity.ok().build();
-    }
+  @Operation(
+      summary = "Изменение информации о менторских настройках пользователя.",
+      description =
+          "Менторские специальности и менторское образование перезаписывается! В каждом запросе нужно"
+              + "отправлять всё что нужно сохранить! Вес одного сертификаты не более 3МБ. Совокупный вес всех"
+              + "сертификатов не более 9 МБ. Максимальное количество сертификатов: 3.")
+  @ApiResponse(content = @Content(schema = @Schema(hidden = true)))
+  @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<Void> editMentorSettings(
+      @PathVariable Long id,
+      @RequestPart("info") @Valid UserEditMentorDTO user,
+      @Nullable
+          @Size(message = "Максимальное количество файлов: 3", max = 3)
+          @RequestPart("certificates")
+          MultipartFile[] certificates) {
+    mentorProfileService.updateMentorInfo(id, user, certificates);
+    return ResponseEntity.ok().build();
+  }
 }

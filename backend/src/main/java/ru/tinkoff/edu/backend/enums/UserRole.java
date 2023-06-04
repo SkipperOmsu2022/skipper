@@ -1,19 +1,18 @@
 package ru.tinkoff.edu.backend.enums;
 
-/**
- * Роли(права) пользователей.
- */
+/** Роли(права) пользователей. */
 public enum UserRole {
-    ADMIN("Администратор"),
-    MENTEE("Ученик"),
-    MENTOR("Ментор");
+  ADMIN("Администратор"),
+  MENTEE("Ученик"),
+  MENTOR("Ментор");
 
-    private final String name;
-    UserRole(String name) {
-        this.name = name;
-    }
+  private final String name;
 
-    public String getStringUserRole() {
-        return name;
-    }
+  UserRole(String name) {
+    this.name = name;
+  }
+
+  public String getStringUserRole() {
+    return name;
+  }
 }

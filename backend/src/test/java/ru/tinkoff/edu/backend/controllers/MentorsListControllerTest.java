@@ -1,6 +1,5 @@
 package ru.tinkoff.edu.backend.controllers;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,55 +24,54 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(value = MentorsListController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
+@WebMvcTest(
+    value = MentorsListController.class,
+    excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @Import(ControllerTestConfiguration.class)
 class MentorsListControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @MockBean
-    private MentorListService mentorListService;
+  @MockBean private MentorListService mentorListService;
 
-    @Autowired
-    ObjectMapper objectMapper;
+  @Autowired ObjectMapper objectMapper;
 
-    @Test
-    void get_educationRUList_thenReturnListObjectsWithStatus200() throws Exception{
-        List<Qualification> qualificationList = Arrays
-                .asList(new Qualification(1L, "10.05.01", "Компьютерная безопасность"),
-                        new Qualification(2L, "42.03.02", "Журналистика"));
+  @Test
+  void get_educationRUList_thenReturnListObjectsWithStatus200() throws Exception {
+    List<Qualification> qualificationList =
+        Arrays.asList(
+            new Qualification(1L, "10.05.01", "Компьютерная безопасность"),
+            new Qualification(2L, "42.03.02", "Журналистика"));
 
-        String query = "Комп";
+    String query = "Комп";
 
-        when(mentorListService.getSpecializationMentorList(query)).thenReturn(qualificationList);
+    when(mentorListService.getSpecializationMentorList(query)).thenReturn(qualificationList);
 
-        mockMvc.perform(get("/api/list/edu")
-                        .queryParam("query", query))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(qualificationList)));
-    }
+    mockMvc
+        .perform(get("/api/list/edu").queryParam("query", query))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(content().json(objectMapper.writeValueAsString(qualificationList)));
+  }
 
-    @Test
-    void get_educationRUListWithoutParams_thenStatus400() throws Exception {
-        mockMvc.perform(get("/api/list/edu"))
-                .andDo(print())
-                .andExpect(status().isBadRequest());
-    }
+  @Test
+  void get_educationRUListWithoutParams_thenStatus400() throws Exception {
+    mockMvc.perform(get("/api/list/edu")).andDo(print()).andExpect(status().isBadRequest());
+  }
 
-    @Test
-    void get_mapMentorSpecialization_thenReturnMapObjectStatus200() throws Exception {
-        Map<MentorSpecialization, String> mapMentorSpecialization = MentorSpecialization.getMapMentorSpecialization();
+  @Test
+  void get_mapMentorSpecialization_thenReturnMapObjectStatus200() throws Exception {
+    Map<MentorSpecialization, String> mapMentorSpecialization =
+        MentorSpecialization.getMapMentorSpecialization();
 
-        when(mentorListService.getMapMentorSpecialization())
-                .thenReturn(mapMentorSpecialization);
+    when(mentorListService.getMapMentorSpecialization()).thenReturn(mapMentorSpecialization);
 
-        mockMvc.perform(get("/api/list/specializations"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(mapMentorSpecialization)));
-    }
+    mockMvc
+        .perform(get("/api/list/specializations"))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(content().json(objectMapper.writeValueAsString(mapMentorSpecialization)));
+  }
 }

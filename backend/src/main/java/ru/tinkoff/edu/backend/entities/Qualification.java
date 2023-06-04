@@ -16,16 +16,19 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Qualification implements Serializable {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false, unique = true)
-    private String code;
-    @Column(nullable = false)
-    private String name;
-    @JsonIgnore
-    public String getNameWithCode() {
-        return this.code + " " + this.name;
-    }
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(nullable = false, unique = true)
+  private String code;
+
+  @Column(nullable = false)
+  private String name;
+
+  @JsonIgnore
+  public String getNameWithCode() {
+    return this.code + " " + this.name;
+  }
 }

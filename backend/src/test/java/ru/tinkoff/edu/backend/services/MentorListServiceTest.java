@@ -24,86 +24,79 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class MentorListServiceTest {
-    @Mock
-    private UserRepository userRepository;
-    @Mock
-    private QualificationRepository qualificationRepository;
-    @InjectMocks
-    private MentorListServiceImpl mentorListService;
+  @Mock private UserRepository userRepository;
+  @Mock private QualificationRepository qualificationRepository;
+  @InjectMocks private MentorListServiceImpl mentorListService;
 
+  List<MentorListItemDTO> expectedListMentorListItemDTO =
+      Lists.list(
+          MentorListItemDTO.builder()
+              .id(1L)
+              .firstName("Ivan")
+              .lastName("Ivanov")
+              .aboutMeAsMentor("I am a mentor!")
+              .mentorSpecializations(
+                  MentorSpecialization.ACCOUNTING.getStringMentorSpecialization())
+              .build(),
+          MentorListItemDTO.builder()
+              .id(2L)
+              .firstName("Petr")
+              .lastName("Petrov")
+              .aboutMeAsMentor("I am a mentor2!")
+              .mentorSpecializations(MentorSpecialization.DEV_OPS.getStringMentorSpecialization())
+              .build());
 
-    List<MentorListItemDTO> expectedListMentorListItemDTO = Lists.list(
-            MentorListItemDTO.builder()
-                    .id(1L)
-                    .firstName("Ivan")
-                    .lastName("Ivanov")
-                    .aboutMeAsMentor("I am a mentor!")
-                    .mentorSpecializations(MentorSpecialization.ACCOUNTING.getStringMentorSpecialization())
-                    .build(),
-            MentorListItemDTO.builder()
-                    .id(2L)
-                    .firstName("Petr")
-                    .lastName("Petrov")
-                    .aboutMeAsMentor("I am a mentor2!")
-                    .mentorSpecializations(MentorSpecialization.DEV_OPS.getStringMentorSpecialization())
-                    .build()
-    );
+  List<User> listUser =
+      Lists.list(
+          User.builder()
+              .id(1L)
+              .firstName("Ivan")
+              .lastName("Ivanov")
+              .isEnabledMentorStatus(true)
+              .mentorSpecializations(Sets.set(MentorSpecialization.ACCOUNTING))
+              .aboutAsMentor("I am a mentor!")
+              .build(),
+          User.builder()
+              .id(2L)
+              .firstName("Petr")
+              .lastName("Petrov")
+              .isEnabledMentorStatus(true)
+              .mentorSpecializations(Sets.set(MentorSpecialization.DEV_OPS))
+              .aboutAsMentor("I am a mentor2!")
+              .build());
 
-    List<User> listUser = Lists.list(
-            User.builder()
-                    .id(1L)
-                    .firstName("Ivan")
-                    .lastName("Ivanov")
-                    .isEnabledMentorStatus(true)
-                    .mentorSpecializations(Sets.set(
-                            MentorSpecialization.ACCOUNTING
-                    ))
-                    .aboutAsMentor("I am a mentor!")
-                    .build(),
-            User.builder()
-                    .id(2L)
-                    .firstName("Petr")
-                    .lastName("Petrov")
-                    .isEnabledMentorStatus(true)
-                    .mentorSpecializations(Sets.set(
-                            MentorSpecialization.DEV_OPS
-                    ))
-                    .aboutAsMentor("I am a mentor2!")
-                    .build()
-    );
+  @Test
+  void getSpecializationMentorList_thenReturnMentorList() {
+    String nameSpecializationMentor = "Комп";
+    List<Qualification> qualificationsListExpected =
+        Lists.list(
+            new Qualification(1L, "10.05.01", "Компьютерная безопасность"),
+            new Qualification(2L, "09.01.02", "Наладчик компьютерных сетей"));
 
-    @Test
-    void getSpecializationMentorList_thenReturnMentorList() {
-        String nameSpecializationMentor = "Комп";
-        List<Qualification> qualificationsListExpected = Lists.list(
-                new Qualification(1L, "10.05.01", "Компьютерная безопасность"),
-                new Qualification(2L, "09.01.02", "Наладчик компьютерных сетей")
-        );
+    when(qualificationRepository.getSpecializationMentorByNameContainsIgnoreCase(
+            nameSpecializationMentor))
+        .thenReturn(qualificationsListExpected);
 
-        when(qualificationRepository.getSpecializationMentorByNameContainsIgnoreCase(nameSpecializationMentor))
-                .thenReturn(qualificationsListExpected);
+    List<Qualification> qualificationListActual =
+        mentorListService.getSpecializationMentorList(nameSpecializationMentor);
 
-        List<Qualification> qualificationListActual = mentorListService
-                .getSpecializationMentorList(nameSpecializationMentor);
+    Assertions.assertEquals(qualificationsListExpected, qualificationListActual);
+  }
 
-        Assertions.assertEquals(qualificationsListExpected, qualificationListActual);
-    }
+  @Test
+  void getMapMentorSpecialization_thenReturnMapMentorSpecialization() {
+    Assertions.assertEquals(
+        MentorSpecialization.getMapMentorSpecialization(),
+        mentorListService.getMapMentorSpecialization());
+  }
 
-    @Test
-    void getMapMentorSpecialization_thenReturnMapMentorSpecialization() {
-        Assertions.assertEquals(
-                MentorSpecialization.getMapMentorSpecialization(),
-                mentorListService.getMapMentorSpecialization()
-        );
-    }
+  @Test
+  @Disabled("Не хочу пока писать, позже этим займусь, сейчас некритично.")
+  void getFavoritesMentorListPage() {
+    Long id = 1L;
+    FavoritesPaginationMentorListDTO dto = new FavoritesPaginationMentorListDTO(id, 0, 30);
+    Assertions.assertTrue(true);
 
-    @Test
-    @Disabled("Не хочу пока писать, позже этим займусь, сейчас некритично.")
-    void getFavoritesMentorListPage() {
-        Long id = 1L;
-        FavoritesPaginationMentorListDTO dto = new FavoritesPaginationMentorListDTO(id, 0, 30);
-        Assertions.assertTrue(true);
-
-        mentorListService.getFavoritesMentorListPage(dto);
-    }
+    mentorListService.getFavoritesMentorListPage(dto);
+  }
 }

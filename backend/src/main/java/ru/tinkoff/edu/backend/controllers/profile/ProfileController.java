@@ -12,41 +12,45 @@ import ru.tinkoff.edu.backend.services.ProfileService;
 
 /**
  * Данный контроллер отвечает за:
+ *
  * <ul>
- *     <li>Получения данных для страницы профиля пользователя</li>
+ *   <li>Получения данных для страницы профиля пользователя
  * </ul>
  */
 @RestController
 @Validated
-@Tag(name="Profile Controller",
-        description="Получение данных для страницы профиля пользователя.")
+@Tag(
+    name = "Profile Controller",
+    description = "Получение данных для страницы профиля пользователя.")
 @RequestMapping(value = "/api/user/profile")
 @CrossOrigin
 public class ProfileController {
-    private final ProfileService profileService;
-    private final MentorProfileService mentorProfileService;
+  private final ProfileService profileService;
+  private final MentorProfileService mentorProfileService;
 
-    public ProfileController(ProfileService profileService, MentorProfileService mentorProfileService) {
-        this.profileService = profileService;
-        this.mentorProfileService = mentorProfileService;
-    }
+  public ProfileController(
+      ProfileService profileService, MentorProfileService mentorProfileService) {
+    this.profileService = profileService;
+    this.mentorProfileService = mentorProfileService;
+  }
 
-    @Operation(summary = "Получение информации для страницы обычного пользователя.")
-    @GetMapping("/{id}")
-    public ResponseEntity<UserProfileDTO> getUserProfile(@PathVariable Long id) {
-        UserProfileDTO user = profileService.getUserProfile(id);
-        return ResponseEntity.ok(user);
-    }
+  @Operation(summary = "Получение информации для страницы обычного пользователя.")
+  @GetMapping("/{id}")
+  public ResponseEntity<UserProfileDTO> getUserProfile(@PathVariable Long id) {
+    UserProfileDTO user = profileService.getUserProfile(id);
+    return ResponseEntity.ok(user);
+  }
 
-    @Operation(summary = "Получение информации для страницы ментора.",
-            description = "Возвращает 4 последних отзыва. mentorId - id пользователя, чью страницу нужно открыть." +
-                    "(Необязательно) userId - id пользователя, который хочет посмотреть страницу страницу ментора (" +
-                    "нужно, чтобы отобразить, является ли mentorId избранным для userId)"
-    )
-    @GetMapping("/mentor/{mentorId}")
-    public ResponseEntity<UserMentorProfileDTO> getMentorProfile(@PathVariable Long mentorId,
-                                                                  @RequestParam(required = false) Long userId) {
-        UserMentorProfileDTO user = mentorProfileService.getUserMentorProfile(mentorId, userId);
-        return ResponseEntity.ok(user);
-    }
+  @Operation(
+      summary = "Получение информации для страницы ментора.",
+      description =
+          "Возвращает 4 последних отзыва. mentorId - id пользователя, чью страницу нужно открыть."
+              + "(Необязательно) userId - id пользователя, который хочет посмотреть страницу страницу ментора ("
+              + "нужно, чтобы отобразить, является ли mentorId избранным для userId)")
+  @GetMapping("/mentor/{mentorId}")
+  public ResponseEntity<UserMentorProfileDTO> getMentorProfile(
+      @PathVariable Long mentorId, @RequestParam(required = false) Long userId) {
+    UserMentorProfileDTO user = mentorProfileService.getUserMentorProfile(mentorId, userId);
+    return ResponseEntity.ok(user);
+  }
 }

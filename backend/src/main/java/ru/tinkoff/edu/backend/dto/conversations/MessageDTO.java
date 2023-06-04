@@ -14,12 +14,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageDTO {
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
-    @NotBlank
-    private String messageContent;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDateTime dateTimeSend;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long userFrom;
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  private Long id;
+
+  @NotBlank private String messageContent;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  private LocalDateTime dateTimeSend;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  private Long userFrom;
 }

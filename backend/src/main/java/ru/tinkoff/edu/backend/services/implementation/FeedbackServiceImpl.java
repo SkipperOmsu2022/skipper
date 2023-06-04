@@ -20,69 +20,60 @@ import static ru.tinkoff.edu.backend.mappers.FeedbackMapper.*;
 
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
-    private final UserRepository userRepository;
-    private final FeedbackRepository feedbackRepository;
+  private final UserRepository userRepository;
+  private final FeedbackRepository feedbackRepository;
 
-    public FeedbackServiceImpl(UserRepository userRepository, FeedbackRepository feedbackRepository) {
-        this.userRepository = userRepository;
-        this.feedbackRepository = feedbackRepository;
+  public FeedbackServiceImpl(UserRepository userRepository, FeedbackRepository feedbackRepository) {
+    this.userRepository = userRepository;
+    this.feedbackRepository = feedbackRepository;
+  }
+
+  @Override
+  public void addFeedback(FeedbackDTO feedback) {
+    if (feedback.getMentorId().equals(feedback.getUserAuthorId())) {
+      throw new AddingFeedbackException("Невозможно добавить отзыв на самого себя!");
     }
 
-    @Override
-    public void addFeedback(FeedbackDTO feedback) {
-        if (feedback.getMentorId().equals(feedback.getUserAuthorId())) {
-            throw new AddingFeedbackException("Невозможно добавить отзыв на самого себя!");
-        }
+    User mentor = userRepository.getReferenceById(feedback.getMentorId());
+    User userAuthor = userRepository.getReferenceById(feedback.getUserAuthorId());
+    Feedback feedbackFromDB =
+        findOrCreate(mentor, userAuthor, feedback)
+            .setText(feedback.getText())
+            .setRating(feedback.getRating());
 
-        User mentor = userRepository.getReferenceById(feedback.getMentorId());
-        User userAuthor = userRepository.getReferenceById(feedback.getUserAuthorId());
-        Feedback feedbackFromDB = findOrCreate(mentor, userAuthor, feedback)
-                .setText(feedback.getText())
-                .setRating(feedback.getRating());
+    userRepository.save(mentor.addFeedback(feedbackFromDB));
+  }
 
-        userRepository.save(
-                mentor.addFeedback(
-                        feedbackFromDB
-                )
-        );
-    }
+  private Feedback findOrCreate(User mentor, User userAuthor, FeedbackDTO feedback) {
+    return feedbackRepository
+        .getFeedbackById(feedback.getMentorId(), feedback.getUserAuthorId())
+        .orElseGet(() -> mapperToFeedbackWithoutTextAndRating(mentor, userAuthor, feedback));
+  }
 
-    private Feedback findOrCreate(User mentor, User userAuthor, FeedbackDTO feedback) {
-        return feedbackRepository.getFeedbackById(feedback.getMentorId(), feedback.getUserAuthorId())
-                .orElseGet(() -> mapperToFeedbackWithoutTextAndRating(
-                        mentor,
-                        userAuthor,
-                        feedback
-                ));
-    }
+  @Override
+  public void deleteFeedback(Long mentorId, Long userAuthorId) {
+    feedbackRepository.deleteById(new FeedbackPK(mentorId, userAuthorId));
+  }
 
-    @Override
-    public void deleteFeedback(Long mentorId, Long userAuthorId) {
-        feedbackRepository.deleteById(new FeedbackPK(mentorId, userAuthorId));
-    }
+  @Override
+  public FeedbackListPageDTO getPaginationListFeedback(FeedbackParamsDTO dto) {
+    return mapperToFeedbackListPageDTO(
+        feedbackRepository.getFeedbacksByMentor(
+            PageRequest.of(dto.getOffset(), dto.getLimit()),
+            userRepository.getReferenceById(dto.getUserId())));
+  }
 
-    @Override
-    public FeedbackListPageDTO getPaginationListFeedback(FeedbackParamsDTO dto) {
-        return mapperToFeedbackListPageDTO(
-                feedbackRepository.getFeedbacksByMentor(
-                        PageRequest.of(dto.getOffset(), dto.getLimit()),
-                        userRepository.getReferenceById(dto.getUserId())
-                )
-        );
-    }
+  @Override
+  public List<Feedback> getLastFeedbacks(User mentor, Integer limit) {
+    return feedbackRepository
+        .getFeedbacksByMentor(
+            PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "createAt")), mentor)
+        .getContent();
+  }
 
-    @Override
-    public List<Feedback> getLastFeedbacks(User mentor, Integer limit) {
-        return feedbackRepository.getFeedbacksByMentor(
-                PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "createAt")),
-                mentor
-        ).getContent();
-    }
-
-    @Override
-    public FeedbackDTO getFeedback(Long mentorId, Long userAuthorId) {
-        return mapperToFeedbackDTO(feedbackRepository.getReferenceById(
-                new FeedbackPK(mentorId, userAuthorId)
-        ));
-    }
+  @Override
+  public FeedbackDTO getFeedback(Long mentorId, Long userAuthorId) {
+    return mapperToFeedbackDTO(
+        feedbackRepository.getReferenceById(new FeedbackPK(mentorId, userAuthorId)));
+  }
 }

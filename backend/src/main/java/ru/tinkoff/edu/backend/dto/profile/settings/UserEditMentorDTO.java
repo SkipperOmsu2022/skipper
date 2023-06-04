@@ -18,21 +18,19 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserEditMentorDTO {
-    @NotNull
-    private Boolean isEnabledMentorStatus;
-    @NotBlank
-    @Size(max = 400)
-    private String aboutMeAsMentor;
-    @NotNull
-    @Size(min = 1, message
-            = "Mentor specialization must have at least one element!")
-    private Set<MentorSpecialization> mentorSpecializations;
-    @Valid
-    @NotNull
-    private Set<EducationDTO> educations;
-    @Valid
-    @NotNull
-    private Set<WorkExperienceDTO> workExperiences;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Set<String> certificatesResource;
+  @NotNull private Boolean isEnabledMentorStatus;
+
+  @NotBlank
+  @Size(max = 400)
+  private String aboutMeAsMentor;
+
+  @NotNull
+  @Size(min = 1, message = "Mentor specialization must have at least one element!")
+  private Set<MentorSpecialization> mentorSpecializations;
+
+  @Valid @NotNull private Set<EducationDTO> educations;
+  @Valid @NotNull private Set<WorkExperienceDTO> workExperiences;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  private Set<String> certificatesResource;
 }

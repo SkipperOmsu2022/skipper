@@ -13,8 +13,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EducationPK implements Serializable {
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
-    @Column(name = "qualification_id", nullable = false)
-    private Long qualificationId;
+  @Column(name = "user_id", nullable = false)
+  private Long userId;
+
+  @Column(name = "qualification_id", nullable = false)
+  private Long qualificationId;
 }

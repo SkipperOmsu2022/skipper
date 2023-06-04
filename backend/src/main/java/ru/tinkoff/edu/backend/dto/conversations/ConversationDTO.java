@@ -13,11 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConversationDTO {
-    private Long userId;
-    private String firstName;
-    private String lastName;
-    private String imageUserResource;
-    private String mentorSpecializations;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<MessageDTO> messages;
+  private Long userId;
+  private String firstName;
+  private String lastName;
+  private String imageUserResource;
+  private String mentorSpecializations;
+
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private List<MessageDTO> messages;
 }

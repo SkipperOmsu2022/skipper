@@ -22,23 +22,25 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Feedback {
-    @EmbeddedId
-    private FeedbackPK id = new FeedbackPK();
+  @EmbeddedId private FeedbackPK id = new FeedbackPK();
 
-    private int rating;
-    @Column(length = 400)
-    private String text;
-    @CreatedDate
-    @NotNull
-    @Column(name = "datetime")
-    private LocalDate createAt;
+  private int rating;
 
-    @ManyToOne
-    @MapsId("mentorId")
-    @JoinColumn(name = "mentor_id")
-    private User mentor;
-    @ManyToOne
-    @MapsId("userAuthorId")
-    @JoinColumn(name = "user_author_id")
-    private User userAuthor;
+  @Column(length = 400)
+  private String text;
+
+  @CreatedDate
+  @NotNull
+  @Column(name = "datetime")
+  private LocalDate createAt;
+
+  @ManyToOne
+  @MapsId("mentorId")
+  @JoinColumn(name = "mentor_id")
+  private User mentor;
+
+  @ManyToOne
+  @MapsId("userAuthorId")
+  @JoinColumn(name = "user_author_id")
+  private User userAuthor;
 }

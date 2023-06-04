@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Hidden
 @CrossOrigin
 public class HomeController {
-    @GetMapping("/")
-    public String home() {
-        return "/index.html";
-    }
+  @GetMapping("/")
+  public String home() {
+    return "/index.html";
+  }
 }

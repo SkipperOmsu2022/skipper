@@ -14,20 +14,21 @@ import java.nio.file.Paths;
 @Configuration
 @Log4j2
 public class RestConfiguration implements WebMvcConfigurer {
-    private final Path rootLocation;
+  private final Path rootLocation;
 
-    public RestConfiguration(StorageProperties properties) {
-        this.rootLocation = Paths.get(properties.getLocation());
-    }
+  public RestConfiguration(StorageProperties properties) {
+    this.rootLocation = Paths.get(properties.getLocation());
+  }
 
-    @Override
-    public void addResourceHandlers(final @NonNull ResourceHandlerRegistry registry) {
-        for(FileStorageLocation fileStorageLocation : FileStorageLocation.values()) {
-            registry.addResourceHandler( fileStorageLocation.getApi() + "/**")
-                    .addResourceLocations("file:" + rootLocation
-                            .resolve(fileStorageLocation.getPath())
-                            .normalize()
-                            .toAbsolutePath() + "/");
-        }
+  @Override
+  public void addResourceHandlers(final @NonNull ResourceHandlerRegistry registry) {
+    for (FileStorageLocation fileStorageLocation : FileStorageLocation.values()) {
+      registry
+          .addResourceHandler(fileStorageLocation.getApi() + "/**")
+          .addResourceLocations(
+              "file:"
+                  + rootLocation.resolve(fileStorageLocation.getPath()).normalize().toAbsolutePath()
+                  + "/");
     }
+  }
 }

@@ -26,47 +26,50 @@ import java.util.List;
 @CrossOrigin
 @Log4j2
 public class MessageController {
-    // Реализует простой протокол обмена текстовых сообщений - STOMP
-    private final SimpMessagingTemplate simpMessagingTemplate;
-    private final MessageService messageService;
+  // Реализует простой протокол обмена текстовых сообщений - STOMP
+  private final SimpMessagingTemplate simpMessagingTemplate;
+  private final MessageService messageService;
 
-    public MessageController(SimpMessagingTemplate simpMessagingTemplate, MessageService messageService) {
-        this.simpMessagingTemplate = simpMessagingTemplate;
-        this.messageService = messageService;
-    }
+  public MessageController(
+      SimpMessagingTemplate simpMessagingTemplate, MessageService messageService) {
+    this.simpMessagingTemplate = simpMessagingTemplate;
+    this.messageService = messageService;
+  }
 
-    /**
-     * Отправка сообщения от одного пользователя - другому.
-     * MessageMapping - api для принятия сообщения.
-     */
-    @MessageMapping("/chat/{idFrom}/{idTo}")
-    public void sendMessage(@DestinationVariable Long idFrom, @DestinationVariable Long idTo,
-                            @Payload MessageDTO message) {
-        simpMessagingTemplate.convertAndSend("/topic/messages/" + idTo,
-                messageService.save(idTo, idFrom, message));
-    }
+  /**
+   * Отправка сообщения от одного пользователя - другому. MessageMapping - api для принятия
+   * сообщения.
+   */
+  @MessageMapping("/chat/{idFrom}/{idTo}")
+  public void sendMessage(
+      @DestinationVariable Long idFrom,
+      @DestinationVariable Long idTo,
+      @Payload MessageDTO message) {
+    simpMessagingTemplate.convertAndSend(
+        "/topic/messages/" + idTo, messageService.save(idTo, idFrom, message));
+  }
 
-    @Operation(summary = "Получение списка диалогов.",
-            description = "Возвращает все сообщения пользователя с указанным id с пагинацией." +
-                    "Каждый диалог содержит указанное количество последних сообщений в хронологическом порядке."
-    )
-    @GetMapping("/list-messages/{userId}")
-    public ResponseEntity<List<ConversationDTO>> getMessages(@PathVariable Long userId,
-                                                             @Valid PaginationListConversationDTO dto) {
-        return ResponseEntity.ok(messageService.getListConversations(userId, dto));
-    }
+  @Operation(
+      summary = "Получение списка диалогов.",
+      description =
+          "Возвращает все сообщения пользователя с указанным id с пагинацией."
+              + "Каждый диалог содержит указанное количество последних сообщений в хронологическом порядке.")
+  @GetMapping("/list-messages/{userId}")
+  public ResponseEntity<List<ConversationDTO>> getMessages(
+      @PathVariable Long userId, @Valid PaginationListConversationDTO dto) {
+    return ResponseEntity.ok(messageService.getListConversations(userId, dto));
+  }
 
-    @Operation(summary = "Получение списка сообщений для диалога.")
-    @GetMapping("/list-messages/{userId1}/{userId2}")
-    public ResponseEntity<List<MessageDTO>> getMessagesForConversation(@PathVariable Long userId1,
-                                                                       @PathVariable Long userId2,
-                                                                       @Valid PaginationListMessageDTO dto) {
-        return ResponseEntity.ok(messageService.getListMessagesForConversation(userId1, userId2, dto));
-    }
+  @Operation(summary = "Получение списка сообщений для диалога.")
+  @GetMapping("/list-messages/{userId1}/{userId2}")
+  public ResponseEntity<List<MessageDTO>> getMessagesForConversation(
+      @PathVariable Long userId1, @PathVariable Long userId2, @Valid PaginationListMessageDTO dto) {
+    return ResponseEntity.ok(messageService.getListMessagesForConversation(userId1, userId2, dto));
+  }
 
-    @Operation(summary = "Получение информации о пользователе в диалоге.")
-    @GetMapping("/user-info/{id}")
-    public ResponseEntity<ConversationDTO> getUserInfoForConversation(@PathVariable Long id) {
-        return ResponseEntity.ok(messageService.getUserInfoForConversation(id));
-    }
+  @Operation(summary = "Получение информации о пользователе в диалоге.")
+  @GetMapping("/user-info/{id}")
+  public ResponseEntity<ConversationDTO> getUserInfoForConversation(@PathVariable Long id) {
+    return ResponseEntity.ok(messageService.getUserInfoForConversation(id));
+  }
 }

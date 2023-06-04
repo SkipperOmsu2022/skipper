@@ -16,17 +16,19 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @FirstFieldLargeSecondField(
-        firstField = "yearEnd", secondField = "yearStart", message = "The start year cannot be less!"
-)
+    firstField = "yearEnd",
+    secondField = "yearStart",
+    message = "The start year cannot be less!")
 public class EducationDTO {
-    @NotNull(message = "Начало получения образования обязательно!")
-    @PastOrPresentYear
-    private Integer yearStart;
-    private Integer yearEnd;
-    @NotNull
-    private Long qualificationId;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String qualificationNameWithCode;
-    @NotBlank
-    private String educationalInstitution;
+  @NotNull(message = "Начало получения образования обязательно!")
+  @PastOrPresentYear
+  private Integer yearStart;
+
+  private Integer yearEnd;
+  @NotNull private Long qualificationId;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  private String qualificationNameWithCode;
+
+  @NotBlank private String educationalInstitution;
 }

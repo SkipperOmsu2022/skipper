@@ -10,11 +10,12 @@ import java.util.List;
 
 @Service
 public interface MessageService {
-    MessageDTO save(Long userIdTo, Long userIdFrom, MessageDTO message);
+  MessageDTO save(Long userIdTo, Long userIdFrom, MessageDTO message);
 
-    List<ConversationDTO> getListConversations(Long userId, PaginationListConversationDTO dto);
+  List<ConversationDTO> getListConversations(Long userId, PaginationListConversationDTO dto);
 
-    List<MessageDTO> getListMessagesForConversation(Long userId1, Long userId2, PaginationListMessageDTO dto);
+  List<MessageDTO> getListMessagesForConversation(
+      Long userId1, Long userId2, PaginationListMessageDTO dto);
 
-    ConversationDTO getUserInfoForConversation(Long id);
+  ConversationDTO getUserInfoForConversation(Long id);
 }

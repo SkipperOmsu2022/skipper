@@ -15,13 +15,14 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @FirstFieldLargeSecondField(
-        firstField = "yearEnd", secondField = "yearStart", message = "The start year cannot be less!"
-)
+    firstField = "yearEnd",
+    secondField = "yearStart",
+    message = "The start year cannot be less!")
 public class WorkExperienceDTO {
-    @NotNull(message = "Начало опыта работы обязательно!")
-    @PastOrPresentYear
-    private Integer yearStart;
-    private Integer yearEnd;
-    @NotBlank
-    private String placeOfWork;
+  @NotNull(message = "Начало опыта работы обязательно!")
+  @PastOrPresentYear
+  private Integer yearStart;
+
+  private Integer yearEnd;
+  @NotBlank private String placeOfWork;
 }

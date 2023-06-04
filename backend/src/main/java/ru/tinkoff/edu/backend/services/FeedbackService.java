@@ -9,16 +9,15 @@ import ru.tinkoff.edu.backend.entities.feedback.Feedback;
 
 import java.util.List;
 
-
 @Service
 public interface FeedbackService {
-    void addFeedback(FeedbackDTO feedback);
+  void addFeedback(FeedbackDTO feedback);
 
-    void deleteFeedback(Long mentorId, Long userAuthorId);
+  void deleteFeedback(Long mentorId, Long userAuthorId);
 
-    FeedbackListPageDTO getPaginationListFeedback(FeedbackParamsDTO dto);
+  FeedbackListPageDTO getPaginationListFeedback(FeedbackParamsDTO dto);
 
-    List<Feedback> getLastFeedbacks(User mentor, Integer limit);
+  List<Feedback> getLastFeedbacks(User mentor, Integer limit);
 
-    FeedbackDTO getFeedback(Long mentorId, Long userAuthorId);
+  FeedbackDTO getFeedback(Long mentorId, Long userAuthorId);
 }

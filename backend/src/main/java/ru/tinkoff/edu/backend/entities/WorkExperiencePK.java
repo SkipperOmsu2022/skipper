@@ -13,10 +13,12 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WorkExperiencePK implements Serializable {
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
-    @Column(name = "place_of_work", nullable = false)
-    private String placeOfWork;
-    @Column(name = "year_start", nullable = false)
-    private Integer yearStart;
+  @Column(name = "user_id", nullable = false)
+  private Long userId;
+
+  @Column(name = "place_of_work", nullable = false)
+  private String placeOfWork;
+
+  @Column(name = "year_start", nullable = false)
+  private Integer yearStart;
 }

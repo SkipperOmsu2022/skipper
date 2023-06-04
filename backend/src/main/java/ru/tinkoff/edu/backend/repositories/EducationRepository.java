@@ -6,8 +6,7 @@ import ru.tinkoff.edu.backend.entities.Education;
 import ru.tinkoff.edu.backend.entities.EducationPK;
 import ru.tinkoff.edu.backend.entities.User;
 
-
 @Repository
 public interface EducationRepository extends JpaRepository<Education, EducationPK> {
-    void deleteEducationsByUser(User user);
+  void deleteEducationsByUser(User user);
 }

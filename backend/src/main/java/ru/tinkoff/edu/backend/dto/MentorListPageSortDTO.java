@@ -1,6 +1,5 @@
 package ru.tinkoff.edu.backend.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MentorListPageSortDTO {
-    private List<MentorListItemDTO> content;
-    private Long totalElement;
+  private List<MentorListItemDTO> content;
+  private Long totalElement;
 }
