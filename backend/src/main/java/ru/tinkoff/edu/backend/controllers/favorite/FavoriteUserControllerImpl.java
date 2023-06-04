@@ -1,8 +1,10 @@
 package ru.tinkoff.edu.backend.controllers.favorite;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.backend.services.FavoriteUserService;
 
+@RestController
 public class FavoriteUserControllerImpl implements FavoriteUserController {
   private final FavoriteUserService favoriteUserService;
 

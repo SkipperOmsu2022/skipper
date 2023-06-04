@@ -1,11 +1,13 @@
 package ru.tinkoff.edu.backend.controllers.profile;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.backend.dto.profile.UserMentorProfileDTO;
 import ru.tinkoff.edu.backend.dto.profile.UserProfileDTO;
 import ru.tinkoff.edu.backend.services.MentorProfileService;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
+@RestController
 public class ProfileControllerImpl implements ProfileController {
   private final ProfileService profileService;
   private final MentorProfileService mentorProfileService;

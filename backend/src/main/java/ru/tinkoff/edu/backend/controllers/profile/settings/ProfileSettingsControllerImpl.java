@@ -1,12 +1,13 @@
 package ru.tinkoff.edu.backend.controllers.profile.settings;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.backend.dto.profile.settings.UserEditAccountDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.UserEditContactsDTO;
 import ru.tinkoff.edu.backend.dto.profile.settings.UserEditMainInfoDTO;
 import ru.tinkoff.edu.backend.services.ProfileService;
 
+@RestController
 public class ProfileSettingsControllerImpl implements ProfileSettingsController {
 
   private final ProfileService profileService;

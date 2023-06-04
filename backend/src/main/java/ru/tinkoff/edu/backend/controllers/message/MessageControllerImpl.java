@@ -4,12 +4,14 @@ import java.util.List;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.backend.dto.conversations.ConversationDTO;
 import ru.tinkoff.edu.backend.dto.conversations.MessageDTO;
 import ru.tinkoff.edu.backend.dto.conversations.PaginationListConversationDTO;
 import ru.tinkoff.edu.backend.dto.conversations.PaginationListMessageDTO;
 import ru.tinkoff.edu.backend.services.MessageService;
 
+@RestController
 @Log4j2
 public class MessageControllerImpl implements MessageController {
   // Реализует простой протокол обмена текстовых сообщений - STOMP

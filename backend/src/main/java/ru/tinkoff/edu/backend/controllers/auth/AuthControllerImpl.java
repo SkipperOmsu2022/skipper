@@ -3,12 +3,14 @@ package ru.tinkoff.edu.backend.controllers.auth;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.backend.dto.UserLoginDTO;
 import ru.tinkoff.edu.backend.dto.UserRegDTO;
 import ru.tinkoff.edu.backend.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
+@RestController
 @Log4j2
 public class AuthControllerImpl implements AuthController {
   private final UserService userService;

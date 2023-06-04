@@ -89,14 +89,4 @@ class MentorListServiceTest {
         MentorSpecialization.getMapMentorSpecialization(),
         mentorListService.getMapMentorSpecialization());
   }
-
-  @Test
-  @Disabled("Не хочу пока писать, позже этим займусь, сейчас некритично.")
-  void getFavoritesMentorListPage() {
-    Long id = 1L;
-    FavoritesPaginationMentorListDTO dto = new FavoritesPaginationMentorListDTO(id, 0, 30);
-    Assertions.assertTrue(true);
-
-    mentorListService.getFavoritesMentorListPage(dto);
-  }
 }

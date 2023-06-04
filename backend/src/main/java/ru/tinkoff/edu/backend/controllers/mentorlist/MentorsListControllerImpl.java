@@ -11,6 +11,7 @@ import ru.tinkoff.edu.backend.entities.Qualification;
 import ru.tinkoff.edu.backend.enums.MentorSpecialization;
 import ru.tinkoff.edu.backend.services.MentorListService;
 
+@RestController
 public class MentorsListControllerImpl implements MentorsListController {
   private final MentorListService mentorListService;
 
