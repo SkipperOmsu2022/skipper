@@ -42,10 +42,12 @@ public class MessageServiceImpl implements MessageService {
 
   @Override
   public MessageDTO save(Long userIdTo, Long userIdFrom, MessageDTO messageDTO) {
-    return messageToMessageDTO(
+    MessageDTO returnMessage = messageToMessageDTO(
         conversationRepository
             .save(addMessageInConversation(userIdTo, userIdFrom, messageDTO))
             .getLastMessage());
+    conversationRepository.flush();
+    return returnMessage;
   }
 
   /**

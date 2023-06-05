@@ -3,6 +3,8 @@ package ru.tinkoff.edu.backend.controllers.message;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.edu.backend.dto.conversations.ConversationDTO;
@@ -25,7 +27,9 @@ public class MessageControllerImpl implements MessageController {
   }
 
   @Override
-  public void sendMessage(Long idFrom, Long idTo, MessageDTO message) {
+  public void sendMessage(@DestinationVariable Long idFrom,
+                          @DestinationVariable Long idTo,
+                          @Payload MessageDTO message) {
     simpMessagingTemplate.convertAndSend(
         "/topic/messages/" + idTo, messageService.save(idTo, idFrom, message));
   }
