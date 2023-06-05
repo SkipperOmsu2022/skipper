@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface QualificationRepository extends JpaRepository<Qualification, Long> {
-    List<Qualification> getSpecializationMentorByNameContainsIgnoreCase(String query);
+  List<Qualification> getSpecializationMentorByNameContainsIgnoreCase(String query);
 }

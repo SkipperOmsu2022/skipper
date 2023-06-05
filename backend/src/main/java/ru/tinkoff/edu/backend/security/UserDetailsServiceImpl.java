@@ -13,21 +13,21 @@ import java.util.Collection;
 
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserRepository userRepository;
+  private final UserRepository userRepository;
 
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+  public UserDetailsServiceImpl(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    User userFromDB = userRepository.findByEmail(email);
+    if (userFromDB == null) {
+      throw new UsernameNotFoundException("User email = " + email + " not found.");
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User userFromDB = userRepository.findByEmail(email);
-        if(userFromDB == null ) {
-            throw new UsernameNotFoundException("User email = " + email + " not found.");
-        }
-
-        Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
-        return new org.springframework.security.core.userdetails
-                .User(userFromDB.getEmail(), userFromDB.getPassword(), authorities);
-    }
+    Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
+    return new org.springframework.security.core.userdetails.User(
+        userFromDB.getEmail(), userFromDB.getPassword(), authorities);
+  }
 }

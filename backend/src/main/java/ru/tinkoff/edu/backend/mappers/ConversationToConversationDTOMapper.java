@@ -8,23 +8,21 @@ import ru.tinkoff.edu.backend.entities.User;
 import java.util.List;
 
 public class ConversationToConversationDTOMapper {
-    private ConversationToConversationDTOMapper() {
+  private ConversationToConversationDTOMapper() {}
+
+  public static ConversationDTO conversationToConversationDTO(
+      Conversation conversation, User user, List<MessageDTO> messages) {
+    if (conversation == null) {
+      return null;
     }
 
-    public static ConversationDTO conversationToConversationDTO(Conversation conversation, User user,
-                                                                List<MessageDTO> messages) {
-        if(conversation == null) {
-            return null;
-        }
-
-        return ConversationDTO.builder()
-                .userId(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .imageUserResource(user.getImageUserResource())
-                .mentorSpecializations(user.getInlineMentorSpecializations())
-                .messages(messages)
-                .build();
-    }
-
+    return ConversationDTO.builder()
+        .userId(user.getId())
+        .firstName(user.getFirstName())
+        .lastName(user.getLastName())
+        .imageUserResource(user.getImageUserResource())
+        .mentorSpecializations(user.getInlineMentorSpecializations())
+        .messages(messages)
+        .build();
+  }
 }

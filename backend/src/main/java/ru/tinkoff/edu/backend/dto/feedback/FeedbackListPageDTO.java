@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedbackListPageDTO {
-    private List<FeedbackDTO> content;
-    private Long totalElement;
+  private List<FeedbackDTO> content;
+  private Long totalElement;
 }

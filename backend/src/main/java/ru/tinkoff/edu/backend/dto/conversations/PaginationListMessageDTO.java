@@ -13,11 +13,12 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaginationListMessageDTO {
-    @Min(0)
-    @Builder.Default
-    private Integer offset = 0;
-    @Min(10)
-    @Max(50)
-    @Builder.Default
-    private Integer limit = 30;
+  @Min(0)
+  @Builder.Default
+  private Integer offset = 0;
+
+  @Min(10)
+  @Max(50)
+  @Builder.Default
+  private Integer limit = 30;
 }

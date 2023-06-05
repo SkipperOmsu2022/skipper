@@ -8,29 +8,26 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MessageMapper {
-    private MessageMapper() {
+  private MessageMapper() {}
+
+  public static MessageDTO messageToMessageDTO(Message message) {
+    if (message == null) {
+      return null;
     }
 
-    public static MessageDTO messageToMessageDTO(Message message) {
-        if (message == null) {
-            return null;
-        }
+    return MessageDTO.builder()
+        .id(message.getId())
+        .messageContent(message.getMessageTextContent())
+        .dateTimeSend(message.getDateTimeSend())
+        .userFrom(message.getUserSender().getId())
+        .build();
+  }
 
-        return MessageDTO.builder()
-                .id(message.getId())
-                .messageContent(message.getMessageTextContent())
-                .dateTimeSend(message.getDateTimeSend())
-                .userFrom(message.getUserSender().getId())
-                .build();
+  public static List<MessageDTO> messageToMessageDTOs(List<Message> messages) {
+    if (messages == null) {
+      return Collections.emptyList();
     }
 
-    public static List<MessageDTO> messageToMessageDTOs(List<Message> messages) {
-        if (messages == null) {
-            return Collections.emptyList();
-        }
-
-        return messages.stream()
-                .map(MessageMapper::messageToMessageDTO)
-                .collect(Collectors.toList());
-    }
+    return messages.stream().map(MessageMapper::messageToMessageDTO).collect(Collectors.toList());
+  }
 }

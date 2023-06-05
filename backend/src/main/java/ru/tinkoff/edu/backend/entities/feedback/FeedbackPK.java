@@ -13,8 +13,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedbackPK implements Serializable {
-    @Column(name = "mentor_id", nullable = false)
-    private Long mentorId;
-    @Column(name = "mentor_id", nullable = false)
-    private Long userAuthorId;
+  @Column(name = "mentor_id", nullable = false)
+  private Long mentorId;
+
+  @Column(name = "mentor_id", nullable = false)
+  private Long userAuthorId;
 }

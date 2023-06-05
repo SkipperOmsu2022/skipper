@@ -14,13 +14,13 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WorkExperience {
-    @EmbeddedId
-    private WorkExperiencePK id = new WorkExperiencePK();
-    @Column(name = "year_end")
-    private Integer yearEnd;
+  @EmbeddedId private WorkExperiencePK id = new WorkExperiencePK();
 
-    @ManyToOne
-    @MapsId("userId")
-    @JoinColumn(name = "user_id")
-    private User user;
+  @Column(name = "year_end")
+  private Integer yearEnd;
+
+  @ManyToOne
+  @MapsId("userId")
+  @JoinColumn(name = "user_id")
+  private User user;
 }

@@ -13,18 +13,19 @@ import java.util.Optional;
 
 @Repository
 public interface ConversationRepository extends JpaRepository<Conversation, Long> {
-    @Query("SELECT c FROM Conversation c JOIN c.users cu " +
-            "WHERE cu IN :users " +
-            "GROUP BY c " +
-            "HAVING COUNT(DISTINCT cu) = 2")
-    Optional<Conversation> getConversationByUsersIn(User... users);
+  @Query(
+      "SELECT c FROM Conversation c JOIN c.users cu "
+          + "WHERE cu IN :users "
+          + "GROUP BY c "
+          + "HAVING COUNT(DISTINCT cu) = 2")
+  Optional<Conversation> getConversationByUsersIn(User... users);
 
-    @Query("select c from Conversation c JOIN c.users cu " +
-            "where cu.id = :userId")
-    List<Conversation> getConversationsByUserId(Pageable pageable, Long userId);
+  @Query("select c from Conversation c JOIN c.users cu " + "where cu.id = :userId")
+  List<Conversation> getConversationsByUserId(Pageable pageable, Long userId);
 
-    @Query("SELECT cm FROM Conversation c JOIN c.messages cm " +
-            "WHERE c.id = :conversationId " +
-            "ORDER BY cm.id DESC")
-    List<Message> getMessagesForConversation(Pageable pageable, Long conversationId);
+  @Query(
+      "SELECT cm FROM Conversation c JOIN c.messages cm "
+          + "WHERE c.id = :conversationId "
+          + "ORDER BY cm.id DESC")
+  List<Message> getMessagesForConversation(Pageable pageable, Long conversationId);
 }

@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "storage")
 public class StorageProperties {
-    /**
-     * Конфигурация в application.properties для указания местоположения сохранения файлов.
-     * Значение по умолчанию: "~/uploads"
-     */
-    private String location = "~/uploads";
+  /**
+   * Конфигурация в application.properties для указания местоположения сохранения файлов. Значение
+   * по умолчанию: "~/uploads"
+   */
+  private String location = "~/uploads";
 }

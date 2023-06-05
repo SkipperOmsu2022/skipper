@@ -14,13 +14,15 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedbackParamsDTO {
-    @NotNull(message = "We need a userId to know whose reviews to return")
-    private Long userId;
-    @Min(0)
-    @Builder.Default
-    private Integer offset = 0;
-    @Min(1)
-    @Max(20)
-    @Builder.Default
-    private Integer limit = 10;
+  @NotNull(message = "We need a userId to know whose reviews to return")
+  private Long userId;
+
+  @Min(0)
+  @Builder.Default
+  private Integer offset = 0;
+
+  @Min(1)
+  @Max(20)
+  @Builder.Default
+  private Integer limit = 10;
 }

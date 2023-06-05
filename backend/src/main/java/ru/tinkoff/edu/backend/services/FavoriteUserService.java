@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 
 @Service
 public interface FavoriteUserService {
-    void addFavoriteMentor(@NotNull Long userId, @NotNull Long favoriteUserId);
-    void deleteFavoriteMentor(@NotNull Long userId, @NotNull Long favoriteUserId);
+  void addFavoriteMentor(@NotNull Long userId, @NotNull Long favoriteUserId);
+
+  void deleteFavoriteMentor(@NotNull Long userId, @NotNull Long favoriteUserId);
 }

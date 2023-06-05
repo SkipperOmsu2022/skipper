@@ -13,15 +13,17 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaginationListConversationDTO {
-    @Min(0)
-    @Builder.Default
-    private Integer offsetConversations = 0;
-    @Min(1)
-    @Max(20)
-    @Builder.Default
-    private Integer limitConversations = 10;
-    @Min(5)
-    @Max(50)
-    @Builder.Default
-    private Integer limitMessages = 20;
+  @Min(0)
+  @Builder.Default
+  private Integer offsetConversations = 0;
+
+  @Min(1)
+  @Max(20)
+  @Builder.Default
+  private Integer limitConversations = 10;
+
+  @Min(5)
+  @Max(50)
+  @Builder.Default
+  private Integer limitMessages = 20;
 }

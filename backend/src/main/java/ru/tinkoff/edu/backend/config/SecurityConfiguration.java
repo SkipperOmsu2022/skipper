@@ -14,80 +14,80 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.Collections;
 
-
-/**
- * Java-конфигурации IoC контейнера, отвечающая за безопасность.
- */
+/** Java-конфигурации IoC контейнера, отвечающая за безопасность. */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-    private static final String[] AUTH_WHITELIST = {
-            "/api-ui",
-            "/v2/api-docs",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**",
-            "/v3/api-docs/**",
-            "/swagger-ui/**"
-    };
-    // разрешить все запросы на /api**, но разрешить все остальные запросы
+  private static final String[] AUTH_WHITELIST = {
+    "/api-ui",
+    "/v2/api-docs",
+    "/swagger-resources",
+    "/swagger-resources/**",
+    "/configuration/ui",
+    "/configuration/security",
+    "/swagger-ui.html",
+    "/webjars/**",
+    "/v3/api-docs/**",
+    "/swagger-ui/**"
+  };
+  // разрешить все запросы на /api**, но разрешить все остальные запросы
 
-    @Bean
-    protected SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                    .antMatchers(AUTH_WHITELIST).permitAll()
-                    .antMatchers("/api/auth/registration").permitAll()
-                .antMatchers("/api/**").permitAll()
-                .and()
-                    .formLogin()
-                // временно разрешаю всё
-                    .loginPage("/02943857098/475607y48f65h0h0/09827h4cy5").permitAll()
-                    .loginProcessingUrl("/api/au098уцгнп98th/834whg50987/924h5g90")
-                    .defaultSuccessUrl("/ap982407н5еппi/u4ц985рпser", true)
-                    .usernameParameter("email")
-                    .passwordParameter("password")
-                    .failureUrl("/api/auth/login/fail");
+  @Bean
+  protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.authorizeRequests()
+        .antMatchers(AUTH_WHITELIST)
+        .permitAll()
+        .antMatchers("/api/auth/registration")
+        .permitAll()
+        .antMatchers("/api/**")
+        .permitAll()
+        .and()
+        .formLogin()
+        // временно разрешаю всё
+        .loginPage("/02943857098/475607y48f65h0h0/09827h4cy5")
+        .permitAll()
+        .loginProcessingUrl("/api/au098уцгнп98th/834whg50987/924h5g90")
+        .defaultSuccessUrl("/ap982407н5еппi/u4ц985рпser", true)
+        .usernameParameter("email")
+        .passwordParameter("password")
+        .failureUrl("/api/auth/login/fail");
 
+    http.csrf().disable();
+    http.cors();
 
-        http.csrf().disable();
-        http.cors();
+    return http.build();
+  }
 
-        return http.build();
-    }
+  @Bean
+  protected CorsConfigurationSource corsConfigurationSource() {
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    CorsConfiguration corsConfig = new CorsConfiguration().applyPermitDefaultValues();
+    corsConfig.setAllowedHeaders(
+        Arrays.asList(
+            "Authorization", "Cache-Control", "Content-Type", "Access-Control-Allow-Headers"));
 
-    @Bean
-    protected CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration corsConfig = new CorsConfiguration().applyPermitDefaultValues();
-        corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type",
-                "Access-Control-Allow-Headers"));
+    corsConfig.setAllowedOriginPatterns(Collections.singletonList("*"));
+    corsConfig.setAllowCredentials(true);
 
-        corsConfig.setAllowedOriginPatterns(Collections.singletonList("*"));
-        corsConfig.setAllowCredentials(true);
+    corsConfig.setExposedHeaders(
+        Arrays.asList("Authorization", "Location", "Cache-Control", "Content-Type"));
+    corsConfig.setAllowedMethods(
+        Arrays.asList("GET", "POST", "PUT", "DELETE", "PUT", "OPTIONS", "PATCH", "DELETE"));
+    source.registerCorsConfiguration("/**", corsConfig);
+    return source;
+  }
 
-        corsConfig.setExposedHeaders(Arrays
-                .asList("Authorization", "Location", "Cache-Control", "Content-Type"));
-        corsConfig.setAllowedMethods(Arrays
-                .asList("GET", "POST", "PUT", "DELETE", "PUT","OPTIONS","PATCH", "DELETE"));
-        source.registerCorsConfiguration("/**", corsConfig);
-        return source;
-    }
-
-    /**
-     * Метод создаёт, настраивает и инициализирует объект BCryptPasswordEncoder.
-     * Хэш функция "bcrypt" формирования ключа, используемая для защищённого хранения паролей.
-     * Функция основана на шифре Blowfish. Пароль перед хэшированием "подсаливается".
-     * Плюсом этой хэш-функции является то, что количество итераций можно увеличить, что делает функцию
-     * более медленной для атак грубой силой.
-     * По умолчанию 10 проходов.
-     * @return бин BCryptPasswordEncoder.
-     */
-    @Bean
-    protected PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  /**
+   * Метод создаёт, настраивает и инициализирует объект BCryptPasswordEncoder. Хэш функция "bcrypt"
+   * формирования ключа, используемая для защищённого хранения паролей. Функция основана на шифре
+   * Blowfish. Пароль перед хэшированием "подсаливается". Плюсом этой хэш-функции является то, что
+   * количество итераций можно увеличить, что делает функцию более медленной для атак грубой силой.
+   * По умолчанию 10 проходов.
+   *
+   * @return бин BCryptPasswordEncoder.
+   */
+  @Bean
+  protected PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }

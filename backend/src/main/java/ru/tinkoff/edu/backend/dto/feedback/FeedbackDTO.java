@@ -16,16 +16,19 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedbackDTO {
-    private Long mentorId;
-    private Long userAuthorId;
-    private String firstName;
-    private String lastName;
-    private String imageUserResource;
-    @Min(value = 1, message = "Минимальное число рейтинга = 1")
-    @Max(value = 5, message = "Максимальное число рейтинга = 5")
-    private int rating;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDate createAt;
-    @Length(max = 400, message = "Максимальная отзыва длина = 400")
-    private String text;
+  private Long mentorId;
+  private Long userAuthorId;
+  private String firstName;
+  private String lastName;
+  private String imageUserResource;
+
+  @Min(value = 1, message = "Минимальное число рейтинга = 1")
+  @Max(value = 5, message = "Максимальное число рейтинга = 5")
+  private int rating;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  private LocalDate createAt;
+
+  @Length(max = 400, message = "Максимальная отзыва длина = 400")
+  private String text;
 }

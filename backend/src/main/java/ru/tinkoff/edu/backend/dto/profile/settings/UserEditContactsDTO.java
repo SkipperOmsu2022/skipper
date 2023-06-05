@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserEditContactsDTO {
-    private String linkVk;
-    private String linkSkype;
-    private String linkDiscord;
-    private String linkTelegram;
+  private String linkVk;
+  private String linkSkype;
+  private String linkDiscord;
+  private String linkTelegram;
 }
