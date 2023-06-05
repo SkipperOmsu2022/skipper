@@ -21,8 +21,13 @@ const MentorProfilePage = observer(() => {
     const { auth: currentUserId } = useAuthContext();
 
     useEffect(() => {
-        getUserData(api.mentorProfile, mentorId, {mentorId: mentorId, userId: currentUserId})
-            .then(res => mentorProfileStore.setMentorData(res, mentorId))
+        if (currentUserId) {
+            getUserData(api.mentorProfile, mentorId, {mentorId: mentorId, userId: currentUserId})
+                .then(res => mentorProfileStore.setMentorData(res, mentorId))
+        } else {
+            getUserData(api.mentorProfile, mentorId, {mentorId: mentorId})
+                .then(res => mentorProfileStore.setMentorData(res, mentorId))
+        }
 
         return mentorProfileStore.resetStore;
     }, []);
