@@ -8,5 +8,5 @@ import ru.tinkoff.edu.backend.entities.WorkExperiencePK;
 
 @Repository
 public interface WorkExperienceRepository extends JpaRepository<WorkExperience, WorkExperiencePK> {
-    void deleteWorkExperiencesByUser(User user);
+  void deleteWorkExperiencesByUser(User user);
 }

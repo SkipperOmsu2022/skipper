@@ -19,19 +19,19 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserEditMainInfoDTO {
-    @NotBlank
-    private String firstName;
-    @NotBlank
-    private String lastName;
-    @NotNull
-    private String patronymic;
-    @Past
-    private LocalDate dateOfBirth;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private MultipartFile file;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String imageUserResource;
-    private UserGender gender;
-    @Size(max = 400)
-    private String aboutMe;
+  @NotBlank private String firstName;
+  @NotBlank private String lastName;
+  @NotNull private String patronymic;
+  @Past private LocalDate dateOfBirth;
+
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  private MultipartFile file;
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  private String imageUserResource;
+
+  private UserGender gender;
+
+  @Size(max = 400)
+  private String aboutMe;
 }

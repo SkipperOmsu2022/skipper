@@ -1,0 +1,59 @@
+.star-icon {
+    background-image: url('../../resources/icons/empty-star.svg');
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+}
+
+.filled {
+    background-image: url('../../resources/icons/filled-star.svg');
+}
+
+.rating-input {
+    width: fit-content;
+    gap: 5px;
+    transform: scale(-1, 1);
+    &.choose-rating {
+        animation: shake 1.5s ease 1;
+    }
+    .star-icon {
+        &:hover {
+            cursor: pointer;
+            filter: brightness(97%);
+        }
+    }
+    .star-icon:hover,
+    .star-icon:hover ~ .star-icon {
+        background-image: url('../../resources/icons/filled-star.svg');
+        filter: brightness(97%);
+    }
+}
+
+
+@keyframes shake {   
+    0% {     
+        transform: scale(-1, 1); 
+    }   
+    15% {
+        transform: scale(-1, 1) translate3d(-9%, 0, 0) rotate3d(0, 0, 1, -3deg);
+    }
+    
+    30% {
+        transform: scale(-1, 1) translate3d(7%, 0, 0) rotate3d(0, 0, 1, 2deg);
+    }
+    
+    45% {
+        transform: scale(-1, 1) translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -2deg);
+    }
+
+    60% {
+        transform: scale(-1, 1) translate3d(3%, 0, 0) rotate3d(0, 0, 1, 1deg);
+    }
+
+    75% {
+        transform: scale(-1, 1) translate3d(0%, 0, 0) rotate3d(0, 0, 1, -0deg);
+    }
+
+    100% {
+        transform: scale(-1, 1); 
+    }
+}

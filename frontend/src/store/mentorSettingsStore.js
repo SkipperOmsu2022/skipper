@@ -39,7 +39,7 @@ class mentorSettingsStore {
                         return {
                             id: item.id,
                             value: item.code,
-                            label: item.name
+                            label: item.name + ` (${item.code})`
                         }
                     }))
                 })

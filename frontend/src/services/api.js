@@ -7,6 +7,40 @@ const getEducationsList = async (e) =>  {
     return res;
 }
 
+const addFavoriteMentor = async (mentorId, userId) =>  {
+    const url = enviroments.apiBase + `/api/user/favorite/${userId}/${mentorId}`;
+    const res = await axios.request({url, method: 'post'})
+    return res;
+}
+
+const deleteFavoriteMentor = async (mentorId, userId) =>  {
+    const url = enviroments.apiBase + `/api/user/favorite/${userId}/${mentorId}`;
+    const res = await axios.request({url, method: 'delete'})
+    return res;
+}
+
+const getChatUserInfo = async (userId) => {
+    const url = `${enviroments.apiBase}/api/chat/user-info/${userId}`
+    const res = await axios.request({
+        url : url,
+        method: 'get'
+    })
+    return res;
+}
+
+const api = {
+    userProfile: 'user/profile/',
+    mentorProfile: 'user/profile/mentor/',
+    userSettings: 'user/profile/settings/',
+    userAccount: 'user/profile/settings/account/',
+    userContacts: 'user/profile/settings/contacts/',
+    mentorSettings: 'user/profile/settings/mentor/'
+}
+
 export {
-    getEducationsList
+    getEducationsList,
+    addFavoriteMentor,
+    deleteFavoriteMentor,
+    getChatUserInfo,
+    api
 }

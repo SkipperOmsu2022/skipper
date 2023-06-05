@@ -1,9 +1,9 @@
-import { NavLink, Outlet, Navigate} from 'react-router-dom';
+import { NavLink, Outlet, Navigate, Link} from 'react-router-dom';
 import useAuthContext from '../../../hooks/useAuthContext'
 
 import "./authorizationPage.scss"
 
-const AuthorizationPage = (props) => {
+const AuthorizationPage = () => {
     const { auth } = useAuthContext()
 
     if (auth) {
@@ -13,13 +13,30 @@ const AuthorizationPage = (props) => {
     return (
         <section className="login-wrapper">
             <header className="header">
-                <span className="header__title">Skipper</span>
+                <Link
+                    className="header__title"
+                    to={`/mentors`}
+                >
+                    Skipper
+                </Link>
             </header>
             <div className="authentication">
                 <div className="authentication__content form">
                     <div className="form__header">
-                        <NavLink end to="./signin"  className={({ isActive }) => `tab left ${isActive? " active" : ""}`}>ВХОД</NavLink>
-                        <NavLink end to="./signup" className={({ isActive }) => `tab right ${isActive? " active" : ""}`}>РЕГИСТРАЦИЯ</NavLink>
+                        <NavLink
+                            className={({ isActive }) => `tab left ${isActive? " active" : ""}`}
+                            to="/authorization"
+                            end
+                        >
+                            ВХОД
+                        </NavLink>
+                        <NavLink
+                            className={({ isActive }) => `tab right ${isActive? " active" : ""}`}
+                            to="/authorization/signup"
+                            end
+                        >
+                            РЕГИСТРАЦИЯ
+                        </NavLink>
                     </div>
                     <div className="form__content">
                         <Outlet/>

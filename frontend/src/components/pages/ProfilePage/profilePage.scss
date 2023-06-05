@@ -12,6 +12,9 @@
         grid-column-end: 2;
         grid-row-start: 2;
         grid-row-end: 4;
+
+        height: 100%;
+        box-sizing: border-box;
     }
 }
 
@@ -21,17 +24,29 @@
     gap: 1.25rem;
     padding: 2.5rem;
     min-height: 18.75rem;
-    
+    max-width: 103.438rem;
+
     &.min-width {
         min-width: 84.6rem;
     }
 
     &__header {
         color: $header;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
 
         text-transform: uppercase;
         font-weight: 400;
         font-size: 1.25rem;
+
+        .reviews-amount {
+            font-size: 18px;
+            font-weight: 400;
+            color: $additional-text;
+            margin: auto 0;
+            text-transform: none
+        }
     }
 
     &__section {

@@ -4,6 +4,7 @@ import { Formik, Form } from "formik";
 import * as Yup from 'yup';
 
 import TextInput from "../../../shared/TextInput/TextInput";
+import { api } from "../../../services/api";
 
 const Account = () => {
     const {setUserData, clearResponse} = useOutletContext();
@@ -52,7 +53,7 @@ const Account = () => {
                         }),
             }), ['oldPassword', 'newPassword', 'repeatNewPassword'])}
             onSubmit = {(data, actions) => {
-                setUserData(data, 'user/profile/settings/account/');
+                setUserData(data, api.userAccount);
                 actions.setTouched({}, false);
             }}
         >

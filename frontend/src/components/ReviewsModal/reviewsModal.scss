@@ -1,0 +1,192 @@
+@import '../../shared/variables.scss';
+
+.review-modal {
+    display: flex;
+    flex-direction: column;
+
+    padding: 40px 40px 20px 60px;
+    min-width: 400px;
+    width: 1160px;
+    max-height: 72vh;
+    min-height: auto;
+
+    &-body {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        width: 100%;
+        overflow-y: scroll;
+        padding-right: 32px;
+        padding-top: 20px;
+
+        &-wrapper {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-sizing: border-box;
+            overflow: auto;
+            height: fit-content;
+            &::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 98%;
+                height: 28px;
+                background: linear-gradient(180deg, transparent, white 95%);
+            }
+            &::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 98%;
+                height: 28px;
+                background: linear-gradient(0deg, transparent, white 88%);
+            }
+        }
+        &::-webkit-scrollbar {
+            width: 3px;
+        }
+        ::-webkit-scrollbar-track {
+            margin-right: 500px;
+        }
+        &::-webkit-scrollbar-thumb {
+            -webkit-border-radius: 15px;
+            border-radius: 15px;
+            background: rgb(230, 230, 230);
+        }
+        &::-webkit-scrollbar-thumb:window-inactive {
+            max-height: 20%;
+            background: rgb(230, 230, 230); 
+        }
+        
+        .review {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            &-header {
+                display: flex;
+                flex-direction: row;
+                gap: 20px;
+
+                &__photo {
+                    width: 3.125rem;
+                    min-width: 3.125rem;
+                    height: 3.125rem;
+                    min-height: 3.125rem;
+                }
+                &__info {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    padding: 4px 0;
+                    &-user-name {
+                        text-decoration: none;
+                        line-height: 20px;
+                        font-size: 1rem;
+                        color: #000000;
+                    }
+                }
+                &__date {
+                    color: $additional-text;
+                    padding: 4px 0;
+                }
+            }
+            &-content {
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 20px;
+                padding: 0 4px;
+            }
+            &.hide {
+                opacity: 0;
+            }
+        }
+        .divider {
+            border: 1px solid $border;
+            height: 0;
+            width: 99%;
+            margin: 0 auto;
+            &.hide {
+                opacity: 0;
+            }
+        }
+        .spinner-wrapper {
+            margin: 0 auto;
+        }
+    }
+    .pagination-wrapper {
+        display: flex;
+    }
+}
+
+
+.menu-button {
+    margin: auto 20px auto auto;
+
+    position: relative;
+    vertical-align: middle;
+    line-height: 35px;
+    font-weight: 400;
+    font-size: 25px;
+
+    &__icon {
+        height: 20px;
+        width: 20px;
+        &:hover {
+            cursor: pointer;
+            filter: brightness(90%);
+        }
+    }
+    &__dropdown {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin: 0;
+        padding: 20px;
+        position: absolute;
+        top: -0.5rem;
+        right: 3rem;
+        width: 197px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(166, 166, 166, 0.6);
+
+        cursor: auto;
+
+        &:before {
+            content:"";
+            width: 0;
+            height: 0;
+            position: absolute;
+            left: 100%;
+            top: 14%;
+            border: 8px solid transparent;
+            border-left: 17px solid #fff;
+            filter: drop-shadow(5px 0 5px rgba(0, 0, 0, 0.159))
+        }
+
+        &.hide {
+            display: none;
+        }
+        
+        &-item {
+            cursor: pointer;
+            
+            color: $additional-text;
+            font-family: Montserrat;
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 24px;
+            letter-spacing: 0em;
+            text-align: left;
+            &:hover {
+                filter: brightness(90%);
+            }
+        }
+    }
+}

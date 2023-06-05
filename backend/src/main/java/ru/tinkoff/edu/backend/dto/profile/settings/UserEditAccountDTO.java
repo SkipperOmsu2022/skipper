@@ -14,16 +14,17 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserEditAccountDTO {
-    @NotBlank
-    @Email
-    private String email;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotBlank
-    private String oldPassword;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotBlank
-    private String newPassword;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @NotBlank
-    private String repeatNewPassword;
+  @NotBlank @Email private String email;
+
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  @NotBlank
+  private String oldPassword;
+
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  @NotBlank
+  private String newPassword;
+
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  @NotBlank
+  private String repeatNewPassword;
 }

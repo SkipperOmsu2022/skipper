@@ -2,14 +2,20 @@ import { useEffect, useState, useRef } from "react"
 import { observer } from "mobx-react-lite";
 
 import mentorProfileStore from '../../../store/mentorProfileStore';
-
+import { useRequireAuth } from '../../Auth/RequireAuth'
 import CommunicationContent from "../ProfilePage/CommunicationContent";
 
 import photo from "../../../resources/profile-photo.jpg"
 import bookmark from "../../../resources/icons/bookmark.svg";
 import "../../../shared/bookmark.scss"
 
-const MainInfo = observer(() => {
+
+
+const MainInfo = observer(({mentorId, currentUserId}) => {
+    const onChangeFav = useRequireAuth(() => mentorProfileStore.onChangeFavorite(mentorId, currentUserId));
+    const [dropdownDisplay, setDropdownDisplay] = useState(false);
+    const container = useRef();
+    
     useEffect(() => {
         document.addEventListener("click", handleClickOutside);
         
@@ -18,8 +24,6 @@ const MainInfo = observer(() => {
         }
     }, []);
 
-    const [dropdownDisplay, setDropdownDisplay] = useState(false);
-    const container = useRef();
 
     const handleDropdownClick = () => setDropdownDisplay((dropdownDisplay) => !dropdownDisplay);
 
@@ -44,10 +48,18 @@ const MainInfo = observer(() => {
                         <div className="name">{mentorProfileStore.firstName} {mentorProfileStore.lastName}</div>
                         <div className="specialty">{mentorProfileStore.mentorSpecializations}</div>
                     </div>
+                    {currentUserId !== mentorId ? 
                     <label className="profile__bookmark" htmlFor="switch">
-                        <input type="checkbox" className="bookmark-input" id="switch"/>
+                        <input
+                            type="checkbox"
+                            className="bookmark-input"
+                            id="switch"
+                            checked={mentorProfileStore.favorite}
+                            onChange={onChangeFav}
+                        />
                         <img className="bookmark-icon bookmark" src={bookmark} alt="" />
-                    </label>
+                    </label> : null
+                    }
                 </div>
                 <div className="complain-btn" ref={container} onClick={handleDropdownClick}
                     onKeyDown={(e) => {

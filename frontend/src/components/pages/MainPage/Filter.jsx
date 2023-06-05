@@ -1,8 +1,9 @@
 import useSpecializationService from "../../../services/SpecializationService";
+import CustomSelect from "../../../shared/customSelect/CustomSelect";
 import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-import mainPageStore from "../../../store/mainPageStore";
+import mentorsFilterStore from "../../../store/mentorsFilterStore";
 
 const Filter =  observer(({updateMentors}) => {
     const {getSpecializationsList} = useSpecializationService();
@@ -10,15 +11,26 @@ const Filter =  observer(({updateMentors}) => {
     useEffect(() => {
         getSpecializationsList()
             .then(res => {
-                mainPageStore.setFilter(res)
+                mentorsFilterStore.setSpecializations(res)
             })
+
+        return () => mentorsFilterStore.reset();
     }, []);
 
     return (
         <div className="app-section filter">
+                <CustomSelect
+                    options={mentorsFilterStore.sortOptions}
+                    value={mentorsFilterStore.sortField}
+                    onChange={mentorsFilterStore.setSortField}
+                    width='296px'
+                    placeholder="Сортировка"
+                    height='18px'
+                    isSearchable={false}
+                />
             <div className="filter__section">
                 <div className="filter__section-title">
-                    <div className="filter__section-title-text">Сфера обучения</div>
+                    <div className="filter__section-title-text">Специальность</div>
                     <div className="filter__section-divider"></div>
                 </div>
                 <div className="item-wrapper">
@@ -49,40 +61,6 @@ const Filter =  observer(({updateMentors}) => {
                     </div>
                 </div>
             </div>
-            <div className="filter__section">
-                <div className="filter__section-title padding-btm">
-                    <div className="filter__section-title-text">Рейтинг</div>
-                    <div className="filter__section-divider"></div>
-                </div>
-                <div className="item-wrapper show rating">
-                    <Rating/>
-                </div>
-            </div>
-            <div className="filter__section">
-                <div className="filter__section-title padding-btm">
-                    <div className="filter__section-divider"></div>
-                </div>
-                <div className="item-wrapper show">
-                    <div className="filter__section-list-item">
-                        <input
-                            type="checkbox"
-                            className="checkbox"
-                            id="photo"
-                            checked={mainPageStore.onlyWithPhoto}
-                            onChange={() => mainPageStore.changeOnlyWithPhoto()}
-                        />
-                        <label htmlFor="photo" className="checkbox-name">
-                            Только с фото   
-                        </label>
-                    </div>
-                    <div className="filter__section-list-item">
-                        <input type="checkbox" className="checkbox" id="review"/>
-                        <label htmlFor="review" className="checkbox-name">
-                            Только с отзывами
-                        </label>
-                    </div>
-                </div>
-            </div>
             <div className="filter__btn-block">
                 <button 
                     onClick={() => {
@@ -91,7 +69,7 @@ const Filter =  observer(({updateMentors}) => {
                             left: 0,
                             behavior: 'smooth'
                         });
-
+                        
                         updateMentors(0, 0)
                     }}
                     className="button"
@@ -106,8 +84,8 @@ const Filter =  observer(({updateMentors}) => {
                             behavior: 'smooth'
                         });
                         
-                        mainPageStore.reset()
-                        mainPageStore.setSearch('')
+                        mentorsFilterStore.reset()
+                        mentorsFilterStore.setSearch('')
                         updateMentors(0, 0)
                     }}
                     className="button pale"
@@ -120,43 +98,18 @@ const Filter =  observer(({updateMentors}) => {
 })
 
 const Specializations = observer(() => {
-    return (
-        <>
-            {mainPageStore.filter?.map((item, i) => (
-                <div className="filter__section-list-item" key={i}>
-                    <input
-                        type="checkbox"
-                        className="checkbox"
-                        id={item.value}
-                        checked={item.label.checked}
-                        onChange={() => mainPageStore.changeChecked(item)}
-                    />
-                    <label htmlFor={item.value} className="checkbox-name">{item.label}</label>
-                </div>
-            ))}
-        </>
-    );
-})
-
-const Rating = observer(() => {
-    return (
-        <>
-            {mainPageStore.ratingFilter.map((item, i) => (
-                <div className="filter__section-list-item" key={`${item.value}star`}>
-                    <input
-                        type="checkbox"
-                        className="checkbox"
-                        id={`${item.value}star`}
-                        checked={item.checked}
-                        onChange={() => mainPageStore.changeChecked(item)}
-                    />
-                    <label htmlFor={`${item.value}star`} className="checkbox-name">
-                        {item.value} <span className="stars">{'★ '.repeat(item.value)}</span>
-                    </label>
-                </div>
-            ))}
-        </>
-    );
+    return mentorsFilterStore.specializations?.map((item, i) => (
+        <div className="filter__section-list-item" key={i}>
+            <input
+                type="checkbox"
+                className="checkbox"
+                id={item.value}
+                checked={item.checked}
+                onChange={() => mentorsFilterStore.changeChecked(item)}
+            />
+            <label htmlFor={item.value} className="checkbox-name">{item.label}</label>
+        </div>
+    ))
 })
 
 export default Filter;

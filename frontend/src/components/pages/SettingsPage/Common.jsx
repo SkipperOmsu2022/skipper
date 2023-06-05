@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { useState, useRef, useEffect} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
-import FormikSelect from "../../../shared/customSelect/CustomSelect";
+import { FormikSelect } from "../../../shared/customSelect/CustomSelect";
 import ImageCropper from "../../ImageCropper/ImageCropper";
 
 import photo from "../../../resources/profile-photo.jpg"
@@ -11,6 +11,7 @@ import "../../../shared/radio.scss"
 import "../../../shared/submitButton/button.scss"
 
 import TextInput from "../../../shared/TextInput/TextInput";
+import { api } from "../../../services/api";
 
 async function getBlobFromUrl(url) {
     return await fetch(url).then(r => r.blob());
@@ -37,7 +38,7 @@ const Common = () => {
     });
 
     useEffect(() => {
-        getUserData('user/profile/settings/')
+        getUserData(api.userSettings)
             .then(res => {
                 let date = res?.data?.dateOfBirth?.split('-');
                 if (date === undefined) date = ['', '', ''];
@@ -146,7 +147,7 @@ const Common = () => {
             form_data.append(key, data[key]);
         }
         
-        setUserData(form_data, 'user/profile/settings/', {"Content-Type": 'multipart/form-data'});
+        setUserData(form_data, api.userSettings, {"Content-Type": 'multipart/form-data'});
     }
     
     return (
@@ -188,8 +189,8 @@ const Common = () => {
                             </div>    
                             <div className="settings__photo">
                                 <div className="img-wrapper">
-                                    <img className="settings__photo-img" src={image || photo} alt="" />
-                                    <div alt="certificate" className="settings__photo-cross" onClick={onDeletePhoto}>
+                                    <img className="settings__photo-img user-photo" src={image || photo} alt="" />
+                                    <div alt="delete" className="settings__photo-cross" onClick={onDeletePhoto}>
                                         <span className="transform">Х</span>
                                     </div>
                                 </div>

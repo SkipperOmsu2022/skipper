@@ -8,6 +8,7 @@ import "../../../shared/submitButton/button.scss"
 import useProfileService from "../../../services/profileService";
 import DateOfRegistration from "./DateOfRegistration";
 import CommunicationContent from "./CommunicationContent";
+import { api } from "../../../services/api";
 
 const ProfilePage = () => {
     const {getUserData} = useProfileService();
@@ -26,7 +27,7 @@ const ProfilePage = () => {
     const container = useRef();
 
     useEffect(() => {
-        getUserData('user/profile/', userId)
+        getUserData(api.userProfile, userId)
             .then(res => {
                 console.log(res?.data?.mentorSpecializations)
                 setFirstName(res?.data?.firstName);

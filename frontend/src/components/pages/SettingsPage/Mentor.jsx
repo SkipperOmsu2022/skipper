@@ -9,6 +9,7 @@ import useSpecializationService from "../../../services/SpecializationService";
 
 import cross from "../../../resources/icons/cross.svg"
 import "../../../shared/switch.scss"
+import { api } from "../../../services/api";
 
 const Mentor = observer(() => {
     const {getUserData, setUserData, clearResponse} = useOutletContext();
@@ -18,7 +19,7 @@ const Mentor = observer(() => {
         mentorSettingsStore.resetStore();
         getSpecializationsList()
             .then(res => mentorSettingsStore.setSpecializationOptions(res))
-            .then(() => getUserData('user/profile/settings/mentor/'))
+            .then(() => getUserData(api.mentorSettings))
             .then(res => mentorSettingsStore.setMentorData(res))
         
         return () => clearResponse();
@@ -32,7 +33,7 @@ const Mentor = observer(() => {
 
             setUserData(
                 form_data,
-                'user/profile/settings/mentor/',
+                api.mentorSettings,
                 {'Content-Type':'multipart/form-data' }
             );
         }

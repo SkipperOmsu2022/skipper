@@ -60,6 +60,7 @@
                 gap: 20px;
                 padding-bottom: 40px;
                 &-text {
+                    cursor: default;
                     color: $header;
                     font-weight: 400;
                     font-size: 20px;
@@ -114,6 +115,39 @@
                 &.pale {
                     background-color: #FFF5C2;
                 }
+            }
+        }
+        .css-usxiv2-container {
+            color: $main-text;
+            padding: 0;
+            margin: 0;
+            height: auto;
+        }
+        .custom-select {
+            box-sizing: border-box;
+            
+            &.filter__control {
+                height: 44px;
+                width: 320px;
+                padding: 10px 15px;
+                &--menu-is-open {
+                    border-radius: 10px 10px  0 0 ;
+                }
+            }
+
+            &.filter__value-container {
+                height: 24px;
+                padding: 0;
+                margin: 0;
+            }
+            &.filter__menu {
+                margin-top: -0.35rem;
+                padding: 0.325rem 0.375rem;
+            }
+            &.filter__option {
+                font-size: 16px;
+                font-size: 1.0625rem;
+                padding: 0.425rem 0.4475rem;
             }
         }
     }
@@ -182,8 +216,11 @@
         flex-direction: column;
         gap: 20px;
         &-img {
-            width: 100px;
-            height: 100px;
+            min-width: 100px;
+            min-height: 100px;
+            max-width: 100px;
+            max-height: 100px;
+            text-align: center;
             border-radius: 50%;
             border: 0.0625rem solid $additional-text;
         }
@@ -202,6 +239,7 @@
             width: 30px;
         }
         &-value {
+            cursor: default;
             font-size: 20px;
             color: $main-text;
             align-items: center;
@@ -224,16 +262,19 @@
                 flex-direction: column;
                 gap: 5px;
                 &-name {
+                    text-decoration: none;
                     color: $header;
                     font-size: 20px;
                 }
                 &-specialty {
+                    cursor: default;
                     color: $additional-text;
                     font-size: 16px;
                 }
             }
         }
         .description {
+            cursor: default;
             color: $main-text;
             font-size: 16px;
         }
@@ -251,6 +292,7 @@
 
         min-width: 180px;
         &-info {
+            cursor: default;
             margin: auto;
             display: flex;
             flex-direction: column;

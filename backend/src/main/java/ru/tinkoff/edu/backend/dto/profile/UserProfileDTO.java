@@ -12,16 +12,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfileDTO {
-    private String firstName;
-    private String lastName;
-    private String patronymic;
-    private String aboutMe;
-    private Boolean isEnabledMentorStatus;
-    private LocalDate dateOfRegistration;
-    private String imageUserResource;
-    private String mentorSpecializations;
-    private String linkVk;
-    private String linkSkype;
-    private String linkDiscord;
-    private String linkTelegram;
+  private String firstName;
+  private String lastName;
+  private String patronymic;
+  private String aboutMe;
+  private Boolean isEnabledMentorStatus;
+  private LocalDate dateOfRegistration;
+  private String imageUserResource;
+  private String mentorSpecializations;
+  private String linkVk;
+  private String linkSkype;
+  private String linkDiscord;
+  private String linkTelegram;
 }

@@ -12,11 +12,13 @@ import useAuthContext from "../../hooks/useAuthContext";
 import useLoginService from "../../services/loginService"
 import useProfileService from "../../services/profileService";
 import useMessageService from "../../services/messageService"
+import { api } from "../../services/api"
 
 import { observer } from "mobx-react-lite";
 import messagesStore from "../../store/messagesStore";
 
 import "./appHeader.scss"
+import "../../shared/user-photo.scss"
 
 const AppHeader = () => {
     const { auth } = useAuthContext();
@@ -34,10 +36,7 @@ const AppHeader = () => {
                         auth ?
                         <div className="app-header__icons">
                             <NavLink to="/messages"><img src={messages} alt="messages" /></NavLink>
-                            <div>
-                                <img src={bookmark} alt="favorites" className="bookmark-icon"/>
-                            </div>
-                            {/* <NavLink to="/favorites"><img src={bookmark} alt="favorites" className="bookmark-icon"/></NavLink> */}
+                            <NavLink to="/favorites"><img src={bookmark} alt="favorites" className="bookmark-icon"/></NavLink>
                         </div> : null
                     }
                 </div>
@@ -51,6 +50,7 @@ const AppHeader = () => {
 const LoggedDisplay = observer(() => {
     const {getUserData} = useProfileService();
     const { getMessagesList } = useMessageService();
+    const { auth: userId } = useAuthContext();
     
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -63,20 +63,25 @@ const LoggedDisplay = observer(() => {
     const location = useLocation();
     
     useEffect(() => {
-        getUserData('user/profile/')
+        getUserData(api.userProfile, userId)
             .then(res => {
                 if(res) {
                     setFirstName(res?.data?.firstName)
                     setLastName(res?.data?.lastName)
                     setImageUserResource(res?.data?.imageUserResource)
-                    messagesStore.setUser(res)
+                    messagesStore.setUser(res, userId)
                 }
             })
-        messagesStore?.setLoading(true);
-        getMessagesList()
-            .then((res) => {
-                messagesStore.setInterlocutors(res)
+            .then(res => {
+                messagesStore?.setLoading(true);
+                return getMessagesList()
+            })
+            .then(res => {
+                messagesStore.setInitialInterlocutors(res)
                 messagesStore?.setLoading(false);
+            })
+            .then(res => {
+                messagesStore.setStompClient();
             })
             .then(() => {
                 if (location?.state?.activeDialog) {
@@ -84,14 +89,13 @@ const LoggedDisplay = observer(() => {
                 }
             })
 
-        messagesStore.setStompClient();
 
         document.addEventListener("click", handleClickOutside);
         
         return () => {
+            messagesStore.disconnect();
             messagesStore.clearStore()
             document.removeEventListener("click",  handleClickOutside);
-            messagesStore.disconnect();
         }
     }, []);
 
@@ -128,16 +132,35 @@ const LoggedDisplay = observer(() => {
                     <div className="app-header__profile-name">{firstName} {lastName}</div>
                 </div>
                 <img
-                    className="app-header__profile-photo"
+                    className="app-header__profile-photo user-photo"
                     src={imageUserResource ? `${enviroments.apiBase}${imageUserResource}` : photo}
-                    alt=""
+                    alt="user"
                 />
                 <div className={dropDown} tabIndex="-1">
                     <div className="app-header__dropdown-item">
-                        <NavLink end to="/"  className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}>Главная страница</NavLink>
+                        <NavLink
+                            end
+                            to="/mentors" 
+                            className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}
+                        >
+                            Главная страница
+                        </NavLink>
                     </div>
                     <div className="app-header__dropdown-item">
-                        <NavLink to="/settings"  className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}>Настройки профиля</NavLink>
+                        <NavLink
+                            to={`/profile/${userId}`} 
+                            className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}
+                        >
+                            Мой профиль
+                        </NavLink>
+                    </div>
+                    <div className="app-header__dropdown-item">
+                        <NavLink
+                            to="/settings"
+                            className={({ isActive }) => `app-header__dropdown-text ${isActive ? ' active' : ''} `}
+                        >
+                            Настройки профиля
+                        </NavLink>
                     </div>
                     <div className="app-header__dropdown-divider"></div>
                     <div className="app-header__dropdown-item">
@@ -164,7 +187,7 @@ const LoggedDisplay = observer(() => {
 const UnloggedDisplay = () => {
     return (
         <div className="app-header__group">
-            <Link to={"/authorization/signin"} className="button white">Войти</Link>
+            <Link to={"/authorization"} className="button white">Войти</Link>
             <Link to={"/authorization/signup"} className="button">Зарегистрироваться</Link>
         </div>
     )

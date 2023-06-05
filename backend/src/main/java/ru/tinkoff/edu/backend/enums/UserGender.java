@@ -1,18 +1,13 @@
 package ru.tinkoff.edu.backend.enums;
 
-/**
- * Пол пользователя.
- */
+/** Пол пользователя. */
 public enum UserGender {
-    MALE("Мужской"),
-    FEMALE("Женский");
+  MALE("Мужской"),
+  FEMALE("Женский");
 
-    private final String gender;
-    UserGender(String gender) {
-        this.gender = gender;
-    }
+  private final String gender;
 
-    public String getStringUserGender() {
-        return gender;
-    }
+  UserGender(String gender) {
+    this.gender = gender;
+  }
 }
